@@ -25,11 +25,21 @@ public class MerchantDaoImpl extends BaseDaoImpl implements MerchantDao {
         merchantDao = databaseHelper.getDao(MerchantEntity.class);
     }
 
+    /**
+     * Insert a new record
+     * @param merchantEntity
+     * @throws SQLException
+     */
     @Override
     public void createMerchant(MerchantEntity merchantEntity) throws SQLException {
         merchantDao.create(merchantEntity);
     }
 
+    /**
+     * Update a new record
+     * @param merchantEntity
+     * @throws SQLException
+     */
     @Override
     public void updateMerchant(MerchantEntity merchantEntity) throws SQLException {
         merchantDao.update(merchantEntity);
@@ -40,13 +50,27 @@ public class MerchantDaoImpl extends BaseDaoImpl implements MerchantDao {
 
     }
 
+    /**
+     * Get MerchantEntity based on UUID.
+     * @param merchantUuid
+     * @return MerchantEntity or null
+     * @throws SQLException
+     */
     @Override
     public MerchantEntity getMerchant(String merchantUuid) throws SQLException {
-        return null;
+        MerchantEntity merchantEntity =  merchantDao.queryBuilder().where().eq(MerchantEntity.MERCHANT_GUID,merchantUuid).queryForFirst();
+        return merchantEntity;
     }
 
+    /**
+     * Get MerchantEntity based on merchantId
+     * @param merchantId
+     * @return MerchantEntity or null
+     * @throws SQLException
+     */
     @Override
     public MerchantEntity getMerchant(int merchantId) throws SQLException {
-        return null;
+        MerchantEntity merchantEntity = merchantDao.queryForId(merchantId);
+        return merchantEntity;
     }
 }

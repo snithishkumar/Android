@@ -3,6 +3,8 @@ package co.in.mobilepay.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import co.in.mobilepay.json.response.MerchantJson;
+
 /**
  * Created by Nithish on 24-01-2016.
  */
@@ -31,6 +33,28 @@ public class MerchantEntity {
     @DatabaseField(columnName = LAND_LINE_NUMBER)
     private long landLineNumber;
 
+    private long createdDateTime;
+    private long lastModifiedDateTime;
+
+    public MerchantEntity(){
+
+    }
+
+    public MerchantEntity(MerchantJson merchantJson){
+        toClone(merchantJson);
+    }
+
+    public void toClone(MerchantJson merchantJson){
+        this.merchantGuid = merchantJson.getMerchantUuid();
+        this.merchantName = merchantJson.getMerchantName();
+        this.merchantAddress = merchantJson.getAddress();
+        this.area = merchantJson.getArea();
+        this.mobileNumber = merchantJson.getMobileNumber();
+        this.landLineNumber = merchantJson.getLandNumber();
+        this.createdDateTime = merchantJson.getCreatedDateTime();
+        this.lastModifiedDateTime = merchantJson.getLastModifiedDateTime();
+    }
+
     public int getMerchantId() {
         return merchantId;
     }
@@ -53,6 +77,30 @@ public class MerchantEntity {
 
     public void setMerchantAddress(String merchantAddress) {
         this.merchantAddress = merchantAddress;
+    }
+
+    public String getMerchantGuid() {
+        return merchantGuid;
+    }
+
+    public void setMerchantGuid(String merchantGuid) {
+        this.merchantGuid = merchantGuid;
+    }
+
+    public long getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(long createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
+    }
+
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
     public String getArea() {

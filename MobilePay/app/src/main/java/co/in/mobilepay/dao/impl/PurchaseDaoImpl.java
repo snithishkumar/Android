@@ -76,6 +76,13 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         return purchaseDao.queryForId(purchaseId);
     }
 
+
+
+    @Override
+    public PurchaseEntity getPurchaseEntity(String purchaseId) throws SQLException {
+        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.PURCHASE_GUID,purchaseId).queryForFirst();
+    }
+
     /**
      * Get List of  payed PurchaseEntity
      * @return List of PurchaseEntity or empty list

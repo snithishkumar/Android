@@ -21,4 +21,6 @@ public interface PurchaseDao {
     String getLastPurchaseId()throws SQLException;
 
     PurchaseEntity getPurchaseEntity(int purchaseId)throws SQLException;
+
+    PurchaseEntity getPurchaseEntity(String purchaseId)throws SQLException;
 }

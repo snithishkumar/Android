@@ -4,10 +4,13 @@ package co.in.mobilepay.json.response;
 public class MerchantJson {
 
 	private String merchantName;
+	private String merchantUuid;
 	private String address;
 	private String area;
 	private long mobileNumber;
 	private long landNumber;
+    private long createdDateTime;
+    private long lastModifiedDateTime;
 
 	public MerchantJson() {
 
@@ -54,7 +57,31 @@ public class MerchantJson {
 		this.landNumber = landNumber;
 	}
 
-	@Override
+    public String getMerchantUuid() {
+        return merchantUuid;
+    }
+
+    public void setMerchantUuid(String merchantUuid) {
+        this.merchantUuid = merchantUuid;
+    }
+
+    public long getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(long createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
+    }
+
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
+    }
+
+    @Override
 	public String toString() {
 		return "MerchantJson [merchantName=" + merchantName + ", address=" + address + ", area=" + area
 				+ ", mobileNumber=" + mobileNumber + ", landNumber=" + landNumber + "]";

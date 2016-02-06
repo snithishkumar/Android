@@ -2,26 +2,43 @@ package co.in.mobilepay.json.response;
 
 public class PurchaseJson {
 
-	private int purchaseId;
+	private String purchaseId;
 	private long purchaseDate;
 	private int billNumber;
 	private MerchantJson merchants;
 	private UserJson users;
 	private String productDetails;
 	private String amountDetails;
+	private String category;
 	private boolean isEditable;
 	private boolean isDelivered;
+	private long lastModifiedDateTime;
 	
 	public PurchaseJson(){
 		
 	}
-	
 
-	public int getPurchaseId() {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public long getLastModifiedDateTime() {
+		return lastModifiedDateTime;
+	}
+
+	public void setLastModifiedDateTime(long lastModifiedDateTime) {
+		this.lastModifiedDateTime = lastModifiedDateTime;
+	}
+
+	public String getPurchaseId() {
 		return purchaseId;
 	}
 
-	public void setPurchaseId(int purchaseId) {
+	public void setPurchaseId(String purchaseId) {
 		this.purchaseId = purchaseId;
 	}
 

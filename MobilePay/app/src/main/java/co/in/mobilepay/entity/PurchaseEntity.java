@@ -3,6 +3,8 @@ package co.in.mobilepay.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import co.in.mobilepay.json.response.PurchaseJson;
+
 /**
  * Created by Nithish on 24-01-2016.
  */
@@ -17,6 +19,7 @@ public class PurchaseEntity {
     public static final String AMOUNT_DETAILS = "AmountDetails";
     public static final String IS_PAYED = "isPayed";
     public static final String IS_EDITABLE = "isEditable";
+    public static final String CATEGORY = "category";
     public static final String IS_DELIVERABLE = "isDeliverable";
     public static final String UN_MODIFIED_PURCHASE_DATA = "UnModifiedPurchaseData";
     public static final String UN_MODIFIED_AMOUNT_DATA = "UnModifiedAmountDetails";
@@ -36,6 +39,8 @@ public class PurchaseEntity {
     private String productDetails;
     @DatabaseField(columnName = AMOUNT_DETAILS)
     private String amountDetails;
+    @DatabaseField(columnName = CATEGORY)
+    private String category;
     @DatabaseField(columnName = IS_PAYED)
     private boolean isPayed;
     @DatabaseField(columnName = IS_EDITABLE)
@@ -47,13 +52,44 @@ public class PurchaseEntity {
     @DatabaseField(columnName = UN_MODIFIED_AMOUNT_DATA)
     private String unModifiedAmountDetails;
     @DatabaseField(columnName = UPDATED_DATE_TIME)
-    private long updatedDateTime;
-    @DatabaseField(columnName = MERCHANT_ID,foreign = true)
+    private long lastModifiedDateTime;
+    @DatabaseField(columnName = MERCHANT_ID,foreign = true,foreignAutoRefresh =  true)
     private MerchantEntity merchantEntity;
 
     @DatabaseField(columnName = USER_ID,foreign = true)
     private UserEntity userEntity;
 
+
+    public PurchaseEntity(){
+
+    }
+
+    public PurchaseEntity(PurchaseJson purchaseJson){
+        toClone(purchaseJson);
+
+    }
+
+    public void toClone(PurchaseJson purchaseJson){
+        this.productDetails = purchaseJson.getProductDetails();
+        this.purchaseGuid = purchaseJson.getPurchaseId();
+        this.purchaseDateTime =purchaseJson.getPurchaseDate();
+        this.billNumber =purchaseJson.getBillNumber();
+        this.amountDetails = purchaseJson.getAmountDetails();
+        this.isEditable =  purchaseJson.isEditable();
+        this.isDeliverable = purchaseJson.isDelivered();
+        this.unModifiedPurchaseData = purchaseJson.getProductDetails();
+        this.unModifiedAmountDetails = purchaseJson.getAmountDetails();
+        this.lastModifiedDateTime = purchaseJson.getLastModifiedDateTime();
+        this.category = purchaseJson.getCategory();
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public int getPurchaseId() {
         return purchaseId;
@@ -143,12 +179,12 @@ public class PurchaseEntity {
         this.unModifiedAmountDetails = unModifiedAmountDetails;
     }
 
-    public long getUpdatedDateTime() {
-        return updatedDateTime;
+    public long getLastModifiedDateTime() {
+        return lastModifiedDateTime;
     }
 
-    public void setUpdatedDateTime(long updatedDateTime) {
-        this.updatedDateTime = updatedDateTime;
+    public void setLastModifiedDateTime(long lastModifiedDateTime) {
+        this.lastModifiedDateTime = lastModifiedDateTime;
     }
 
     public MerchantEntity getMerchantEntity() {
@@ -181,7 +217,7 @@ public class PurchaseEntity {
                 ", isDeliverable=" + isDeliverable +
                 ", unModifiedPurchaseData='" + unModifiedPurchaseData + '\'' +
                 ", unModifiedAmountDetails='" + unModifiedAmountDetails + '\'' +
-                ", updatedDateTime=" + updatedDateTime +
+                ", lastModifiedDateTime=" + lastModifiedDateTime +
                 '}';
     }
 }

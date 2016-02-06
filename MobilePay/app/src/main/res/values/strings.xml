@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">MobilePay</string>
+    <string name="app_name">MeterialDesign</string>
     <string name="action_settings">Settings</string>
+    <string name="otp_title">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="submit">Submit</string>
+    <string name="or">(or)</string>
+    <string name="resend_otp">Re-Send OTP</string>
+    <string name="enter_mpin">Please enter your mPIN</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>
