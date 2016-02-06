@@ -1,8 +1,10 @@
 package co.in.mobilepay.service.impl;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
 
@@ -47,8 +49,25 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-    public void createUser(String mobileNumber,String name,String password,String imei){
-        RegisterJson registerJson = new RegisterJson(name, password, mobileNumber,imei);
+    /**
+     * Check whether user is present or not.
+     * @return
+     */
+    public boolean isUserPresent(){
+        try{
+            return userDao.isUserPresent();
+        }catch (Exception e){
+            Log.e("Error","Error in isUserPresent",e);
+        }
+        return false;
+    }
+
+    /**
+     * Create new user with server communication
+     * @param registerJson
+     * @return
+     */
+    public Response<ResponseData> createUser(RegisterJson registerJson){
         String registerData = gson.toJson(registerJson);
         String regEncryption = null;
         try{
@@ -60,18 +79,44 @@ public class AccountServiceImpl implements AccountService {
             Call<ResponseData> dataCall =  mobilePayAPI.createUser(regEncryption);
             Response<ResponseData> dataResponse = dataCall.execute();
             int statusCode = dataResponse.code();
-            ResponseData responseData = dataResponse.body();
-            // Need to handle success or failure
-            String passwordEncypt = passwordHash.createHash(password);
-            UserEntity userEntity = new UserEntity(registerJson);
-            userEntity.setPassword(passwordEncypt);
-            userDao.createUser(userEntity);
-            //
+            if(statusCode == 200){
+                String passwordEncypt = passwordHash.createHash(registerJson.getPassword());
+                UserEntity userEntity = new UserEntity(registerJson);
+                userEntity.setPassword(passwordEncypt);
+                userDao.createUser(userEntity);
+            }
+
+            return dataResponse;
         }catch (Exception e){
             e.printStackTrace();
             // Need to handle Exception
         }
+        return null;
 
+    }
 
+    /**
+     * Check whether given otp is valid or not
+     * @param otpPassword
+     * @return
+     */
+    @Override
+    public Response<ResponseData> validateOtp(String otpPassword) {
+       try{
+           UserEntity userEntity =  userDao.getUser();
+           JsonObject jsonObject = new JsonObject();
+           jsonObject.addProperty("mobileNumber", userEntity.getMobileNumber());
+           jsonObject.addProperty("otpPassword",otpPassword);
+           Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject.toString());
+           Response<ResponseData> dataResponse = dataCall.execute();
+           int statusCode = dataResponse.code();
+           if(statusCode == 200){
+               userDao.updateUser();
+           }
+           return dataResponse;
+       }catch (Exception e){
+            Log.e("Error","Error in validateOtp",e);
+       }
+        return null;
     }
 }

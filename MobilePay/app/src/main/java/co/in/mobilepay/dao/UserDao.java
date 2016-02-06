@@ -17,6 +17,8 @@ public interface UserDao {
 
     void createUser(UserEntity userEntity)throws SQLException;
 
+    void updateUser()throws SQLException;
+
 
     UserEntity getUser()throws SQLException;
 

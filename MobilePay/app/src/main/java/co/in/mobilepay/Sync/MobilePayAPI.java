@@ -10,6 +10,9 @@ import retrofit2.http.POST;
  */
 public interface  MobilePayAPI {
 
-    @POST("")
+    @POST("/mobile/register.html")
     Call<ResponseData> createUser(@Body String data);
+
+    @POST("/mobile/otp/validate.html")
+    Call<ResponseData> validateOtp(@Body String data);
 }

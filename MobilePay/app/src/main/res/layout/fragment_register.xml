@@ -35,28 +35,28 @@ android:layout_height="match_parent">
 
 
         <EditText
-            android:id="@+id/email"
+            android:id="@+id/reg_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/RegisterEdittextmargin"
-            android:hint="Email"/>
+            android:hint="Name"/>
 
         <EditText
-            android:id="@+id/number"
+            android:id="@+id/reg_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
             style="@style/RegisterEdittextmargin"
             android:hint="Mobile"/>
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/reg_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/RegisterEdittextmargin"
             android:hint="Password"/>
 
         <EditText
-            android:id="@+id/repassword"
+            android:id="@+id/reg_repassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/RegisterEdittextmargin"
@@ -67,6 +67,7 @@ android:layout_height="match_parent">
             android:layout_height="wrap_content"
             android:src="@mipmap/next"
             android:layout_gravity="bottom|right"
+            android:onClick="userRegister"
             app:fabSize="normal"/>
     </LinearLayout>
 </ScrollView>

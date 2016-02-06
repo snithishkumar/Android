@@ -1,5 +1,8 @@
 package co.in.mobilepay.service;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
 
 import java.security.Key;
@@ -44,6 +47,17 @@ public class ServiceUtil {
         byte[] decryptedByte =  cipher.doFinal(Base64.decode(data, Base64.DEFAULT));
         String result = new String(decryptedByte);
         return result;
+    }
+
+    public static String getIMEINumber(Context context){
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
+    }
+
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 
 

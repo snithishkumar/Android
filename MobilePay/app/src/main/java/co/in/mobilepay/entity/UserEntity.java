@@ -15,6 +15,7 @@ public class UserEntity {
     public static final String NAME = "Name";
     public static final String IMEI = "IMEI";
     public static final String MOBILE_NUMBER = "MobileNumber";
+    public static final String IS_ACTIVE = "IsActive";
 
 
     @DatabaseField(columnName = USER_ID,generatedId = true)
@@ -27,6 +28,8 @@ public class UserEntity {
     private String password;
     @DatabaseField(columnName = MOBILE_NUMBER)
     private String mobileNumber;
+    @DatabaseField(columnName = IS_ACTIVE)
+    private boolean isActive;
 
     public UserEntity(){
 
@@ -37,6 +40,7 @@ public class UserEntity {
         this.imei = registerJson.getImei();
         this.password = registerJson.getPassword();
         this.mobileNumber = registerJson.getMobileNumber();
+        this.isActive = false;
     }
 
     public int getUserId() {
@@ -77,6 +81,14 @@ public class UserEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Override

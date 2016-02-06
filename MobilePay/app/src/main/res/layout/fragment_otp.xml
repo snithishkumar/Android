@@ -19,14 +19,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
+        android:id="@+id/otp_number"
         android:inputType="number"
         android:hint="@string/enter_otp"/>
     <Button
-        android:id="@+id/submit"
+        android:id="@+id/otp_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
+        android:onClick="otpValidation"
         android:text="@string/submit"/>
     <TextView
         android:layout_width="match_parent"
@@ -36,12 +38,13 @@
         android:layout_marginTop="10dp"
         android:text="@string/or"/>
     <Button
-        android:id="@+id/resendotp"
+        android:id="@+id/otp_resend"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:enabled="false"
+        android:onClick="otpValidation"
         android:background="@drawable/button"
         android:text="@string/resend_otp"/>
 </LinearLayout>
