@@ -16,11 +16,12 @@ import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
+import co.in.mobilepay.view.fragments.LoginFragment;
 import co.in.mobilepay.view.fragments.OtpFragment;
 import co.in.mobilepay.view.fragments.RegistrationFragment;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoginFragment.VerifyLoginListeners{
 
     private AccountService accountService;
 
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         init();
         setContentView(R.layout.activity_main);
     }
+
+
 
     /**
      * Initialize service layer
@@ -115,6 +118,25 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+    }
+
+    @Override
+    public void onVerify(String data) {
+        Response<ResponseData> responseData =  accountService.login(data);
+        if(responseData != null){
+            switch (responseData.code()){
+                case 412:// Need to call Register
+
+                    break;
+                case 401: //Invalid Login
+                    break;
+                case 500: //Error
+                    break;
+
+                case 200:// Success
+                    break;
+            }
+        }
     }
 
     @Override

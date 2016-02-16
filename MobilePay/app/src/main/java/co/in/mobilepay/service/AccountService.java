@@ -14,4 +14,6 @@ public interface AccountService {
     boolean isUserPresent();
 
     Response<ResponseData> validateOtp(String otpPassword);
+
+    Response<ResponseData> login(String password);
 }

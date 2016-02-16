@@ -18,21 +18,13 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal">
         <Button
-            android:id="@+id/firstvalue"
+            android:id="@+id/log_first_value"
             android:layout_width="10dp"
             android:layout_height="10dp"
             style="@style/small_round_style"
             android:text="."/>
         <Button
-            android:id="@+id/secondvalue"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginLeft="10dp"
-            style="@style/small_round_style"
-            android:text="."/>
-
-        <Button
-            android:id="@+id/thirdvalue"
+            android:id="@+id/log_second_value"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginLeft="10dp"
@@ -40,7 +32,7 @@
             android:text="."/>
 
         <Button
-            android:id="@+id/fourthvalue"
+            android:id="@+id/log_third_value"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginLeft="10dp"
@@ -48,7 +40,7 @@
             android:text="."/>
 
         <Button
-            android:id="@+id/fifthvalue"
+            android:id="@+id/log_fourth_value"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginLeft="10dp"
@@ -56,7 +48,15 @@
             android:text="."/>
 
         <Button
-            android:id="@+id/sixthvalue"
+            android:id="@+id/log_fifth_value"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginLeft="10dp"
+            style="@style/small_round_style"
+            android:text="."/>
+
+        <Button
+            android:id="@+id/log_sixth_value"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:layout_marginLeft="10dp"
@@ -70,26 +70,26 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp">
         <TextView
-            android:id="@+id/center"
+            android:id="@+id/log_center"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_centerInParent="true"/>
         <RelativeLayout
-            android:id="@+id/second_layout"
+            android:id="@+id/log_second_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/center"
+            android:layout_above="@+id/log_center"
             android:layout_margin="10dp">
             <Button
-                android:id="@+id/four"
+                android:id="@+id/log_four"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="4"
                 android:layout_margin="20dp"
-                android:layout_toLeftOf="@+id/five"/>
+                android:layout_toLeftOf="@+id/log_five"/>
             <Button
-                android:id="@+id/five"
+                android:id="@+id/log_five"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
@@ -97,30 +97,30 @@
                 android:layout_margin="20dp"
                 android:layout_centerHorizontal="true"/>
             <Button
-                android:id="@+id/six"
+                android:id="@+id/log_six"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="6"
                 android:layout_margin="20dp"
-                android:layout_toRightOf="@+id/five"/>
+                android:layout_toRightOf="@+id/log_five"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/first_layout"
+            android:id="@+id/log_first_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/second_layout"
+            android:layout_above="@+id/log_second_layout"
             android:layout_margin="10dp">
             <Button
-                android:id="@+id/one"
+                android:id="@+id/log_one"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="1"
                 android:layout_margin="20dp"
-                android:layout_toLeftOf="@+id/two"/>
+                android:layout_toLeftOf="@+id/log_two"/>
             <Button
-                android:id="@+id/two"
+                android:id="@+id/log_two"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
@@ -128,30 +128,30 @@
                 android:layout_margin="20dp"
                 android:layout_centerHorizontal="true"/>
             <Button
-                android:id="@+id/three"
+                android:id="@+id/log_three"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="3"
                 android:layout_margin="20dp"
-                android:layout_toRightOf="@+id/two"/>
+                android:layout_toRightOf="@+id/log_two"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/third_layout"
+            android:id="@+id/log_third_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/center"
+            android:layout_below="@+id/log_center"
             android:layout_margin="10dp">
             <Button
-                android:id="@+id/seven"
+                android:id="@+id/log_seven"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="7"
                 android:layout_margin="20dp"
-                android:layout_toLeftOf="@+id/eight"/>
+                android:layout_toLeftOf="@+id/log_eight"/>
             <Button
-                android:id="@+id/eight"
+                android:id="@+id/log_eight"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
@@ -159,31 +159,31 @@
                 android:layout_margin="20dp"
                 android:layout_centerHorizontal="true"/>
             <Button
-                android:id="@+id/nine"
+                android:id="@+id/log_nine"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="9"
                 android:layout_margin="20dp"
-                android:layout_toRightOf="@+id/eight"/>
+                android:layout_toRightOf="@+id/log_eight"/>
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/fourth_layout"
+            android:id="@+id/log_fourth_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/third_layout"
+            android:layout_below="@+id/log_third_layout"
             android:layout_margin="10dp">
             <Button
-                android:id="@+id/forgetpin"
+                android:id="@+id/log_forget_pin"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="Forgot mPIN"
                 android:layout_margin="20dp"
-                android:layout_toLeftOf="@+id/zero"/>
+                android:layout_toLeftOf="@+id/log_zero"/>
             <Button
-                android:id="@+id/zero"
+                android:id="@+id/log_zero"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
@@ -191,13 +191,13 @@
                 android:layout_margin="20dp"
                 android:layout_centerHorizontal="true"/>
             <Button
-                android:id="@+id/del"
+                android:id="@+id/log_del"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
                 android:text="Del"
                 android:layout_margin="20dp"
-                android:layout_toRightOf="@+id/zero"/>
+                android:layout_toRightOf="@+id/log_zero"/>
         </RelativeLayout>
         </RelativeLayout>
 

@@ -16,7 +16,7 @@ public class UserEntity {
     public static final String IMEI = "IMEI";
     public static final String MOBILE_NUMBER = "MobileNumber";
     public static final String IS_ACTIVE = "IsActive";
-
+public static final String ACCESS_TOKEN = "accessToken";
 
     @DatabaseField(columnName = USER_ID,generatedId = true)
     private int userId;
@@ -30,6 +30,8 @@ public class UserEntity {
     private String mobileNumber;
     @DatabaseField(columnName = IS_ACTIVE)
     private boolean isActive;
+    @DatabaseField(columnName = ACCESS_TOKEN)
+    private String accessToken;
 
     public UserEntity(){
 
@@ -89,6 +91,15 @@ public class UserEntity {
 
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
+    }
+
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 
     @Override

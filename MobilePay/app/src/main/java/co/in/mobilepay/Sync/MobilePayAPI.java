@@ -15,4 +15,7 @@ public interface  MobilePayAPI {
 
     @POST("/mobile/otp/validate.html")
     Call<ResponseData> validateOtp(@Body String data);
+
+    @POST("/mobile/loginByMobileNumber.html")
+    Call<ResponseData> validateLoginDetails(@Body String data);
 }

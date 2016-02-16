@@ -36,16 +36,25 @@ public class AccountServiceImpl implements AccountService {
         gson = new Gson();
     }
 
-    public boolean login(String password){
+    public Response<ResponseData> login(String password){
         try{
             UserEntity userEntity =  userDao.getUser();
-            String hashPassword = userEntity.getPassword();
-            boolean isValid =  passwordHash.validatePassword(password,hashPassword);
-            return isValid;
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("mobileNumber",userEntity.getMobileNumber());
+            jsonObject.addProperty("password", userEntity.getPassword());
+            Call<ResponseData> responseDataCall = mobilePayAPI.validateLoginDetails(jsonObject.toString());
+            Response<ResponseData> dataResponse = responseDataCall.execute();
+            int responseCode = dataResponse.code();
+            if(responseCode == 200){
+               String token = dataResponse.raw().message();
+                userEntity.setAccessToken(token);
+                userDao.updateUser(userEntity);
+            }
+           return dataResponse;
         }catch (Exception e){
             e.printStackTrace();
         }
-        return false;
+        return null;
 
     }
 

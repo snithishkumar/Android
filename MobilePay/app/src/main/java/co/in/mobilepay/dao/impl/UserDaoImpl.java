@@ -50,6 +50,15 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         userDao.create(userEntity);
     }
 
+    /**
+     * Create New User
+     * @param userEntity
+     * @throws SQLException
+     */
+    public void updateUser(UserEntity userEntity)throws SQLException{
+        userDao.create(userEntity);
+    }
+
 
     /**
      * Enable the User Account

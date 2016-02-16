@@ -22,5 +22,7 @@ public interface UserDao {
 
     UserEntity getUser()throws SQLException;
 
+    void updateUser(UserEntity userEntity)throws SQLException;
+
 
 }
