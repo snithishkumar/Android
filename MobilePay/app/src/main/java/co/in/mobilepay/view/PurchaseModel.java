@@ -27,6 +27,17 @@ public class PurchaseModel {
 
     }
 
+    public PurchaseModel(int purchaseId, String name, String area, String contactNumber, String billNumber, String dateTime, String category, String noOfItems, String totalAmount) {
+        this.purchaseId = purchaseId;
+        this.name = name;
+        this.area = area;
+        this.contactNumber = contactNumber;
+        this.billNumber = billNumber;
+        this.dateTime = dateTime;
+        this.category = category;
+        this.noOfItems = noOfItems;
+        this.totalAmount = totalAmount;
+    }
 
     public int getPurchaseId() {
         return purchaseId;

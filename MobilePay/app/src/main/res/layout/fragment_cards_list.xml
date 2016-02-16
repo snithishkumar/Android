@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/mycard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My cards:"
+        android:textStyle="bold"
+        android:layout_margin="10dp"/>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/list"
+    android:name="co.in.mobilepay.view.fragments.PaymentFragment"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:layout_below="@+id/mycard"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="co.in.mobilepay.view.fragments.PaymentFragment"
+    tools:listitem="@layout/fragment_cards" />
+
+</RelativeLayout>
