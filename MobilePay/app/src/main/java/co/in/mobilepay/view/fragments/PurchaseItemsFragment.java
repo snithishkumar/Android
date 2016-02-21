@@ -75,7 +75,7 @@ public class PurchaseItemsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(purchaseModels, mListener));
+            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(context,purchaseModels, mListener));
         }
         return view;
     }

@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.view.PurchaseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class PaymentFragment extends Fragment {
+public class ProductsDetailsFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -32,13 +34,13 @@ public class PaymentFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PaymentFragment() {
+    public ProductsDetailsFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PaymentFragment newInstance(int columnCount) {
-        PaymentFragment fragment = new PaymentFragment();
+    public static ProductsDetailsFragment newInstance(int columnCount) {
+        ProductsDetailsFragment fragment = new ProductsDetailsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -57,19 +59,17 @@ public class PaymentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cards_list, container, false);
-
+        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
+        List<PurchaseModel> purchaseModels = new ArrayList<>(3);
+        PurchaseModel purchaseModel = new PurchaseModel(1,"Saravana Stores","T.Nagar","9952471553","000014","Jan-2-2016","Readymades","3","1000");
+        purchaseModels.add(purchaseModel);
+        purchaseModels.add(purchaseModel);
+        purchaseModels.add(purchaseModel);
+        purchaseModels.add(purchaseModel);
+        purchaseModels.add(purchaseModel);
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MycardsRecyclerViewAdapter(mListener));
-        }
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setAdapter(new co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter(purchaseModels,mListener));
         return view;
     }
 
@@ -103,6 +103,6 @@ public class PaymentFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-//        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(PurchaseModel item);
     }
 }

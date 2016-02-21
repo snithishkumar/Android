@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -17,9 +18,10 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseItemsFragment;
 
-public class HomeActivity extends AppCompatActivity implements PurchaseItemsFragment.OnListFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements PurchaseItemsFragment.OnListFragmentInteractionListener,ProductsDetailsFragment.OnListFragmentInteractionListener{
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
 
@@ -71,5 +73,26 @@ public class HomeActivity extends AppCompatActivity implements PurchaseItemsFrag
     @Override
     public void onListFragmentInteraction(PurchaseModel item) {
 
+    }
+    public void showProductListFragment(){
+        ProductsDetailsFragment productsDetailsFragment = new ProductsDetailsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_layout, productsDetailsFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                int size = getSupportFragmentManager().getBackStackEntryCount();
+                if(size > 0){
+                    getSupportFragmentManager().popBackStack();
+                }
+                break;
+        }
+        return true;
     }
 }
