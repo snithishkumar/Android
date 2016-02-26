@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.view.PurchaseModel;
-import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class ProductsDetailsFragment extends Fragment {
+public class NewCardFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -35,7 +34,7 @@ public class ProductsDetailsFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ProductsDetailsFragment() {
+    public NewCardFragment() {
     }
 
     // TODO: Customize parameter initialization
@@ -60,20 +59,7 @@ public class ProductsDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-        List<PurchaseModel> purchaseModels = new ArrayList<>(3);
-        PurchaseModel purchaseModel = new PurchaseModel(1,"Saravana Stores","T.Nagar","9952471553","000014","Jan-2-2016","Readymades","3","1000");
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        // Set the adapter
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setAdapter(new co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter(purchaseModels, mListener));
-        recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
-                getContext()
-        ));
+        View view = inflater.inflate(R.layout.new_card_details, container, false);
         return view;
     }
 

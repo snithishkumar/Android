@@ -18,10 +18,12 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.fragments.NewCardFragment;
+import co.in.mobilepay.view.fragments.PaymentCardFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseItemsFragment;
 
-public class HomeActivity extends AppCompatActivity implements PurchaseItemsFragment.OnListFragmentInteractionListener,ProductsDetailsFragment.OnListFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements PurchaseItemsFragment.OnListFragmentInteractionListener,ProductsDetailsFragment.OnListFragmentInteractionListener,PaymentCardFragment.OnListFragmentInteractionListener,NewCardFragment.OnListFragmentInteractionListener{
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
 
@@ -38,7 +40,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseItemsFrag
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new PurchaseItemsFragment(), "Home");
         adapter.addFragment(new PurchaseItemsFragment(), "History");
-        adapter.addFragment(new PurchaseItemsFragment(), "Payment");
+        adapter.addFragment(new PaymentCardFragment(), "Payment");
         viewPager.setAdapter(adapter);
     }
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -94,5 +96,12 @@ public class HomeActivity extends AppCompatActivity implements PurchaseItemsFrag
                 break;
         }
         return true;
+    }
+    public void showNewCardFragment(View view){
+        NewCardFragment newCardFragment = new NewCardFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_layout, newCardFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

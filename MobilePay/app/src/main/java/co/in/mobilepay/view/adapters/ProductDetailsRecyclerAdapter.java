@@ -36,6 +36,7 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductD
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = items.get(position);
+        holder.mIdView.setText(position+1+")");
         /*holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);*/
@@ -66,8 +67,8 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductD
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.amt);
-            mContentView = (TextView) view.findViewById(R.id.offer);
+            mIdView = (TextView) view.findViewById(R.id.sno);
+            mContentView = (TextView) view.findViewById(R.id.quanity);
         }
 
         @Override
