@@ -7,12 +7,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
+import co.in.mobilepay.view.fragments.NewCardFragment;
+import co.in.mobilepay.view.fragments.PaymentCardFragment;
+import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseItemsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
@@ -31,9 +37,10 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PurchaseListFragment(), "Purchase List");
-        adapter.addFragment(new PurchaseItemsFragment(), "Purchase History");
-        adapter.addFragment(new PurchaseItemsFragment(), "Payment");
+
+        adapter.addFragment(new PurchaseItemsFragment(), "Home");
+        adapter.addFragment(new PurchaseItemsFragment(), "History");
+        adapter.addFragment(new PaymentCardFragment(), "Payment");
         viewPager.setAdapter(adapter);
     }
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -68,5 +75,33 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     @Override
     public void purchaseListOnClick(int purchaseId) {
 // TODO Need to call PurchaseDetails Activity
+    }
+    public void showProductListFragment(){
+        ProductsDetailsFragment productsDetailsFragment = new ProductsDetailsFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_layout, productsDetailsFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case android.R.id.home:
+                int size = getSupportFragmentManager().getBackStackEntryCount();
+                if(size > 0){
+                    getSupportFragmentManager().popBackStack();
+                }
+                break;
+        }
+        return true;
+    }
+    public void showNewCardFragment(View view){
+        NewCardFragment newCardFragment = new NewCardFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.root_layout, newCardFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }

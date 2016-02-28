@@ -1,6 +1,7 @@
 /*
 package co.in.mobilepay.view.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
+<<<<<<< HEAD
 import co.in.mobilepay.view.model.PurchaseModel;
+=======
+import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.activities.HomeActivity;
+>>>>>>> 9dbcf1d8f833b514ecbb1691138f19186d68a784
 
 import java.util.List;
 
@@ -24,10 +30,13 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
     private final List<PurchaseModel> mValues;
     private final PurchaseItemsFragment.OnListFragmentInteractionListener mListener;
+    private HomeActivity homeActivity = null;
+    private Context context = null;
 
-    public MyItemRecyclerViewAdapter(List<PurchaseModel> items, PurchaseItemsFragment.OnListFragmentInteractionListener listener) {
+    public MyItemRecyclerViewAdapter(Context context,List<PurchaseModel> items, PurchaseItemsFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
+        homeActivity = (HomeActivity) context;
     }
 
     @Override
@@ -56,6 +65,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
+                    homeActivity.showProductListFragment();
                 }
             }
         });
