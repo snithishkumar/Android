@@ -1,6 +1,13 @@
 package co.in.mobilepay.Sync;
 
+import com.google.gson.GsonBuilder;
+
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+
+import co.in.mobilepay.view.activities.MainActivity;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Initialize REST call
@@ -11,7 +18,8 @@ public enum ServiceAPI {
     private MobilePayAPI mobilePayAPI = null;
 
     ServiceAPI(){
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("").build();
+        Executor executor = Executors.newCachedThreadPool();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.10:8081/mobilepay/").addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         mobilePayAPI = retrofit.create(MobilePayAPI.class);
     }
 

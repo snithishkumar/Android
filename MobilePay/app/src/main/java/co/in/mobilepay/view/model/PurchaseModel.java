@@ -1,4 +1,4 @@
-package co.in.mobilepay.view;
+package co.in.mobilepay.view.model;
 
 import co.in.mobilepay.entity.PurchaseEntity;
 
@@ -20,9 +20,9 @@ public class PurchaseModel {
     public PurchaseModel(PurchaseEntity purchaseEntity){
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
-        this.area = purchaseEntity.getMerchantEntity().getArea();
-        this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
-        this.billNumber = String.valueOf(purchaseEntity.getBillNumber());
+      //  this.area = purchaseEntity.getMerchantEntity().getArea();
+     //   this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
+    //    this.billNumber = String.valueOf(purchaseEntity.getBillNumber());
         this.category = purchaseEntity.getCategory();
 
     }

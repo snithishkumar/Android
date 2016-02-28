@@ -2,6 +2,7 @@ package co.in.mobilepay.service;
 
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.service.impl.AccountServiceImpl;
 import retrofit2.Response;
 
 /**
@@ -9,11 +10,12 @@ import retrofit2.Response;
  */
 public interface AccountService {
 
-    Response<ResponseData> createUser(RegisterJson registerJson);
+    void createUser(RegisterJson registerJson,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 
     boolean isUserPresent();
 
-    Response<ResponseData> validateOtp(String otpPassword);
+   void validateOtp(String otpPassword,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 
-    Response<ResponseData> login(String password);
+
+    void login(String password,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 }

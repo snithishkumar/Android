@@ -52,6 +52,7 @@ android:layout_height="match_parent">
             android:id="@+id/reg_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             style="@style/RegisterEdittextmargin"
             android:hint="Password"/>
 
@@ -59,15 +60,15 @@ android:layout_height="match_parent">
             android:id="@+id/reg_repassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="number"
             style="@style/RegisterEdittextmargin"
             android:hint="Re-enter password"/>
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/reg_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/next"
             android:layout_gravity="bottom|right"
-            android:onClick="userRegister"
             app:fabSize="normal"/>
     </LinearLayout>
 </ScrollView>

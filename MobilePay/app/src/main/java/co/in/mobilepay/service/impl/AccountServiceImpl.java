@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
+import java.util.Objects;
 
 import co.in.mobilepay.Sync.MobilePayAPI;
 import co.in.mobilepay.Sync.ServiceAPI;
@@ -19,6 +20,7 @@ import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.PasswordHash;
 import co.in.mobilepay.service.ServiceUtil;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -34,28 +36,42 @@ public class AccountServiceImpl implements AccountService {
         userDao = new UserDaoImpl(context);
         mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
         gson = new Gson();
+        passwordHash = new PasswordHashImpl();
     }
 
-    public Response<ResponseData> login(String password){
+    public void login(String password,AccountServiceCallback accountServiceCallback){
         try{
             UserEntity userEntity =  userDao.getUser();
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("mobileNumber",userEntity.getMobileNumber());
-            jsonObject.addProperty("password", userEntity.getPassword());
-            Call<ResponseData> responseDataCall = mobilePayAPI.validateLoginDetails(jsonObject.toString());
-            Response<ResponseData> dataResponse = responseDataCall.execute();
-            int responseCode = dataResponse.code();
-            if(responseCode == 200){
-               String token = dataResponse.raw().message();
-                userEntity.setAccessToken(token);
-                userDao.updateUser(userEntity);
-            }
-           return dataResponse;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
+            jsonObject.addProperty("password", password);
+            Call<ResponseData> responseDataCall = mobilePayAPI.validateLoginDetails(jsonObject);
+            AccountCallbackManager accountCallbackManager = new AccountCallbackManager(3,null,accountServiceCallback);
+            responseDataCall.enqueue(accountCallbackManager);
 
+
+        }catch (Exception e){
+            Log.e("Error", "Error in login", e);
+        }
+
+    }
+
+    private void processLoginSuccessResponse(ResponseData responseData,AccountServiceCallback accountServiceCallback){
+        int statusCode = responseData.getStatusCode();
+        if(statusCode == MessageConstant.LOGIN_OK){
+            try{
+                UserEntity userEntity =  userDao.getUser();
+                userEntity.setAccessToken(responseData.getData());
+                userDao.updateUser(userEntity);
+                accountServiceCallback.accountServiceCallback(MessageConstant.LOGIN_OK,null);
+                return;
+            }catch (Exception e){
+                Log.e("Error","Error in processLoginSuccessResponse",e);
+            }
+            accountServiceCallback.accountServiceCallback(MessageConstant.LOGIN_INTERNAL_ERROR,null);
+        }else{
+            accountServiceCallback.accountServiceCallback(statusCode,responseData.getData());
+        }
     }
 
     /**
@@ -66,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
         try{
             return userDao.isUserPresent();
         }catch (Exception e){
-            Log.e("Error","Error in isUserPresent",e);
+            Log.e("Error", "Error in isUserPresent", e);
         }
         return false;
     }
@@ -76,31 +92,45 @@ public class AccountServiceImpl implements AccountService {
      * @param registerJson
      * @return
      */
-    public Response<ResponseData> createUser(RegisterJson registerJson){
+    public void createUser(RegisterJson registerJson,AccountServiceCallback accountServiceCallback){
         String registerData = gson.toJson(registerJson);
         String regEncryption = null;
         try{
             regEncryption =  ServiceUtil.netEncryption(registerData);
         }catch (Exception e){
+            e.printStackTrace();
             // Hope it never throw this error
         }
+        AccountCallbackManager accountCallbackManager = new AccountCallbackManager(1,registerJson,accountServiceCallback);
+        Call<ResponseData> dataCall =  mobilePayAPI.createUser(regEncryption);
+        dataCall.enqueue(accountCallbackManager);
+    }
+
+    private void processRegSuccessResponse(Response<ResponseData> response,RegisterJson registerJson,AccountServiceCallback accountServiceCallback){
+        ResponseData responseData = response.body();
         try{
-            Call<ResponseData> dataCall =  mobilePayAPI.createUser(regEncryption);
-            Response<ResponseData> dataResponse = dataCall.execute();
-            int statusCode = dataResponse.code();
+            int statusCode = response.code();
             if(statusCode == 200){
                 String passwordEncypt = passwordHash.createHash(registerJson.getPassword());
                 UserEntity userEntity = new UserEntity(registerJson);
                 userEntity.setPassword(passwordEncypt);
                 userDao.createUser(userEntity);
+                accountServiceCallback.accountServiceCallback(responseData.getStatusCode(), null);
+                return;
+            }else{
+                accountServiceCallback.accountServiceCallback(responseData.getStatusCode(), responseData.getData());
+                return;
             }
-
-            return dataResponse;
         }catch (Exception e){
-            e.printStackTrace();
-            // Need to handle Exception
+            Log.e("Error", "Error in processRegSuccessResponse", e);
         }
-        return null;
+
+        accountServiceCallback.accountServiceCallback(MessageConstant.REG_ERROR_CODE, null);
+
+    }
+
+    private void processRegFailureResponse(AccountServiceCallback accountServiceCallback){
+        accountServiceCallback.accountServiceCallback(MessageConstant.REG_ERROR_CODE,null);
 
     }
 
@@ -110,22 +140,82 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public Response<ResponseData> validateOtp(String otpPassword) {
+    public void validateOtp(String otpPassword,AccountServiceCallback accountServiceCallback) {
        try{
            UserEntity userEntity =  userDao.getUser();
            JsonObject jsonObject = new JsonObject();
            jsonObject.addProperty("mobileNumber", userEntity.getMobileNumber());
            jsonObject.addProperty("otpPassword",otpPassword);
-           Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject.toString());
-           Response<ResponseData> dataResponse = dataCall.execute();
-           int statusCode = dataResponse.code();
-           if(statusCode == 200){
-               userDao.updateUser();
-           }
-           return dataResponse;
+           Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject);
+           AccountCallbackManager accountCallbackManager = new AccountCallbackManager(2,null,accountServiceCallback);
+           dataCall.enqueue(accountCallbackManager);
+
        }catch (Exception e){
             Log.e("Error","Error in validateOtp",e);
        }
-        return null;
+    }
+
+
+
+
+    private void processOtpSuccessResponse(ResponseData responseData,AccountServiceCallback accountServiceCallback){
+        int statusCode = responseData.getStatusCode();
+        try{
+            if(statusCode == MessageConstant.OTP_OK){
+                userDao.updateUser();
+                accountServiceCallback.accountServiceCallback(MessageConstant.OTP_OK,null);
+                return;
+            }else{
+                accountServiceCallback.accountServiceCallback(statusCode,responseData.getData());
+                return;
+            }
+        }catch (Exception e){
+            Log.e("Error", "Error in validateOtp", e);
+        }
+        accountServiceCallback.accountServiceCallback(MessageConstant.OTP_ERROR_CODE,null);
+    }
+
+
+    private class AccountCallbackManager implements Callback<ResponseData>{
+        int ops = 0;
+        RegisterJson registerJson = null;
+        AccountServiceCallback accountServiceCallback = null;
+        public AccountCallbackManager(int ops,RegisterJson registerJson,AccountServiceCallback accountServiceCallback ){
+            this.ops = ops;
+            this.registerJson = registerJson;
+            this.accountServiceCallback = accountServiceCallback;
+        }
+
+        @Override
+        public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
+            switch (ops){
+                case 1:
+                    processRegSuccessResponse(response,registerJson,accountServiceCallback);
+                    break;
+                case 2:
+                    processOtpSuccessResponse(response.body(),accountServiceCallback);
+                    break;
+                case 3:
+                    processLoginSuccessResponse(response.body(),accountServiceCallback);
+                    break;
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseData> call, Throwable t) {
+            t.printStackTrace();
+            Log.e("Error","Error in Sync",t);
+            switch (ops){
+                case 1:
+                    processRegFailureResponse(accountServiceCallback);
+                    break;
+            }
+        }
+
+
+    }
+
+    public interface AccountServiceCallback{
+         void accountServiceCallback(int statusCode,Object data);
     }
 }

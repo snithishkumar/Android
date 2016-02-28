@@ -16,13 +16,13 @@ import co.in.mobilepay.entity.UserEntity;
  */
 public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 
-    DatabaseHelper databaseHelper = null;
 
     Dao<UserEntity,Integer> userDao = null;
 
 
     public UserDaoImpl(Context context)throws SQLException{
        super(context);
+        initDao();
 
     }
 
@@ -77,7 +77,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * @throws SQLException
      */
     public UserEntity getUser()throws SQLException{
-        return userDao.queryBuilder().queryForFirst();
+        try{
+            return userDao.queryBuilder().queryForFirst();
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new SQLException(e);
+        }
+
     }
 
 

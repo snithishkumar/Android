@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.view.fragments.dummy.DummyContent;
-import co.in.mobilepay.view.fragments.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class PaymentFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MycardsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            //recyclerView.setAdapter(new MycardsRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         return view;
     }
@@ -105,6 +103,6 @@ public class PaymentFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+       // void onListFragmentInteraction(DummyItem item);
     }
 }

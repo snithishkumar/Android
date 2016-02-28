@@ -27,8 +27,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:enabled="true"
         android:layout_weight="1"
-        android:onClick="otpValidation"
         android:text="@string/submit"/>
     <TextView
         android:layout_width="match_parent"
@@ -43,8 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:enabled="false"
-        android:onClick="otpValidation"
+        android:enabled="true"
         android:background="@drawable/button"
         android:text="@string/resend_otp"/>
 </LinearLayout>

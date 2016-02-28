@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.support.v7.widget.RecyclerView;
@@ -7,16 +8,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.model.PurchaseModel;
 
 import java.util.List;
 
 
+*/
 /**
  * {@link RecyclerView.Adapter} that can display a {@link PurchaseModel} and makes a call to the
  * specified {@link PurchaseItemsFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
- */
+ *//*
+
 public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<PurchaseModel> mValues;
@@ -30,7 +33,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.purchase_item_list, parent, false);
+                .inflate(R.layout.purchase_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -105,3 +108,4 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         }
     }
 }
+*/

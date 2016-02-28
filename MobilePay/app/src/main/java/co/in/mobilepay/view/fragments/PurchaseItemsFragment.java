@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.model.PurchaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public class PurchaseItemsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyItemRecyclerViewAdapter(purchaseModels, mListener));
+          //  recyclerView.setAdapter(new MyItemRecyclerViewAdapter(purchaseModels, mListener));
         }
         return view;
     }

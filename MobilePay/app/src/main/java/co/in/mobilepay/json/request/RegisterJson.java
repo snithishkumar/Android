@@ -19,7 +19,7 @@ public class RegisterJson {
     public RegisterJson(String name,String password,String mobileNumber,String imei){
         this.name = name;
         this.password = password;
-        this.password = password;
+        this.mobileNumber = mobileNumber;
         this.imei = imei;
     }
 

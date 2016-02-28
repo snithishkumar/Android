@@ -5,9 +5,11 @@ import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 
+
 import java.security.Key;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
@@ -17,14 +19,14 @@ public class ServiceUtil {
 
     public static  String netEncryption(String data)throws Exception{
         String alg = "AES";
-        String key = "MySecondProjectMSecondPhoneNexus";
+        String key = "1234567891123456";
         return encryption(data,key,alg);
     }
 
 
     public static String netDecryption(String data) throws Exception{
         String alg = "AES";
-        String key = "MySecondProjectMSecondPhoneNexus";
+        String key = "1234567891123456";
         return decryption(data, key, alg);
 
     }
@@ -35,7 +37,7 @@ public class ServiceUtil {
         Cipher cipher = Cipher.getInstance(alg);
         cipher.init(Cipher.ENCRYPT_MODE, key2);
         byte[] encVal =  cipher.doFinal(data.getBytes());
-        String encryptedValue  = Base64.encodeToString(encVal, Base64.DEFAULT);
+        String encryptedValue  = Base64.encodeToString(encVal, Base64.NO_WRAP);
         return encryptedValue;
     }
 
@@ -44,7 +46,7 @@ public class ServiceUtil {
         Key key2  = new SecretKeySpec(key.getBytes(), alg);
         Cipher cipher = Cipher.getInstance(alg);
         cipher.init(Cipher.DECRYPT_MODE, key2);
-        byte[] decryptedByte =  cipher.doFinal(Base64.decode(data, Base64.DEFAULT));
+        byte[] decryptedByte =  cipher.doFinal(Base64.decode(data.getBytes(), Base64.NO_WRAP));
         String result = new String(decryptedByte);
         return result;
     }

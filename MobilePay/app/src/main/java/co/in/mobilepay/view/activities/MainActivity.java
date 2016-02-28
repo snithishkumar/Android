@@ -1,6 +1,7 @@
 package co.in.mobilepay.view.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
@@ -15,24 +16,27 @@ import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
+import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.LoginFragment;
 import co.in.mobilepay.view.fragments.OtpFragment;
 import co.in.mobilepay.view.fragments.RegistrationFragment;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.VerifyLoginListeners{
+public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback{
 
     private AccountService accountService;
 
     RegistrationFragment registrationFragment = null;
     OtpFragment otpFragment = null;
+    LoginFragment loginFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
         setContentView(R.layout.activity_main);
+        showFragment();
     }
 
 
@@ -54,90 +58,16 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Ver
     private void showFragment(){
         boolean isUserPresent = accountService.isUserPresent();
         if(isUserPresent){
-
+            loginFragment = new LoginFragment();
+            FragmentsUtil.addFragment(this,loginFragment,R.id.main_container);
         }else{
-            RegistrationFragment  registrationFragment = new RegistrationFragment();
+            registrationFragment = new RegistrationFragment();
             FragmentsUtil.addFragment(this,registrationFragment,R.id.main_container);
         }
     }
 
-    // Click Event
-    public void userRegister(View view){
-        RegisterJson registerJson = registrationFragment.getRegistrationJson();
-        if(registerJson != null){
-            String imeiNumber = ServiceUtil.getIMEINumber(this);
-            registerJson.setImei(imeiNumber);
-            boolean isNet = ServiceUtil.isNetworkConnected(this);
-            if(isNet){
-                ProgressDialog progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", this);
-                Response<ResponseData> responseData = accountService.createUser(registerJson);
-                progressDialog.dismiss();
-                if(responseData == null){
-                    ActivityUtil.showDialog(this,"Error","Something went wrong.");
-                }else{
-                    int code = responseData.code();
-                    if(code != 200){
-                        ActivityUtil.showDialog(this,"Error",responseData.message());
-                    }else {
-                        // OTP Password Screen
-                        OtpFragment otpFragment = new OtpFragment();
-                        FragmentsUtil.replaceFragment(this,otpFragment,R.id.main_container);
-                    }
-                }
-            }else{
-               ActivityUtil.showDialog(this, "No Network", "Check your connection.");
-            }
-        }
-    }
 
-    public void otpValidation(View view){
-        switch (view.getId()){
-            case R.id.otp_submit:
-                String otpNumber = otpFragment.getOtpNumber();
-                boolean isNet = ServiceUtil.isNetworkConnected(this);
-                if(isNet){
-                    ProgressDialog progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", this);
-                    Response<ResponseData> responseData =  accountService.validateOtp(otpNumber);
-                    progressDialog.dismiss();
-                    if(responseData == null){
-                        ActivityUtil.showDialog(this,"Error","Something went wrong.");
-                    }else {
-                        int code = responseData.code();
-                        if(code != 200){
-                            ActivityUtil.showDialog(this,"Error",responseData.message());
-                        }else {
-                            // Login
 
-                        }
-                    }
-                }else{
-                    ActivityUtil.showDialog(this, "No Network", "Check your connection.");
-                }
-                break;
-            case R.id.otp_resend:
-                break;
-        }
-
-    }
-
-    @Override
-    public void onVerify(String data) {
-        Response<ResponseData> responseData =  accountService.login(data);
-        if(responseData != null){
-            switch (responseData.code()){
-                case 412:// Need to call Register
-
-                    break;
-                case 401: //Invalid Login
-                    break;
-                case 500: //Error
-                    break;
-
-                case 200:// Success
-                    break;
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -159,5 +89,37 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Ver
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public AccountService getAccountService() {
+        return accountService;
+    }
+
+
+    @Override
+    public void success(int code, Object data) {
+
+        switch (code){
+            case MessageConstant.REG_OK:
+                otpFragment = new OtpFragment();
+                FragmentsUtil.replaceFragment(this,otpFragment,R.id.main_container);
+                break;
+            case MessageConstant.OTP_OK:
+                loginFragment = new LoginFragment();
+                FragmentsUtil.replaceFragment(this,loginFragment,R.id.main_container);
+                break;
+            case MessageConstant.LOGIN_OK:
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+                // Need to call home screen
+                break;
+            case MessageConstant.LOGIN_INVALID_MOBILE:
+                registrationFragment = new RegistrationFragment();
+                FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
+                break;
+        }
     }
 }

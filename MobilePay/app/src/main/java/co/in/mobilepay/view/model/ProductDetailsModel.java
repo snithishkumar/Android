@@ -1,4 +1,4 @@
-package co.in.mobilepay.view;
+package co.in.mobilepay.view.model;
 
 /**
  * Created by Nithish on 30-01-2016.

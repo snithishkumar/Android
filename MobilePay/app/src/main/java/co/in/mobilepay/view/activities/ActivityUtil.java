@@ -1,9 +1,10 @@
 package co.in.mobilepay.view.activities;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 /**
@@ -21,25 +22,31 @@ public class ActivityUtil {
     }
 
 
-    public static void showDialog(Context context,String title,String message){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+    public static void showDialog(final AppCompatActivity context,final String title,final String message){
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-        // Setting Dialog Title
-        alertDialog.setTitle(title);
+                // Setting Dialog Title
+                alertDialog.setTitle(title);
 
-        // Setting Dialog Message
-        alertDialog.setMessage(message);
+                // Setting Dialog Message
+                alertDialog.setMessage(message);
 
-        // Setting Positive "Yes" Button
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+                // Setting Positive "Yes" Button
+                alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
 
-                dialog.cancel();
+                        dialog.cancel();
+                    }
+                });
+
+                // Showing Alert Message
+                alertDialog.show();
             }
         });
 
-        // Showing Alert Message
-        alertDialog.show();
 
     }
 }

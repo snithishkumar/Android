@@ -11,8 +11,13 @@ import android.util.Log;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+
+import co.in.mobilepay.entity.MerchantEntity;
+import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.UserEntity;
 
 /**
  * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
@@ -43,7 +48,9 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
         try {
             Log.i(DatabaseHelper.class.getName(), "onCreate");
 
-
+            TableUtils.createTableIfNotExists(connectionSource, UserEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, MerchantEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, PurchaseEntity.class);
 
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);

@@ -1,4 +1,4 @@
-package co.in.mobilepay.view;
+package co.in.mobilepay.view.model;
 
 import java.util.ArrayList;
 import java.util.List;

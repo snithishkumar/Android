@@ -13,9 +13,9 @@ import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
-import co.in.mobilepay.view.ProductDetailsModel;
-import co.in.mobilepay.view.PurchaseDetailsModel;
-import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.model.ProductDetailsModel;
+import co.in.mobilepay.view.model.PurchaseDetailsModel;
+import co.in.mobilepay.view.model.PurchaseModel;
 
 /**
  * Created by Nithish on 30-01-2016.

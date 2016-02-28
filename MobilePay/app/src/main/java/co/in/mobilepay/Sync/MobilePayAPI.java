@@ -1,5 +1,7 @@
 package co.in.mobilepay.Sync;
 
+import com.google.gson.JsonObject;
+
 import co.in.mobilepay.json.response.ResponseData;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -10,12 +12,12 @@ import retrofit2.http.POST;
  */
 public interface  MobilePayAPI {
 
-    @POST("/mobile/register.html")
+    @POST("mobile/register.html")
     Call<ResponseData> createUser(@Body String data);
 
-    @POST("/mobile/otp/validate.html")
-    Call<ResponseData> validateOtp(@Body String data);
+    @POST("mobile/otp/validate.html")
+    Call<ResponseData> validateOtp(@Body JsonObject jsonObject);
 
-    @POST("/mobile/loginByMobileNumber.html")
-    Call<ResponseData> validateLoginDetails(@Body String data);
+    @POST("mobile/loginByMobileNumber.html")
+    Call<ResponseData> validateLoginDetails(@Body JsonObject jsonObject);
 }
