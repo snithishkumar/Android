@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
-import java.util.Objects;
 
 import co.in.mobilepay.Sync.MobilePayAPI;
 import co.in.mobilepay.Sync.ServiceAPI;
@@ -53,6 +52,20 @@ public class AccountServiceImpl implements AccountService {
         }catch (Exception e){
             Log.e("Error", "Error in login", e);
         }
+
+    }
+
+    public void verifyMobile(String mobileNumber,AccountServiceCallback accountServiceCallback){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("mobileNumber",mobileNumber);
+        Call<ResponseData> responseDataCall = mobilePayAPI.verifyMobileNo(jsonObject);
+        AccountCallbackManager accountCallbackManager = new AccountCallbackManager(4,null,accountServiceCallback);
+        responseDataCall.enqueue(accountCallbackManager);
+    }
+
+    private void processMobileNoSuccessResponse(ResponseData responseData,String mobileNo,AccountServiceCallback accountServiceCallback){
+        int statusCode = responseData.getStatusCode();
+        accountServiceCallback.accountServiceCallback(statusCode,mobileNo);
 
     }
 
@@ -140,11 +153,10 @@ public class AccountServiceImpl implements AccountService {
      * @return
      */
     @Override
-    public void validateOtp(String otpPassword,AccountServiceCallback accountServiceCallback) {
+    public void validateOtp(String otpPassword,String mobileNumber,AccountServiceCallback accountServiceCallback) {
        try{
-           UserEntity userEntity =  userDao.getUser();
            JsonObject jsonObject = new JsonObject();
-           jsonObject.addProperty("mobileNumber", userEntity.getMobileNumber());
+           jsonObject.addProperty("mobileNumber", mobileNumber);
            jsonObject.addProperty("otpPassword",otpPassword);
            Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject);
            AccountCallbackManager accountCallbackManager = new AccountCallbackManager(2,null,accountServiceCallback);
@@ -178,11 +190,12 @@ public class AccountServiceImpl implements AccountService {
 
     private class AccountCallbackManager implements Callback<ResponseData>{
         int ops = 0;
-        RegisterJson registerJson = null;
+        Object data = null;
         AccountServiceCallback accountServiceCallback = null;
-        public AccountCallbackManager(int ops,RegisterJson registerJson,AccountServiceCallback accountServiceCallback ){
+
+        public AccountCallbackManager(int ops,Object data,AccountServiceCallback accountServiceCallback ){
             this.ops = ops;
-            this.registerJson = registerJson;
+            this.data = data;
             this.accountServiceCallback = accountServiceCallback;
         }
 
@@ -190,7 +203,7 @@ public class AccountServiceImpl implements AccountService {
         public void onResponse(Call<ResponseData> call, Response<ResponseData> response) {
             switch (ops){
                 case 1:
-                    processRegSuccessResponse(response,registerJson,accountServiceCallback);
+                    processRegSuccessResponse(response, (RegisterJson)data,accountServiceCallback);
                     break;
                 case 2:
                     processOtpSuccessResponse(response.body(),accountServiceCallback);
@@ -198,6 +211,8 @@ public class AccountServiceImpl implements AccountService {
                 case 3:
                     processLoginSuccessResponse(response.body(),accountServiceCallback);
                     break;
+                case 4:
+                    processMobileNoSuccessResponse(response.body(),(String)data,accountServiceCallback);
             }
         }
 

@@ -14,8 +14,10 @@ public interface AccountService {
 
     boolean isUserPresent();
 
-   void validateOtp(String otpPassword,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+   void validateOtp(String otpPassword,String mobileNumber,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 
 
     void login(String password,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+
+    void verifyMobile(String mobileNumber,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 }

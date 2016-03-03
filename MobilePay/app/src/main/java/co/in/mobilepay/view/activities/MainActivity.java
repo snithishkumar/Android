@@ -19,17 +19,19 @@ import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.LoginFragment;
+import co.in.mobilepay.view.fragments.MobileFragment;
 import co.in.mobilepay.view.fragments.OtpFragment;
 import co.in.mobilepay.view.fragments.RegistrationFragment;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback{
+public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
 
     private AccountService accountService;
 
     RegistrationFragment registrationFragment = null;
     OtpFragment otpFragment = null;
     LoginFragment loginFragment = null;
+    MobileFragment mobileFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +63,9 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
             loginFragment = new LoginFragment();
             FragmentsUtil.addFragment(this,loginFragment,R.id.main_container);
         }else{
-            registrationFragment = new RegistrationFragment();
-            FragmentsUtil.addFragment(this,registrationFragment,R.id.main_container);
+            mobileFragment = new MobileFragment();
+            FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
+
         }
     }
 
@@ -101,13 +104,23 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     public void success(int code, Object data) {
 
         switch (code){
-            case MessageConstant.REG_OK:
+            case MessageConstant.MOBILE_VERIFY_OK:
                 otpFragment = new OtpFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("mobileNumber",(String)data);
+                otpFragment.setArguments(bundle);
                 FragmentsUtil.replaceFragment(this,otpFragment,R.id.main_container);
                 break;
-            case MessageConstant.OTP_OK:
+            case MessageConstant.REG_OK:
                 loginFragment = new LoginFragment();
                 FragmentsUtil.replaceFragment(this,loginFragment,R.id.main_container);
+                break;
+            case MessageConstant.OTP_OK:
+                registrationFragment = new RegistrationFragment();
+                 bundle = new Bundle();
+                bundle.putString("mobileNumber",(String)data);
+                registrationFragment.setArguments(bundle);
+                FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
                 break;
             case MessageConstant.LOGIN_OK:
                 Intent intent = new Intent(this, HomeActivity.class);
@@ -117,8 +130,8 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
                 // Need to call home screen
                 break;
             case MessageConstant.LOGIN_INVALID_MOBILE:
-                registrationFragment = new RegistrationFragment();
-                FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
+                mobileFragment = new MobileFragment();
+                FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
                 break;
         }
     }

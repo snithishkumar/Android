@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:weightSum="15">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/mobile_message"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:layout_weight="1"
+        android:text="@string/mobile_title"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:id="@+id/mobile_icon"
+        android:layout_margin="20dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_phone_black_24dp"
+        android:layout_below="@+id/mobile_message"
+       />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:layout_below="@+id/mobile_message"
+        android:layout_toRightOf="@+id/mobile_icon"
+        android:id="@+id/mobile_number"
+        android:inputType="phone"
+        android:hint="@string/enter_mobile"/>
+    <Button
+        android:id="@+id/mobile_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mobile_number"
+        android:enabled="true"
+        android:layout_weight="1"
+        android:text="@string/submit"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp" />
+
+
+</RelativeLayout>

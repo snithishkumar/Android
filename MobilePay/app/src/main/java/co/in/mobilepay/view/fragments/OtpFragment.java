@@ -29,7 +29,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
     private MainActivity mainActivity =  null;
     MainActivityCallback mainActivityCallback = null;
     ProgressDialog progressDialog = null;
-
+    String mobileNumber = null;
     public OtpFragment(){
 
     }
@@ -37,6 +37,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mobileNumber = getArguments().getString("mobileNumber");
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
         Button otpSubmit = (Button)view.findViewById(R.id.otp_submit);
@@ -66,7 +67,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
         switch (statusCode){
             case MessageConstant.OTP_OK:
                 // Success
-                mainActivityCallback.success(MessageConstant.OTP_OK,null);
+                mainActivityCallback.success(MessageConstant.OTP_OK,mobileNumber);
                 break;
            case  MessageConstant.OTP_ERROR_CODE :
                ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.OTP_ERROR);
@@ -87,7 +88,7 @@ switch (v.getId()){
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-            mainActivity.getAccountService().validateOtp(otpNumber,this);
+            mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber,this);
 
         }else{
             ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");

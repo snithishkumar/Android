@@ -23,13 +23,13 @@ import co.in.mobilepay.view.activities.MainActivity;
  */
 public class RegistrationFragment extends Fragment implements View.OnClickListener,AccountServiceImpl.AccountServiceCallback{
     EditText name = null;
-    EditText number = null;
     EditText password = null;
     EditText rePassword = null;
 
     private MainActivity mainActivity = null;
     ProgressDialog progressDialog = null;
     private MainActivityCallback mainActivityCallback =null;
+    String mobileNumber = null;
 
     public RegistrationFragment(){
     }
@@ -44,9 +44,9 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mobileNumber = getArguments().getString("mobileNumber");
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         name = (EditText) view.findViewById(R.id.reg_name);
-        number = (EditText)view.findViewById(R.id.reg_number);
         password = (EditText)view.findViewById(R.id.reg_password);
         rePassword = (EditText) view.findViewById(R.id.reg_repassword);
         FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.reg_submit);
@@ -58,10 +58,6 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         String nameTemp = name.getText().toString();
         if(nameTemp == null){
             name.setError("Name should not be blank");
-        }
-        String mobileNumberTemp = number.getText().toString();
-        if(mobileNumberTemp == null){
-            number.setError("MobileNumber should not be blank");
         }
         String passwordTemp = password.getText().toString();
         if(passwordTemp == null){
@@ -75,7 +71,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             rePassword.setError("Password and retype password are mismatched");
         }
 
-        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumberTemp,"");
+        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"");
         return registerJson;
     }
 
@@ -102,7 +98,6 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         progressDialog.dismiss();
         switch (statusCode){
             case MessageConstant.REG_OK:
-                // OTP Password Screen
                 mainActivityCallback.success(MessageConstant.REG_OK,null);
                 break;
             case MessageConstant.REG_ERROR_CODE:

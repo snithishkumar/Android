@@ -30,4 +30,10 @@ public final class  MessageConstant {
     public static final int LOGIN_INVALID_MOBILE = 803;
     public final static String LOGIN_ERROR = "Something went wrong. Please try later.";
     public final static String LOGIN_INVALID_PIN_ERROR = "Invalid Pin";
+
+
+    /** Mobile Number 2^4 **/
+    public static final int MOBILE_VERIFY_OK = 16;
+    public static final int MOBILE_VERIFY_INTERNAL_ERROR = 1602;
+    public final static String MOBILE_VERIFY_INTERNAL_ERROR_MSG = "Something went wrong. Please try later.";
 }

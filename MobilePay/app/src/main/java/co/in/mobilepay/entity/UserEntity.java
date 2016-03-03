@@ -42,7 +42,7 @@ public static final String ACCESS_TOKEN = "accessToken";
         this.imei = registerJson.getImei();
         this.password = registerJson.getPassword();
         this.mobileNumber = registerJson.getMobileNumber();
-        this.isActive = false;
+        this.isActive = true;
     }
 
     public int getUserId() {
