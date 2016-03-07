@@ -54,6 +54,7 @@ public class PurchaseListFragment extends Fragment  {
             @Override
             public void onRefresh() {
                 // Need to Call Service class TODO
+                homeActivity.getPurchaseService().syncPurchaseData();
             }
         });
 
@@ -79,7 +80,7 @@ public class PurchaseListFragment extends Fragment  {
 
 
     private void setAdapters(RecyclerView recyclerView){
-        List<PurchaseModel> purchaseModelList = new ArrayList<>();
+        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         PurchaseListAdapter purchaseListAdapter = new PurchaseListAdapter(purchaseModelList,homeActivity);
         recyclerView.setAdapter(purchaseListAdapter);
     }

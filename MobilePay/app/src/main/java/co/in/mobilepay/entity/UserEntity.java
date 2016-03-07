@@ -16,7 +16,8 @@ public class UserEntity {
     public static final String IMEI = "IMEI";
     public static final String MOBILE_NUMBER = "MobileNumber";
     public static final String IS_ACTIVE = "IsActive";
-public static final String ACCESS_TOKEN = "accessToken";
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String SEVER_TOKEN = "serverToken";
 
     @DatabaseField(columnName = USER_ID,generatedId = true)
     private int userId;
@@ -32,6 +33,8 @@ public static final String ACCESS_TOKEN = "accessToken";
     private boolean isActive;
     @DatabaseField(columnName = ACCESS_TOKEN)
     private String accessToken;
+    @DatabaseField(columnName = SEVER_TOKEN)
+    private String serverToken;
 
     public UserEntity(){
 
@@ -100,6 +103,14 @@ public static final String ACCESS_TOKEN = "accessToken";
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public String getServerToken() {
+        return serverToken;
+    }
+
+    public void setServerToken(String serverToken) {
+        this.serverToken = serverToken;
     }
 
     @Override

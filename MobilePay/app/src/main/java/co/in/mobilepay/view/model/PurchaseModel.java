@@ -20,6 +20,7 @@ public class PurchaseModel {
     public PurchaseModel(PurchaseEntity purchaseEntity){
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
+        this.totalAmount = purchaseEntity.getPayableAmount();
       //  this.area = purchaseEntity.getMerchantEntity().getArea();
      //   this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
     //    this.billNumber = String.valueOf(purchaseEntity.getBillNumber());

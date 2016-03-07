@@ -3,18 +3,16 @@ package co.in.mobilepay.service.impl;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
 
-import co.in.mobilepay.Sync.MobilePayAPI;
-import co.in.mobilepay.Sync.ServiceAPI;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.json.response.UserJson;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.PasswordHash;
 import co.in.mobilepay.service.ServiceUtil;
@@ -25,16 +23,14 @@ import retrofit2.Response;
 /**
  * Created by Nithish on 22-01-2016.
  */
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl extends BaseService implements AccountService {
     private UserDao userDao = null;
-    private MobilePayAPI mobilePayAPI = null;
-    private Gson gson = null;
+
     private PasswordHash passwordHash = null;
 
     public AccountServiceImpl(Context context)throws SQLException{
+        super();
         userDao = new UserDaoImpl(context);
-        mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
-        gson = new Gson();
         passwordHash = new PasswordHashImpl();
     }
 
@@ -73,8 +69,10 @@ public class AccountServiceImpl implements AccountService {
         int statusCode = responseData.getStatusCode();
         if(statusCode == MessageConstant.LOGIN_OK){
             try{
+                UserJson userJson = gson.fromJson(responseData.getData(), UserJson.class);
                 UserEntity userEntity =  userDao.getUser();
-                userEntity.setAccessToken(responseData.getData());
+                userEntity.setAccessToken(userJson.getAccessToken());
+                userEntity.setServerToken(userJson.getServerToken());
                 userDao.updateUser(userEntity);
                 accountServiceCallback.accountServiceCallback(MessageConstant.LOGIN_OK,null);
                 return;

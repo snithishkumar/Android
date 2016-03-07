@@ -1,5 +1,7 @@
 package co.in.mobilepay.service;
 
+import android.content.Context;
+
 import java.util.List;
 
 import co.in.mobilepay.view.model.PurchaseDetailsModel;
@@ -13,4 +15,6 @@ public interface PurchaseService {
     List<PurchaseModel> getCurrentPurchase();
 
     PurchaseDetailsModel getProductDetails(int purchaseId);
+
+    void syncPurchaseData();
 }

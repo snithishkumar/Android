@@ -1,20 +1,17 @@
 package co.in.mobilepay.view.activities;
 
-import android.app.ProgressDialog;
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
-import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
@@ -22,7 +19,6 @@ import co.in.mobilepay.view.fragments.LoginFragment;
 import co.in.mobilepay.view.fragments.MobileFragment;
 import co.in.mobilepay.view.fragments.OtpFragment;
 import co.in.mobilepay.view.fragments.RegistrationFragment;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
 
@@ -51,6 +47,11 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
             if(accountService == null){
                 accountService = new AccountServiceImpl(this);
             }
+           /* Account account = MobilePaySyncAdapter.getSyncAccount(this);
+            ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
+            ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
+            ContentResolver.addPeriodicSync(account, getString(R.string.auth_type), Bundle.EMPTY, 60);*/
+
         }catch (Exception e){
             Log.e("Error","Error in init",e);
         }

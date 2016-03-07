@@ -3,6 +3,7 @@ package co.in.mobilepay.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 
 /**
@@ -23,4 +24,12 @@ public interface PurchaseDao {
     PurchaseEntity getPurchaseEntity(int purchaseId)throws SQLException;
 
     PurchaseEntity getPurchaseEntity(String purchaseId)throws SQLException;
+
+    long getMostRecentPurchaseServerTime()throws SQLException;
+
+    MerchantEntity getMerchantEntity(String merchantGuid)throws SQLException;
+
+    void createMerchantEntity(MerchantEntity merchantEntity)throws SQLException;
+
+    void updateMerchantEntity(MerchantEntity merchantEntity)throws SQLException;
 }

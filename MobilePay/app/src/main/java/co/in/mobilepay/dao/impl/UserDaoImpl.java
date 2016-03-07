@@ -56,7 +56,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      * @throws SQLException
      */
     public void updateUser(UserEntity userEntity)throws SQLException{
-        userDao.create(userEntity);
+        userDao.update(userEntity);
     }
 
 
@@ -84,6 +84,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
             throw new SQLException(e);
         }
 
+    }
+
+    @Override
+    public UserEntity getUser(String mobileNumber)throws SQLException{
+        return  userDao.queryBuilder().where().eq(UserEntity.MOBILE_NUMBER,mobileNumber).queryForFirst();
     }
 
 

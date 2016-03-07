@@ -1,5 +1,7 @@
 package co.in.mobilepay.view.activities;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.impl.PurchaseServiceImpl;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.PaymentCardFragment;
@@ -26,19 +31,36 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
 
+    private PurchaseService purchaseService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
         setContentView(R.layout.activity_home);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    private void init(){
+        try{
+            purchaseService = new PurchaseServiceImpl(this);
+            Account account = MobilePaySyncAdapter.getSyncAccount(this);
+            ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
+            ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
+            ContentResolver.addPeriodicSync(account, getString(R.string.auth_type), Bundle.EMPTY, 60);
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
+    }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new PurchaseItemsFragment(), "Home");
+        adapter.addFragment(new PurchaseListFragment(), "Home");
         adapter.addFragment(new PurchaseItemsFragment(), "History");
         adapter.addFragment(new PaymentCardFragment(), "Payment");
         viewPager.setAdapter(adapter);
@@ -103,5 +125,9 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 .replace(R.id.root_layout, newCardFragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public PurchaseService getPurchaseService() {
+        return purchaseService;
     }
 }

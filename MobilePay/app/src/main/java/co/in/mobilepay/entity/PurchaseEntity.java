@@ -26,6 +26,11 @@ public class PurchaseEntity {
     public static final String UPDATED_DATE_TIME = "UpdatedDateTime";
     public static final String MERCHANT_ID = MerchantEntity.MERCHANT_ID;
     public static final String USER_ID = UserEntity.USER_ID;
+    public static final String SERVER_DATE_TIME = "ServerDateTime";
+
+    public static final String TOTAL_AMOUNT = "totalAmount";
+    public static final String PAYABLE_AMOUNT = "payableAmount";
+    public static final String IS_DISCARD = "isDiscard";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
     private int purchaseId;
@@ -34,7 +39,7 @@ public class PurchaseEntity {
     @DatabaseField(columnName = PURCHASE_DATE_TIME)
     private long purchaseDateTime;
     @DatabaseField(columnName = BILL_NUMBER)
-    private int billNumber;
+    private String billNumber;
     @DatabaseField(columnName = PRODUCT_DETAILS)
     private String productDetails;
     @DatabaseField(columnName = AMOUNT_DETAILS)
@@ -55,9 +60,17 @@ public class PurchaseEntity {
     private long lastModifiedDateTime;
     @DatabaseField(columnName = MERCHANT_ID,foreign = true,foreignAutoRefresh =  true)
     private MerchantEntity merchantEntity;
+    @DatabaseField(columnName = SERVER_DATE_TIME)
+    private long serverDateTime;
 
     @DatabaseField(columnName = USER_ID,foreign = true)
     private UserEntity userEntity;
+    @DatabaseField(columnName = TOTAL_AMOUNT)
+    private String totalAmount;
+    @DatabaseField(columnName = PAYABLE_AMOUNT)
+    private String payableAmount;
+    @DatabaseField(columnName = IS_DISCARD)
+    private boolean  isDiscard;
 
 
     public PurchaseEntity(){
@@ -77,10 +90,14 @@ public class PurchaseEntity {
         this.amountDetails = purchaseJson.getAmountDetails();
         this.isEditable =  purchaseJson.isEditable();
         this.isDeliverable = purchaseJson.isDelivered();
-        this.unModifiedPurchaseData = purchaseJson.getProductDetails();
-        this.unModifiedAmountDetails = purchaseJson.getAmountDetails();
+        //this.unModifiedPurchaseData = purchaseJson.getProductDetails();
+        //this.unModifiedAmountDetails = purchaseJson.getAmountDetails();
         this.lastModifiedDateTime = purchaseJson.getLastModifiedDateTime();
         this.category = purchaseJson.getCategory();
+        this.serverDateTime = purchaseJson.getServerDateTime();
+        this.totalAmount = purchaseJson.getTotalAmount();
+        this.payableAmount = purchaseJson.getPayableAmount();
+        this.isDiscard = purchaseJson.isDiscard();
     }
 
     public String getCategory() {
@@ -115,11 +132,11 @@ public class PurchaseEntity {
         this.purchaseDateTime = purchaseDateTime;
     }
 
-    public int getBillNumber() {
+    public String getBillNumber() {
         return billNumber;
     }
 
-    public void setBillNumber(int billNumber) {
+    public void setBillNumber(String billNumber) {
         this.billNumber = billNumber;
     }
 
@@ -201,6 +218,38 @@ public class PurchaseEntity {
 
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    public long getServerDateTime() {
+        return serverDateTime;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getPayableAmount() {
+        return payableAmount;
+    }
+
+    public void setPayableAmount(String payableAmount) {
+        this.payableAmount = payableAmount;
+    }
+
+    public boolean isDiscard() {
+        return isDiscard;
+    }
+
+    public void setIsDiscard(boolean isDiscard) {
+        this.isDiscard = isDiscard;
+    }
+
+    public void setServerDateTime(long serverDateTime) {
+        this.serverDateTime = serverDateTime;
     }
 
     @Override

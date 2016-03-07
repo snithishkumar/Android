@@ -1,12 +1,15 @@
 package co.in.mobilepay.json.response;
 
 
+import co.in.mobilepay.entity.MerchantEntity;
+
 public class MerchantJson {
 
 	private String merchantName;
 	private String merchantUuid;
 	private String address;
 	private String area;
+	private String pinCode;
 	private long mobileNumber;
 	private long landNumber;
     private long createdDateTime;
@@ -16,6 +19,15 @@ public class MerchantJson {
 
 	}
 
+
+
+	public String getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(String pinCode) {
+		this.pinCode = pinCode;
+	}
 
 	public String getMerchantName() {
 		return merchantName;

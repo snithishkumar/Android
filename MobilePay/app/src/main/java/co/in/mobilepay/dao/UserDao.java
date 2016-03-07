@@ -24,5 +24,7 @@ public interface UserDao {
 
     void updateUser(UserEntity userEntity)throws SQLException;
 
+    UserEntity getUser(String mobileNumber)throws SQLException;
+
 
 }

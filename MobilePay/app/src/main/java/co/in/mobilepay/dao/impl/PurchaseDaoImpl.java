@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.dao.PurchaseDao;
+import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 
 /**
@@ -16,9 +17,11 @@ import co.in.mobilepay.entity.PurchaseEntity;
 public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
 
     private Dao<PurchaseEntity,Integer> purchaseDao = null;
+    private Dao<MerchantEntity,Integer> merchantDao = null;
 
     public PurchaseDaoImpl(Context context) throws SQLException {
         super(context);
+        initDao();
     }
 
     /**
@@ -28,6 +31,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     protected void initDao() throws SQLException {
         purchaseDao = databaseHelper.getDao(PurchaseEntity.class);
+        merchantDao = databaseHelper.getDao(MerchantEntity.class);
     }
 
     /**
@@ -91,5 +95,36 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<PurchaseEntity> getPurchaseHistoryList() throws SQLException {
         return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,true).query();
+    }
+
+    /**
+     * Returns Most recent Purchase server time otherwise it will returns -1
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public long getMostRecentPurchaseServerTime()throws SQLException{
+        PurchaseEntity purchaseEntity =  purchaseDao.queryBuilder().orderBy(PurchaseEntity.SERVER_DATE_TIME,false).queryForFirst();
+        return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
+    }
+
+    /**
+     * Returns merchant entity or null
+     * @param merchantGuid
+     * @return
+     */
+    @Override
+    public MerchantEntity getMerchantEntity(String merchantGuid)throws SQLException{
+        return  merchantDao.queryBuilder().where().eq(MerchantEntity.MERCHANT_GUID,merchantGuid).queryForFirst();
+    }
+
+    @Override
+    public void createMerchantEntity(MerchantEntity merchantEntity)throws SQLException{
+        merchantDao.create(merchantEntity);
+    }
+
+    @Override
+    public void updateMerchantEntity(MerchantEntity merchantEntity)throws SQLException{
+        merchantDao.update(merchantEntity);
     }
 }

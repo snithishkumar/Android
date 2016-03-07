@@ -17,6 +17,7 @@ public class MerchantEntity {
     public static final String AREA = "Area";
     public static final String MOBILE_NUMBER = "MobileNumber";
     public static final String LAND_LINE_NUMBER = "LandLineNumber";
+    public static final String PIN_CODE = "PinCode";
 
     @DatabaseField(columnName = MERCHANT_ID,generatedId = true)
     private int merchantId;
@@ -32,6 +33,8 @@ public class MerchantEntity {
     private long mobileNumber;
     @DatabaseField(columnName = LAND_LINE_NUMBER)
     private long landLineNumber;
+    @DatabaseField(columnName = PIN_CODE)
+    private String pinCode;
 
     private long createdDateTime;
     private long lastModifiedDateTime;
@@ -53,6 +56,7 @@ public class MerchantEntity {
         this.landLineNumber = merchantJson.getLandNumber();
         this.createdDateTime = merchantJson.getCreatedDateTime();
         this.lastModifiedDateTime = merchantJson.getLastModifiedDateTime();
+        this.pinCode = merchantJson.getPinCode();
     }
 
     public int getMerchantId() {
@@ -125,6 +129,14 @@ public class MerchantEntity {
 
     public void setLandLineNumber(long landLineNumber) {
         this.landLineNumber = landLineNumber;
+    }
+
+    public String getPinCode() {
+        return pinCode;
+    }
+
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
     }
 
     @Override

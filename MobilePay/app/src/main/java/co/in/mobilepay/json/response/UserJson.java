@@ -1,7 +1,7 @@
 package co.in.mobilepay.json.response;
 
 
-public class UserJson {
+public class UserJson extends TokenJson{
 	private String name;
 	private String mobileNumber;
 	

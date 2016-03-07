@@ -4,7 +4,7 @@ public class PurchaseJson {
 
 	private String purchaseId;
 	private long purchaseDate;
-	private int billNumber;
+	private String billNumber;
 	private MerchantJson merchants;
 	private UserJson users;
 	private String productDetails;
@@ -13,7 +13,11 @@ public class PurchaseJson {
 	private boolean isEditable;
 	private boolean isDelivered;
 	private long lastModifiedDateTime;
-	
+	private long serverDateTime;
+	private String totalAmount;
+	private String payableAmount;
+	private boolean isDiscard;
+
 	public PurchaseJson(){
 		
 	}
@@ -50,11 +54,11 @@ public class PurchaseJson {
 		this.purchaseDate = purchaseDate;
 	}
 
-	public int getBillNumber() {
+	public String getBillNumber() {
 		return billNumber;
 	}
 
-	public void setBillNumber(int billNumber) {
+	public void setBillNumber(String billNumber) {
 		this.billNumber = billNumber;
 	}
 
@@ -106,19 +110,56 @@ public class PurchaseJson {
         this.isDelivered = isDelivered;
     }
 
-    @Override
-    public String toString() {
-        return "PurchaseJson{" +
-                "purchaseId=" + purchaseId +
-                ", purchaseDate=" + purchaseDate +
-                ", billNumber=" + billNumber +
-                ", merchants=" + merchants +
-                ", users=" + users +
-                ", productDetails='" + productDetails + '\'' +
-                ", amountDetails='" + amountDetails + '\'' +
-                ", isEditable=" + isEditable +
-                ", isDelivered=" + isDelivered +
-                '}';
-    }
+	public long getServerDateTime() {
+		return serverDateTime;
+	}
 
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public String getPayableAmount() {
+		return payableAmount;
+	}
+
+	public void setPayableAmount(String payableAmount) {
+		this.payableAmount = payableAmount;
+	}
+
+	public boolean isDiscard() {
+		return isDiscard;
+	}
+
+	public void setIsDiscard(boolean isDiscard) {
+		this.isDiscard = isDiscard;
+	}
+
+	public void setServerDateTime(long serverDateTime) {
+		this.serverDateTime = serverDateTime;
+	}
+
+	@Override
+	public String toString() {
+		return "PurchaseJson{" +
+				"purchaseId='" + purchaseId + '\'' +
+				", purchaseDate=" + purchaseDate +
+				", billNumber=" + billNumber +
+				", merchants=" + merchants +
+				", users=" + users +
+				", productDetails='" + productDetails + '\'' +
+				", amountDetails='" + amountDetails + '\'' +
+				", category='" + category + '\'' +
+				", isEditable=" + isEditable +
+				", isDelivered=" + isDelivered +
+				", lastModifiedDateTime=" + lastModifiedDateTime +
+				", serverDateTime=" + serverDateTime +
+				", totalAmount='" + totalAmount + '\'' +
+				", payableAmount='" + payableAmount + '\'' +
+				", isDiscard=" + isDiscard +
+				'}';
+	}
 }

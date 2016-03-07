@@ -1,4 +1,4 @@
-package co.in.mobilepay.Sync;
+package co.in.mobilepay.sync;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

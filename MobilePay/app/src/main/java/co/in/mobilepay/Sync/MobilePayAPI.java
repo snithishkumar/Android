@@ -1,4 +1,4 @@
-package co.in.mobilepay.Sync;
+package co.in.mobilepay.sync;
 
 import com.google.gson.JsonObject;
 
@@ -23,4 +23,7 @@ public interface  MobilePayAPI {
 
     @POST("mobile/loginByMobileNumber.html")
     Call<ResponseData> validateLoginDetails(@Body JsonObject jsonObject);
+
+    @POST("mobile/getPurchaseList.html")
+    Call<ResponseData> syncPurchaseData(@Body JsonObject requestData);
 }

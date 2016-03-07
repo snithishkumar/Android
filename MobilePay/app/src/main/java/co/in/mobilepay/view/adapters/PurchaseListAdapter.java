@@ -66,6 +66,9 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
         public PurchaseListViewHolder(View view){
             super(view);
+            vName = (TextView) view.findViewById(R.id.pur_lst_name);
+            vCategory = (TextView) view.findViewById(R.id.pur_lst_category);
+            vTotalAmount = (TextView) view.findViewById(R.id.pur_lst_amount);
 
         }
     }
