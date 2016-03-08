@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
@@ -60,7 +61,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
-        //syncPurchaseData();
+        MobilePayBus.getInstance().post("Tst");
+       // syncPurchaseData();
     }
 
 
@@ -90,6 +92,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             // responseDataCall.
         }catch (Exception e){
             Log.e("Error","Error in  syncPurchaseData",e);
+        }finally {
+            MobilePayBus.getInstance().post("Tst");
         }
     }
 

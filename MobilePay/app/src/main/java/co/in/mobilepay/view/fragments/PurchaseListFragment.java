@@ -1,5 +1,7 @@
 package co.in.mobilepay.view.fragments;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
+import com.squareup.otto.Subscribe;
+
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.model.PurchaseModel;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
@@ -38,7 +43,21 @@ public class PurchaseListFragment extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homeActivity = (HomeActivity)getActivity();
+        syncData();
 
+    }
+
+    private void syncData(){
+        Account account = MobilePaySyncAdapter.getSyncAccount(homeActivity);
+
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
     }
 
     @Override
@@ -54,9 +73,11 @@ public class PurchaseListFragment extends Fragment  {
             @Override
             public void onRefresh() {
                 // Need to Call Service class TODO
-                homeActivity.getPurchaseService().syncPurchaseData();
+                syncData();
             }
         });
+
+      //  refreshLayout.
 
          recyclerView = (RecyclerView) view.findViewById(R.id.purchase_list_fragment);
         recyclerView.setHasFixedSize(true);
@@ -78,11 +99,39 @@ public class PurchaseListFragment extends Fragment  {
         return view;
     }
 
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        stopRefreshing();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        MobilePayBus.getInstance().register(this);
+        super.onResume();
+    }
+
+
+
+
 
     private void setAdapters(RecyclerView recyclerView){
         List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         PurchaseListAdapter purchaseListAdapter = new PurchaseListAdapter(purchaseModelList,homeActivity);
         recyclerView.setAdapter(purchaseListAdapter);
+    }
+
+
+    @Subscribe
+    public void purchaseResponse(String data){
+        stopRefreshing();
+    }
+
+    private void stopRefreshing(){
+        if(refreshLayout != null){
+            refreshLayout.setRefreshing(false);
+        }
     }
 
 
