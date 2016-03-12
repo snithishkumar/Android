@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.view.PurchaseModel;
-import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
+import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,59 +15,50 @@ import java.util.List;
 /**
  * TODO: Replace the implementation with code for your data type.
  */
-public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductDetailsRecyclerAdapter.ViewHolder> {
+public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductDetailsRecyclerAdapter.ProductDetailsViewHolder> {
 
-    private final ProductsDetailsFragment.OnListFragmentInteractionListener mListener;
-    private List<PurchaseModel> items = new ArrayList<>();
+    private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
 
-    public ProductDetailsRecyclerAdapter(List<PurchaseModel> items,ProductsDetailsFragment.OnListFragmentInteractionListener listener) {
-        mListener = listener;
-        this.items = items;
+    public ProductDetailsRecyclerAdapter( List<ProductDetailsModel> productDetailsModels) {
+        this.productDetailsModels = productDetailsModels;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.product_list_details_item, parent, false);
-        return new ViewHolder(view);
+        return new ProductDetailsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = items.get(position);
-        holder.mIdView.setText(position+1+")");
-        /*holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);*/
+    public void onBindViewHolder(final ProductDetailsViewHolder productDetailsViewHolder, int position) {
+        ProductDetailsModel productDetailsModel =  productDetailsModels.get(position);
+        productDetailsViewHolder.serialNo.setText(productDetailsModel.getItemNo()+". ");
+        productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+        productDetailsViewHolder.quantity.setText("Quantity:"+productDetailsModel.getQuantity());
+        productDetailsViewHolder.totalAmount.setText(productDetailsModel.getAmount());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return productDetailsModels.size();
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public PurchaseModel mItem;
-        public ViewHolder(View view) {
+    public class ProductDetailsViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView serialNo;
+        private TextView name;
+        private TextView quantity;
+        private TextView totalAmount;
+
+        public ProductDetailsViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.sno);
-            mContentView = (TextView) view.findViewById(R.id.quanity);
+            serialNo = (TextView) view.findViewById(R.id.pur_details_list_sno);
+            name = (TextView) view.findViewById(R.id.pur_details_list_name);
+            quantity = (TextView) view.findViewById(R.id.pur_details_list_quantity);
+            totalAmount = (TextView) view.findViewById(R.id.pur_details_list_totalamt);
         }
 
         @Override

@@ -9,10 +9,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.entity.MerchantEntity;
+import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.activities.MainActivity;
+import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
+import co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter;
+import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,93 +32,113 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
  */
 public class ProductsDetailsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private PurchaseDetailsActivity purchaseDetailsActivity;
+    private PurchaseService purchaseService;
+    private int purchaseId = 0;
+
+    private TextView shopName = null;
+    private TextView shopArea = null;
+    private TextView shopLnNo = null;
+    private TextView shopPnNo = null;
+    private TextView billNo = null;
+    private TextView purDateTime = null;
+
+    private Gson gson = null;
+
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public ProductsDetailsFragment() {
+
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ProductsDetailsFragment newInstance(int columnCount) {
-        ProductsDetailsFragment fragment = new ProductsDetailsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle purchaseIdArgs = getArguments();
+        if(purchaseIdArgs != null){
+            purchaseId =  purchaseIdArgs.getInt("purchaseId");
+        }
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
-        List<PurchaseModel> purchaseModels = new ArrayList<>(3);
-        PurchaseModel purchaseModel = new PurchaseModel(1,"Saravana Stores","T.Nagar","9952471553","000014","Jan-2-2016","Readymades","3","1000");
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        purchaseModels.add(purchaseModel);
-        // Set the adapter
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        recyclerView.setAdapter(new co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter(purchaseModels, mListener));
-        recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
-                getContext()
-        ));
+        initView(view);
+        populatePurchaseData(view);
         return view;
+    }
+
+    /**
+     * Initialize
+     * @param view
+     */
+    private void initView(View view){
+        if(gson == null){
+            gson = new Gson();
+        }
+        shopName = (TextView)view.findViewById(R.id.shop_name);
+        shopArea = (TextView)view.findViewById(R.id.shop_area);
+        shopLnNo = (TextView)view.findViewById(R.id.shop_phone_no);
+        shopPnNo = (TextView)view.findViewById(R.id.shop_land_no);
+        billNo = (TextView) view.findViewById(R.id.bill_no);
+        purDateTime = (TextView)view.findViewById(R.id.purchase_date_time);
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+        purchaseDetailsActivity = (PurchaseDetailsActivity)context;
+        purchaseService = purchaseDetailsActivity.getPurchaseService();
     }
+
+    /**
+     * Populate value
+     */
+    private void populatePurchaseData(View view){
+        PurchaseEntity  purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+        MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
+        shopName.setText(merchantEntity.getMerchantName());
+        shopArea.setText(merchantEntity.getArea());
+        shopLnNo.setText("Ln:"+merchantEntity.getLandLineNumber());
+        shopPnNo.setText("Pn:"+merchantEntity.getMobileNumber());
+        billNo.setText("Bill No:" + purchaseEntity.getBillNumber());
+        String purchaseDateTime =  MobilePayUtil.formatDate(purchaseEntity.getPurchaseDateTime());
+        purDateTime.setText("Date:"+purchaseDateTime);
+
+        String productDetails = purchaseEntity.getProductDetails();
+
+        List<ProductDetailsModel> productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
+        }.getType());
+
+
+        // Set the adapter
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setAdapter(new ProductDetailsRecyclerAdapter(productDetailsModelList));
+        recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
+                getContext()
+        ));
+    }
+
+
+
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(PurchaseModel item);
-    }
+
 }

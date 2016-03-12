@@ -5,30 +5,33 @@
         android:layout_height="match_parent"
         android:layout_margin="5dp">
     <TextView
-        android:id="@+id/sno"
+        android:id="@+id/pur_details_list_sno"
         android:layout_width="wrap_content"
+        android:textStyle="bold"
         android:layout_height="wrap_content"
         android:text="1"/>
         <TextView
-            android:id="@+id/product"
+            android:id="@+id/pur_details_list_name"
+            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/sno"
+            android:layout_toRightOf="@+id/pur_details_list_sno"
             android:layout_marginLeft="10dp"
             android:text="T-shirt"/>
         <TextView
-            android:id="@+id/quanity"
+            android:id="@+id/pur_details_list_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/product"
-            android:layout_toRightOf="@+id/sno"
+            android:layout_below="@+id/pur_details_list_name"
+            android:layout_toRightOf="@+id/pur_details_list_sno"
             android:layout_marginLeft="10dp"
             android:text="Quanity: 2*150.00"/>
         <TextView
-            android:id="@+id/amt"
+            android:id="@+id/pur_details_list_totalamt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/product"
+            android:textStyle="bold"
+            android:layout_below="@+id/pur_details_list_name"
             android:layout_alignParentRight="true"
             android:text="450.00"/>
     </RelativeLayout>

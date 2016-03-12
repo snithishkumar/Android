@@ -19,14 +19,22 @@
             android:text="Saravana stores"
             android:layout_centerHorizontal="true"/>
         <TextView
-            android:id="@+id/shop_type"
+            android:id="@+id/shop_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/shop_name"
             android:layout_centerHorizontal="true"
             android:text="(T-Nagar)"/>
         <TextView
-            android:id="@+id/shop_no"
+            android:id="@+id/shop_phone_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/shop_land_no"
+            android:layout_margin="10dp"
+            android:text="Ln:044237206"/>
+        <TextView
+            android:id="@+id/shop_land_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -34,13 +42,21 @@
             android:layout_margin="10dp"
             android:text="Ph:9952471553"/>
         <TextView
-            android:id="@+id/total_amt"
+            android:id="@+id/bill_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_above="@+id/purchase_date_time"
+            android:layout_margin="10dp"
+            android:text="Bill No:001"/>
+        <TextView
+            android:id="@+id/purchase_date_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="10dp"
-            android:text="AMT:1000.00"/>
+            android:text="Date:10-Mar-2016 05:20:30 PM"/>
         <ImageView
             android:id="@+id/arrow"
             android:layout_width="wrap_content"

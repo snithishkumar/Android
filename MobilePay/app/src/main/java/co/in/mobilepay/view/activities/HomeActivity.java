@@ -2,6 +2,7 @@ package co.in.mobilepay.view.activities;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -97,6 +98,10 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     @Override
     public void purchaseListOnClick(int purchaseId) {
 // TODO Need to call PurchaseDetails Activity
+        Intent intent = new Intent(this, PurchaseDetailsActivity.class);
+        intent.putExtra("purchaseId",purchaseId);
+        startActivity(intent);
+        finish();
     }
     public void showProductListFragment(){
         ProductsDetailsFragment productsDetailsFragment = new ProductsDetailsFragment();

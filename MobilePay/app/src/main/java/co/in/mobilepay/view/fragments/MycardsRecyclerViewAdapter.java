@@ -16,7 +16,7 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  *//*
 
-public class MycardsRecyclerViewAdapter extends RecyclerView.Adapter<MycardsRecyclerViewAdapter.ViewHolder> {
+public class MycardsRecyclerViewAdapter extends RecyclerView.Adapter<MycardsRecyclerViewAdapter.ProductDetailsViewHolder> {
 
     private final PaymentFragment.OnListFragmentInteractionListener mListener;
 
@@ -25,14 +25,14 @@ public class MycardsRecyclerViewAdapter extends RecyclerView.Adapter<MycardsRecy
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_cards, parent, false);
-        return new ViewHolder(view);
+        return new ProductDetailsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ProductDetailsViewHolder holder, int position) {
         /*holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).id);
         holder.mContentView.setText(mValues.get(position).content);
@@ -54,12 +54,12 @@ public class MycardsRecyclerViewAdapter extends RecyclerView.Adapter<MycardsRecy
         return 3;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ProductDetailsViewHolder extends RecyclerView.ProductDetailsViewHolder {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
 
-        public ViewHolder(View view) {
+        public ProductDetailsViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);

@@ -26,7 +26,7 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  *//*
 
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ProductDetailsViewHolder> {
 
     private final List<PurchaseModel> mValues;
     private final PurchaseItemsFragment.OnListFragmentInteractionListener mListener;
@@ -40,14 +40,14 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ProductDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.purchase_list, parent, false);
-        return new ViewHolder(view);
+        return new ProductDetailsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ProductDetailsViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mNameView.setText(holder.mItem.getName());
         holder.mAreaView.setText(holder.mItem.getArea());
@@ -76,7 +76,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ProductDetailsViewHolder extends RecyclerView.ProductDetailsViewHolder {
         public final View mView;
         public final TextView mNameView;
         public final TextView mAreaView;
@@ -88,7 +88,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public final TextView mTotalCountView;
         public PurchaseModel mItem;
 
-        public ViewHolder(View view) {
+        public ProductDetailsViewHolder(View view) {
             super(view);
             mView = view;
             mNameView = (TextView) view.findViewById(R.id.name);
@@ -103,7 +103,7 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
 
         @Override
         public String toString() {
-            return "ViewHolder{" +
+            return "ProductDetailsViewHolder{" +
                     "mView=" + mView +
                     ", mNameView=" + mNameView +
                     ", mAreaView=" + mAreaView +

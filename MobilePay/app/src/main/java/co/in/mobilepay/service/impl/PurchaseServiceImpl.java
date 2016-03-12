@@ -68,6 +68,17 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     }
 
     @Override
+    public PurchaseEntity getPurchaseDetails(int purchaseId){
+        try{
+            PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseId);
+            return purchaseEntity;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public PurchaseDetailsModel getProductDetails(int purchaseId){
         try{
             PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseId);
