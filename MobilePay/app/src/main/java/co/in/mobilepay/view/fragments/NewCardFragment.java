@@ -3,32 +3,39 @@ package co.in.mobilepay.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.enumeration.PaymentType;
+import co.in.mobilepay.json.response.CardDetailsJson;
+import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.PurchaseModel;
-
-import java.util.ArrayList;
-import java.util.List;
+import co.in.mobilepay.view.activities.NewSaveCardActivity;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ *
  */
-public class NewCardFragment extends Fragment {
+public class NewCardFragment extends Fragment implements View.OnClickListener{
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+
+    private RadioButton creditCard = null;
+    private RadioButton debitCard = null;
+    private EditText cardNo = null;
+    private EditText cardName = null;
+    private EditText cardExpiry = null;
+
+    private NewSaveCardActivity newSaveCardActivity = null;
+    private NewSaveCardActivityCallback newSaveCardActivityCallback = null;
+
+    //private
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -37,62 +44,91 @@ public class NewCardFragment extends Fragment {
     public NewCardFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static ProductsDetailsFragment newInstance(int columnCount) {
-        ProductsDetailsFragment fragment = new ProductsDetailsFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_card_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_save_new_cards, container, false);
+        initView(view);
         return view;
+    }
+
+
+
+    private void initView(View view){
+        creditCard =  (RadioButton)view.findViewById(R.id.save_new_card_credit);
+        debitCard = (RadioButton)view.findViewById(R.id.save_new_card_debit);
+        cardNo = (EditText)view.findViewById(R.id.save_new_card_no);
+        cardName =  (EditText)view.findViewById(R.id.save_new_card_name);
+        cardExpiry =  (EditText)view.findViewById(R.id.save_new_card_expiry);
+        Button button = (Button) view.findViewById(R.id.save_new_card_submit);
+        button.setOnClickListener(this);
     }
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
+        newSaveCardActivityCallback = (NewSaveCardActivity)context;
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(PurchaseModel item);
+
+    @Override
+    public void onClick(View v) {
+        CardJson cardJson = new CardJson();
+        CardDetailsJson cardDetailsJson = new CardDetailsJson();
+        cardJson.setCardDetails(cardDetailsJson);
+        int count = 1;
+        if(creditCard.isChecked()){
+            cardJson.setPaymentType(PaymentType.CREDIT);
+            count *= 2;
+        }else if(debitCard.isChecked()){
+            cardJson.setPaymentType(PaymentType.DEBIT);
+            count *= 2;
+        }
+        if(count != 2){
+            creditCard.setError("Please choose either CREDIT or DEBIT");
+        }
+        if(cardNo.getText().toString() == null || cardNo.getText().toString().isEmpty()){
+            cardNo.setError("Please Enter Card No");
+        }else{
+            cardDetailsJson.setNumber(cardNo.getText().toString());
+            count *= 2;
+        }
+
+        if(cardName.getText().toString() == null || cardName.getText().toString().isEmpty()){
+            cardName.setError("Please Enter Card Name");
+        }else {
+            cardDetailsJson.setName(cardName.getText().toString());
+            count *= 2;
+        }
+
+        if(cardExpiry.getText().toString() == null || cardExpiry.getText().toString().isEmpty()){
+            cardExpiry.setError("Please Enter Card Expiry");
+        }else {
+            cardDetailsJson.setExpiryDate(cardExpiry.getText().toString());
+            count *= 2;
+        }
+
+        if(count == 16){
+            newSaveCardActivityCallback.success(0,cardJson);
+        }
+
+    }
+
+
+    public  interface NewSaveCardActivityCallback {
+        void success(int code,Object data);
     }
 }

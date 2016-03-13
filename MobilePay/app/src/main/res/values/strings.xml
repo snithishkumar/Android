@@ -14,6 +14,7 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_purchase">PurchaseActivity</string>
+    <string name="title_activity_new_savecard">NewCardActivity</string>
 
     <!-- Account Details -->
 

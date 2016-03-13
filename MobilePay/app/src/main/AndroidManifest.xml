@@ -88,6 +88,11 @@
             android:name=".view.activities.PurchaseDetailsActivity"
             android:label="@string/title_activity_purchase"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <activity
+            android:name=".view.activities.NewSaveCardActivity"
+            android:label="@string/title_activity_new_savecard"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,47 +1,22 @@
 package co.in.mobilepay.json.response;
 
+import co.in.mobilepay.enumeration.CardType;
+
 /**
  * Created by Nithish on 04-02-2016.
  */
 public class CardDetailsJson {
-    private int cardId;
-    private String cardNumber;
-    private String cardGuid;
-    private String cardType;
+    private String number;
     private String name;
     private String expiryDate;
-    private String cvvNumber;
+    private CardType cardType;
 
-    public int getCardId() {
-        return cardId;
+    public String getNumber() {
+        return number;
     }
 
-    public void setCardId(int cardId) {
-        this.cardId = cardId;
-    }
-
-    public String getCardNumber() {
-        return cardNumber;
-    }
-
-    public void setCardNumber(String cardNumber) {
-        this.cardNumber = cardNumber;
-    }
-
-    public String getCardGuid() {
-        return cardGuid;
-    }
-
-    public void setCardGuid(String cardGuid) {
-        this.cardGuid = cardGuid;
-    }
-
-    public String getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getName() {
@@ -60,24 +35,21 @@ public class CardDetailsJson {
         this.expiryDate = expiryDate;
     }
 
-    public String getCvvNumber() {
-        return cvvNumber;
+    public CardType getCardType() {
+        return cardType;
     }
 
-    public void setCvvNumber(String cvvNumber) {
-        this.cvvNumber = cvvNumber;
+    public void setCardType(CardType cardType) {
+        this.cardType = cardType;
     }
 
     @Override
     public String toString() {
         return "CardDetailsJson{" +
-                "cardId=" + cardId +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", cardGuid='" + cardGuid + '\'' +
-                ", cardType='" + cardType + '\'' +
+                "number='" + number + '\'' +
                 ", name='" + name + '\'' +
                 ", expiryDate='" + expiryDate + '\'' +
-                ", cvvNumber='" + cvvNumber + '\'' +
+                ", cardType=" + cardType +
                 '}';
     }
 }

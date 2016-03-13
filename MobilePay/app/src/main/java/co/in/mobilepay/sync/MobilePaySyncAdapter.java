@@ -72,7 +72,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             UserEntity userEntity = userDao.getUser();
             JsonObject requestData = new JsonObject();
             requestData.addProperty("serverToken",userEntity.getServerToken());
-            requestData.addProperty("clientToken",userEntity.getAccessToken());
+            requestData.addProperty("accessToken",userEntity.getAccessToken());
             requestData.addProperty("serverTime", serverTime);
             Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseData(requestData);
             Response<ResponseData> dataResponse =  responseDataCall.execute();

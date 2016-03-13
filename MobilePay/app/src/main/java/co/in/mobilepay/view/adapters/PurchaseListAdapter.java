@@ -35,18 +35,20 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
     @Override
     public PurchaseListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.
+       final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.purchase_list, viewGroup, false);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PurchaseModel purchaseModel =   purchaseModelList.get(position);
+                PurchaseModel purchaseModel = purchaseModelList.get(position);
                 int purchaseId = purchaseModel.getPurchaseId();
+               // itemView.setFocusable(true);
                 purchaseListClickListeners.purchaseListOnClick(purchaseId);
                 //
             }
         });
+
         return new PurchaseListViewHolder(itemView);
     }
 

@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -18,14 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.NewCardFragment;
-import co.in.mobilepay.view.fragments.PaymentCardFragment;
+import co.in.mobilepay.view.fragments.SaveCardsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
-import co.in.mobilepay.view.fragments.PurchaseItemsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
 public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners{
@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private ViewPager viewPager = null;
 
     private PurchaseService purchaseService;
+    private CardService cardService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +49,12 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void init(){
         try{
             purchaseService = new PurchaseServiceImpl(this);
+
             Account account = MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
             ContentResolver.addPeriodicSync(account, getString(R.string.auth_type), Bundle.EMPTY, 60);
+            cardService = new CardServiceImpl(this);
         }catch (Exception e){
             e.printStackTrace();
 
@@ -62,8 +65,8 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new PurchaseListFragment(), "Home");
-        adapter.addFragment(new PaymentCardFragment(), "History");
-        adapter.addFragment(new PaymentCardFragment(), "Payment");
+        adapter.addFragment(new PurchaseListFragment(), "History");
+        adapter.addFragment(new SaveCardsFragment(), "Payment");
         viewPager.setAdapter(adapter);
     }
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -125,14 +128,16 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         return true;
     }
     public void showNewCardFragment(View view){
-        NewCardFragment newCardFragment = new NewCardFragment();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.root_layout, newCardFragment)
-                .addToBackStack(null)
-                .commit();
+        Intent intent = new Intent(this, NewSaveCardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public PurchaseService getPurchaseService() {
         return purchaseService;
+    }
+
+    public CardService getCardService() {
+        return cardService;
     }
 }

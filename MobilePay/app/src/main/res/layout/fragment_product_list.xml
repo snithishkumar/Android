@@ -73,7 +73,7 @@
         android:layout_below="@+id/shop_details_layout"
         android:layout_margin="16dp">
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/save_card_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"

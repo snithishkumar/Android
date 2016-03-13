@@ -3,8 +3,6 @@ package co.in.mobilepay.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +17,11 @@ import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.util.MobilePayUtil;
-import co.in.mobilepay.view.PurchaseModel;
-import co.in.mobilepay.view.activities.MainActivity;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
 import co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -125,7 +120,7 @@ public class ProductsDetailsFragment extends Fragment {
 
 
         // Set the adapter
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.save_card_list);
         recyclerView.setAdapter(new ProductDetailsRecyclerAdapter(productDetailsModelList));
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

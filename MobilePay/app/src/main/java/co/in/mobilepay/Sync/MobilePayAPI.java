@@ -2,7 +2,9 @@ package co.in.mobilepay.sync;
 
 import com.google.gson.JsonObject;
 
+import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.json.response.TokenJson;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -26,4 +28,13 @@ public interface  MobilePayAPI {
 
     @POST("mobile/getPurchaseList.html")
     Call<ResponseData> syncPurchaseData(@Body JsonObject requestData);
+
+    @POST("mobile/addCards.html")
+    Call<ResponseData> createCard(@Body CardJson cardJson);
+
+    @POST("mobile/removeCards.html")
+    Call<ResponseData> removeCard(@Body CardJson cardJson);
+
+    @POST("mobile/getCardList.html")
+    Call<ResponseData> getCardList(@Body TokenJson tokenJson);
 }

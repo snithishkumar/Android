@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/lightgrey">
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/save_card_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="MY CARDS"
@@ -14,17 +14,17 @@
         android:layout_margin="20dp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+            android:id="@+id/save_card_list"
             android:name="co.in.mobilepay.view.fragments.PaymentCardFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            android:layout_below="@+id/header"
-            tools:context="co.in.mobilepay.view.fragments.PaymentCardFragment"
-            tools:listitem="@layout/fragment_paymentcard"
-            android:layout_above="@+id/add_card"/>
+            android:layout_below="@+id/save_card_header"
+            tools:context=".view.fragments.SaveCardsFragment"
+            tools:listitem="@layout/adapt_save_card_list"
+            android:layout_above="@+id/save_card_create"/>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_card"
+        android:id="@+id/save_card_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
