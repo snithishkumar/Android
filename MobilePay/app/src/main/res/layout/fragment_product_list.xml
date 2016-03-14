@@ -9,6 +9,7 @@
         android:id="@+id/shop_details_layout"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:onClick="viewShopDetails"
         android:background="@color/lightgrey">
         <TextView
             android:id="@+id/shop_name"

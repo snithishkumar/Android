@@ -21,7 +21,6 @@ import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
-import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
@@ -50,11 +49,11 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         try{
             purchaseService = new PurchaseServiceImpl(this);
 
-            Account account = MobilePaySyncAdapter.getSyncAccount(this);
+            /*Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
             ContentResolver.addPeriodicSync(account, getString(R.string.auth_type), Bundle.EMPTY, 60);
-            cardService = new CardServiceImpl(this);
+            cardService = new CardServiceImpl(this);*/
         }catch (Exception e){
             e.printStackTrace();
 
