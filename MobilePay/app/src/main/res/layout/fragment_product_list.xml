@@ -97,6 +97,7 @@
             android:layout_height="wrap_content"
             app:fabSize="mini"
             android:layout_marginRight="20dp"
+            android:onClick=""
             android:src="@mipmap/buy"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>

@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
+import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 
 /**
@@ -49,6 +51,11 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         purchaseIdArgs.putInt("purchaseId",purchaseId);
         productsDetailsFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.addFragment(this, productsDetailsFragment, R.id.pur_details_main_container);
+    }
+
+    public void showFabIcon(View view){
+        ProductsDetailsFabFragment productsDetailsFabFragment = new ProductsDetailsFabFragment();
+        FragmentsUtil.addFragment(this, productsDetailsFabFragment, R.id.pur_details_fab_container);
     }
 
     @Override

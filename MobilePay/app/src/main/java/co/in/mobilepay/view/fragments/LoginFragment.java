@@ -10,11 +10,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +46,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
     private MainActivity mainActivity;
     private MainActivityCallback mainActivityCallback;
     ProgressDialog progressDialog = null;
+
+    private String token = null;
 
 
    public LoginFragment(){
@@ -147,6 +153,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
     }
 
     private void init( View view){
+        try{
+            InstanceID instanceID = InstanceID.getInstance(mainActivity);
+            token = instanceID.getToken(getString(R.string.google_cloud_id),
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+        }catch (Exception e){
+            Log.e("Error","Error  in GoogleCloudMessaging",e);
+        }
         Button zero = (Button)   view.findViewById(R.id.log_zero);
         Button one = (Button)  view.findViewById(R.id.log_one);
         Button two = (Button)  view.findViewById(R.id.log_two);

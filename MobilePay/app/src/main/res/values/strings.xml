@@ -16,7 +16,9 @@
     <string name="title_activity_purchase">PurchaseActivity</string>
     <string name="title_activity_new_savecard">NewCardActivity</string>
 
-    <!-- Account Details -->
+    <string name="google_cloud_id">207427538099</string>
+    <!-- //AIzaSyBuFk_OddMviHfKLK7eilEw3P5v0KEG7tc -->
+       <!-- Account Details -->
 
     <string name="auth_type">co.in.mobilepay.sync</string>
     <string name="content_authority">co.in.mobilepay.sync</string>
