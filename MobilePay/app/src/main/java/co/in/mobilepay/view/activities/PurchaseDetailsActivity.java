@@ -9,11 +9,11 @@ import android.view.View;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.PurchaseService;
-import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
+import co.in.mobilepay.view.fragments.ShopDetailsFragment;
 
 /**
  * Created by Nithish on 09-03-2016.
@@ -82,5 +82,14 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
 
     public PurchaseService getPurchaseService() {
         return purchaseService;
+    }
+
+    /**
+     * view shop details
+     * @param view
+     */
+    public void viewShopDetails(View view){
+        ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
+        FragmentsUtil.replaceFragment(this,shopDetailsFragment,R.id.pur_details_main_container);
     }
 }
