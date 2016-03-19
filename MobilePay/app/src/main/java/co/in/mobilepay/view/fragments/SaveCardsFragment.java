@@ -18,16 +18,13 @@ import com.squareup.otto.Subscribe;
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.CardJson;
-import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
-import co.in.mobilepay.view.PurchaseModel;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
-import co.in.mobilepay.view.activities.MainActivity;
+import co.in.mobilepay.view.adapters.SaveCardsAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

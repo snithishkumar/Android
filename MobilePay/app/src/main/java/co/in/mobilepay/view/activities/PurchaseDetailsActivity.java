@@ -8,9 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
+import co.in.mobilepay.view.fragments.PaymentFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.ShopDetailsFragment;
@@ -22,6 +25,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
 
     ProductsDetailsFragment productsDetailsFragment = null;
     PurchaseService purchaseService = null;
+    CardService cardService = null;
 
     private int purchaseId = 0;
     @Override
@@ -39,6 +43,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         try{
             purchaseId = getIntent().getIntExtra("purchaseId",0);
             purchaseService = new PurchaseServiceImpl(this);
+            cardService = new CardServiceImpl(this);
         }catch (Exception e){
             Log.e("Error", "Error in init", e);
         }
@@ -53,10 +58,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         FragmentsUtil.addFragment(this, productsDetailsFragment, R.id.pur_details_main_container);
     }
 
-    public void showFabIcon(View view){
-        ProductsDetailsFabFragment productsDetailsFabFragment = new ProductsDetailsFabFragment();
-        FragmentsUtil.addFragment(this, productsDetailsFabFragment, R.id.pur_details_fab_container);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,6 +86,10 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         return purchaseService;
     }
 
+    public CardService getCardService() {
+        return cardService;
+    }
+
     /**
      * view shop details
      * @param view
@@ -94,5 +100,23 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         purchaseIdArgs.putInt("purchaseId",purchaseId);
         shopDetailsFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.replaceFragment(this,shopDetailsFragment,R.id.pur_details_main_container);
+    }
+
+    /**
+     * Show FAB buttons
+     * @param view
+     */
+    public void showFabIcon(View view){
+        ProductsDetailsFabFragment productsDetailsFabFragment = new ProductsDetailsFabFragment();
+        FragmentsUtil.addFragment(this, productsDetailsFabFragment, R.id.pur_details_fab_container);
+    }
+
+    public void showPaymentFragment(View view){
+        FragmentsUtil.removeFragment(this, R.id.pur_details_fab_container);
+        PaymentFragment paymentFragment = new PaymentFragment();
+        Bundle purchaseIdArgs = new Bundle();
+        purchaseIdArgs.putInt("purchaseId",purchaseId);
+        paymentFragment.setArguments(purchaseIdArgs);
+        FragmentsUtil.replaceFragment(this, paymentFragment, R.id.pur_details_main_container);
     }
 }

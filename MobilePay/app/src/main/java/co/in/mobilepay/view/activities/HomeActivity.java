@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void init(){
         try{
             purchaseService = new PurchaseServiceImpl(this);
-
+            cardService = new CardServiceImpl(this);
             /*Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);

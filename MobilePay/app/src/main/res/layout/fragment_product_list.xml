@@ -59,7 +59,7 @@
             android:layout_margin="10dp"
             android:text="Date:10-Mar-2016 05:20:30 PM"/>
         <ImageView
-            android:id="@+id/arrow"
+            android:id="@+id/pay_save_card_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             app:fabSize="mini"
             android:layout_marginRight="20dp"
-            android:onClick=""
+            android:onClick="showFabIcon"
             android:src="@mipmap/buy"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"/>

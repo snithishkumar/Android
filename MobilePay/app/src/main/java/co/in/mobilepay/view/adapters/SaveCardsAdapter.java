@@ -1,4 +1,4 @@
-package co.in.mobilepay.view.fragments;
+package co.in.mobilepay.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.PurchaseModel;
+import co.in.mobilepay.view.fragments.SaveCardsFragment;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link PurchaseModel} and makes a call to the
@@ -71,8 +72,8 @@ public class SaveCardsAdapter extends RecyclerView.Adapter<SaveCardsAdapter.Save
         public SaveCardViewHolder(View view) {
             super(view);
             mView = view;
-            cardNumber = (TextView)view.findViewById(R.id.save_card_no);
-            cardType =  (ImageView)view.findViewById(R.id.save_card_type);
+            cardNumber = (TextView)view.findViewById(R.id.pay_save_card_no);
+            cardType =  (ImageView)view.findViewById(R.id.pay_save_card_type);
 
         }
 
