@@ -61,8 +61,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
-        MobilePayBus.getInstance().post("Tst");
-       // syncPurchaseData();
+       // MobilePayBus.getInstance().post("Tst");
+        syncPurchaseData();
     }
 
 

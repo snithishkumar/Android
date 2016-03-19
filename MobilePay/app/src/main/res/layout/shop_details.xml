@@ -7,6 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Shop Details"
+        android:layout_gravity="center"
         android:layout_margin="20dp"
         android:textColor="@color/colorAccent"/>
     <LinearLayout
@@ -27,19 +28,38 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textColor="@android:color/darker_gray"
-            android:text="Shop Name"/>
+            android:text="Shop Name :"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textColor="@android:color/darker_gray"
-            android:text="Address"/>
+            android:text="Area :"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:textColor="@android:color/darker_gray"
-            android:text="Phone No"/>
+            android:text="Category :"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Mobile No :"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Land Line :"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Address :"/>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,20 +71,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:id="@+id/shop_details_name"
             android:textColor="@android:color/black"
             android:text="Shop Name"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:id="@+id/shop_details_area"
             android:textColor="@android:color/black"
-            android:text="Address"/>
+            android:text="Shop Name"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:id="@+id/shop_details_category"
+            android:textColor="@android:color/black"
+            android:text="Shop Name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_details_phone"
+            android:layout_margin="20dp"
             android:textColor="@android:color/black"
             android:text="Phone No"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_details_land"
+            android:layout_margin="20dp"
+            android:textColor="@android:color/black"
+            android:text="Phone No"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:id="@+id/shop_details_address"
+            android:textColor="@android:color/black"
+            android:text="Address"/>
+
     </LinearLayout>
         </LinearLayout>
     </LinearLayout>

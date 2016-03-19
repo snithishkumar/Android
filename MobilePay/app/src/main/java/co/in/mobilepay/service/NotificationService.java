@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.service;
 
 import android.app.NotificationManager;
@@ -16,9 +17,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import co.in.mobilepay.R;
 import co.in.mobilepay.view.activities.HomeActivity;
 
+*/
 /**
  * Created by Nithish on 15-03-2016.
- */
+ *//*
+
 public class NotificationService extends GcmListenerService {
     private final static AtomicInteger atomicInteger = new AtomicInteger(0);
 
@@ -29,7 +32,9 @@ public class NotificationService extends GcmListenerService {
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(Long.toString(System.currentTimeMillis()));
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 */
+/* Request code *//*
+, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -43,6 +48,9 @@ public class NotificationService extends GcmListenerService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(atomicInteger.incrementAndGet() /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(atomicInteger.incrementAndGet() */
+/* ID of notification *//*
+, notificationBuilder.build());
     }
 }
+*/

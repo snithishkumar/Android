@@ -90,6 +90,9 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
      */
     public void viewShopDetails(View view){
         ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
+        Bundle purchaseIdArgs = new Bundle();
+        purchaseIdArgs.putInt("purchaseId",purchaseId);
+        shopDetailsFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.replaceFragment(this,shopDetailsFragment,R.id.pur_details_main_container);
     }
 }
