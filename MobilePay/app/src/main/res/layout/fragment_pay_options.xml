@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total amount of"
+            android:text="Total amount"
             android:layout_margin="20dp"
             android:layout_gravity="center_horizontal"
             android:textSize="20sp"
@@ -65,7 +65,7 @@
         tools:listitem="@layout/adapt_pay_save_card_list"
         android:layout_above="@+id/save_card_create"/>
 
-        <android.support.v7.widget.CardView
+     <!--   <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -100,7 +100,7 @@
                     android:textColor="@android:color/darker_gray"
                     android:text="Debit Card / Credit Card"/>
             </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -109,8 +109,12 @@
             android:layout_margin="20dp"/>
         <Spinner
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="match_parent"
+            android:dropDownWidth="fill_parent"
+            android:background="@android:color/white"
             android:layout_marginLeft="10dp"
+            android:entries="@array/bank_list"
+            android:prompt="@string/bank_prompt"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"></Spinner>
     </LinearLayout>

@@ -3,6 +3,8 @@ package co.in.mobilepay.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,8 +66,58 @@ public class NewCardFragment extends Fragment implements View.OnClickListener{
         creditCard =  (RadioButton)view.findViewById(R.id.save_new_card_credit);
         debitCard = (RadioButton)view.findViewById(R.id.save_new_card_debit);
         cardNo = (EditText)view.findViewById(R.id.save_new_card_no);
+        cardNo.addTextChangedListener(new TextWatcher() {
+            int len=0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String str = cardNo.getText().toString();
+                len = str.length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+if(len < s.length()){
+    switch (s.length()){
+        case 4:
+        case 9:
+        case 14:
+            s.append("-");
+            break;
+    }
+}
+
+
+            }
+        });
         cardName =  (EditText)view.findViewById(R.id.save_new_card_name);
         cardExpiry =  (EditText)view.findViewById(R.id.save_new_card_expiry);
+        cardExpiry.addTextChangedListener(new TextWatcher() {
+            int len = 0;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String str = cardExpiry.getText().toString();
+                len = str.length();
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(len < s.length()){
+                    if(s.length() == 2){
+                        s.append("/");
+                    }
+                }
+            }
+        });
         Button button = (Button) view.findViewById(R.id.save_new_card_submit);
         button.setOnClickListener(this);
     }

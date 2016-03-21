@@ -18,6 +18,7 @@ import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
@@ -68,7 +69,7 @@ public class PaymentFragment extends Fragment {
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
         }
         View view = inflater.inflate(R.layout.fragment_pay_options, container, false);
-
+        initView(view);
         recyclerView = (RecyclerView) view.findViewById(R.id.pay_save_card_list);
         boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
         if(isNet){
@@ -88,8 +89,11 @@ public class PaymentFragment extends Fragment {
      * @param view
      */
     private void initView(View view){
+        PurchaseEntity purchaseEntity = purchaseDetailsActivity.getPurchaseService().getPurchaseDetails(purchaseId);
         totalAmount   = (TextView) view.findViewById(R.id.pay_total_amt);
+        totalAmount.setText( getResources().getString(R.string.indian_rupee_symbol)+purchaseEntity.getPayableAmount());
         shopName =  (TextView) view.findViewById(R.id.pay_shop_name);
+        shopName.setText("For "+purchaseEntity.getMerchantEntity().getMerchantName());
     }
 
     @Override
@@ -109,6 +113,9 @@ public class PaymentFragment extends Fragment {
             String cardDetails = responseData.getData();
             List<CardJson> cardJsonList =  gson.fromJson(cardDetails, new TypeToken<List<CardJson>>() {
             }.getType());
+            CardJson cardJson = new CardJson();
+            cardJson.setCardGuid("");
+            cardJsonList.add(cardJson);
             recyclerView.setAdapter(new PaySaveCardsAdapter(cardJsonList,this));
         }
 

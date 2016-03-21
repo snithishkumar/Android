@@ -22,4 +22,18 @@
 
     <string name="auth_type">co.in.mobilepay.sync</string>
     <string name="content_authority">co.in.mobilepay.sync</string>
+    
+    <string name="bank_prompt">Choose a Country</string>
+    <string-array name="bank_list">
+        <item>ICICI Bank</item>
+        <item>SBI Bank</item>
+        <item>HDFC Bank</item>
+        <item>Indian Bank</item>
+        <item>City Bank</item>
+        <item>Kotak Bank</item>
+        <item>Ing Bank</item>
+        <item>KVB Bank</item>
+    </string-array>
+
+    <string name="indian_rupee_symbol">\u20B9</string>
 </resources>

@@ -1,5 +1,6 @@
 package co.in.mobilepay.view.adapters;
 
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,28 +42,36 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
 
     @Override
     public void onBindViewHolder(final PaySaveCardViewHolder holder, final int position) {
-        final CardJson cardJson =  cardJsonList.get(position);
-        CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
-        holder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
-        holder.arrow.setImageResource(R.mipmap.arrow_down);
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(selectedPos == position){
-                    holder.arrow.setImageResource(R.mipmap.arrow_down);
-                    holder.cardCvv.setVisibility(View.GONE);
-                    holder.fab.setVisibility(View.GONE);
-                    selectedPos = -1;
-                }else{
-                    holder.arrow.setImageResource(R.mipmap.arrow_up);
-                    holder.cardCvv.setVisibility(View.VISIBLE);
-                    holder.fab.setVisibility(View.VISIBLE);
-                    selectedPos = position;
+        if(position  <= (cardJsonList.size() - 2)){
+            final CardJson cardJson =  cardJsonList.get(position);
+            CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
+            holder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
+            holder.arrow.setImageResource(R.mipmap.arrow_down);
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(selectedPos == position){
+                        holder.arrow.setImageResource(R.mipmap.arrow_down);
+                        holder.cardCvv.setVisibility(View.GONE);
+                        holder.fab.setVisibility(View.GONE);
+                        selectedPos = -1;
+                    }else{
+                        holder.arrow.setImageResource(R.mipmap.arrow_up);
+                        holder.cardCvv.setVisibility(View.VISIBLE);
+                        holder.fab.setVisibility(View.VISIBLE);
+                        selectedPos = position;
+                    }
+
+
                 }
+            });
+        }else{
+            holder.arrow.setVisibility(View.GONE);
+            holder.cardNumber.setText("New Card");
+            holder.cardNumber.setTextColor(Color.BLACK);
+            holder.cardText.setText("Debit card / Credit Card");
+        }
 
-
-            }
-        });
 
 
     }
@@ -80,6 +89,7 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
         private ImageView arrow;
         private EditText cardCvv;
         private FloatingActionButton fab;
+        private TextView cardText ;
 
 
         public PaySaveCardViewHolder(View view) {
@@ -90,6 +100,8 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
             arrow =  (ImageView)view.findViewById(R.id.pay_save_card_arrow);
             cardCvv =  (EditText)view.findViewById(R.id.pay_save_card_cvv);
             fab = (FloatingActionButton)view.findViewById(R.id.pay_save_card_submit);
+            cardText = (TextView)view.findViewById(R.id.pay_save_card_text);
+
         }
 
         @Override

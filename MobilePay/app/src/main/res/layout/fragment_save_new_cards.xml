@@ -58,10 +58,11 @@
                     android:id="@+id/save_new_card_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
+                    android:inputType="phone"
                     android:background="@drawable/grey_rectangle_border"
+                    android:maxLength="19"
                     android:drawableRight="@mipmap/master_card"
-                    android:hint="xxxx xxxx xxxx xxxx" />
+                    android:hint="xxxx-xxxx-xxxx-xxxx" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,7 +86,8 @@
                 <EditText
                     android:id="@+id/save_new_card_expiry"
                     android:layout_width="match_parent"
-                    android:inputType="number"
+                    android:inputType="phone"
+                    android:maxLength="5"
                     android:layout_height="wrap_content"
                     android:background="@drawable/grey_rectangle_border"
                     android:hint="MM/YY" />
