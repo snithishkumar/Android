@@ -1,5 +1,7 @@
 package co.in.mobilepay.view.adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +18,7 @@ import java.util.List;
 import co.in.mobilepay.R;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
+import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.fragments.PaymentFragment;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
 
@@ -27,8 +30,10 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
     List<CardJson> cardJsonList = new ArrayList<>();
     PaymentFragment paymentFragment;
     private int selectedPos = -1;
+    private Activity activity;
 
-    public PaySaveCardsAdapter(List<CardJson> cardJsonList,PaymentFragment paymentFragment) {
+    public PaySaveCardsAdapter(Activity activity,List<CardJson> cardJsonList,PaymentFragment paymentFragment) {
+        this.activity = activity;
         this.cardJsonList = cardJsonList;
         this.paymentFragment = paymentFragment;
     }
@@ -70,6 +75,16 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
             holder.cardNumber.setText("New Card");
             holder.cardNumber.setTextColor(Color.BLACK);
             holder.cardText.setText("Debit card / Credit Card");
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseDetailsActivity purchaseDetailsActivity =  (PurchaseDetailsActivity)activity;
+                    purchaseDetailsActivity.payment();
+                    return;
+
+
+                }
+            });
         }
 
 
@@ -118,5 +133,9 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
             return  cardNumber.substring(posAt+1,totalSize);
         }
         return "xxxx";
+    }
+
+    public interface PaySaveCardsCallback{
+        void  payment();
     }
 }

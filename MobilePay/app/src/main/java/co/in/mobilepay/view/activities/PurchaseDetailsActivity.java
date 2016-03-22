@@ -12,7 +12,9 @@ import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
+import co.in.mobilepay.view.adapters.PaySaveCardsAdapter;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
+import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.PaymentFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
@@ -21,7 +23,7 @@ import co.in.mobilepay.view.fragments.ShopDetailsFragment;
 /**
  * Created by Nithish on 09-03-2016.
  */
-public class PurchaseDetailsActivity extends AppCompatActivity {
+public class PurchaseDetailsActivity extends AppCompatActivity implements PaySaveCardsAdapter.PaySaveCardsCallback{
 
     ProductsDetailsFragment productsDetailsFragment = null;
     PurchaseService purchaseService = null;
@@ -118,5 +120,14 @@ public class PurchaseDetailsActivity extends AppCompatActivity {
         purchaseIdArgs.putInt("purchaseId",purchaseId);
         paymentFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.replaceFragment(this, paymentFragment, R.id.pur_details_main_container);
+    }
+
+    @Override
+    public void payment() {
+        NewCardFragment newCardFragment = new NewCardFragment();
+        Bundle purchaseIdArgs = new Bundle();
+        purchaseIdArgs.putInt("purchaseId",purchaseId);
+        newCardFragment.setArguments(purchaseIdArgs);
+        FragmentsUtil.replaceFragment(this, newCardFragment, R.id.pur_details_main_container);
     }
 }

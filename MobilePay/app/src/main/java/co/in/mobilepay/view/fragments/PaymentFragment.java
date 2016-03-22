@@ -116,7 +116,7 @@ public class PaymentFragment extends Fragment {
             CardJson cardJson = new CardJson();
             cardJson.setCardGuid("");
             cardJsonList.add(cardJson);
-            recyclerView.setAdapter(new PaySaveCardsAdapter(cardJsonList,this));
+            recyclerView.setAdapter(new PaySaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this));
         }
 
     }

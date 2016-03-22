@@ -17,13 +17,12 @@ import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
-import co.in.mobilepay.view.fragments.NewCardFragment;
-import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
+import co.in.mobilepay.view.fragments.SaveNewCardFragment;
 
 /**
  * Created by Nithish on 13-03-2016.
  */
-public class NewSaveCardActivity extends AppCompatActivity implements NewCardFragment.NewSaveCardActivityCallback{
+public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCardFragment.NewSaveCardActivityCallback{
 
     private CardService cardService;
     private ProgressDialog progressDialog;
@@ -50,8 +49,8 @@ public class NewSaveCardActivity extends AppCompatActivity implements NewCardFra
 
 
     private void showFragment(){
-        NewCardFragment newCardFragment = new NewCardFragment();
-        FragmentsUtil.addFragment(this,newCardFragment,R.id.save_new_card_container);
+        SaveNewCardFragment saveNewCardFragment = new SaveNewCardFragment();
+        FragmentsUtil.addFragment(this, saveNewCardFragment,R.id.save_new_card_container);
     }
 
 

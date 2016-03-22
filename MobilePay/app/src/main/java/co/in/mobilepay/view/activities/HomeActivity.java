@@ -1,7 +1,5 @@
 package co.in.mobilepay.view.activities;
 
-import android.accounts.Account;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -22,7 +20,6 @@ import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
-import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;

@@ -10,6 +10,7 @@ public class CardDetailsJson {
     private String name;
     private String expiryDate;
     private CardType cardType;
+    private String cardCvv;
 
     public String getNumber() {
         return number;
@@ -41,6 +42,14 @@ public class CardDetailsJson {
 
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
+    }
+
+    public String getCardCvv() {
+        return cardCvv;
+    }
+
+    public void setCardCvv(String cardCvv) {
+        this.cardCvv = cardCvv;
     }
 
     @Override

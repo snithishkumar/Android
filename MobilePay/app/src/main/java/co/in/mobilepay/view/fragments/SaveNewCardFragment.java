@@ -1,5 +1,6 @@
 package co.in.mobilepay.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -15,22 +16,33 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.enumeration.PaymentType;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
+import co.in.mobilepay.view.activities.NewSaveCardActivity;
 
 /**
- * Created by Nithishkumar on 3/22/2016.
+ * A fragment representing a list of Items.
+ * <p/>
+ *
  */
-public class NewCardFragment extends Fragment implements View.OnClickListener {
+public class SaveNewCardFragment extends Fragment implements View.OnClickListener{
+
 
     private RadioButton creditCard = null;
     private RadioButton debitCard = null;
     private EditText cardNo = null;
     private EditText cardName = null;
     private EditText cardExpiry = null;
-    private EditText cardCvv = null;
+
+    private NewSaveCardActivity newSaveCardActivity = null;
+    private NewSaveCardActivityCallback newSaveCardActivityCallback = null;
+
+    //private
 
 
-    public NewCardFragment(){
-
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public SaveNewCardFragment() {
     }
 
 
@@ -42,7 +54,7 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pay_new_cards, container, false);
+        View view = inflater.inflate(R.layout.fragment_save_new_cards, container, false);
         initView(view);
         return view;
     }
@@ -68,15 +80,15 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(len < s.length()){
-                    switch (s.length()){
-                        case 4:
-                        case 9:
-                        case 14:
-                            s.append("-");
-                            break;
-                    }
-                }
+if(len < s.length()){
+    switch (s.length()){
+        case 4:
+        case 9:
+        case 14:
+            s.append("-");
+            break;
+    }
+}
 
 
             }
@@ -105,10 +117,21 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        cardCvv =  (EditText)view.findViewById(R.id.pay_new_card_cvv);
-
         Button button = (Button) view.findViewById(R.id.pay_new_card_submit);
         button.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        newSaveCardActivityCallback = (NewSaveCardActivity)context;
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
 
@@ -149,16 +172,14 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
             count *= 2;
         }
 
-        if(cardCvv.getText().toString() == null || cardCvv.getText().toString().isEmpty() ){
-            cardCvv.setError("Please Enter Card CVV");
-        }else{
-            cardDetailsJson.setCardCvv(cardCvv.getText().toString());
-            count *= 2;
+        if(count == 16){
+            newSaveCardActivityCallback.success(0,cardJson);
         }
 
-        if(count == 32){
-            //newSaveCardActivityCallback.success(0,cardJson);
-        }
+    }
 
+
+    public  interface NewSaveCardActivityCallback {
+        void success(int code,Object data);
     }
 }
