@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -44,6 +45,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
     private MainActivity mainActivity;
     private MainActivityCallback mainActivityCallback;
     ProgressDialog progressDialog = null;
+    private Activity activity = null;
 
     private String token = null;
 
@@ -55,6 +57,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        activity = getActivity();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         init(view);
         return view;
@@ -244,5 +248,11 @@ switch (statusCode){
 
     public  interface MainActivityCallback {
         void success(int code,Object data);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     }
 }

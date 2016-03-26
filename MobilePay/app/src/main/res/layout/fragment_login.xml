@@ -64,47 +64,16 @@
             android:text="."/>
 
     </LinearLayout>
-
-    <RelativeLayout
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:overScrollMode="never"
+    android:scrollbars="none">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
-        <TextView
-            android:id="@+id/log_center"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_centerInParent="true"/>
-        <RelativeLayout
-            android:id="@+id/log_second_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/log_center"
-            android:layout_margin="10dp">
-            <Button
-                android:id="@+id/log_four"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                style="@style/key_style"
-                android:text="4"
-                android:layout_margin="20dp"
-                android:layout_toLeftOf="@+id/log_five"/>
-            <Button
-                android:id="@+id/log_five"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                style="@style/key_style"
-                android:text="5"
-                android:layout_margin="20dp"
-                android:layout_centerHorizontal="true"/>
-            <Button
-                android:id="@+id/log_six"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                style="@style/key_style"
-                android:text="6"
-                android:layout_margin="20dp"
-                android:layout_toRightOf="@+id/log_five"/>
-        </RelativeLayout>
+        android:orientation="vertical">
         <RelativeLayout
             android:id="@+id/log_first_layout"
             android:layout_width="match_parent"
@@ -137,6 +106,37 @@
                 android:layout_toRightOf="@+id/log_two"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/log_second_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/log_center"
+            android:layout_margin="10dp">
+            <Button
+                android:id="@+id/log_four"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="4"
+                android:layout_margin="20dp"
+                android:layout_toLeftOf="@+id/log_five"/>
+            <Button
+                android:id="@+id/log_five"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="5"
+                android:layout_margin="20dp"
+                android:layout_centerHorizontal="true"/>
+            <Button
+                android:id="@+id/log_six"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                style="@style/key_style"
+                android:text="6"
+                android:layout_margin="20dp"
+                android:layout_toRightOf="@+id/log_five"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/log_third_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -167,7 +167,6 @@
                 android:layout_margin="20dp"
                 android:layout_toRightOf="@+id/log_eight"/>
         </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/log_fourth_layout"
             android:layout_width="match_parent"
@@ -199,7 +198,7 @@
                 android:layout_margin="20dp"
                 android:layout_toRightOf="@+id/log_zero"/>
         </RelativeLayout>
-        </RelativeLayout>
-
+        </LinearLayout>
+</ScrollView>
 
 </LinearLayout>
