@@ -6,8 +6,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,16 +23,19 @@ import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
+import co.in.mobilepay.view.fragments.FragmentDrawer;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
-public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners{
+public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners,FragmentDrawer.FragmentDrawerListener{
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
 
     private PurchaseService purchaseService;
     private CardService cardService;
+    private Toolbar mToolbar;
+    private FragmentDrawer drawerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,15 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        drawerFragment = (FragmentDrawer)
+                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout), mToolbar);
+        drawerFragment.setDrawerListener(this);
     }
 
     private void init(){
@@ -135,5 +150,40 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
 
     public CardService getCardService() {
         return cardService;
+    }
+
+    @Override
+    public void onDrawerItemSelected(View view, int position) {
+        displayView(position);
+    }
+    private void displayView(int position) {
+        Fragment fragment = null;
+        String title = getString(R.string.app_name);
+        switch (position) {
+            case 0:
+                /*fragment = new HomeFragment();
+                title = getString(R.string.title_home);*/
+                break;
+            case 1:
+                /*fragment = new FriendsFragment();
+                title = getString(R.string.title_friends);*/
+                break;
+            case 2:
+                /*fragment = new MessagesFragment();
+                title = getString(R.string.title_messages);*/
+                break;
+            default:
+                break;
+        }
+
+        /*if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.commit();
+
+            // set the toolbar title
+            getSupportActionBar().setTitle(title);
+        }*/
     }
 }
