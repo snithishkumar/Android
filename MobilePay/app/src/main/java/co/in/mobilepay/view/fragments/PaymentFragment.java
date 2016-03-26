@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -116,6 +118,8 @@ public class PaymentFragment extends Fragment {
             CardJson cardJson = new CardJson();
             cardJson.setCardGuid("");
             cardJsonList.add(cardJson);
+            int size = (80*cardJsonList.size())+80;
+            refreshListviewHeight(size);
             recyclerView.setAdapter(new PaySaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this));
         }
 
@@ -139,6 +143,10 @@ public class PaymentFragment extends Fragment {
         super.onAttach(context);
         this.purchaseDetailsActivity = (PurchaseDetailsActivity)context;
     }
-
+    public void refreshListviewHeight(int size){
+        LinearLayout.LayoutParams lp =
+                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, size);
+        recyclerView.setLayoutParams(lp);
+    }
 
 }

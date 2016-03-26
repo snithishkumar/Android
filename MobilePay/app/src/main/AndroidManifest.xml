@@ -91,6 +91,7 @@
             android:name=".view.activities.PurchaseDetailsActivity"
             android:label="@string/title_activity_purchase"
             android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
         <activity

@@ -9,6 +9,7 @@ public class CardJson extends  TokenJson{
 	private String createdDateTime;
 	private CardDetailsJson cardDetails;
 	private PaymentType paymentType;
+	private boolean isExpanded = false;
 
 	public String getCardGuid() {
 		return cardGuid;
@@ -45,6 +46,14 @@ public class CardJson extends  TokenJson{
 		this.paymentType = paymentType;
 	}
 
+	public boolean isExpanded() {
+		return isExpanded;
+	}
+
+	public void setIsExpanded(boolean isExpanded) {
+		this.isExpanded = isExpanded;
+	}
+
 	@Override
 	public String toString() {
 		return "CardJson{" +
@@ -52,6 +61,7 @@ public class CardJson extends  TokenJson{
 				", createdDateTime='" + createdDateTime + '\'' +
 				", cardDetails=" + cardDetails +
 				", paymentType=" + paymentType +
+				", isExpanded=" + isExpanded +
 				'}';
 	}
 }

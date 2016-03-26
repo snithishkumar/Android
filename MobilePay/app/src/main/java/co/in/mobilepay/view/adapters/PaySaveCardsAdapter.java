@@ -60,13 +60,15 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
                         holder.cardCvv.setVisibility(View.GONE);
                         holder.fab.setVisibility(View.GONE);
                         selectedPos = -1;
+                        cardJson.setIsExpanded(false);
                     }else{
                         holder.arrow.setImageResource(R.mipmap.arrow_up);
                         holder.cardCvv.setVisibility(View.VISIBLE);
                         holder.fab.setVisibility(View.VISIBLE);
                         selectedPos = position;
+                        cardJson.setIsExpanded(true);
                     }
-
+                    refreshListviewHeight();
 
                 }
             });
@@ -137,5 +139,16 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
 
     public interface PaySaveCardsCallback{
         void  payment();
+    }
+    public void refreshListviewHeight(){
+        int size = 80;
+        for(CardJson cardJson : cardJsonList){
+            if(cardJson.isExpanded()){
+                size += 135;
+            }else{
+                size += 80;
+            }
+        }
+        paymentFragment.refreshListviewHeight(size);
     }
 }
