@@ -18,13 +18,15 @@ public class PurchaseModel {
     private String totalAmount;
 
     public PurchaseModel(PurchaseEntity purchaseEntity){
+        this.dateTime = String.valueOf(purchaseEntity.getPurchaseDateTime());
+        this.category = purchaseEntity.getCategory();
+        this.billNumber = String.valueOf(purchaseEntity.getBillNumber());
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
         this.totalAmount = purchaseEntity.getPayableAmount();
-      //  this.area = purchaseEntity.getMerchantEntity().getArea();
-     //   this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
-    //    this.billNumber = String.valueOf(purchaseEntity.getBillNumber());
-        this.category = purchaseEntity.getCategory();
+        this.area = purchaseEntity.getMerchantEntity().getArea();
+
+
 
     }
 

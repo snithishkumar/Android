@@ -6,7 +6,11 @@ import android.telephony.TelephonyManager;
 import android.util.Base64;
 
 
+import org.joda.time.DateTime;
+
 import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -60,6 +64,27 @@ public class ServiceUtil {
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static String getDateTimeAsString(String dateTime){
+        DateTime date = DateTime.now();
+        int dayOfMonth = date.getDayOfMonth();
+        date = date.withMillis(Long.valueOf(dateTime));
+        int givenDayOfMonth = date.getDayOfMonth();
+        if(dayOfMonth == givenDayOfMonth){
+            return "Today,"+getHours(date.toDate());
+        }
+        return getDayHours(date.toDate());
+    }
+
+    private static String getHours(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        return  simpleDateFormat.format(date);
+    }
+
+    private static String getDayHours(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, MMM dd, hh:mm a");
+        return  simpleDateFormat.format(date);
     }
 
 

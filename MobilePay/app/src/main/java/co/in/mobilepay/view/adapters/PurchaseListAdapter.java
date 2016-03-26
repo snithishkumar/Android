@@ -9,6 +9,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.view.activities.HomeActivity;
+import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 
 /**
@@ -20,10 +23,12 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
 
     private int position;
     PurchaseListClickListeners purchaseListClickListeners;
+    private HomeActivity homeActivity;
 
-    public PurchaseListAdapter( List<PurchaseModel> purchaseModelList,PurchaseListClickListeners purchaseListClickListeners){
+    public PurchaseListAdapter( List<PurchaseModel> purchaseModelList,HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
-        this.purchaseListClickListeners = purchaseListClickListeners;
+        this.homeActivity = homeActivity;
+        this.purchaseListClickListeners = homeActivity;
     }
 
     @Override
@@ -56,22 +61,28 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<PurchaseListAdapte
     public void onBindViewHolder(PurchaseListViewHolder purchaseListViewHolder, int position) {
         this.position = position;
         PurchaseModel purchaseModel =  purchaseModelList.get(position);
-        purchaseListViewHolder.vName.setText(purchaseModel.getName());
-        purchaseListViewHolder.vCategory.setText("Category :"+purchaseModel.getCategory());
-        purchaseListViewHolder.vTotalAmount.setText("Total Amount :"+purchaseModel.getTotalAmount());
+        purchaseListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
+        purchaseListViewHolder.vCategory.setText(purchaseModel.getCategory());
+        purchaseListViewHolder.vBillNumber.setText(purchaseModel.getBillNumber());
+        purchaseListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+        purchaseListViewHolder.vName.setText(purchaseModel.getName()+","+purchaseModel.getArea());
     }
 
     class PurchaseListViewHolder extends RecyclerView.ViewHolder{
-        protected TextView vName;
+        protected TextView vPurchaseDateTime;
         protected TextView vCategory;
+        protected TextView vBillNumber;
         protected TextView vTotalAmount;
+        protected TextView vName;
+
 
         public PurchaseListViewHolder(View view){
             super(view);
-            vName = (TextView) view.findViewById(R.id.pur_lst_name);
+            vPurchaseDateTime = (TextView) view.findViewById(R.id.pur_lst_date);
             vCategory = (TextView) view.findViewById(R.id.pur_lst_category);
+            vBillNumber = (TextView) view.findViewById(R.id.pur_lst_bill_number);
             vTotalAmount = (TextView) view.findViewById(R.id.pur_lst_amount);
-
+            vName = (TextView) view.findViewById(R.id.pur_lst_shop_name);
         }
     }
 
