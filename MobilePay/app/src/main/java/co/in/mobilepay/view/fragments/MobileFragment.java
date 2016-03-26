@@ -55,7 +55,7 @@ public class MobileFragment  extends Fragment implements View.OnClickListener,Ac
             @Override
             public void afterTextChanged(Editable s) {
                 if(s.length() == 10){
-                    otpSubmit.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.colorAccent));
+                    otpSubmit.setBackground(ContextCompat.getDrawable(mainActivity, R.drawable.button));
                     otpSubmit.setTextColor(ContextCompat.getColor(mainActivity, R.color.white));
                 }
             }

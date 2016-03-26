@@ -20,7 +20,7 @@
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:id="@+id/otp_number"
-        android:inputType="number"
+        android:inputType="numberPassword"
         android:hint="@string/enter_otp"/>
     <Button
         android:id="@+id/otp_submit"
@@ -44,6 +44,7 @@
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:enabled="true"
+        android:textColor="@color/white"
         android:background="@drawable/button"
         android:text="@string/resend_otp"/>
 </LinearLayout>
