@@ -4,6 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +28,7 @@ public class MobileFragment  extends Fragment implements View.OnClickListener,Ac
     private TextView mobileNumber = null;
     private String mobile;
     private MainActivity mainActivity = null;
+    private  Button otpSubmit = null;
 
     private MainActivityCallback mainActivityCallback;
 
@@ -35,8 +39,28 @@ public class MobileFragment  extends Fragment implements View.OnClickListener,Ac
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mobile, container, false);
+        otpSubmit = (Button)view.findViewById(R.id.mobile_submit);
         mobileNumber = (TextView) view.findViewById(R.id.mobile_number);
-        Button otpSubmit = (Button)view.findViewById(R.id.mobile_submit);
+        mobileNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() == 10){
+                    otpSubmit.setBackgroundColor(ContextCompat.getColor(mainActivity, R.color.colorAccent));
+                    otpSubmit.setTextColor(ContextCompat.getColor(mainActivity, R.color.white));
+                }
+            }
+        });
+
         otpSubmit.setOnClickListener(this);
         return view;
     }
@@ -47,6 +71,10 @@ public class MobileFragment  extends Fragment implements View.OnClickListener,Ac
          mobile = mobileNumber.getText().toString();
         if(mobile == null || mobile.isEmpty()){
             mobileNumber.setError("Please enter the mobile number.");
+            return;
+        }
+        if(mobile.length() != 10){
+            mobileNumber.setError("Mobile Number must be 10 digits.");
             return;
         }
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
