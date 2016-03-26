@@ -57,6 +57,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
         String optNumberTemp = otpNumber.getText().toString();
         if(optNumberTemp == null || optNumberTemp.isEmpty()){
             otpNumber.setError("Otp Should not be blank");
+            return null;
         }
         return optNumberTemp;
     }
@@ -85,14 +86,17 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
 switch (v.getId()){
     case R.id.otp_submit:
         String otpNumber = getOtpNumber();
-        boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
-        if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-            mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber,this);
+        if(otpNumber != null){
+            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+            if(isNet){
+                progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+                mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber,this);
 
-        }else{
-            ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+            }else{
+                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+            }
         }
+
         break;
     case R.id.otp_resend:
         break;
