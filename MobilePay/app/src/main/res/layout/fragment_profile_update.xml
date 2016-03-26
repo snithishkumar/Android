@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/adapt_pur_his_time"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@mipmap/name_icon" />
+
+            <TextView
+                style="@style/RegisterEdittextmargin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Name" />
+            </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/adapt_pur_his_billno"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="-15dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/adapt_pur_his_time"
+        android:layout_height="wrap_content"
+        android:hint="Nthish" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/adapt_pur_his_billno"
+        android:id="@+id/profile_edit_mobile_text"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/name_icon" />
+
+        <TextView
+            style="@style/RegisterEdittextmargin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Mobile No" />
+    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/profile_edit_mobile_no"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="-15dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/profile_edit_mobile_text"
+        android:layout_height="wrap_content"
+        android:hint="9942320690" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/profile_edit_mobile_no"
+        android:id="@+id/profile_edit_pass_text"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@mipmap/grey_lock" />
+
+        <TextView
+            style="@style/RegisterEdittextmargin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password" />
+    </LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/profile_edit_pass"
+        android:layout_marginLeft="55dp"
+        android:layout_marginTop="-15dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/profile_edit_pass_text"
+        android:layout_height="wrap_content"
+        android:hint="9942320690" />
+
+    </RelativeLayout>
