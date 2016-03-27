@@ -24,6 +24,7 @@ import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.FragmentDrawer;
+import co.in.mobilepay.view.fragments.LuggageListFragment;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
@@ -75,8 +76,8 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new PurchaseListFragment(), "Home");
-        adapter.addFragment(new PurchaseListFragment(), "History");
+        adapter.addFragment(new PurchaseListFragment(), "Purchase");
+        adapter.addFragment(new LuggageListFragment(), "Luggage");
         adapter.addFragment(new SaveCardsFragment(), "Payment");
         viewPager.setAdapter(adapter);
     }

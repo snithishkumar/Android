@@ -6,6 +6,7 @@
     android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
+            android:id="@+id/luggage_pur_date"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="24 March 2016"/>
@@ -44,6 +45,7 @@
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/luggage_pur_bill_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Order id: 0001"
@@ -52,9 +54,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/luggage_pur_shop_name"
                     android:text="Shop: Saravana stores"/>
                 <TextView
                     android:layout_width="wrap_content"
+                    android:id="@+id/luggage_pur_shop_category"
                     android:layout_height="wrap_content"
                     android:text="Category: Shopping"/>
 
@@ -67,6 +71,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
+                    android:id="@+id/luggage_pur_total_amt"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimaryDark"
                     android:text="Rs: 1000"/>
@@ -83,12 +88,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/luggage_pur_status"
             android:text="Luggage: Packing..."
             android:layout_margin="10dp"
             android:layout_below="@+id/seperator"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/luggage_pur_call"
             android:text="CALL"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_alignParentRight="true"
