@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import java.sql.SQLException;
 
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.UserEntity;
@@ -61,7 +62,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
     private void processMobileNoSuccessResponse(ResponseData responseData,String mobileNo,AccountServiceCallback accountServiceCallback){
         int statusCode = responseData.getStatusCode();
-        accountServiceCallback.accountServiceCallback(statusCode,mobileNo);
+        accountServiceCallback.accountServiceCallback(statusCode, mobileNo);
 
     }
 
@@ -98,6 +99,17 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         return false;
     }
 
+
+    @Override
+    public UserEntity getUserDetails(){
+        try{
+            return  userDao.getUser();
+        }catch (Exception e){
+            Log.e("Error","Error in getUserDetails",e);
+        }
+        return null;
+    }
+
     /**
      * Create new user with server communication
      * @param registerJson
@@ -115,6 +127,32 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         AccountCallbackManager accountCallbackManager = new AccountCallbackManager(1,registerJson,accountServiceCallback);
         Call<ResponseData> dataCall =  mobilePayAPI.createUser(regEncryption);
         dataCall.enqueue(accountCallbackManager);
+    }
+
+
+    public void updateUser(RegisterJson registerJson){
+        String registerData = gson.toJson(registerJson);
+        AccountCallbackManager accountCallbackManager = new AccountCallbackManager(5,registerJson,null);
+        Call<ResponseData> dataCall =  mobilePayAPI.updateUser(registerData);
+        dataCall.enqueue(accountCallbackManager);
+    }
+
+    private void processRegUpdateResponse( ResponseData responseData ,RegisterJson registerJson){
+        try{
+            int statusCode = responseData.getStatusCode();
+            if(statusCode == 2){
+                UserEntity userEntity =  userDao.getUser();
+                userEntity.setName(registerJson.getName());
+                userEntity.setMobileNumber(registerJson.getMobileNumber());
+                userDao.updateUser(userEntity);
+            }
+            MobilePayBus.getInstance().post(responseData);
+        }catch (Exception e){
+            Log.e("Error", "Error in processRegSuccessResponse", e);
+            responseData = new ResponseData();
+            responseData.setStatusCode(500);
+            MobilePayBus.getInstance().post(responseData);
+        }
     }
 
     private void processRegSuccessResponse(Response<ResponseData> response,RegisterJson registerJson,AccountServiceCallback accountServiceCallback){
@@ -211,6 +249,10 @@ public class AccountServiceImpl extends BaseService implements AccountService {
                     break;
                 case 4:
                     processMobileNoSuccessResponse(response.body(),(String)data,accountServiceCallback);
+                    break;
+                case 5:
+                    processRegUpdateResponse(response.body(),(RegisterJson)data);
+                    break;
             }
         }
 

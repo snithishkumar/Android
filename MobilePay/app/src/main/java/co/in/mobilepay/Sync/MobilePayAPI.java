@@ -17,6 +17,9 @@ public interface  MobilePayAPI {
     @POST("mobile/register.html")
     Call<ResponseData> createUser(@Body String data);
 
+    @POST("mobile/updateProfile.html")
+    Call<ResponseData> updateUser(@Body String data);
+
     @POST("mobile/otp/validate.html")
     Call<ResponseData> validateOtp(@Body JsonObject jsonObject);
 

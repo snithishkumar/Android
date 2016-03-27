@@ -13,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
- 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.NavigationDrawerAdapter;
 
 
@@ -32,6 +35,10 @@ public class FragmentDrawer extends Fragment {
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
+    private HomeActivity homeActivity;
+
+    private TextView vUserName;
+    private TextView vMobileNumber;
  
     public FragmentDrawer() {
  
@@ -57,20 +64,35 @@ public class FragmentDrawer extends Fragment {
         super.onCreate(savedInstanceState);
  
         // drawer labels
-        titles = getActivity().getResources().getStringArray(R.array.nav_menu);
+        titles = homeActivity.getResources().getStringArray(R.array.nav_menu);
     }
- 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.homeActivity = (HomeActivity)context;
+    }
+
+    private void  loadData(){
+        UserEntity userEntity = homeActivity.getPurchaseService().getUserEntity();
+        vUserName.setText(userEntity.getName());
+        vMobileNumber.setText(userEntity.getMobileNumber());
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
- 
-        adapter = new NavigationDrawerAdapter(getActivity(), getData());
+
+        vUserName =  (TextView)layout.findViewById(R.id.navigation_drawer_name);
+        vMobileNumber = (TextView)layout.findViewById(R.id.navigation_drawer_mobile_no);
+        loadData();
+        adapter = new NavigationDrawerAdapter(homeActivity, getData());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(homeActivity));
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(homeActivity, recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 drawerListener.onDrawerItemSelected(view, position);
@@ -88,19 +110,19 @@ public class FragmentDrawer extends Fragment {
  
  
     public void setUp(int fragmentId, DrawerLayout drawerLayout, final Toolbar toolbar) {
-        containerView = getActivity().findViewById(fragmentId);
+        containerView = homeActivity.findViewById(fragmentId);
         mDrawerLayout = drawerLayout;
-        mDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(homeActivity, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getActivity().invalidateOptionsMenu();
+                homeActivity.invalidateOptionsMenu();
             }
  
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getActivity().invalidateOptionsMenu();
+                homeActivity.invalidateOptionsMenu();
             }
  
             @Override

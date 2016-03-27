@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentTop="true"
-        android:background="#F5F5F5">
+        android:background="@color/colorPrimary">
 
         <ImageView
             android:id="@+id/image"
@@ -19,21 +19,23 @@
             android:layout_marginLeft="30dp"
             android:layout_centerVertical="true" />
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/navigation_drawer_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ramachandran"
             android:layout_toRightOf="@+id/image"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
+            android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="bold"/>
         <TextView
-            android:id="@+id/mobile"
+            android:id="@+id/navigation_drawer_mobile_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             android:text="9952471555"
-            android:layout_below="@+id/name"
+            android:layout_below="@+id/navigation_drawer_name"
             android:layout_toRightOf="@+id/image"
             android:layout_marginLeft="20dp"
             android:textSize="16sp"/>

@@ -1,11 +1,12 @@
 package co.in.mobilepay.json.request;
 
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.json.response.TokenJson;
 
 /**
  * Created by Nithish on 23-01-2016.
  */
-public class RegisterJson {
+public class RegisterJson extends TokenJson{
 
     private String name;
     private String password;

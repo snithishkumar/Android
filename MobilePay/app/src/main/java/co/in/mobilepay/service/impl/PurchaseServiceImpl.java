@@ -14,6 +14,7 @@ import java.util.List;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
+import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.ResponseData;
@@ -49,6 +50,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     private void init()throws SQLException{
         purchaseDao = new PurchaseDaoImpl(context);
         gson = new Gson();
+        userDao = new UserDaoImpl(context);
     }
 
 
@@ -109,7 +111,16 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             thread.start();
            // responseDataCall.
         }catch (Exception e){
-            Log.e("Error","Error in  syncPurchaseData",e);
+            Log.e("Error", "Error in  syncPurchaseData", e);
         }
+    }
+
+    public UserEntity getUserEntity(){
+        try{
+            return userDao.getUser();
+        }catch (Exception e){
+            Log.e("Error","Error in getUserEntity",e);
+        }
+        return null;
     }
 }

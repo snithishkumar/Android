@@ -23,6 +23,7 @@ import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
+import co.in.mobilepay.view.activities.NaviDrawerActivity;
 import co.in.mobilepay.view.adapters.SaveCardsAdapter;
 
 import java.util.List;
@@ -34,7 +35,7 @@ import java.util.List;
  */
 public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnItemLongClickListener{
 
-    private HomeActivity homeActivity;
+    private NaviDrawerActivity naviDrawerActivity;
     private ProgressDialog progressDialog = null;
     private Gson gson = null;
     private  RecyclerView recyclerView = null;
@@ -62,13 +63,13 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_save_card_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.save_card_list);
-        boolean isNet = ServiceUtil.isNetworkConnected(homeActivity);
+        boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
         if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", homeActivity);
-            homeActivity.getCardService().getCardList();
+            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
+            naviDrawerActivity.getCardService().getCardList();
         }else{
 
-            ActivityUtil.showDialog(homeActivity, "No Network", "Check your connection.");
+            ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
         }
 
         return view;
@@ -113,12 +114,12 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.homeActivity = (HomeActivity)context;
+        this.naviDrawerActivity = (NaviDrawerActivity)context;
     }
 
     @Override
     public boolean onItemLongClicked(final String cardGuid) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(homeActivity);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(naviDrawerActivity);
 
         // Setting Dialog Title
         alertDialog.setTitle("Delete");
@@ -148,15 +149,15 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     }
 
     private void removeCard(String cardGuid){
-        boolean isNet = ServiceUtil.isNetworkConnected(homeActivity);
+        boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
         if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", homeActivity);
+            progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", naviDrawerActivity);
             CardJson cardJson = new CardJson();
             cardJson.setCardGuid(cardGuid);
-            homeActivity.getCardService().removeCard(cardJson);
+            naviDrawerActivity.getCardService().removeCard(cardJson);
         }else{
 
-            ActivityUtil.showDialog(homeActivity, "No Network", "Check your connection.");
+            ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
         }
 
     }

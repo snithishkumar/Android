@@ -140,11 +140,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         }
         return true;
     }
-    public void showNewCardFragment(View view){
-        Intent intent = new Intent(this, NewSaveCardActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
 
     public PurchaseService getPurchaseService() {
         return purchaseService;
@@ -163,8 +159,10 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         String title = getString(R.string.app_name);
         switch (position) {
             case 0:
-                /*fragment = new HomeFragment();
-                title = getString(R.string.title_home);*/
+                Intent intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",1);
+                startActivity(intent);
+                finish();
                 break;
             case 1:
                 /*fragment = new FriendsFragment();
@@ -173,6 +171,12 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
             case 2:
                 /*fragment = new MessagesFragment();
                 title = getString(R.string.title_messages);*/
+                break;
+            case 3:
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",3);
+                startActivity(intent);
+                finish();
                 break;
             default:
                 break;
