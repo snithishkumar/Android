@@ -6,6 +6,7 @@ import java.util.List;
 
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.view.model.ProductDetailsModel;
 import co.in.mobilepay.view.model.PurchaseDetailsModel;
 import co.in.mobilepay.view.model.PurchaseModel;
 
@@ -23,4 +24,6 @@ public interface PurchaseService {
     PurchaseEntity getPurchaseDetails(int purchaseId);
 
     UserEntity getUserEntity();
+
+    void updatePurchaseData(PurchaseEntity purchaseEntity,List<ProductDetailsModel> productDetailsModelList);
 }

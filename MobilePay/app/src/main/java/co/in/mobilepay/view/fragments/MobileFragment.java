@@ -74,7 +74,7 @@ public class MobileFragment  extends Fragment implements View.OnClickListener,Ac
             return;
         }
         if(mobile.length() != 10){
-            mobileNumber.setError("Mobile Number must be 10 digits.");
+            mobileNumber.setError("mobile Number must be 10 digits.");
             return;
         }
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);

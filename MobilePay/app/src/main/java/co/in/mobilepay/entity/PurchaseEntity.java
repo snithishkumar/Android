@@ -3,6 +3,7 @@ package co.in.mobilepay.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.json.response.PurchaseJson;
 
 /**
@@ -21,16 +22,17 @@ public class PurchaseEntity {
     public static final String IS_EDITABLE = "isEditable";
     public static final String CATEGORY = "category";
     public static final String IS_DELIVERABLE = "isDeliverable";
-    public static final String UN_MODIFIED_PURCHASE_DATA = "UnModifiedPurchaseData";
-    public static final String UN_MODIFIED_AMOUNT_DATA = "UnModifiedAmountDetails";
     public static final String UPDATED_DATE_TIME = "UpdatedDateTime";
     public static final String MERCHANT_ID = MerchantEntity.MERCHANT_ID;
     public static final String USER_ID = UserEntity.USER_ID;
     public static final String SERVER_DATE_TIME = "ServerDateTime";
 
-    public static final String TOTAL_AMOUNT = "totalAmount";
-    public static final String PAYABLE_AMOUNT = "payableAmount";
-    public static final String IS_DISCARD = "isDiscard";
+    public static final String TOTAL_AMOUNT = "TotalAmount";
+    public static final String PAYABLE_AMOUNT = "PayableAmount";
+    public static final String ORDER_STATUS = "OrderStatus";
+    public static final String DELIVERY_OPTIONS = "DeliveryOptions";
+    public static final String IS_DISCARD = "IsDiscard";
+    public static final String IS_SYNC = "IsSync";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
     private int purchaseId;
@@ -52,10 +54,7 @@ public class PurchaseEntity {
     private boolean isEditable;
     @DatabaseField(columnName = IS_DELIVERABLE)
     private boolean isDeliverable;
-    @DatabaseField(columnName = UN_MODIFIED_PURCHASE_DATA)
-    private String unModifiedPurchaseData;
-    @DatabaseField(columnName = UN_MODIFIED_AMOUNT_DATA)
-    private String unModifiedAmountDetails;
+
     @DatabaseField(columnName = UPDATED_DATE_TIME)
     private long lastModifiedDateTime;
     @DatabaseField(columnName = MERCHANT_ID,foreign = true,foreignAutoRefresh =  true)
@@ -71,6 +70,13 @@ public class PurchaseEntity {
     private String payableAmount;
     @DatabaseField(columnName = IS_DISCARD)
     private boolean  isDiscard;
+    @DatabaseField(columnName = ORDER_STATUS)
+    private String orderStatus;
+    @DatabaseField(columnName = DELIVERY_OPTIONS)
+    private DeliveryOptions deliveryOptions;
+
+    @DatabaseField(columnName = IS_SYNC)
+    private boolean isSync = false;
 
 
     public PurchaseEntity(){
@@ -90,22 +96,15 @@ public class PurchaseEntity {
         this.amountDetails = purchaseJson.getAmountDetails();
         this.isEditable =  purchaseJson.isEditable();
         this.isDeliverable = purchaseJson.isDelivered();
-        //this.unModifiedPurchaseData = purchaseJson.getProductDetails();
-        //this.unModifiedAmountDetails = purchaseJson.getAmountDetails();
         this.lastModifiedDateTime = purchaseJson.getLastModifiedDateTime();
         this.category = purchaseJson.getCategory();
         this.serverDateTime = purchaseJson.getServerDateTime();
         this.totalAmount = purchaseJson.getTotalAmount();
         this.payableAmount = purchaseJson.getPayableAmount();
         this.isDiscard = purchaseJson.isDiscard();
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
+        this.isPayed = purchaseJson.isPayed();
+        this.orderStatus = purchaseJson.getOrderStatus();
+        this.deliveryOptions = purchaseJson.getDeliveryOptions();
     }
 
     public int getPurchaseId() {
@@ -156,6 +155,14 @@ public class PurchaseEntity {
         this.amountDetails = amountDetails;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public boolean isPayed() {
         return isPayed;
     }
@@ -180,22 +187,6 @@ public class PurchaseEntity {
         this.isDeliverable = isDeliverable;
     }
 
-    public String getUnModifiedPurchaseData() {
-        return unModifiedPurchaseData;
-    }
-
-    public void setUnModifiedPurchaseData(String unModifiedPurchaseData) {
-        this.unModifiedPurchaseData = unModifiedPurchaseData;
-    }
-
-    public String getUnModifiedAmountDetails() {
-        return unModifiedAmountDetails;
-    }
-
-    public void setUnModifiedAmountDetails(String unModifiedAmountDetails) {
-        this.unModifiedAmountDetails = unModifiedAmountDetails;
-    }
-
     public long getLastModifiedDateTime() {
         return lastModifiedDateTime;
     }
@@ -212,16 +203,20 @@ public class PurchaseEntity {
         this.merchantEntity = merchantEntity;
     }
 
+    public long getServerDateTime() {
+        return serverDateTime;
+    }
+
+    public void setServerDateTime(long serverDateTime) {
+        this.serverDateTime = serverDateTime;
+    }
+
     public UserEntity getUserEntity() {
         return userEntity;
     }
 
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
-    }
-
-    public long getServerDateTime() {
-        return serverDateTime;
     }
 
     public String getTotalAmount() {
@@ -248,8 +243,28 @@ public class PurchaseEntity {
         this.isDiscard = isDiscard;
     }
 
-    public void setServerDateTime(long serverDateTime) {
-        this.serverDateTime = serverDateTime;
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public DeliveryOptions getDeliveryOptions() {
+        return deliveryOptions;
+    }
+
+    public void setDeliveryOptions(DeliveryOptions deliveryOptions) {
+        this.deliveryOptions = deliveryOptions;
+    }
+
+    public boolean isSync() {
+        return isSync;
+    }
+
+    public void setIsSync(boolean isSync) {
+        this.isSync = isSync;
     }
 
     @Override
@@ -258,15 +273,23 @@ public class PurchaseEntity {
                 "purchaseId=" + purchaseId +
                 ", purchaseGuid='" + purchaseGuid + '\'' +
                 ", purchaseDateTime=" + purchaseDateTime +
-                ", billNumber=" + billNumber +
+                ", billNumber='" + billNumber + '\'' +
                 ", productDetails='" + productDetails + '\'' +
                 ", amountDetails='" + amountDetails + '\'' +
+                ", category='" + category + '\'' +
                 ", isPayed=" + isPayed +
                 ", isEditable=" + isEditable +
                 ", isDeliverable=" + isDeliverable +
-                ", unModifiedPurchaseData='" + unModifiedPurchaseData + '\'' +
-                ", unModifiedAmountDetails='" + unModifiedAmountDetails + '\'' +
                 ", lastModifiedDateTime=" + lastModifiedDateTime +
+                ", merchantEntity=" + merchantEntity +
+                ", serverDateTime=" + serverDateTime +
+                ", userEntity=" + userEntity +
+                ", totalAmount='" + totalAmount + '\'' +
+                ", payableAmount='" + payableAmount + '\'' +
+                ", isDiscard=" + isDiscard +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", deliveryOptions=" + deliveryOptions +
+                ", isSync=" + isSync +
                 '}';
     }
 }

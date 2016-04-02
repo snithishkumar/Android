@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
@@ -25,6 +24,8 @@ import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.json.response.LuggageJson;
+import co.in.mobilepay.json.response.LuggagesListJson;
 import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
 import retrofit2.Call;
@@ -45,81 +46,237 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
     public MobilePaySyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+        init(context);
+
+    }
+
+    /**
+     * Initialize DAO's and Gson
+     * @param context
+     */
+    private void init(Context context){
         try{
             purchaseDao = new PurchaseDaoImpl(context);
             userDao = new UserDaoImpl(context);
             mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
             gson = new Gson();
         }catch (Exception e){
-            e.printStackTrace();
+            Log.e(LOG_TAG,"Error in MobilePaySyncAdapter",e);
         }
-
-
-       // android.os.Debug.waitForDebugger();
     }
 
+    /**
+     * Common Sync Location. Call Corresponding Sync method based on flag
+     * @param account
+     * @param extras
+     * @param authority
+     * @param provider
+     * @param syncResult
+     */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
-       // MobilePayBus.getInstance().post("Tst");
-        syncPurchaseData();
+        // 1 - Purchase List, 2- Order Status List, 3 - Purchase History List
+       int currentTab =  extras.getInt("currentTab",0);
+        switch (currentTab){
+            case 1:
+                syncPurchaseData();
+                break;
+            case 2:
+                syncOrderStatus();
+                break;
+            case 3:
+                syncPurchaseHistoryData();
+                break;
+        }
+
+    }
+
+    /**
+     * Get Current User  and App Token
+     * @return
+     * @throws SQLException
+     */
+    private JsonObject userRequest()throws SQLException{
+        UserEntity userEntity = userDao.getUser();
+        JsonObject requestData = new JsonObject();
+        requestData.addProperty("serverToken", userEntity.getServerToken());
+        requestData.addProperty("accessToken", userEntity.getAccessToken());
+        return requestData;
     }
 
 
-    public void syncPurchaseData(){
+    /**
+     * Get Current Purchase List from the server
+     */
+    private void syncPurchaseData(){
         try {
+            // Get User and App Token
+            JsonObject requestData =  userRequest();
+
+            /**
+             *  Get Most Recent Current Purchase Server time.Server send back based on this time.
+             *  If time is -1 ,then server sends all the current purchase list.
+             */
             long serverTime = purchaseDao.getMostRecentPurchaseServerTime();
-            UserEntity userEntity = userDao.getUser();
-            JsonObject requestData = new JsonObject();
-            requestData.addProperty("serverToken",userEntity.getServerToken());
-            requestData.addProperty("accessToken",userEntity.getAccessToken());
-            requestData.addProperty("serverTime", serverTime);
+            requestData.addProperty("serverTime",serverTime);
+            // Sync Request
             Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseData(requestData);
+            // Server Response
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             ResponseData responseData = dataResponse.body();
-            int statusCode = responseData.getStatusCode();
-            String purchaseDetails = responseData.getData();
-            List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
-            }.getType());
-            for(PurchaseJson purchaseJson : purchaseJsonList){
-                try{
-                    processPurchaseJson(purchaseJson);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
 
+            int statusCode = responseData.getStatusCode();
+            // Check the Status code, If its success or failure
+            if(statusCode == 300){
+                // Process Server Response
+                String purchaseDetails = responseData.getData();
+                List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                }.getType());
+                processPurchaseJson(purchaseJsonList);
+                // -- TODO Need to send notification to list view
+            }else{
+                // -- TODO Need to Say Something wrong in server
             }
-            // responseDataCall.
+
         }catch (Exception e){
             Log.e("Error","Error in  syncPurchaseData",e);
-        }finally {
-            MobilePayBus.getInstance().post("Tst");
+            // -- TODO Need to Say Something wrong in mobile side
+        }
+    }
+
+    /**
+     * Process  PurchaseJson. It checks whether purchase data is already present or not. If it's present, it will update or it will create
+     * @param purchaseJsonList
+     *
+     */
+    private void processPurchaseJson(List<PurchaseJson> purchaseJsonList){
+        //Save or update Each Purchase details
+        for(PurchaseJson purchaseJson : purchaseJsonList){
+            try{
+                // Check given Merchant details present or not
+                MerchantEntity  merchantEntity = purchaseDao.getMerchantEntity(purchaseJson.getMerchants().getMerchantUuid());
+                // If its not present create New.Otherwise, it will update
+                if(merchantEntity == null){
+                    merchantEntity = new MerchantEntity(purchaseJson.getMerchants());
+                    purchaseDao.createMerchantEntity(merchantEntity);
+                }else if(merchantEntity.getLastModifiedDateTime() < purchaseJson.getMerchants().getLastModifiedDateTime()){
+                    merchantEntity.toClone(purchaseJson.getMerchants());
+                    purchaseDao.updateMerchantEntity(merchantEntity);
+                    // Need to update
+                }
+
+                UserEntity dbUserEntity = userDao.getUser(purchaseJson.getUsers().getMobileNumber());
+                //Check given Purchase details is already present or not.
+                PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
+                //If its not present, it will create new one. Otherwise, it will update
+                if(purchaseEntity != null){
+                    purchaseEntity.toClone(purchaseJson);
+                    purchaseDao.updatePurchase(purchaseEntity);
+                }else{
+                    purchaseEntity = new PurchaseEntity(purchaseJson);
+                    purchaseEntity.setMerchantEntity(merchantEntity);
+                    purchaseEntity.setUserEntity(dbUserEntity);
+                    purchaseDao.createPurchase(purchaseEntity);
+                }
+            }catch (Exception e){
+                Log.e(LOG_TAG, "Error while processing purchase Details. Raw data["+purchaseJson+"]", e);
+            }
+
+        }
+
+    }
+
+    /**
+     * Get Order status (NOT_YET_SHIPPING or PACKING or OUT_FOR_DELIVERY or Counter Id) from the server
+     */
+    private void syncOrderStatus(){
+        try{
+            // Get User and App Token
+            JsonObject requestData =  userRequest();
+
+            /**
+             *  Get Most Recent  and First Luggage List Server time.Server send back based on this time.
+             *  If time is -1 ,then server sends all the Luggage list.
+             */
+            long startTime = purchaseDao.getLeastLuggageServerTime();
+            long endTime = purchaseDao.getMostRecentLuggageServerTime();
+            requestData.addProperty("startTime",startTime);
+            requestData.addProperty("endTime",endTime);
+            // Sync Request
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncOrderStatus(requestData);
+            // Server Response
+            Response<ResponseData> dataResponse =  responseDataCall.execute();
+            ResponseData responseData = dataResponse.body();
+
+            int statusCode = responseData.getStatusCode();
+            // Check the Status code, If its success or failure
+            if(statusCode == 300){
+                // Json to Object
+                LuggagesListJson luggagesListJson =  gson.fromJson(responseData.getData(), LuggagesListJson.class);
+                // Update Order Status only. Other details (Purchase data) are already present
+                List<LuggageJson>  luggageJsonList =  luggagesListJson.getLuggageJsons();
+                for(LuggageJson luggageJson : luggageJsonList){
+                    //Check given Purchase details is already present or not.
+                    PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(luggageJson.getPurchaseGuid());
+                   // If purchaseEntity is Present, then update Order status (NOT_YET_SHIPPING or PACKING or OUT_FOR_DELIVERY or Counter Id)
+                   if(purchaseEntity != null){
+                       purchaseEntity.setLastModifiedDateTime(luggageJson.getUpdatedDateTime());
+                       purchaseEntity.setServerDateTime(luggageJson.getServerDateTime());
+                       purchaseEntity.setOrderStatus(luggageJson.getOrderStatus());
+                       purchaseDao.updatePurchase(purchaseEntity);
+                    }
+                }
+                List<PurchaseJson> purchaseJsonList =   luggagesListJson.getPurchaseJsons();
+                processPurchaseJson(purchaseJsonList);
+                // -- TODO Need to send notification to list view
+            }else{
+                // -- TODO Need to Say Something wrong in server
+            }
+
+        }catch (Exception e){
+            Log.e(LOG_TAG,"Error in syncOrderStatus",e);
+            // -- TODO Need to Say Something wrong in mobile side
         }
     }
 
 
-    private void processPurchaseJson(PurchaseJson purchaseJson )throws SQLException{
-        MerchantEntity  merchantEntity = purchaseDao.getMerchantEntity(purchaseJson.getMerchants().getMerchantUuid());
-        if(merchantEntity == null){
-            merchantEntity = new MerchantEntity(purchaseJson.getMerchants());
-            purchaseDao.createMerchantEntity(merchantEntity);
-        }else if(merchantEntity.getLastModifiedDateTime() < purchaseJson.getMerchants().getLastModifiedDateTime()){
-            merchantEntity.toClone(purchaseJson.getMerchants());
-            purchaseDao.updateMerchantEntity(merchantEntity);
-            // Need to update
-        }
-        UserEntity dbUserEntity = userDao.getUser(purchaseJson.getUsers().getMobileNumber());
-        PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
+    /**
+     * Get Current Purchase List from the server
+     */
+    private void syncPurchaseHistoryData(){
+        try {
+            // Get User and App Token
+            JsonObject requestData =  userRequest();
 
-        if(purchaseEntity != null){
-            purchaseEntity.toClone(purchaseJson);
-            purchaseDao.updatePurchase(purchaseEntity);
-            // Update
-        }else{
-            purchaseEntity = new PurchaseEntity(purchaseJson);
-            purchaseEntity.setMerchantEntity(merchantEntity);
-            purchaseEntity.setUserEntity(dbUserEntity);
-            purchaseDao.createPurchase(purchaseEntity);
+            /**
+             *  Get Most Recent Purchase history Server time.Server send back based on this time.
+             *  If time is -1 ,then server sends all the current purchase list.
+             */
+            long serverTime = purchaseDao.getRecentPurchaseHisServerTime();
+            requestData.addProperty("serverTime",serverTime);
+            // Sync Request
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryData(requestData);
+            // Server Response
+            Response<ResponseData> dataResponse =  responseDataCall.execute();
+            ResponseData responseData = dataResponse.body();
+
+            int statusCode = responseData.getStatusCode();
+            // Check the Status code, If its success or failure
+            if(statusCode == 300){
+                // Process Server Response
+                String purchaseDetails = responseData.getData();
+                List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                }.getType());
+                processPurchaseJson(purchaseJsonList);
+                // -- TODO Need to send notification to list view
+            }else{
+                // -- TODO Need to Say Something wrong in server
+            }
+
+        }catch (Exception e){
+            Log.e("Error","Error in  syncPurchaseData",e);
+            // -- TODO Need to Say Something wrong in mobile side
         }
     }
 

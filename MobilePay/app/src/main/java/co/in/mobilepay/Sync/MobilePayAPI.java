@@ -2,6 +2,7 @@ package co.in.mobilepay.sync;
 
 import com.google.gson.JsonObject;
 
+import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
@@ -18,7 +19,7 @@ public interface  MobilePayAPI {
     Call<ResponseData> createUser(@Body String data);
 
     @POST("mobile/updateProfile.html")
-    Call<ResponseData> updateUser(@Body String data);
+    Call<ResponseData> updateUser(@Body RegisterJson data);
 
     @POST("mobile/otp/validate.html")
     Call<ResponseData> validateOtp(@Body JsonObject jsonObject);
@@ -31,6 +32,12 @@ public interface  MobilePayAPI {
 
     @POST("mobile/getPurchaseList.html")
     Call<ResponseData> syncPurchaseData(@Body JsonObject requestData);
+
+    @POST("mobile/getLuggageList.html")
+    Call<ResponseData> syncOrderStatus(@Body JsonObject requestData);
+
+    @POST("mobile/getPurchaseHistoryList.html")
+    Call<ResponseData> syncPurchaseHistoryData(@Body JsonObject requestData);
 
     @POST("mobile/addCards.html")
     Call<ResponseData> createCard(@Body CardJson cardJson);

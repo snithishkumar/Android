@@ -4,9 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.ArrayList;
@@ -18,27 +20,41 @@ import java.util.List;
 public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductDetailsRecyclerAdapter.ProductDetailsViewHolder> {
 
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
+    private PurchaseDetailsActivity purchaseDetailsActivity;
+    private ProductDetailsModel productDetailsModel;
 
-    public ProductDetailsRecyclerAdapter( List<ProductDetailsModel> productDetailsModels) {
+    public ProductDetailsRecyclerAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels) {
         this.productDetailsModels = productDetailsModels;
+        this.purchaseDetailsActivity = purchaseDetailsActivity;
     }
 
     @Override
     public ProductDetailsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.product_list_details_item, parent, false);
+                .inflate(R.layout.adapt_purchase_items, parent, false);
         return new ProductDetailsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ProductDetailsViewHolder productDetailsViewHolder, int position) {
-        ProductDetailsModel productDetailsModel =  productDetailsModels.get(position);
-        productDetailsViewHolder.serialNo.setText(productDetailsModel.getItemNo()+". ");
-        productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
-        productDetailsViewHolder.quantity.setText("Quantity:"+productDetailsModel.getQuantity());
-        productDetailsViewHolder.totalAmount.setText(productDetailsModel.getAmount());
+        productDetailsModel =  productDetailsModels.get(position);
+        productDetailsViewHolder.serialNo.setText("0"+productDetailsModel.getItemNo());
+        productDetailsViewHolder.countDecrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(productDetailsModel.getQuantity() > 1){
+                    productDetailsViewHolder.quantity.setText(productDetailsModel.getQuantity() - 1+"");
+                    productDetailsModel.setQuantity(productDetailsModel.getQuantity() - 1);
+                }
+
+            }
+        });
+       // productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+        productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
 
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -52,13 +68,16 @@ public class ProductDetailsRecyclerAdapter extends RecyclerView.Adapter<ProductD
         private TextView name;
         private TextView quantity;
         private TextView totalAmount;
+        private ImageView countDecrement;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
-            serialNo = (TextView) view.findViewById(R.id.pur_details_list_sno);
-            name = (TextView) view.findViewById(R.id.pur_details_list_name);
-            quantity = (TextView) view.findViewById(R.id.pur_details_list_quantity);
-            totalAmount = (TextView) view.findViewById(R.id.pur_details_list_totalamt);
+            serialNo = (TextView) view.findViewById(R.id.adapt_pur_item_no);
+            name = (TextView) view.findViewById(R.id.adapt_pur_item_desc);
+            quantity = (TextView) view.findViewById(R.id.adapt_pur_item_count);
+            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_amt);
+            countDecrement = (ImageView)view.findViewById(R.id.adapt_pur_item_count_dec);
+
         }
 
         @Override

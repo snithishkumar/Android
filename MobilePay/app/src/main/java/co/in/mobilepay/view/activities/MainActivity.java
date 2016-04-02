@@ -22,18 +22,28 @@ import co.in.mobilepay.view.fragments.RegistrationFragment;
 
 public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
 
-    private AccountService accountService;
 
-    RegistrationFragment registrationFragment = null;
-    OtpFragment otpFragment = null;
-    LoginFragment loginFragment = null;
-    MobileFragment mobileFragment = null;
+    /* Fragments */
+    private RegistrationFragment registrationFragment = null;
+    private OtpFragment otpFragment = null;
+    private LoginFragment loginFragment = null;
+    private MobileFragment mobileFragment = null;
+    /* Local variable*/
+    private String mobileNumber = null;
+    private boolean isProfileUpdate = false;
+    /* Service Layer */
+    private AccountService accountService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Check whether it called from Profile Update screen
+        mobileNumber =  getIntent().getStringExtra("mobileNumber");
+        isProfileUpdate =  getIntent().getBooleanExtra("isProfileUpdate", false);
+        // Initialize required object
         init();
         setContentView(R.layout.activity_main);
+        // Show initial fragment
         showFragment();
     }
 
@@ -58,16 +68,34 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
 
     }
 
+    /**
+     * Initialize and call Fragment to show first screen based on isProfileUpdate and isUserPresent
+     * isProfileUpdate - true ( Need to show OTP Screen)
+     * isUserPresent -  true (Need to show Login Screen)
+     * Otherwise, it will show mobile Number screen
+     */
     private void showFragment(){
-        boolean isUserPresent = accountService.isUserPresent();
-        if(isUserPresent){
-            loginFragment = new LoginFragment();
-            FragmentsUtil.addFragment(this,loginFragment,R.id.main_container);
+        // check whether it will called from Profile Update
+        if(isProfileUpdate){
+            otpFragment = new OtpFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("mobileNumber",mobileNumber);
+            bundle.putBoolean("isProfileUpdate",isProfileUpdate);
+            otpFragment.setArguments(bundle);
+            FragmentsUtil.addFragment(this, otpFragment, R.id.main_container);
         }else{
-            mobileFragment = new MobileFragment();
-            FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
+            // Check first time or already registered.
+            boolean isUserPresent = accountService.isUserPresent();
+            if(isUserPresent){
+                loginFragment = new LoginFragment();
+                FragmentsUtil.addFragment(this,loginFragment,R.id.main_container);
+            }else{
+                mobileFragment = new MobileFragment();
+                FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
 
+            }
         }
+
     }
 
 
@@ -100,7 +128,11 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
         return accountService;
     }
 
-
+    /**
+     * Callback function
+     * @param code
+     * @param data
+     */
     @Override
     public void success(int code, Object data) {
 
@@ -113,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
                 FragmentsUtil.replaceFragment(this,otpFragment,R.id.main_container);
                 break;
             case MessageConstant.REG_OK:
+            case MessageConstant.PROFILE_UPDATE_SUCCESS:
                 loginFragment = new LoginFragment();
                 FragmentsUtil.replaceFragment(this,loginFragment,R.id.main_container);
                 break;

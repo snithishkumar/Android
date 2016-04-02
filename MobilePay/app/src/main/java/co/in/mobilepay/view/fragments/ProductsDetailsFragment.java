@@ -16,6 +16,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
@@ -43,6 +44,11 @@ public class ProductsDetailsFragment extends Fragment {
 
     private Gson gson = null;
 
+    private  PurchaseEntity  purchaseEntity= null;
+    private List<ProductDetailsModel> productDetailsModelList = null;
+
+    private int totalProduct = 0;
+
 
 
     /**
@@ -69,7 +75,7 @@ public class ProductsDetailsFragment extends Fragment {
         if(purchaseIdArgs != null){
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
         }
-        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_list_update, container, false);
         initView(view);
         populatePurchaseData(view);
         return view;
@@ -85,8 +91,8 @@ public class ProductsDetailsFragment extends Fragment {
         }
         shopName = (TextView)view.findViewById(R.id.shop_name);
         shopArea = (TextView)view.findViewById(R.id.shop_area);
-        shopLnNo = (TextView)view.findViewById(R.id.shop_phone_no);
-        shopPnNo = (TextView)view.findViewById(R.id.shop_land_no);
+        shopLnNo = (TextView)view.findViewById(R.id.shop_land_no);
+        shopPnNo = (TextView)view.findViewById(R.id.shop_land_ph);
         billNo = (TextView) view.findViewById(R.id.bill_no);
         purDateTime = (TextView)view.findViewById(R.id.purchase_date_time);
     }
@@ -103,7 +109,7 @@ public class ProductsDetailsFragment extends Fragment {
      * Populate value
      */
     private void populatePurchaseData(View view){
-        PurchaseEntity  purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+         purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText(merchantEntity.getArea());
@@ -115,16 +121,23 @@ public class ProductsDetailsFragment extends Fragment {
 
         String productDetails = purchaseEntity.getProductDetails();
 
-        List<ProductDetailsModel> productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
+       productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
         }.getType());
 
-
+        totalProduct = productDetailsModelList.size();
         // Set the adapter
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.save_card_list);
-        recyclerView.setAdapter(new ProductDetailsRecyclerAdapter(productDetailsModelList));
+        recyclerView.setAdapter(new ProductDetailsRecyclerAdapter(purchaseDetailsActivity,productDetailsModelList));
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));
+    }
+
+
+    private void declineData(){
+        if(totalProduct != productDetailsModelList.size()){
+            purchaseService.updatePurchaseData(purchaseEntity,productDetailsModelList);
+        }
     }
 
 

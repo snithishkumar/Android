@@ -19,6 +19,7 @@ import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 import co.in.mobilepay.view.model.PurchaseDetailsModel;
@@ -113,6 +114,20 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         }catch (Exception e){
             Log.e("Error", "Error in  syncPurchaseData", e);
         }
+    }
+
+    @Override
+    public void updatePurchaseData(PurchaseEntity purchaseEntity,List<ProductDetailsModel> productDetailsModelList){
+        try{
+            purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
+            purchaseEntity.setAmountDetails("");
+            purchaseEntity.setIsSync(false);
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+            purchaseDao.updatePurchase(purchaseEntity);
+        }catch (Exception e){
+            Log.e("Error","Error in updatePurchaseData",e);
+        }
+
     }
 
     public UserEntity getUserEntity(){

@@ -1,5 +1,7 @@
 package co.in.mobilepay.json.response;
 
+import co.in.mobilepay.enumeration.DeliveryOptions;
+
 public class PurchaseJson {
 
 	private String purchaseId;
@@ -17,25 +19,12 @@ public class PurchaseJson {
 	private String totalAmount;
 	private String payableAmount;
 	private boolean isDiscard;
+	private boolean isPayed;
+	private String orderStatus;
+	private DeliveryOptions deliveryOptions;
 
 	public PurchaseJson(){
 		
-	}
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public long getLastModifiedDateTime() {
-		return lastModifiedDateTime;
-	}
-
-	public void setLastModifiedDateTime(long lastModifiedDateTime) {
-		this.lastModifiedDateTime = lastModifiedDateTime;
 	}
 
 	public String getPurchaseId() {
@@ -94,24 +83,44 @@ public class PurchaseJson {
 		this.amountDetails = amountDetails;
 	}
 
-    public boolean isEditable() {
-        return isEditable;
-    }
+	public String getCategory() {
+		return category;
+	}
 
-    public void setIsEditable(boolean isEditable) {
-        this.isEditable = isEditable;
-    }
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-    public boolean isDelivered() {
-        return isDelivered;
-    }
+	public boolean isEditable() {
+		return isEditable;
+	}
 
-    public void setIsDelivered(boolean isDelivered) {
-        this.isDelivered = isDelivered;
-    }
+	public void setIsEditable(boolean isEditable) {
+		this.isEditable = isEditable;
+	}
+
+	public boolean isDelivered() {
+		return isDelivered;
+	}
+
+	public void setIsDelivered(boolean isDelivered) {
+		this.isDelivered = isDelivered;
+	}
+
+	public long getLastModifiedDateTime() {
+		return lastModifiedDateTime;
+	}
+
+	public void setLastModifiedDateTime(long lastModifiedDateTime) {
+		this.lastModifiedDateTime = lastModifiedDateTime;
+	}
 
 	public long getServerDateTime() {
 		return serverDateTime;
+	}
+
+	public void setServerDateTime(long serverDateTime) {
+		this.serverDateTime = serverDateTime;
 	}
 
 	public String getTotalAmount() {
@@ -138,8 +147,28 @@ public class PurchaseJson {
 		this.isDiscard = isDiscard;
 	}
 
-	public void setServerDateTime(long serverDateTime) {
-		this.serverDateTime = serverDateTime;
+	public boolean isPayed() {
+		return isPayed;
+	}
+
+	public void setIsPayed(boolean isPayed) {
+		this.isPayed = isPayed;
+	}
+
+	public String getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(String orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public DeliveryOptions getDeliveryOptions() {
+		return deliveryOptions;
+	}
+
+	public void setDeliveryOptions(DeliveryOptions deliveryOptions) {
+		this.deliveryOptions = deliveryOptions;
 	}
 
 	@Override
@@ -147,7 +176,7 @@ public class PurchaseJson {
 		return "PurchaseJson{" +
 				"purchaseId='" + purchaseId + '\'' +
 				", purchaseDate=" + purchaseDate +
-				", billNumber=" + billNumber +
+				", billNumber='" + billNumber + '\'' +
 				", merchants=" + merchants +
 				", users=" + users +
 				", productDetails='" + productDetails + '\'' +
@@ -160,6 +189,9 @@ public class PurchaseJson {
 				", totalAmount='" + totalAmount + '\'' +
 				", payableAmount='" + payableAmount + '\'' +
 				", isDiscard=" + isDiscard +
+				", isPayed=" + isPayed +
+				", orderStatus='" + orderStatus + '\'' +
+				", deliveryOptions=" + deliveryOptions +
 				'}';
 	}
 }

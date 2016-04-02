@@ -7,10 +7,11 @@ public final class  MessageConstant {
     //1.Reg - 2^1
     //2.OTP -  2^2
     //3.Login - 2^3
-    //4. Mobile
+    //4. mobile
     //5. Purhcase
     //6. Histor
     //7. Card
+    // 8 .Profile Update
 
 
     public final static String REG_ERROR = "Something went wrong. Please try later.";
@@ -33,7 +34,7 @@ public final class  MessageConstant {
     public final static String LOGIN_INVALID_PIN_ERROR = "Invalid Pin";
 
 
-    /** Mobile Number 2^4 **/
+    /** mobile Number 2^4 **/
     public static final int MOBILE_VERIFY_OK = 16;
     public static final int MOBILE_VERIFY_INTERNAL_ERROR = 1602;
     public final static String MOBILE_VERIFY_INTERNAL_ERROR_MSG = "Something went wrong. Please try later.";
@@ -44,4 +45,7 @@ public final class  MessageConstant {
     public static final int CARD_LIST_FAILURE = 12801;
     public static final int CARD_REMOVE_FAILURE = 12802;
     public final static String CARD_LIST_FAILURE_ERROR_MSG = "Something went wrong. Please try later.";
+
+
+    public static final int PROFILE_UPDATE_SUCCESS = 256;
 }

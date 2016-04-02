@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
@@ -23,13 +26,15 @@ import retrofit2.Response;
 /**
  * Created by Nithish on 07-02-2016.
  */
-public class OtpFragment extends Fragment implements View.OnClickListener,AccountServiceImpl.AccountServiceCallback{
+public class OtpFragment extends Fragment implements View.OnClickListener{
 
     private EditText otpNumber;
     private MainActivity mainActivity =  null;
-    MainActivityCallback mainActivityCallback = null;
-    ProgressDialog progressDialog = null;
-    String mobileNumber = null;
+    private MainActivityCallback mainActivityCallback = null;
+    private ProgressDialog progressDialog = null;
+    private String mobileNumber = null;
+    private Boolean isProfileUpdate = false;
+
     public OtpFragment(){
 
     }
@@ -38,6 +43,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mobileNumber = getArguments().getString("mobileNumber");
+        isProfileUpdate = getArguments().getBoolean("isProfileUpdate");
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
         Button otpSubmit = (Button)view.findViewById(R.id.otp_submit);
@@ -62,24 +68,31 @@ public class OtpFragment extends Fragment implements View.OnClickListener,Accoun
         return optNumberTemp;
     }
 
-    @Override
-    public void accountServiceCallback(int statusCode, Object data) {
+    @Subscribe
+    public void processOtpResponse(ResponseData responseData){
         progressDialog.dismiss();
-        switch (statusCode){
+        switch (responseData.getStatusCode()){
             case MessageConstant.OTP_OK:
                 // Success
-                mainActivityCallback.success(MessageConstant.OTP_OK,mobileNumber);
-                break;
-           case  MessageConstant.OTP_ERROR_CODE :
-               ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.OTP_ERROR);
-            break;
+                if(isProfileUpdate){
+                    mainActivityCallback.success(MessageConstant.PROFILE_UPDATE_SUCCESS,mobileNumber);
+                }else{
+                    mainActivityCallback.success(MessageConstant.OTP_OK,mobileNumber);
+                }
 
-           default:
-               // Toast
-               Toast.makeText(mainActivity,(String)data,Toast.LENGTH_LONG).show();
-               break;
+                break;
+            case  MessageConstant.OTP_ERROR_CODE :
+                ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.OTP_ERROR);
+                break;
+
+            default:
+                // Toast
+                Toast.makeText(mainActivity,responseData.getData(),Toast.LENGTH_LONG).show();
+                break;
         }
     }
+
+
 
     @Override
     public void onClick(View v) {
@@ -90,7 +103,7 @@ switch (v.getId()){
             boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-                mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber,this);
+                mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber);
 
             }else{
                 ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
@@ -102,6 +115,19 @@ switch (v.getId()){
         break;
 
 }
+    }
+
+
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        MobilePayBus.getInstance().register(this);
+        super.onResume();
     }
 
     public  interface MainActivityCallback {

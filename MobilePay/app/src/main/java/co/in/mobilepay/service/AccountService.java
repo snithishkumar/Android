@@ -17,7 +17,9 @@ public interface AccountService {
 
     UserEntity getUserDetails();
 
-   void validateOtp(String otpPassword,String mobileNumber,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+   void validateOtp(String otpPassword,String mobileNumber);
+
+    void updateUser(RegisterJson registerJson);
 
 
     void login(String password,AccountServiceImpl.AccountServiceCallback accountServiceCallback);

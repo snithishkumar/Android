@@ -87,5 +87,10 @@ public class ServiceUtil {
         return  simpleDateFormat.format(date);
     }
 
+    public static Long getCurrentTimeMilli(){
+        DateTime date = DateTime.now();
+        return date.getMillis();
+    }
+
 
 }

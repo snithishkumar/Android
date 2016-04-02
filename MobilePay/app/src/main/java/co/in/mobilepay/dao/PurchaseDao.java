@@ -32,4 +32,10 @@ public interface PurchaseDao {
     void createMerchantEntity(MerchantEntity merchantEntity)throws SQLException;
 
     void updateMerchantEntity(MerchantEntity merchantEntity)throws SQLException;
+
+    long getLeastLuggageServerTime()throws SQLException;
+
+    long getMostRecentLuggageServerTime()throws SQLException;
+
+    long getRecentPurchaseHisServerTime()throws SQLException;
 }

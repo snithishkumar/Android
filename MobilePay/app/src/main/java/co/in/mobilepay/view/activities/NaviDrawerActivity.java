@@ -21,7 +21,7 @@ import co.in.mobilepay.view.fragments.SaveCardsFragment;
 /**
  * Created by Nithishkumar on 3/27/2016.
  */
-public class NaviDrawerActivity extends AppCompatActivity {
+public class NaviDrawerActivity extends AppCompatActivity implements EditProfileFragment.EditProfileFragmentCallBack{
 
     private AccountService accountService = null;
 
@@ -60,14 +60,25 @@ public class NaviDrawerActivity extends AppCompatActivity {
         }
     }
 
-    @Subscribe
-    private void processServerResponse(ResponseData responseData){
 
-    }
 
     public void showNewCardFragment(View view){
         Intent intent = new Intent(this, NewSaveCardActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onSuccess(int option, String mobile) {
+        if(option == 1){
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("mobileNumber",mobile);
+            intent.putExtra("isProfileUpdate",true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else {
+            finish();
+        }
+
     }
 
     public AccountService getAccountService() {

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/shop_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:onClick="viewShopDetails"
+        android:background="@color/colorPrimary">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:id="@+id/product_shop_logo"
+            android:background="@mipmap/pothys"
+            />
+
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:text="Saravana stores"
+            android:layout_toRightOf="@+id/product_shop_logo"/>
+        <TextView
+            android:id="@+id/shop_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginLeft="8dp"
+            android:textSize="18sp"
+            android:layout_below="@+id/shop_name"
+            android:layout_toRightOf="@+id/product_shop_logo"
+            android:text="(T-Nagar)"/>
+
+        <TextView
+            android:id="@+id/bill_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="Bill No:001"
+            android:layout_marginRight="15dp"
+            android:layout_alignTop="@+id/product_shop_logo"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <TextView
+            android:id="@+id/purchase_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="10-Mar-2016 05:20 PM"
+            android:layout_alignBottom="@+id/product_shop_logo"
+            android:layout_alignRight="@+id/bill_no"
+            android:layout_alignEnd="@+id/bill_no" />
+       <!-- <TextView
+            android:id="@+id/shop_phone_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_above="@+id/shop_land_no"
+            android:layout_margin="10dp"
+            android:text="Ln:044237206"/>
+        <TextView
+            android:id="@+id/shop_land_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="10dp"
+            android:text="Ph:9952471553"/>
+
+        <ImageView
+            android:id="@+id/pay_save_card_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="@mipmap/arrow"/>-->
+        </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/shop_contact_details_ln"
+        android:layout_below="@+id/shop_details_layout"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/product_shop_land_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/landline"/>
+        <TextView
+            android:id="@+id/shop_land_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="044 5555 6666"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/shop_contact_details_ph"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/relativeLayout"
+        android:layout_alignRight="@+id/relativeLayout"
+        android:layout_alignEnd="@+id/relativeLayout">
+        <ImageView
+            android:id="@+id/product_shop_mob_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/mobile"/>
+
+        <TextView
+            android:id="@+id/shop_land_ph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="9952471553"/>
+
+    </LinearLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/shop_contact_details_ln"
+        android:layout_margin="14dp"
+        android:id="@+id/relativeLayout">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/save_card_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:context="co.in.mobilepay.view.fragments.PaymentFragment"
+        tools:listitem="@layout/adapt_purchase_items" />
+    </android.support.v7.widget.CardView>
+    <RelativeLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightgrey"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Total: Rs.10000"/>
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            android:layout_marginRight="20dp"
+            android:onClick="showFabIcon"
+            android:src="@mipmap/buy"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -117,7 +117,6 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         Intent intent = new Intent(this, PurchaseDetailsActivity.class);
         intent.putExtra("purchaseId",purchaseId);
         startActivity(intent);
-        finish();
     }
     public void showProductListFragment(){
         ProductsDetailsFragment productsDetailsFragment = new ProductsDetailsFragment();

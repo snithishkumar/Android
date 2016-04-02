@@ -131,10 +131,21 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
 
     public void updateUser(RegisterJson registerJson){
-        String registerData = gson.toJson(registerJson);
-        AccountCallbackManager accountCallbackManager = new AccountCallbackManager(5,registerJson,null);
-        Call<ResponseData> dataCall =  mobilePayAPI.updateUser(registerData);
-        dataCall.enqueue(accountCallbackManager);
+        try{
+            String registerData = gson.toJson(registerJson);
+            UserEntity userEntity =  userDao.getUser();
+            registerJson.setServerToken(userEntity.getServerToken());
+            registerJson.setAccessToken(userEntity.getAccessToken());
+            AccountCallbackManager accountCallbackManager = new AccountCallbackManager(5,registerJson,null);
+            Call<ResponseData> dataCall =  mobilePayAPI.updateUser(registerJson);
+            dataCall.enqueue(accountCallbackManager);
+        }catch (Exception e){
+            Log.e("Error", "Error in updateUser", e);
+            ResponseData  responseData = new ResponseData();
+            responseData.setStatusCode(500);
+            MobilePayBus.getInstance().post(responseData);
+        }
+
     }
 
     private void processRegUpdateResponse( ResponseData responseData ,RegisterJson registerJson){
@@ -189,13 +200,13 @@ public class AccountServiceImpl extends BaseService implements AccountService {
      * @return
      */
     @Override
-    public void validateOtp(String otpPassword,String mobileNumber,AccountServiceCallback accountServiceCallback) {
+    public void validateOtp(String otpPassword,String mobileNumber) {
        try{
            JsonObject jsonObject = new JsonObject();
            jsonObject.addProperty("mobileNumber", mobileNumber);
            jsonObject.addProperty("otpPassword",otpPassword);
            Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject);
-           AccountCallbackManager accountCallbackManager = new AccountCallbackManager(2,null,accountServiceCallback);
+           AccountCallbackManager accountCallbackManager = new AccountCallbackManager(2,null,null);
            dataCall.enqueue(accountCallbackManager);
 
        }catch (Exception e){
@@ -204,23 +215,8 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     }
 
 
-
-
-    private void processOtpSuccessResponse(ResponseData responseData,AccountServiceCallback accountServiceCallback){
-        int statusCode = responseData.getStatusCode();
-        try{
-            if(statusCode == MessageConstant.OTP_OK){
-                userDao.updateUser();
-                accountServiceCallback.accountServiceCallback(MessageConstant.OTP_OK,null);
-                return;
-            }else{
-                accountServiceCallback.accountServiceCallback(statusCode,responseData.getData());
-                return;
-            }
-        }catch (Exception e){
-            Log.e("Error", "Error in validateOtp", e);
-        }
-        accountServiceCallback.accountServiceCallback(MessageConstant.OTP_ERROR_CODE,null);
+    private void processOtpResponse(ResponseData responseData){
+        MobilePayBus.getInstance().post(responseData);
     }
 
 
@@ -242,7 +238,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
                     processRegSuccessResponse(response, (RegisterJson)data,accountServiceCallback);
                     break;
                 case 2:
-                    processOtpSuccessResponse(response.body(),accountServiceCallback);
+                    processOtpResponse(response.body());
                     break;
                 case 3:
                     processLoginSuccessResponse(response.body(),accountServiceCallback);
@@ -263,6 +259,11 @@ public class AccountServiceImpl extends BaseService implements AccountService {
             switch (ops){
                 case 1:
                     processRegFailureResponse(accountServiceCallback);
+                    break;
+                case 2:
+                    ResponseData responseData = new ResponseData();
+                    responseData.setStatusCode(MessageConstant.OTP_ERROR_CODE);
+                    processOtpResponse(responseData);
                     break;
             }
         }
