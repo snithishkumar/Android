@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
@@ -32,6 +33,11 @@ public class LuggageListFragment extends Fragment  {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
+    LuggageListAdapter luggageListAdapter;
+    List<PurchaseModel> purchaseModelList = new ArrayList<>();
+
+    private  Account account;
+    private   Bundle settingsBundle;
 
 
     public LuggageListFragment() {
@@ -40,24 +46,31 @@ public class LuggageListFragment extends Fragment  {
 
 
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homeActivity = (HomeActivity)getActivity();
+        init();
         syncData();
 
     }
 
-    private void syncData(){
-        Account account = MobilePaySyncAdapter.getSyncAccount(homeActivity);
+    private void init(){
+        account = MobilePaySyncAdapter.getSyncAccount(homeActivity);
 
-        Bundle settingsBundle = new Bundle();
+        settingsBundle = new Bundle();
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putInt("currentTab", 2);
 
+    }
+
+    private void syncData(){
         ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
     }
 
@@ -97,6 +110,7 @@ public class LuggageListFragment extends Fragment  {
             }
         });
         setAdapters(recyclerView);
+        getPurchaseModel();
         return view;
     }
 
@@ -118,9 +132,15 @@ public class LuggageListFragment extends Fragment  {
 
 
     private void setAdapters(RecyclerView recyclerView){
-        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
-        LuggageListAdapter luggageListAdapter = new LuggageListAdapter(purchaseModelList,homeActivity);
+        luggageListAdapter = new LuggageListAdapter(purchaseModelList,homeActivity);
         recyclerView.setAdapter(luggageListAdapter);
+    }
+
+    private void getPurchaseModel(){
+        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
+        this.purchaseModelList.clear();
+        this.purchaseModelList.addAll(purchaseModelList);
+        luggageListAdapter.notifyDataSetChanged();
     }
 
 

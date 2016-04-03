@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
@@ -31,6 +32,12 @@ public class PurHistoryListFragment extends Fragment  {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
+    private PurHistoryListAdapter purHistoryListAdapter;
+    List<PurchaseModel> purchaseModelList = new ArrayList<>();
+
+
+    private  Account account;
+    private   Bundle settingsBundle;
 
 
     public PurHistoryListFragment() {
@@ -43,20 +50,25 @@ public class PurHistoryListFragment extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         homeActivity = (HomeActivity)getActivity();
-       // syncData();
+        init();
+        syncData();
 
     }
 
-    private void syncData(){
-        Account account = MobilePaySyncAdapter.getSyncAccount(homeActivity);
+    private void init(){
+        account = MobilePaySyncAdapter.getSyncAccount(homeActivity);
 
-        Bundle settingsBundle = new Bundle();
+        settingsBundle = new Bundle();
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_MANUAL, true);
         settingsBundle.putBoolean(
                 ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putInt("currentTab", 3);
 
+    }
+
+    private void syncData(){
         ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
     }
 
@@ -87,6 +99,7 @@ public class PurHistoryListFragment extends Fragment  {
             }
         });
         setAdapters(recyclerView);
+        getPurchaseModel();
         return view;
     }
 
@@ -105,13 +118,17 @@ public class PurHistoryListFragment extends Fragment  {
 
 
     private void setAdapters(RecyclerView recyclerView){
-        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
-        PurHistoryListAdapter purHistoryListAdapter = new PurHistoryListAdapter(purchaseModelList,homeActivity);
+        purHistoryListAdapter = new PurHistoryListAdapter(purchaseModelList,homeActivity);
         recyclerView.setAdapter(purHistoryListAdapter);
     }
 
 
-
+    private void getPurchaseModel(){
+        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
+        this.purchaseModelList.clear();
+        this.purchaseModelList.addAll(purchaseModelList);
+        purHistoryListAdapter.notifyDataSetChanged();
+    }
 
 
 

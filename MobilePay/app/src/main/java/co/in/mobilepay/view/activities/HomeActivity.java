@@ -78,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new PurchaseListFragment(), "Purchase");
-        adapter.addFragment(new LuggageListFragment(), "Luggage");
+        adapter.addFragment(new LuggageListFragment(), "Order status");
         adapter.addFragment(new PurHistoryListFragment(), "History");
         viewPager.setAdapter(adapter);
     }

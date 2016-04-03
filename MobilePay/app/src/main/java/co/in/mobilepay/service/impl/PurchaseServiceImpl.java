@@ -101,7 +101,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
 
     @Override
     public void syncPurchaseData(){
-        try {
+        /*try {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -113,7 +113,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
            // responseDataCall.
         }catch (Exception e){
             Log.e("Error", "Error in  syncPurchaseData", e);
-        }
+        }*/
     }
 
     @Override

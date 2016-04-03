@@ -16,7 +16,7 @@ public enum ServiceAPI {
 
     ServiceAPI(){
         Executor executor = Executors.newCachedThreadPool();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.1.60:8081/mobilepay/").addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.9:8081/mobilepay/").addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         mobilePayAPI = retrofit.create(MobilePayAPI.class);
     }
 

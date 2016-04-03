@@ -76,6 +76,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
+
         // 1 - Purchase List, 2- Order Status List, 3 - Purchase History List
        int currentTab =  extras.getInt("currentTab",0);
         switch (currentTab){
