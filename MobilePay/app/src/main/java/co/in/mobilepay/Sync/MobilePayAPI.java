@@ -3,6 +3,7 @@ package co.in.mobilepay.sync;
 import com.google.gson.JsonObject;
 
 import co.in.mobilepay.json.request.RegisterJson;
+import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
@@ -47,4 +48,7 @@ public interface  MobilePayAPI {
 
     @POST("mobile/getCardList.html")
     Call<ResponseData> getCardList(@Body TokenJson tokenJson);
+
+    @POST("mobile/syncUserDeliveryAddress.html")
+    Call<ResponseData> syncUserDeliveryAddress(@Body AddressBookJson requestData);
 }

@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -90,6 +91,11 @@ public class ServiceUtil {
     public static Long getCurrentTimeMilli(){
         DateTime date = DateTime.now();
         return date.getMillis();
+    }
+
+
+    public static String generateUUID(){
+        return  UUID.randomUUID().toString();
     }
 
 

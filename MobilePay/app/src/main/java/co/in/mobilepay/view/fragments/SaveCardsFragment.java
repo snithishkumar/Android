@@ -22,7 +22,6 @@ import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
-import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.activities.NaviDrawerActivity;
 import co.in.mobilepay.view.adapters.SaveCardsAdapter;
 
@@ -62,7 +61,7 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_save_card_list, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.save_card_list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
         boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);

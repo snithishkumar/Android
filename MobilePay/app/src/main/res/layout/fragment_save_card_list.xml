@@ -14,7 +14,7 @@
         android:layout_margin="20dp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/save_card_list"
+            android:id="@+id/shop_product_items_view"
             android:name="co.in.mobilepay.view.fragments.PaymentCardFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -15,6 +15,7 @@ import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
+import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.ResponseData;
@@ -138,4 +139,101 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         }
         return null;
     }
+
+
+    /**
+     * Get Default Address(Previous Choosed Address), Otherwise most recent updated or created address.
+     * @return AddressEntity or null
+     */
+    @Override
+    public AddressEntity getDefaultAddress(){
+        try{
+            // Get Default address
+            AddressEntity addressEntity =  userDao.getDefaultAddress();
+            // If Default address is not found, then most recent updated or created address
+            if(addressEntity == null){
+                addressEntity = userDao.getMostRecentAddress();
+            }
+
+            return addressEntity;
+        }catch (Exception e){
+            Log.e("Error","Error in getUserEntity",e);
+        }
+        return null;
+    }
+
+
+    /**
+     * Returns List of Delivery Address
+     * @return
+     */
+    @Override
+    public List<AddressEntity> getAddressList(){
+        try{
+            return userDao.getAddressEntityList();
+        }catch (Exception e){
+            Log.e("Error","Error in getAddressList",e);
+        }
+        return new ArrayList<>();
+    }
+
+
+    /**
+     * Create
+     * @param addressEntity
+     */
+    @Override
+    public void saveAddress(AddressEntity addressEntity){
+        try {
+            userDao.saveAddress(addressEntity);
+            userDao.setDefaultAddress(addressEntity.getAddressId());
+        }catch (Exception e){
+            Log.e("Error","Error in saveAddress",e);
+        }
+
+    }
+
+    /**
+     * set Default address as currently choose address
+     * @param addressId
+     */
+    public void updateDefaultAddress(int addressId){
+        try {
+            userDao.setDefaultAddress(addressId);
+        }catch (Exception e){
+            Log.e("Error","Error in updateDefaultAddress",e);
+        }
+    }
+
+    /**
+     * Update
+     * @param addressEntity
+     */
+    @Override
+    public void updateAddress(AddressEntity addressEntity){
+        try {
+            userDao.updateAddress(addressEntity);
+            userDao.setDefaultAddress(addressEntity.getAddressId());
+        }catch (Exception e){
+            Log.e("Error","Error in saveAddress",e);
+        }
+
+    }
+
+    /**
+     * Get Address for an given id
+     * @param addressId
+     * @return
+     */
+    @Override
+    public AddressEntity getAddress(int addressId){
+        try {
+            return  userDao.getAddressEntity(addressId);
+        }catch (Exception e){
+            Log.e("Error","Error in getAddress",e);
+        }
+        return null;
+    }
+
+
 }

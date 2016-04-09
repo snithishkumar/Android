@@ -8,6 +8,7 @@ public class ProductDetailsModel {
     private String description;
     private int quantity;
     private String amount;
+    private int rating = 0;
 
     public int getItemNo() {
         return itemNo;
@@ -39,5 +40,13 @@ public class ProductDetailsModel {
 
     public void setAmount(String amount) {
         this.amount = amount;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

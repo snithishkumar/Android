@@ -2,8 +2,10 @@ package co.in.mobilepay.service;
 
 import android.content.Context;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.view.model.ProductDetailsModel;
@@ -26,4 +28,19 @@ public interface PurchaseService {
     UserEntity getUserEntity();
 
     void updatePurchaseData(PurchaseEntity purchaseEntity,List<ProductDetailsModel> productDetailsModelList);
+
+    AddressEntity getDefaultAddress();
+
+    List<AddressEntity> getAddressList();
+
+    void saveAddress(AddressEntity addressEntity);
+
+    void updateAddress(AddressEntity addressEntity);
+
+    AddressEntity getAddress(int addressId);
+
+    void updateDefaultAddress(int addressId);
+
+
+
 }

@@ -16,11 +16,10 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
-import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
-import co.in.mobilepay.view.adapters.ProductDetailsRecyclerAdapter;
+import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.List;
@@ -37,10 +36,9 @@ public class ProductsDetailsFragment extends Fragment {
 
     private TextView shopName = null;
     private TextView shopArea = null;
-    private TextView shopLnNo = null;
-    private TextView shopPnNo = null;
-    private TextView billNo = null;
-    private TextView purDateTime = null;
+    private TextView shopOrderId = null;
+    private TextView shoppingDateTime = null;
+
 
     private Gson gson = null;
 
@@ -91,10 +89,9 @@ public class ProductsDetailsFragment extends Fragment {
         }
         shopName = (TextView)view.findViewById(R.id.shop_name);
         shopArea = (TextView)view.findViewById(R.id.shop_area);
-        shopLnNo = (TextView)view.findViewById(R.id.shop_land_no);
-        shopPnNo = (TextView)view.findViewById(R.id.shop_land_ph);
-        billNo = (TextView) view.findViewById(R.id.bill_no);
-        purDateTime = (TextView)view.findViewById(R.id.purchase_date_time);
+        shoppingDateTime  = (TextView)view.findViewById(R.id.shop_date_time);
+        shopOrderId = (TextView)view.findViewById(R.id.shop_order_id);
+
     }
 
 
@@ -113,21 +110,26 @@ public class ProductsDetailsFragment extends Fragment {
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText(merchantEntity.getArea());
-        shopLnNo.setText("Ln:"+merchantEntity.getLandLineNumber());
-        shopPnNo.setText("Pn:"+merchantEntity.getMobileNumber());
-        billNo.setText("Bill No:" + purchaseEntity.getBillNumber());
+        shopOrderId.append( purchaseEntity.getBillNumber());
         String purchaseDateTime =  MobilePayUtil.formatDate(purchaseEntity.getPurchaseDateTime());
-        purDateTime.setText("Date:"+purchaseDateTime);
+        shoppingDateTime.setText(purchaseDateTime);
 
         String productDetails = purchaseEntity.getProductDetails();
 
        productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
         }.getType());
+        productDetailsModelList.addAll(productDetailsModelList);
+        productDetailsModelList.addAll(productDetailsModelList);
+
+        /** Home Delivery **/
+        ProductDetailsModel productDetailsModel = new ProductDetailsModel();
+        productDetailsModelList.add(productDetailsModel);
+      //  productDetailsModelList.add(productDetailsModel);
 
         totalProduct = productDetailsModelList.size();
         // Set the adapter
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.save_card_list);
-        recyclerView.setAdapter(new ProductDetailsRecyclerAdapter(purchaseDetailsActivity,productDetailsModelList));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
+        recyclerView.setAdapter(new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList));
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));
@@ -147,6 +149,9 @@ public class ProductsDetailsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
+
+
 
 
 }

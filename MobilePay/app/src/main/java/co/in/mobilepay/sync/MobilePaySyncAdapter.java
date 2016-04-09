@@ -21,13 +21,18 @@ import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
+import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.json.response.AddressBookJson;
+import co.in.mobilepay.json.response.AddressJson;
 import co.in.mobilepay.json.response.LuggageJson;
 import co.in.mobilepay.json.response.LuggagesListJson;
 import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.json.response.TokenJson;
+import co.in.mobilepay.service.ServiceUtil;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -81,6 +86,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
        int currentTab =  extras.getInt("currentTab",0);
         switch (currentTab){
             case 1:
+                syncUserDeliveryAddress();
                 syncPurchaseData();
                 break;
             case 2:
@@ -104,6 +110,18 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
         requestData.addProperty("serverToken", userEntity.getServerToken());
         requestData.addProperty("accessToken", userEntity.getAccessToken());
         return requestData;
+    }
+
+
+    /**
+     * Get Current User  and App Token
+     * @return
+     * @throws SQLException
+     */
+    private void userRequest(TokenJson tokenJson)throws SQLException{
+        UserEntity userEntity = userDao.getUser();
+        tokenJson.setAccessToken(userEntity.getAccessToken());
+        tokenJson.setServerToken(userEntity.getServerToken());
     }
 
 
@@ -255,7 +273,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
              *  If time is -1 ,then server sends all the current purchase list.
              */
             long serverTime = purchaseDao.getRecentPurchaseHisServerTime();
-            requestData.addProperty("serverTime",serverTime);
+            requestData.addProperty("serverTime", serverTime);
             // Sync Request
             Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryData(requestData);
             // Server Response
@@ -279,6 +297,66 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e("Error","Error in  syncPurchaseData",e);
             // -- TODO Need to Say Something wrong in mobile side
         }
+    }
+
+
+    /**
+     * Sync User Delivery Address
+     */
+    private void syncUserDeliveryAddress(){
+        try{
+
+            AddressBookJson requestAddressBook = new AddressBookJson();
+            // Get User and App Token
+            userRequest(requestAddressBook);
+            // Get Most Recent Synced Delivery address
+           long lastModifiedTime =   userDao.getLastModifiedTime();
+            requestAddressBook.setLastModifiedTime(lastModifiedTime);
+
+            // Send Un synced Address
+            List<AddressEntity> addressEntityList =  userDao.getUnSyncedAddress();
+            for(AddressEntity addressEntity : addressEntityList){
+                AddressJson addressJson = new AddressJson(addressEntity);
+                requestAddressBook.getAddressList().add(addressJson);
+            }
+
+            // Sync Request
+            Call<ResponseData> responseDataCall =  mobilePayAPI.syncUserDeliveryAddress(requestAddressBook);
+
+            // Server Response
+            Response<ResponseData> dataResponse =  responseDataCall.execute();
+            ResponseData responseData = dataResponse.body();
+
+            int statusCode = responseData.getStatusCode();
+
+            // Check the Status code, If its success or failure
+            if(statusCode == 200){
+                // Process Server Response
+                String addressDetails = responseData.getData();
+                // Json to Object
+                AddressBookJson addressBookJson =  gson.fromJson(addressDetails, AddressBookJson.class);
+                List<AddressJson> addressList  =addressBookJson.getAddressList();
+                /**
+                 * Check address is already present in DB or not. If not present, then create new record. Suppose, if its present then check last modified time
+                 */
+                for(AddressJson addressJson : addressList){
+                   AddressEntity dbAddressEntity =  userDao.getAddressEntity(addressJson.getAddressUUID());
+                    if(dbAddressEntity == null){
+                        dbAddressEntity = new AddressEntity(addressJson);
+                        dbAddressEntity.setAddressUUID(ServiceUtil.generateUUID());
+                        userDao.saveAddress(dbAddressEntity);
+                    }else if(dbAddressEntity.getLastModifiedTime() < addressJson.getLastModifiedTime()){
+                        dbAddressEntity.toAddressEntity(addressJson);
+                        userDao.updateAddress(dbAddressEntity);
+                    }
+                }
+
+            }
+
+        }catch (Exception e){
+            Log.e(LOG_TAG,"Error in getUserDeliveryAddress",e);
+        }
+
     }
 
 

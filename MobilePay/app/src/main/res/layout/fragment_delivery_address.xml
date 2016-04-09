@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightgrey">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_delivery_addr_list"
+        android:name="co.in.mobilepay.view.fragments.PaymentCardFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/adapt_delivery_address"
+       />
+
+   <!-- <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content">-->
+
+
+
+   <LinearLayout
+        android:id="@+id/shop_product_items_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightgrey"
+       android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true">
+       <Button
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:height="50dp"
+           android:onClick="viewAddUserDeliveryAddress"
+           android:id="@+id/add_address"
+           android:text="Add Address" />
+
+   </LinearLayout>
+
+
+
+
+</RelativeLayout>

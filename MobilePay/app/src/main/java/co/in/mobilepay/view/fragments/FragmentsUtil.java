@@ -39,7 +39,8 @@ public class FragmentsUtil {
     }
 
 
-    public static void backPressed(FragmentManager fragmentManager){
+    public static void backPressed(AppCompatActivity activity){
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         if(fragmentManager.getBackStackEntryCount() > 0)
             fragmentManager.popBackStack();
     }

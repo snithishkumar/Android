@@ -13,6 +13,9 @@ import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PaySaveCardsAdapter;
+import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
+import co.in.mobilepay.view.fragments.AddDeliveryAddressFragment;
+import co.in.mobilepay.view.fragments.DeliveryAddressFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.PaymentFragment;
@@ -23,7 +26,7 @@ import co.in.mobilepay.view.fragments.ShopDetailsFragment;
 /**
  * Created by Nithish on 09-03-2016.
  */
-public class PurchaseDetailsActivity extends AppCompatActivity implements PaySaveCardsAdapter.PaySaveCardsCallback{
+public class PurchaseDetailsActivity extends AppCompatActivity implements PaySaveCardsAdapter.PaySaveCardsCallback,ProductDetailsAdapter.ShowDeliveryAddress,AddDeliveryAddressFragment.ShowDeliveryAddress{
 
     ProductsDetailsFragment productsDetailsFragment = null;
     PurchaseService purchaseService = null;
@@ -129,5 +132,33 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
         purchaseIdArgs.putInt("purchaseId",purchaseId);
         newCardFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.replaceFragment(this, newCardFragment, R.id.pur_details_main_container);
+    }
+
+    @Override
+    public void viewFragment(int options) {
+        if(options == ProductDetailsAdapter.NEW_HOME){
+            AddDeliveryAddressFragment addDeliveryAddressFragment = new AddDeliveryAddressFragment();
+            FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
+        }else if(options == 3){
+            FragmentsUtil.backPressed(this);
+        }
+    }
+
+    /**
+     * view User Delivery Address
+     * @param view
+     */
+    public void viewUserDeliveryAddress(View view){
+        DeliveryAddressFragment deliveryAddressFragment = new DeliveryAddressFragment();
+        FragmentsUtil.replaceFragment(this,deliveryAddressFragment,R.id.pur_details_main_container);
+    }
+
+    /**
+     * view User Delivery Address
+     * @param view
+     */
+    public void viewAddUserDeliveryAddress(View view){
+        AddDeliveryAddressFragment addDeliveryAddressFragment = new AddDeliveryAddressFragment();
+        FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
     }
 }
