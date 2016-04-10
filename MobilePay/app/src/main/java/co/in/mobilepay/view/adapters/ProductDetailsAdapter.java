@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.enumeration.DiscountType;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
+import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.ArrayList;
@@ -22,11 +24,19 @@ import java.util.List;
 public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
+
     private PurchaseDetailsActivity purchaseDetailsActivity;
     private ProductDetailsModel productDetailsModel;
     private ShowDeliveryAddress showDeliveryAddress;
 
     private AddressEntity defaultAddress = null;
+
+    private AmountDetailsJson amountDetailsJson;
+
+    private double amount;
+    private double taxAmount;
+    private double discount = 0;
+    private double totalAmount;
 
     private int position;
 
@@ -40,10 +50,11 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
 
-    public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels) {
+    public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels,AmountDetailsJson amountDetailsJson) {
         this.productDetailsModels = productDetailsModels;
         this.purchaseDetailsActivity = purchaseDetailsActivity;
         this.showDeliveryAddress = purchaseDetailsActivity;
+        this.amountDetailsJson =  amountDetailsJson;
     }
 
     @Override
@@ -82,7 +93,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(size - 2 == position){
             return HOME_DELIVERY_OPTIONS;
         }
-
         if(size - 1 == position){
             return TAX_DETAILS;
         }
@@ -94,6 +104,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.position = position;
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
+            ProductDetailsModel productDetailsModel = productDetailsModels.get(position);
+            productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            calcAmount(position);
         }else if(viewHolder instanceof DeliveryOptionsViewHolder){
             DeliveryOptionsViewHolder deliveryOptionsViewHolder = (DeliveryOptionsViewHolder)viewHolder;
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
@@ -102,6 +115,18 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             deliveryAddressViewHolder.vHomeDelivery.setText(address);
         }else{
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
+            calcAmount();
+            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+amount);
+            amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
+            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(taxAmount));
+            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
+                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
+
+            }else{
+                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
+            }
+            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(discount));
+            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(totalAmount));
         }
 
         productDetailsModel =  productDetailsModels.get(position);
@@ -109,7 +134,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void addRating(int rating){
-
         productDetailsModel =  productDetailsModels.get(position);
         productDetailsModel.setRating(rating);
     }
@@ -133,6 +157,27 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         stringBuilder.append(" - " + addressEntity.getPostalCode());
         return  stringBuilder.toString();
+    }
+
+    private void calcAmount(int position){
+        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
+    }
+
+    private void calcAmount(){
+        if(amountDetailsJson.getDiscount() >  -1 && amount > amountDetailsJson.getDiscountMiniVal()){
+            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
+                totalAmount =   amount - amountDetailsJson.getDiscount();
+                discount = amountDetailsJson.getDiscount();
+            }else{
+                discount = Double.valueOf(String.format("%.2f", ((amount * amountDetailsJson.getDiscount()) / 100)));
+                totalAmount = amount - discount;
+            }
+        }else{
+            totalAmount = amount;
+        }
+
+        taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
+        totalAmount = totalAmount + taxAmount;
     }
 
 
@@ -316,8 +361,25 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public class AmountDetailsViewHolder extends RecyclerView.ViewHolder{
+        private TextView vSubTotalText;
+        private TextView vTaxText;
+        private TextView vDiscountText;
+
+        private TextView vSubTotalAmount;
+        private TextView vSubTaxAmount;
+        private TextView vSubDiscountAmount;
+        private TextView vTotalAmount;
+
         public AmountDetailsViewHolder(View view){
             super(view);
+            vSubTotalText = (TextView) view.findViewById(R.id.amount_details_sub_total_text);
+            vTaxText = (TextView) view.findViewById(R.id.amount_details_sub_total_tax);
+            vDiscountText = (TextView) view.findViewById(R.id.amount_details_sub_total_discount);
+
+            vSubTotalAmount = (TextView) view.findViewById(R.id.amount_details_sub_total_amount);
+            vSubTaxAmount = (TextView) view.findViewById(R.id.amount_details_sub_tax_amount);
+            vSubDiscountAmount = (TextView) view.findViewById(R.id.amount_details_sub_discount_amount);
+            vTotalAmount = (TextView) view.findViewById(R.id.amount_details_total_amount);
         }
     }
 

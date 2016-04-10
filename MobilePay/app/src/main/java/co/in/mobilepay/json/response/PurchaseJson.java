@@ -16,15 +16,22 @@ public class PurchaseJson {
 	private boolean isDelivered;
 	private long lastModifiedDateTime;
 	private long serverDateTime;
-	private String totalAmount;
-	private String payableAmount;
 	private boolean isDiscard;
 	private boolean isPayed;
 	private String orderStatus;
 	private DeliveryOptions deliveryOptions;
+	private String totalAmount;
 
 	public PurchaseJson(){
 		
+	}
+
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 
 	public String getPurchaseId() {
@@ -123,21 +130,7 @@ public class PurchaseJson {
 		this.serverDateTime = serverDateTime;
 	}
 
-	public String getTotalAmount() {
-		return totalAmount;
-	}
 
-	public void setTotalAmount(String totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-	public String getPayableAmount() {
-		return payableAmount;
-	}
-
-	public void setPayableAmount(String payableAmount) {
-		this.payableAmount = payableAmount;
-	}
 
 	public boolean isDiscard() {
 		return isDiscard;
@@ -186,8 +179,6 @@ public class PurchaseJson {
 				", isDelivered=" + isDelivered +
 				", lastModifiedDateTime=" + lastModifiedDateTime +
 				", serverDateTime=" + serverDateTime +
-				", totalAmount='" + totalAmount + '\'' +
-				", payableAmount='" + payableAmount + '\'' +
 				", isDiscard=" + isDiscard +
 				", isPayed=" + isPayed +
 				", orderStatus='" + orderStatus + '\'' +

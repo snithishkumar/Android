@@ -93,7 +93,7 @@ public class PaymentFragment extends Fragment {
     private void initView(View view){
         PurchaseEntity purchaseEntity = purchaseDetailsActivity.getPurchaseService().getPurchaseDetails(purchaseId);
         totalAmount   = (TextView) view.findViewById(R.id.pay_total_amt);
-        totalAmount.setText( getResources().getString(R.string.indian_rupee_symbol)+purchaseEntity.getPayableAmount());
+        totalAmount.setText( getResources().getString(R.string.indian_rupee_symbol)+purchaseEntity.getTotalAmount());
         shopName =  (TextView) view.findViewById(R.id.pay_shop_name);
         shopName.setText("For "+purchaseEntity.getMerchantEntity().getMerchantName());
     }

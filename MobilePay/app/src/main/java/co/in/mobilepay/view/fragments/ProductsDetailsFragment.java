@@ -16,10 +16,12 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
 import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
+import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
 import java.util.List;
@@ -129,7 +131,9 @@ public class ProductsDetailsFragment extends Fragment {
         totalProduct = productDetailsModelList.size();
         // Set the adapter
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
-        recyclerView.setAdapter(new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList));
+        String amountDetails = purchaseEntity.getAmountDetails();
+        AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
+        recyclerView.setAdapter(new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson));
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));

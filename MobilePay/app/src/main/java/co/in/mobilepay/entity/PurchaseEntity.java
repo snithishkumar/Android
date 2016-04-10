@@ -26,13 +26,11 @@ public class PurchaseEntity {
     public static final String MERCHANT_ID = MerchantEntity.MERCHANT_ID;
     public static final String USER_ID = UserEntity.USER_ID;
     public static final String SERVER_DATE_TIME = "ServerDateTime";
-
-    public static final String TOTAL_AMOUNT = "TotalAmount";
-    public static final String PAYABLE_AMOUNT = "PayableAmount";
     public static final String ORDER_STATUS = "OrderStatus";
     public static final String DELIVERY_OPTIONS = "DeliveryOptions";
     public static final String IS_DISCARD = "IsDiscard";
     public static final String IS_SYNC = "IsSync";
+    public static final String TOTAL_AMOUNT = "TotalAmount";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
     private int purchaseId;
@@ -64,10 +62,6 @@ public class PurchaseEntity {
 
     @DatabaseField(columnName = USER_ID,foreign = true)
     private UserEntity userEntity;
-    @DatabaseField(columnName = TOTAL_AMOUNT)
-    private String totalAmount;
-    @DatabaseField(columnName = PAYABLE_AMOUNT)
-    private String payableAmount;
     @DatabaseField(columnName = IS_DISCARD)
     private boolean  isDiscard;
     @DatabaseField(columnName = ORDER_STATUS)
@@ -77,6 +71,9 @@ public class PurchaseEntity {
 
     @DatabaseField(columnName = IS_SYNC)
     private boolean isSync = false;
+
+    @DatabaseField(columnName = TOTAL_AMOUNT)
+    private String totalAmount;
 
 
     public PurchaseEntity(){
@@ -99,12 +96,11 @@ public class PurchaseEntity {
         this.lastModifiedDateTime = purchaseJson.getLastModifiedDateTime();
         this.category = purchaseJson.getCategory();
         this.serverDateTime = purchaseJson.getServerDateTime();
-        this.totalAmount = purchaseJson.getTotalAmount();
-        this.payableAmount = purchaseJson.getPayableAmount();
         this.isDiscard = purchaseJson.isDiscard();
         this.isPayed = purchaseJson.isPayed();
         this.orderStatus = purchaseJson.getOrderStatus();
         this.deliveryOptions = purchaseJson.getDeliveryOptions();
+        this.totalAmount = purchaseJson.getTotalAmount();
     }
 
     public int getPurchaseId() {
@@ -219,21 +215,6 @@ public class PurchaseEntity {
         this.userEntity = userEntity;
     }
 
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getPayableAmount() {
-        return payableAmount;
-    }
-
-    public void setPayableAmount(String payableAmount) {
-        this.payableAmount = payableAmount;
-    }
 
     public boolean isDiscard() {
         return isDiscard;
@@ -267,6 +248,14 @@ public class PurchaseEntity {
         this.isSync = isSync;
     }
 
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
     @Override
     public String toString() {
         return "PurchaseEntity{" +
@@ -284,8 +273,6 @@ public class PurchaseEntity {
                 ", merchantEntity=" + merchantEntity +
                 ", serverDateTime=" + serverDateTime +
                 ", userEntity=" + userEntity +
-                ", totalAmount='" + totalAmount + '\'' +
-                ", payableAmount='" + payableAmount + '\'' +
                 ", isDiscard=" + isDiscard +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", deliveryOptions=" + deliveryOptions +

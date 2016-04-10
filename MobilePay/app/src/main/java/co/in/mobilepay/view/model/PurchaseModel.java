@@ -23,14 +23,14 @@ public class PurchaseModel {
         this.billNumber = String.valueOf(purchaseEntity.getBillNumber());
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
-        this.totalAmount = purchaseEntity.getPayableAmount();
         this.area = purchaseEntity.getMerchantEntity().getArea();
+        this.totalAmount = purchaseEntity.getTotalAmount();
 
 
 
     }
 
-    public PurchaseModel(int purchaseId, String name, String area, String contactNumber, String billNumber, String dateTime, String category, String noOfItems, String totalAmount) {
+    public PurchaseModel(int purchaseId, String name, String area, String contactNumber, String billNumber, String dateTime, String category, String noOfItems,String totalAmount) {
         this.purchaseId = purchaseId;
         this.name = name;
         this.area = area;
@@ -125,7 +125,6 @@ public class PurchaseModel {
                 ", dateTime='" + dateTime + '\'' +
                 ", category='" + category + '\'' +
                 ", noOfItems='" + noOfItems + '\'' +
-                ", totalAmount='" + totalAmount + '\'' +
                 '}';
     }
 }

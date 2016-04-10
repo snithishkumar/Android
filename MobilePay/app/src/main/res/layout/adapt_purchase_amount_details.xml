@@ -6,7 +6,6 @@
     android:layout_marginBottom="20dp"
     android:layout_height="wrap_content">
 
-
    <TextView
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
@@ -20,25 +19,28 @@
         android:layout_width="wrap_content"
         android:orientation="vertical"
         android:layout_margin="5dp"
-        android:id="@+id/amount_details_message"
+        android:id="@+id/amount_details_layout"
         android:layout_below="@+id/amount_details_text"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amounts"
+            android:id="@+id/amount_details_sub_total_text"
+            android:text="Sub Total"
             android:layout_marginTop="5dp"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/amount_details_sub_total_tax"
             android:text="Tax"
             android:layout_marginTop="5dp"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Offers"
+            android:id="@+id/amount_details_sub_total_discount"
+            android:text="Discount"
             android:layout_marginTop="5dp"
             />
         <TextView
@@ -57,7 +59,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_marginRight="61dp"
-        android:layout_alignTop="@+id/amount_details_message"
+        android:layout_alignTop="@+id/amount_details_layout"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="25dp">
@@ -65,6 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:id="@+id/amount_details_sub_total_amount"
             android:text="25000"
             android:textStyle="bold"
             />
@@ -72,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:id="@+id/amount_details_sub_tax_amount"
             android:text="150.25"
             android:textStyle="bold"
             />
@@ -79,6 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:id="@+id/amount_details_sub_discount_amount"
             android:text="50"
             android:textStyle="bold"
             />
@@ -87,14 +92,11 @@
             android:layout_height="wrap_content"
             android:text="500000"
             android:textSize="15dp"
+            android:id="@+id/amount_details_total_amount"
             android:layout_marginTop="15dp"
             android:textStyle="bold"
             />
 
     </LinearLayout>
-
-
-
-
 
 </RelativeLayout>
