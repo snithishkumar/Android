@@ -9,7 +9,70 @@
     android:layout_marginTop="20dp"
     card_view:cardCornerRadius="4dp"
     tools:context=".activities.MainActivity">
-    <RelativeLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/adapt_pur_list_shop_logo"
+                android:background="@mipmap/luggage_cart"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/adapt_pur_list_shop_logo"
+                android:layout_marginLeft="20dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/adapt_pur_list_shop_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="Pothys,Aalayam of Sliks, \nChennai"/>
+
+                <TextView
+                    android:id="@+id/adapt_pur_list_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Order Id: #28654"/>
+
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/adapt_pur_list_total_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/adapt_pur_list_shop_logo"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+
+
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/adapt_pur_list_pur_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:text="Today, 01:44 PM"/>
+
+    </LinearLayout>
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_margin="10dp"
         android:layout_height="match_parent">
@@ -99,5 +162,5 @@
 
 
 
-    </RelativeLayout>
+    </RelativeLayout>-->
     </android.support.v7.widget.CardView>

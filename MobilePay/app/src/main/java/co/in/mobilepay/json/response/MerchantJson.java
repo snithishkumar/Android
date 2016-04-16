@@ -14,12 +14,19 @@ public class MerchantJson {
 	private long landNumber;
     private long createdDateTime;
     private long lastModifiedDateTime;
+	private int serverMerchantId;
 
 	public MerchantJson() {
 
 	}
 
+	public int getServerMerchantId() {
+		return serverMerchantId;
+	}
 
+	public void setServerMerchantId(int serverMerchantId) {
+		this.serverMerchantId = serverMerchantId;
+	}
 
 	public String getPinCode() {
 		return pinCode;

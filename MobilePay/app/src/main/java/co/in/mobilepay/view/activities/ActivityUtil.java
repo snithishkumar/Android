@@ -27,7 +27,6 @@ public class ActivityUtil {
             @Override
             public void run() {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-
                 // Setting Dialog Title
                 alertDialog.setTitle(title);
 

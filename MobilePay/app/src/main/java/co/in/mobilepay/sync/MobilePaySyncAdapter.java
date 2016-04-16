@@ -10,10 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
@@ -22,11 +24,14 @@ import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
+import co.in.mobilepay.json.response.DiscardJson;
+import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.LuggageJson;
 import co.in.mobilepay.json.response.LuggagesListJson;
 import co.in.mobilepay.json.response.PurchaseJson;
@@ -88,6 +93,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             case 1:
                 syncUserDeliveryAddress();
                 syncPurchaseData();
+                sendUnSyncDeclineData();
                 break;
             case 2:
                 syncOrderStatus();
@@ -285,7 +291,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             if(statusCode == 300){
                 // Process Server Response
                 String purchaseDetails = responseData.getData();
-                List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                List<PurchaseJson> purchaseJsonList = gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
                 }.getType());
                 processPurchaseJson(purchaseJsonList);
                 // -- TODO Need to send notification to list view
@@ -305,16 +311,21 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
      */
     private void syncUserDeliveryAddress(){
         try{
+            // Send Un synced Address
+            List<AddressEntity> addressEntityList =  userDao.getUnSyncedAddress();
+
+            // No need call sync bcs address book is empty
+            if(addressEntityList.size() < 1){
+                return;
+            }
 
             AddressBookJson requestAddressBook = new AddressBookJson();
             // Get User and App Token
             userRequest(requestAddressBook);
             // Get Most Recent Synced Delivery address
-           long lastModifiedTime =   userDao.getLastModifiedTime();
+            long lastModifiedTime =   userDao.getLastModifiedTime();
             requestAddressBook.setLastModifiedTime(lastModifiedTime);
 
-            // Send Un synced Address
-            List<AddressEntity> addressEntityList =  userDao.getUnSyncedAddress();
             for(AddressEntity addressEntity : addressEntityList){
                 AddressJson addressJson = new AddressJson(addressEntity);
                 requestAddressBook.getAddressList().add(addressJson);
@@ -357,6 +368,46 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             Log.e(LOG_TAG,"Error in getUserDeliveryAddress",e);
         }
 
+    }
+
+
+    /**
+     * Send UnSynced Declined Data to the server
+     */
+    public void sendUnSyncDeclineData() {
+        try {
+            List<PurchaseEntity> purchaseEntityList = purchaseDao.getUnSyncedDiscardEntity();
+            DiscardJsonList discardJsonList = new DiscardJsonList();
+            boolean isData = false;
+            for (PurchaseEntity purchaseEntity : purchaseEntityList) {
+                DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
+                DiscardJson discardJson = new DiscardJson(discardEntity, purchaseEntity);
+                discardJsonList.getDiscardJsonList().add(discardJson);
+                isData = true;
+            }
+            if (isData) {
+                userRequest(discardJsonList);
+                // Sync Request
+                Call<ResponseData> responseDataCall = mobilePayAPI.syncDiscardData(discardJsonList);
+                // Server Response
+                Response<ResponseData> dataResponse = responseDataCall.execute();
+                ResponseData responseData = dataResponse.body();
+                // Success Response
+                int statusCode = responseData.getStatusCode();
+                if (statusCode == 200) {
+                    // Update ServerSync Time and IsSync Flag
+                    String response = responseData.getData();
+                    List<PurchaseJson> purchaseJsons = gson.fromJson(response, new TypeToken<List<PurchaseEntity>>() {
+                    }.getType());
+                    purchaseDao.updateServerSyncTime(purchaseJsons);
+
+                }
+            }
+
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error in getUserDeliveryAddress", e);
+        }
     }
 
 

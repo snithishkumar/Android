@@ -21,11 +21,10 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.HomeActivity;
-import co.in.mobilepay.view.adapters.LuggageListAdapter;
-import co.in.mobilepay.view.adapters.PurchaseListAdapter;
+import co.in.mobilepay.view.adapters.OrderStatusListAdapter;
 import co.in.mobilepay.view.model.PurchaseModel;
 
-public class LuggageListFragment extends Fragment  {
+public class OrderStatusListFragment extends Fragment  {
 
 
    private HomeActivity homeActivity = null;
@@ -33,14 +32,14 @@ public class LuggageListFragment extends Fragment  {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    LuggageListAdapter luggageListAdapter;
+    OrderStatusListAdapter orderStatusListAdapter;
     List<PurchaseModel> purchaseModelList = new ArrayList<>();
 
     private  Account account;
     private   Bundle settingsBundle;
 
 
-    public LuggageListFragment() {
+    public OrderStatusListFragment() {
         // Required empty public constructor
     }
 
@@ -79,9 +78,9 @@ public class LuggageListFragment extends Fragment  {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_purchase_list, container, false);
+        View view =  inflater.inflate(R.layout.fragment_order_status_list, container, false);
 
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.purchase_list_swipe);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.order_status_swipe);
         refreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.YELLOW);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -93,9 +92,9 @@ public class LuggageListFragment extends Fragment  {
 
       //  refreshLayout.
 
-         recyclerView = (RecyclerView) view.findViewById(R.id.purchase_list_fragment);
+         recyclerView = (RecyclerView) view.findViewById(R.id.luggage_pur_list);
         recyclerView.setHasFixedSize(true);
-        linearLayoutManager =  new LinearLayoutManager(getActivity());
+        linearLayoutManager =  new LinearLayoutManager(homeActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -132,15 +131,22 @@ public class LuggageListFragment extends Fragment  {
 
 
     private void setAdapters(RecyclerView recyclerView){
-        luggageListAdapter = new LuggageListAdapter(purchaseModelList,homeActivity);
-        recyclerView.setAdapter(luggageListAdapter);
+        orderStatusListAdapter = new OrderStatusListAdapter(purchaseModelList,homeActivity);
+        recyclerView.setAdapter(orderStatusListAdapter);
     }
 
     private void getPurchaseModel(){
         List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         this.purchaseModelList.clear();
         this.purchaseModelList.addAll(purchaseModelList);
-        luggageListAdapter.notifyDataSetChanged();
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        orderStatusListAdapter.notifyDataSetChanged();
     }
 
 

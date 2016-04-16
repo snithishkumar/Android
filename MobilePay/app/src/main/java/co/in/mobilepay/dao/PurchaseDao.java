@@ -3,8 +3,10 @@ package co.in.mobilepay.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.json.response.PurchaseJson;
 
 /**
  * Created by Nithish on 24-01-2016.
@@ -38,4 +40,12 @@ public interface PurchaseDao {
     long getMostRecentLuggageServerTime()throws SQLException;
 
     long getRecentPurchaseHisServerTime()throws SQLException;
+
+    void createDiscardEntity(DiscardEntity discardEntity)throws SQLException;
+
+    List<PurchaseEntity> getUnSyncedDiscardEntity()throws SQLException;
+
+    DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity)throws SQLException;
+
+    void updateServerSyncTime(List<PurchaseJson> purchaseJsonList)throws SQLException;
 }

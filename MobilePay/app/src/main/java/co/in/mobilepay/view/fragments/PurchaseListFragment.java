@@ -91,8 +91,8 @@ public class PurchaseListFragment extends Fragment  {
       //  refreshLayout.
 
          recyclerView = (RecyclerView) view.findViewById(R.id.purchase_list_fragment);
-        recyclerView.setHasFixedSize(true);
-        linearLayoutManager =  new LinearLayoutManager(getActivity());
+      // recyclerView.setHasFixedSize(true);
+        linearLayoutManager =  new LinearLayoutManager(homeActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -137,6 +137,12 @@ public class PurchaseListFragment extends Fragment  {
     private void getPurchaseModel(){
         List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         this.purchaseModelList.clear();
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
+        this.purchaseModelList.addAll(purchaseModelList);
         this.purchaseModelList.addAll(purchaseModelList);
         purchaseListAdapter.notifyDataSetChanged();
     }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.enumeration.DiscountType;
+import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
@@ -85,6 +86,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
 
 
+    }
+    @Override
+    public int getItemCount() {
+        return productDetailsModels.size()+2 ;
     }
 
     @Override
@@ -182,10 +187,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
 
-    @Override
-    public int getItemCount() {
-        return productDetailsModels.size();
-    }
+
 
 
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -215,6 +217,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             rate3.setOnClickListener(this);
             rate4.setOnClickListener(this);
             rate5.setOnClickListener(this);
+            delete.setOnClickListener(this);
 
         }
 
@@ -319,6 +322,14 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }else{
                         toggleImg(4);
                         imagePos = 0;
+                    }
+                    break;
+                case R.id.adapt_pur_item_delete:
+                    if(productDetailsModels.size() <= 3){
+                        ActivityUtil.showDialog(purchaseDetailsActivity,"Message","Please Decline.");
+                    }else {
+                        productDetailsModels.remove(getAdapterPosition());
+                        notifyDataSetChanged();
                     }
                     break;
 

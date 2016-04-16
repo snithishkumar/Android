@@ -41,6 +41,8 @@ public interface PurchaseService {
 
     void updateDefaultAddress(int addressId);
 
+    void declinePurchase(PurchaseEntity purchaseEntity,String reason);
+
 
 
 }

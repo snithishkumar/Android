@@ -22,7 +22,7 @@ import co.in.mobilepay.view.model.PurchaseModel;
 /**
  * Created by Nithish on 16-02-2016.
  */
-public class LuggageListAdapter extends RecyclerView.Adapter<LuggageListAdapter.LuggageListViewHolder> {
+public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<PurchaseModel> purchaseModelList;
 
@@ -30,20 +30,37 @@ public class LuggageListAdapter extends RecyclerView.Adapter<LuggageListAdapter.
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
 
-    public LuggageListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
+    private static final int EMPTY_VIEW = -1;
+
+    public OrderStatusListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
         this.homeActivity = homeActivity;
     }
 
     @Override
     public int getItemCount() {
-        return purchaseModelList.size();
+        return purchaseModelList.size() == 0 ? 1 :purchaseModelList.size() ;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (purchaseModelList.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
 
 
+
     @Override
-    public LuggageListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            final View itemView = LayoutInflater.
+                    from(viewGroup.getContext()).
+                    inflate(R.layout.empty_order_status_list, viewGroup, false);
+            return new OrderStatusEmptyViewHolder(itemView);
+        }
        final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.adapt_luggage_list, viewGroup, false);
@@ -64,28 +81,39 @@ public class LuggageListAdapter extends RecyclerView.Adapter<LuggageListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(LuggageListViewHolder luggageListViewHolder, int position) {
-        this.position = position;
-       final PurchaseModel purchaseModel =  purchaseModelList.get(position);
-        luggageListViewHolder.vBillNumber.setText("Order Id: "+purchaseModel.getBillNumber());
-        luggageListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
-        luggageListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
-        luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
-        luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
-        luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
-                callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
-              try{
-                  homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
-              }catch (Exception e){
-                    e.printStackTrace();
-              }
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if(viewHolder instanceof LuggageListViewHolder){
+            LuggageListViewHolder luggageListViewHolder = (LuggageListViewHolder)viewHolder;
+            final PurchaseModel purchaseModel =  purchaseModelList.get(position);
+            luggageListViewHolder.vBillNumber.setText("Order Id: "+purchaseModel.getBillNumber());
+            luggageListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
+            luggageListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
+            luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
+            luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+            luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
+                    try{
+                        homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
-            }
-        });
+                }
+            });
+        }
 
+
+    }
+
+    class OrderStatusEmptyViewHolder extends RecyclerView.ViewHolder{
+        protected TextView vEmptyMessage;
+        public OrderStatusEmptyViewHolder(View view){
+            super(view);
+            vEmptyMessage = (TextView) view.findViewById(R.id.empty_order_status_list_text);
+        }
     }
 
     class LuggageListViewHolder extends RecyclerView.ViewHolder{

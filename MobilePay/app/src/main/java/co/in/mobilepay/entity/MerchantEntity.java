@@ -18,6 +18,7 @@ public class MerchantEntity {
     public static final String MOBILE_NUMBER = "MobileNumber";
     public static final String LAND_LINE_NUMBER = "LandLineNumber";
     public static final String PIN_CODE = "PinCode";
+    public static final String SERVER_MERCHANT_ID = "ServerMerchantId";
 
     @DatabaseField(columnName = MERCHANT_ID,generatedId = true)
     private int merchantId;
@@ -35,6 +36,9 @@ public class MerchantEntity {
     private long landLineNumber;
     @DatabaseField(columnName = PIN_CODE)
     private String pinCode;
+
+    @DatabaseField(columnName = SERVER_MERCHANT_ID)
+    private int serverMerchantId;
 
     private long createdDateTime;
     private long lastModifiedDateTime;
@@ -57,6 +61,7 @@ public class MerchantEntity {
         this.createdDateTime = merchantJson.getCreatedDateTime();
         this.lastModifiedDateTime = merchantJson.getLastModifiedDateTime();
         this.pinCode = merchantJson.getPinCode();
+        this.serverMerchantId = merchantJson.getServerMerchantId();
     }
 
     public int getMerchantId() {
@@ -81,6 +86,14 @@ public class MerchantEntity {
 
     public void setMerchantAddress(String merchantAddress) {
         this.merchantAddress = merchantAddress;
+    }
+
+    public int getServerMerchantId() {
+        return serverMerchantId;
+    }
+
+    public void setServerMerchantId(int serverMerchantId) {
+        this.serverMerchantId = serverMerchantId;
     }
 
     public String getMerchantGuid() {

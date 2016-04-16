@@ -5,11 +5,18 @@ import com.google.gson.JsonObject;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.CardJson;
+import co.in.mobilepay.json.response.DiscardJson;
+import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
 
 /**
  * Created by Nithish on 23-01-2016.
@@ -51,4 +58,14 @@ public interface  MobilePayAPI {
 
     @POST("mobile/syncUserDeliveryAddress.html")
     Call<ResponseData> syncUserDeliveryAddress(@Body AddressBookJson requestData);
+
+
+    @POST("mobile/syncDiscardData.html")
+    Call<ResponseData> syncDiscardData(@Body DiscardJsonList requestData);
+
+
+    @FormUrlEncoded
+    @POST("user/merchant/profilepic.html")
+    @Streaming
+    Call<ResponseBody> getImage(@Field("merchantGuid") String merchantGuid,@Field("merchantId")String merchantId);
 }

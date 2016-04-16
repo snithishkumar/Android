@@ -46,4 +46,9 @@
     </string-array>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <string name="alert_decline_feedback_one">Changed my Mind</string>
+    <string name="alert_decline_feedback_two">Expensive</string>
+    <string name="alert_decline_feedback_three">I don\'t like this purchased item</string>
+    <string name="alert_decline_feedback_four">Not me</string>
 </resources>

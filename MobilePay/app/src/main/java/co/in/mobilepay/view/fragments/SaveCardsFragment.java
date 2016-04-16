@@ -25,6 +25,7 @@ import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.NaviDrawerActivity;
 import co.in.mobilepay.view.adapters.SaveCardsAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,8 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     private ProgressDialog progressDialog = null;
     private Gson gson = null;
     private  RecyclerView recyclerView = null;
+    private List<CardJson> cardJsonList = new ArrayList<>();
+    private SaveCardsAdapter saveCardsAdapter;
 
 
     /**
@@ -62,6 +65,9 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_save_card_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
+        saveCardsAdapter = new SaveCardsAdapter(cardJsonList,this);
+        recyclerView.setAdapter(saveCardsAdapter);
+
         boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
@@ -98,7 +104,10 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
             String cardDetails = responseData.getData();
            List<CardJson> cardJsonList =  gson.fromJson(cardDetails, new TypeToken<List<CardJson>>() {
            }.getType());
-            recyclerView.setAdapter(new SaveCardsAdapter(cardJsonList,this));
+
+            this.cardJsonList.clear();
+            this.cardJsonList.addAll(cardJsonList);
+            saveCardsAdapter.notifyDataSetChanged();
         }
 
     }

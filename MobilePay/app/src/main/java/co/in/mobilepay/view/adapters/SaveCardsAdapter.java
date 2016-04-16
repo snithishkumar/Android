@@ -22,10 +22,12 @@ import co.in.mobilepay.view.fragments.SaveCardsFragment;
  * specified {@link }.
  * TODO: Replace the implementation with code for your data type.
  */
-public class SaveCardsAdapter extends RecyclerView.Adapter<SaveCardsAdapter.SaveCardViewHolder> {
+public class SaveCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<CardJson> cardJsonList = new ArrayList<>();
     SaveCardsFragment saveCardsFragment;
+
+    private static final int EMPTY_VIEW = -1;
 
     public interface OnItemLongClickListener {
         boolean onItemLongClicked(String cardGuid);
@@ -37,33 +39,58 @@ public class SaveCardsAdapter extends RecyclerView.Adapter<SaveCardsAdapter.Save
     }
 
     @Override
-    public SaveCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if(viewType == EMPTY_VIEW){
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.empty_save_card_list, parent, false);
+            return new EmptySaveCardViewHolder(view);
+        }
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.adapt_save_card_list, parent, false);
         return new SaveCardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final SaveCardViewHolder holder, final int position) {
-       final CardJson cardJson =  cardJsonList.get(position);
-        CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
-        holder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        if(holder instanceof SaveCardViewHolder){
+            SaveCardViewHolder saveCardViewHolder = (SaveCardViewHolder)holder;
+            final CardJson cardJson =  cardJsonList.get(position);
+            CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
+            saveCardViewHolder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
 
-        holder.mView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                saveCardsFragment.onItemLongClicked(cardJson.getCardGuid());
-                return true;
-            }
-        });
+            saveCardViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    saveCardsFragment.onItemLongClicked(cardJson.getCardGuid());
+                    return true;
+                }
+            });
+        }
+
     }
 
-  @Override
+    @Override
     public int getItemCount() {
-        return cardJsonList.size();
+        return cardJsonList.size() == 0 ? 1 :cardJsonList.size() ;
     }
 
-    public class SaveCardViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        if (cardJsonList.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
+    }
+
+    class EmptySaveCardViewHolder extends RecyclerView.ViewHolder{
+        private TextView cardNumber;
+        public EmptySaveCardViewHolder(View view) {
+            super(view);
+            cardNumber = (TextView)view.findViewById(R.id.empty_save_card_list_text);
+        }
+    }
+
+    class SaveCardViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         private TextView cardNumber;
         private ImageView cardType;

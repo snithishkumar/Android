@@ -18,13 +18,15 @@ import co.in.mobilepay.view.model.PurchaseModel;
 /**
  * Created by Nithish on 16-02-2016.
  */
-public class PurHistoryListAdapter extends RecyclerView.Adapter<PurHistoryListAdapter.PurHistoryListViewHolder> {
+public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<PurchaseModel> purchaseModelList;
 
     private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
+
+    private static final int EMPTY_VIEW = -1;
 
     public PurHistoryListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
@@ -33,13 +35,29 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<PurHistoryListAd
 
     @Override
     public int getItemCount() {
-        return purchaseModelList.size();
+        return purchaseModelList.size() == 0 ? 1 :purchaseModelList.size() ;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (purchaseModelList.size() == 0) {
+            return EMPTY_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
 
 
+
     @Override
-    public PurHistoryListViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+        if(viewType == EMPTY_VIEW){
+            final View itemView = LayoutInflater.
+                    from(viewGroup.getContext()).
+                    inflate(R.layout.empty_purchase_history_list, viewGroup, false);
+            return new PurHistoryEmptyViewHolder(itemView);
+        }
        final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.adapt_purchase_history_list, viewGroup, false);
@@ -60,15 +78,28 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<PurHistoryListAd
     }
 
     @Override
-    public void onBindViewHolder(PurHistoryListViewHolder purHistoryListViewHolder, int position) {
-        this.position = position;
-       final PurchaseModel purchaseModel =  purchaseModelList.get(position);
-        purHistoryListViewHolder.vBillNumber.setText("Bill No: "+purchaseModel.getBillNumber());
-        purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
-        purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
-        purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if(viewHolder instanceof PurHistoryListViewHolder){
+            PurHistoryListViewHolder purHistoryListViewHolder =(PurHistoryListViewHolder)viewHolder;
+
+            this.position = position;
+            final PurchaseModel purchaseModel =  purchaseModelList.get(position);
+            purHistoryListViewHolder.vBillNumber.setText("Bill No: "+purchaseModel.getBillNumber());
+            purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
+            purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
+            purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+
+        }
 
 
+    }
+
+    class PurHistoryEmptyViewHolder extends RecyclerView.ViewHolder{
+        protected TextView vPurchaseDateTime;
+        public PurHistoryEmptyViewHolder(View view){
+            super(view);
+            vPurchaseDateTime = (TextView) view.findViewById(R.id.empty_history_list_text);
+        }
     }
 
     class PurHistoryListViewHolder extends RecyclerView.ViewHolder{

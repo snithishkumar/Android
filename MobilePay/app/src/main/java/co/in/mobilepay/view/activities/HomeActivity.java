@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,9 +23,8 @@ import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.FragmentDrawer;
-import co.in.mobilepay.view.fragments.LuggageListFragment;
+import co.in.mobilepay.view.fragments.OrderStatusListFragment;
 import co.in.mobilepay.view.fragments.PurHistoryListFragment;
-import co.in.mobilepay.view.fragments.SaveCardsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
@@ -78,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new PurchaseListFragment(), "Purchase");
-        adapter.addFragment(new LuggageListFragment(), "Order status");
+        adapter.addFragment(new OrderStatusListFragment(), "Order status");
         adapter.addFragment(new PurHistoryListFragment(), "History");
         viewPager.setAdapter(adapter);
     }

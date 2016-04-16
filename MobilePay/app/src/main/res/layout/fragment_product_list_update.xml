@@ -80,6 +80,7 @@
         <Button
             android:layout_width="0dp"
             android:text="Cancel"
+            android:id="@+id/shop_details_cancel"
             android:layout_weight="1"
             android:layout_height="match_parent" />
        <Button

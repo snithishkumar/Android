@@ -2,26 +2,20 @@ package co.in.mobilepay.view.fragments;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.squareup.otto.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.HomeActivity;
-import co.in.mobilepay.view.adapters.LuggageListAdapter;
 import co.in.mobilepay.view.adapters.PurHistoryListAdapter;
 import co.in.mobilepay.view.model.PurchaseModel;
 

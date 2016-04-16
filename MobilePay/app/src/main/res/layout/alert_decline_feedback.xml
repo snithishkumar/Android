@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+   <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tell Us Why"
+        android:layout_gravity="center"
+       android:layout_marginTop="20dp"
+       android:textSize="18dp"
+        android:textStyle="bold"
+        />
+
+    <View
+        android:id="@+id/alert_decline_feedback_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"></View>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:id="@+id/alert_decline_feedback_message"
+        android:layout_marginRight="20dp"
+
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:text="@string/alert_decline_feedback_one"
+            android:drawablePadding="40dp"
+            android:id="@+id/alert_decline_feedback_one"
+            android:button="@null"
+            android:layout_gravity="right"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:text="@string/alert_decline_feedback_two"
+            android:button="@null"
+            android:drawablePadding="40dp"
+            android:layout_gravity="right"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:id="@+id/alert_decline_feedback_two"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:drawablePadding="40dp"
+            android:text="@string/alert_decline_feedback_three"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:id="@+id/alert_decline_feedback_three"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:drawablePadding="40dp"
+            android:button="@null"
+            android:drawableRight="@android:drawable/btn_radio"
+            android:text="@string/alert_decline_feedback_four"
+            android:id="@+id/alert_decline_feedback_four"
+            android:layout_height="wrap_content" />
+
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/shop_product_items_footer"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/lightgrey"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:layout_width="0dp"
+            android:text="Back"
+            android:id="@+id/alert_decline_feedback_back"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <Button
+            android:layout_width="0dp"
+            android:text="Submit"
+            android:id="@+id/alert_decline_feedback_submit"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

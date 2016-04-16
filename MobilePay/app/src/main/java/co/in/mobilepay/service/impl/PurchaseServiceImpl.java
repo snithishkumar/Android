@@ -16,8 +16,11 @@ import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.DiscardBy;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
@@ -129,6 +132,37 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             Log.e("Error","Error in updatePurchaseData",e);
         }
 
+    }
+
+
+    @Override
+    public void declinePurchase(PurchaseEntity purchaseEntity,String reason){
+        try {
+            purchaseEntity.setIsDiscard(true);
+            purchaseEntity.setOrderStatus(OrderStatus.CANCELED.toString());
+            purchaseEntity.setIsSync(false);
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+            purchaseDao.updatePurchase(purchaseEntity);
+            DiscardEntity discardEntity = new DiscardEntity();
+            discardEntity.setDiscardGuid(ServiceUtil.generateUUID());
+            discardEntity.setCreatedDateTime(purchaseEntity.getLastModifiedDateTime());
+            discardEntity.setDiscardBy(DiscardBy.USER);
+            discardEntity.setPurchaseEntity(purchaseEntity);
+            discardEntity.setReason(reason);
+            purchaseDao.createDiscardEntity(discardEntity);
+        }catch (Exception e){
+            Log.e("Error","Error in declinePurchase",e);
+        }
+
+    }
+
+
+    public void syncDeclineData(){
+        try{
+
+        }catch (Exception e){
+
+        }
     }
 
     public UserEntity getUserEntity(){
