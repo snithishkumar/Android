@@ -22,7 +22,6 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private List<PurchaseModel> purchaseModelList;
 
-    private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
     private ImageLoader imageLoader;
@@ -62,16 +61,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final View itemView = LayoutInflater.
                     from(viewGroup.getContext()).
                     inflate(R.layout.adapt_purchase_list, viewGroup, false);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PurchaseModel purchaseModel = purchaseModelList.get(position);
-                    int purchaseId = purchaseModel.getPurchaseId();
-                    // itemView.setFocusable(true);
-                    purchaseListClickListeners.purchaseListOnClick(purchaseId);
-                    //
-                }
-            });
+
 
             return new PurchaseListViewHolder(itemView);
         }
@@ -82,7 +72,6 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         if(viewHolder instanceof PurchaseListViewHolder){
             PurchaseListViewHolder purchaseListViewHolder = (PurchaseListViewHolder)viewHolder;
-            this.position = position;
             PurchaseModel purchaseModel =  purchaseModelList.get(position);
             // purchaseListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purchaseListViewHolder.vShopName.setText(purchaseModel.getName());
@@ -109,6 +98,16 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vOrderId = (TextView) view.findViewById(R.id.adapt_pur_list_order_id);
             vTotalAmount = (TextView) view.findViewById(R.id.adapt_pur_list_total_amount);
             vPurchaseDate = (TextView) view.findViewById(R.id.adapt_pur_list_pur_date);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    int purchaseId = purchaseModel.getPurchaseId();
+                    // itemView.setFocusable(true);
+                    purchaseListClickListeners.purchaseListOnClick(purchaseId,1); ////PurchaseDetailsActivity.PURCHASE_LIST
+                    //
+                }
+            });
         }
     }
 
@@ -123,6 +122,6 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public interface PurchaseListClickListeners{
-         void purchaseListOnClick(int purchaseId);
+         void purchaseListOnClick(int purchaseId,int fragmentOptions);
     }
 }

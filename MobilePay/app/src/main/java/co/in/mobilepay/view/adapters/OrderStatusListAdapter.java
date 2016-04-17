@@ -24,7 +24,6 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private List<PurchaseModel> purchaseModelList;
 
-    private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
     private ImageLoader imageLoader;
@@ -34,6 +33,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public OrderStatusListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
         this.homeActivity = homeActivity;
+        this.purchaseListClickListeners = homeActivity;
         imageLoader = new ImageLoader(homeActivity);
     }
 
@@ -64,16 +64,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
        final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.adapt_order_status_list, viewGroup, false);
-      /*  itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PurchaseModel purchaseModel = purchaseModelList.get(position);
-                int purchaseId = purchaseModel.getPurchaseId();
-               // itemView.setFocusable(true);
-                purchaseListClickListeners.purchaseListOnClick(purchaseId);
-                //
-            }
-        });*/
+
 
 
 
@@ -140,11 +131,20 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vCall = (TextView) view.findViewById(R.id.luggage_pur_call);
             vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    int purchaseId = purchaseModel.getPurchaseId();
+                    // itemView.setFocusable(true);
+                    purchaseListClickListeners.purchaseListOnClick(purchaseId,2); ////PurchaseDetailsActivity.ORDER_STATUS_LIST
+                }
+            });
 
         }
     }
 
     public interface PurchaseListClickListeners{
-         void purchaseListOnClick(int purchaseId);
+        void purchaseListOnClick(int purchaseId,int fragmentOptions);
     }
 }

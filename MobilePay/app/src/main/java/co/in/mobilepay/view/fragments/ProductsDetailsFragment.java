@@ -3,7 +3,6 @@ package co.in.mobilepay.view.fragments;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +20,6 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
-import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -90,7 +88,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         if(purchaseIdArgs != null){
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
         }
-        View view = inflater.inflate(R.layout.fragment_product_list_update, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_list, container, false);
         initView(view);
         populatePurchaseData(view);
         return view;

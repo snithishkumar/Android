@@ -18,6 +18,7 @@ import co.in.mobilepay.view.fragments.AddDeliveryAddressFragment;
 import co.in.mobilepay.view.fragments.DeliveryAddressFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.NewCardFragment;
+import co.in.mobilepay.view.fragments.OrderStatusProductDetailsFragment;
 import co.in.mobilepay.view.fragments.PaymentFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
@@ -28,10 +29,19 @@ import co.in.mobilepay.view.fragments.ShopDetailsFragment;
  */
 public class PurchaseDetailsActivity extends AppCompatActivity implements PaySaveCardsAdapter.PaySaveCardsCallback,ProductDetailsAdapter.ShowDeliveryAddress,AddDeliveryAddressFragment.ShowDeliveryAddress{
 
+    // Fragments
     ProductsDetailsFragment productsDetailsFragment = null;
+    OrderStatusProductDetailsFragment orderStatusProductDetailsFragment = null;
+
+    // service
     PurchaseService purchaseService = null;
     CardService cardService = null;
 
+    private static final int PURCHASE_LIST = 1;
+    private static final int ORDER_STATUS_LIST = 2;
+    private static final int PURCHASE_HISTORY_LIST = 3;
+
+    private int fragmentOptions = 0;
     private int purchaseId = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
     private void init(){
         try{
             purchaseId = getIntent().getIntExtra("purchaseId",0);
+            fragmentOptions = getIntent().getIntExtra("fragmentOptions",0);
             purchaseService = new PurchaseServiceImpl(this);
             cardService = new CardServiceImpl(this);
         }catch (Exception e){
@@ -56,11 +67,23 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
     }
 
     private void showFragment(){
-        productsDetailsFragment = new ProductsDetailsFragment();
-        Bundle purchaseIdArgs = new Bundle();
-        purchaseIdArgs.putInt("purchaseId",purchaseId);
-        productsDetailsFragment.setArguments(purchaseIdArgs);
-        FragmentsUtil.addFragment(this, productsDetailsFragment, R.id.pur_details_main_container);
+        switch (fragmentOptions){
+            case PURCHASE_LIST:
+                productsDetailsFragment = new ProductsDetailsFragment();
+                Bundle purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putInt("purchaseId",purchaseId);
+                productsDetailsFragment.setArguments(purchaseIdArgs);
+                FragmentsUtil.addFragment(this, productsDetailsFragment, R.id.pur_details_main_container);
+                break;
+            case ORDER_STATUS_LIST:
+                orderStatusProductDetailsFragment = new OrderStatusProductDetailsFragment();
+                purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putInt("purchaseId",purchaseId);
+                orderStatusProductDetailsFragment.setArguments(purchaseIdArgs);
+                FragmentsUtil.addFragment(this, orderStatusProductDetailsFragment, R.id.pur_details_main_container);
+                break;
+        }
+
     }
 
 
@@ -95,35 +118,38 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
         return cardService;
     }
 
-    /**
-     * view shop details
-     * @param view
-     */
-    public void viewShopDetails(View view){
-        ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
-        Bundle purchaseIdArgs = new Bundle();
-        purchaseIdArgs.putInt("purchaseId",purchaseId);
-        shopDetailsFragment.setArguments(purchaseIdArgs);
-        FragmentsUtil.replaceFragment(this,shopDetailsFragment,R.id.pur_details_main_container);
+
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.shop_details_layout:
+                ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
+                Bundle purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putInt("purchaseId",purchaseId);
+                shopDetailsFragment.setArguments(purchaseIdArgs);
+                FragmentsUtil.replaceFragment(this,shopDetailsFragment,R.id.pur_details_main_container);
+                break;
+            case  R.id.pur_details_fab_container:
+                FragmentsUtil.removeFragment(this, R.id.pur_details_fab_container);
+                PaymentFragment paymentFragment = new PaymentFragment();
+                purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putInt("purchaseId",purchaseId);
+                paymentFragment.setArguments(purchaseIdArgs);
+                FragmentsUtil.replaceFragment(this, paymentFragment, R.id.pur_details_main_container);
+                break;
+            case R.id.adapt_pur_item_delivery_addr_change:
+                DeliveryAddressFragment deliveryAddressFragment = new DeliveryAddressFragment();
+                FragmentsUtil.replaceFragment(this,deliveryAddressFragment,R.id.pur_details_main_container);
+                break;
+            case R.id.add_address:
+                AddDeliveryAddressFragment addDeliveryAddressFragment = new AddDeliveryAddressFragment();
+                FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
+                break;
+        }
     }
 
-    /**
-     * Show FAB buttons
-     * @param view
-     */
-    public void showFabIcon(View view){
-        ProductsDetailsFabFragment productsDetailsFabFragment = new ProductsDetailsFabFragment();
-        FragmentsUtil.addFragment(this, productsDetailsFabFragment, R.id.pur_details_fab_container);
-    }
 
-    public void showPaymentFragment(View view){
-        FragmentsUtil.removeFragment(this, R.id.pur_details_fab_container);
-        PaymentFragment paymentFragment = new PaymentFragment();
-        Bundle purchaseIdArgs = new Bundle();
-        purchaseIdArgs.putInt("purchaseId",purchaseId);
-        paymentFragment.setArguments(purchaseIdArgs);
-        FragmentsUtil.replaceFragment(this, paymentFragment, R.id.pur_details_main_container);
-    }
+
 
     @Override
     public void payment() {
@@ -144,21 +170,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
         }
     }
 
-    /**
-     * view User Delivery Address
-     * @param view
-     */
-    public void viewUserDeliveryAddress(View view){
-        DeliveryAddressFragment deliveryAddressFragment = new DeliveryAddressFragment();
-        FragmentsUtil.replaceFragment(this,deliveryAddressFragment,R.id.pur_details_main_container);
-    }
 
-    /**
-     * view User Delivery Address
-     * @param view
-     */
-    public void viewAddUserDeliveryAddress(View view){
-        AddDeliveryAddressFragment addDeliveryAddressFragment = new AddDeliveryAddressFragment();
-        FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
-    }
+
+
 }

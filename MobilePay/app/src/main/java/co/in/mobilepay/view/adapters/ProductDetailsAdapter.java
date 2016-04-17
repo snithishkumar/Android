@@ -385,31 +385,29 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             vHomeDelivery.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showDeliveryAddress.viewFragment(NEW_HOME);
-                    return;
+
                 }
             });
 
             /******/
-           /* RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);
+           RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     switch (checkedId) {
                         case R.id.adapt_pur_delivery_home:
-                            vHomeDelivery
-                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_one);
-                            break;
+                            showDeliveryAddress.viewFragment(NEW_HOME);
+                            return;
                         case R.id.adapt_pur_delivery_luggage:
-                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_two);
+                            deliveryOptions = DeliveryOptions.LUGGAGE;
                             break;
                         case R.id.adapt_pur_delivery_billing:
-                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_three);
+                            deliveryOptions = DeliveryOptions.NONE;
                             break;
 
                     }
                 }
-            });*/
+            });
             /******/
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_luggage);
             vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_billing);

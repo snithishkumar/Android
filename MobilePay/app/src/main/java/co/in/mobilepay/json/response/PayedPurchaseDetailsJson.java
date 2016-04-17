@@ -24,11 +24,14 @@ public class PayedPurchaseDetailsJson {
         this.amountDetails = purchaseEntity.getAmountDetails();
         this.deliveryOptions = purchaseEntity.getDeliveryOptions();
         this.paymetTime = purchaseEntity.getLastModifiedDateTime();
-        if(purchaseEntity.getAddressEntity().isSynced()){
-            this.addressGuid = purchaseEntity.getAddressEntity().getAddressUUID();
-        }else{
-            addressJson = new AddressJson(purchaseEntity.getAddressEntity());
+        if(purchaseEntity.getAddressEntity()  != null){
+            if(purchaseEntity.getAddressEntity().isSynced()){
+                this.addressGuid = purchaseEntity.getAddressEntity().getAddressUUID();
+            }else{
+                addressJson = new AddressJson(purchaseEntity.getAddressEntity());
+            }
         }
+
     }
 
     public String getPurchaseId() {
