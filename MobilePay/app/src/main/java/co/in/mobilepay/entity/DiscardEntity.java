@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import co.in.mobilepay.enumeration.DiscardBy;
+import co.in.mobilepay.json.response.DiscardJson;
 
 /**
  * Created by Nithishkumar on 4/10/2016.
@@ -15,12 +16,11 @@ public class DiscardEntity {
     public static final String REASON = "REASON";
     public static final String DISCARD_BY = "DiscardBy";
     public static final String CREATED_DATE_TIME = "CreatedDateTime";
-    public static final String PURCHASE_ID =  "DiscardId";
+    public static final String PURCHASE_ID =  "PurchaseId";
 
     @DatabaseField(columnName = DISCARD_ID,generatedId = true,index = true)
     private int discardId;
-    @DatabaseField(columnName = DISCARD_UUID)
-    private String discardGuid;
+
     @DatabaseField(columnName = REASON)
     private String reason;
     @DatabaseField(columnName = PURCHASE_ID,foreign = true,foreignAutoRefresh =  true)
@@ -30,6 +30,16 @@ public class DiscardEntity {
     @DatabaseField(columnName = CREATED_DATE_TIME)
     private long createdDateTime;
 
+    public DiscardEntity(){
+
+    }
+
+    public DiscardEntity(DiscardJson discardJson){
+        this.reason = discardJson.getReason();
+        this.discardBy = discardJson.getDiscardBy();
+        this.createdDateTime = discardJson.getCreateDateTime();
+    }
+
     public int getDiscardId() {
         return discardId;
     }
@@ -38,13 +48,6 @@ public class DiscardEntity {
         this.discardId = discardId;
     }
 
-    public String getDiscardGuid() {
-        return discardGuid;
-    }
-
-    public void setDiscardGuid(String discardGuid) {
-        this.discardGuid = discardGuid;
-    }
 
     public String getReason() {
         return reason;
@@ -82,7 +85,6 @@ public class DiscardEntity {
     public String toString() {
         return "DiscardEntity{" +
                 "discardId=" + discardId +
-                ", discardGuid='" + discardGuid + '\'' +
                 ", reason='" + reason + '\'' +
                 ", purchaseEntity=" + purchaseEntity +
                 ", discardBy=" + discardBy +

@@ -19,7 +19,9 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
+import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.model.PurchaseModel;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
@@ -129,7 +131,6 @@ public class PurchaseListFragment extends Fragment  {
 
 
     private void setAdapters(RecyclerView recyclerView){
-       // List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         purchaseListAdapter = new PurchaseListAdapter(purchaseModelList,homeActivity);
         recyclerView.setAdapter(purchaseListAdapter);
     }
@@ -138,20 +139,20 @@ public class PurchaseListFragment extends Fragment  {
         List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
         this.purchaseModelList.clear();
         this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
-        this.purchaseModelList.addAll(purchaseModelList);
         purchaseListAdapter.notifyDataSetChanged();
     }
 
 
     @Subscribe
-    public void purchaseResponse(String data){
+    public void purchaseResponse(PurchaseListPoster purchaseListPoster){
         stopRefreshing();
-        getPurchaseModel();
+        if(purchaseListPoster.getStatusCode() == 200){
+            getPurchaseModel();
+        }else{
+            ActivityUtil.toast(homeActivity,getString(R.string.error_purchase_list));
+        }
+
+
     }
 
     private void stopRefreshing(){

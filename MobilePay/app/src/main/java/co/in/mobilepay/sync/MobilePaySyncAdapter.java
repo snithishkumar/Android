@@ -10,15 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
@@ -34,6 +34,8 @@ import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.LuggageJson;
 import co.in.mobilepay.json.response.LuggagesListJson;
+import co.in.mobilepay.json.response.PayedPurchaseDetailsJson;
+import co.in.mobilepay.json.response.PayedPurchaseDetailsList;
 import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
@@ -92,8 +94,9 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
         switch (currentTab){
             case 1:
                 syncUserDeliveryAddress();
-                syncPurchaseData();
+                sendUnSyncPayedData();
                 sendUnSyncDeclineData();
+                syncPurchaseData();
                 break;
             case 2:
                 syncOrderStatus();
@@ -159,9 +162,13 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
                 }.getType());
                 processPurchaseJson(purchaseJsonList);
-                // -- TODO Need to send notification to list view
+                PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
+                purchaseListPoster.setStatusCode(200);
+                MobilePayBus.getInstance().post(purchaseListPoster);
             }else{
-                // -- TODO Need to Say Something wrong in server
+                PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
+                purchaseListPoster.setStatusCode(500);
+                MobilePayBus.getInstance().post(purchaseListPoster);
             }
 
         }catch (Exception e){
@@ -169,6 +176,9 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             // -- TODO Need to Say Something wrong in mobile side
         }
     }
+
+
+
 
     /**
      * Process  PurchaseJson. It checks whether purchase data is already present or not. If it's present, it will update or it will create
@@ -191,17 +201,22 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     // Need to update
                 }
 
+
                 UserEntity dbUserEntity = userDao.getUser(purchaseJson.getUsers().getMobileNumber());
                 //Check given Purchase details is already present or not.
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
                 //If its not present, it will create new one. Otherwise, it will update
                 if(purchaseEntity != null){
                     purchaseEntity.toClone(purchaseJson);
+                    processAddressJson(purchaseJson, purchaseEntity);
+                    processDiscardJson(purchaseJson,purchaseEntity);
                     purchaseDao.updatePurchase(purchaseEntity);
                 }else{
                     purchaseEntity = new PurchaseEntity(purchaseJson);
                     purchaseEntity.setMerchantEntity(merchantEntity);
                     purchaseEntity.setUserEntity(dbUserEntity);
+                    processAddressJson(purchaseJson, purchaseEntity);
+                    processDiscardJson(purchaseJson,purchaseEntity);
                     purchaseDao.createPurchase(purchaseEntity);
                 }
             }catch (Exception e){
@@ -210,6 +225,43 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
         }
 
+    }
+
+    /**
+     * Check that address is present in DB or not.
+     * @param purchaseJson
+     * @param purchaseEntity
+     * @throws SQLException
+     */
+    private void processAddressJson(PurchaseJson purchaseJson,PurchaseEntity purchaseEntity)throws SQLException{
+        // -- It's an rare scenario.
+        AddressJson addressJson =  purchaseJson.getAddressJson();
+        if(addressJson != null){
+            AddressEntity addressEntity =  userDao.getAddressEntity(addressJson.getAddressUUID());
+            if(addressEntity == null){
+                addressEntity = new AddressEntity(addressJson);
+                addressEntity.setIsSynced(true);
+                userDao.saveAddress(addressEntity);
+                purchaseEntity.setAddressEntity(addressEntity);
+            }
+
+        }
+    }
+
+    /**
+     * Process Discard Details
+     * @param purchaseJson
+     * @param purchaseEntity
+     * @throws SQLException
+     */
+    private void processDiscardJson(PurchaseJson purchaseJson,PurchaseEntity purchaseEntity)throws SQLException{
+        DiscardJson discardJson =  purchaseJson.getDiscardJson();
+        if(discardJson != null){
+            DiscardEntity discardEntity = new DiscardEntity(discardJson);
+            discardEntity.setPurchaseEntity(purchaseEntity);
+            discardEntity.setCreatedDateTime(purchaseEntity.getLastModifiedDateTime());
+            purchaseDao.createDiscardEntity(discardEntity);
+        }
     }
 
     /**
@@ -227,7 +279,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             long startTime = purchaseDao.getLeastLuggageServerTime();
             long endTime = purchaseDao.getMostRecentLuggageServerTime();
             requestData.addProperty("startTime",startTime);
-            requestData.addProperty("endTime",endTime);
+            requestData.addProperty("endTime", endTime);
             // Sync Request
             Call<ResponseData> responseDataCall = mobilePayAPI.syncOrderStatus(requestData);
             // Server Response
@@ -254,9 +306,14 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 }
                 List<PurchaseJson> purchaseJsonList =   luggagesListJson.getPurchaseJsons();
                 processPurchaseJson(purchaseJsonList);
+                PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
+                purchaseListPoster.setStatusCode(200);
+                MobilePayBus.getInstance().post(purchaseListPoster);
                 // -- TODO Need to send notification to list view
             }else{
-                // -- TODO Need to Say Something wrong in server
+                PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
+                purchaseListPoster.setStatusCode(500);
+                MobilePayBus.getInstance().post(purchaseListPoster);
             }
 
         }catch (Exception e){
@@ -370,6 +427,46 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
     }
 
+// -- TODO Address Edit. Need to handle in server side
+    public void sendUnSyncPayedData(){
+        try{
+            // Get UnSynced Payed Data
+            List<PurchaseEntity> purchaseEntityList = purchaseDao.getUnSyncedPayedEntity();
+
+            // No need call sync bcs PurchaseEntity is empty
+            if(purchaseEntityList.size() < 1){
+                return;
+            }
+
+            PayedPurchaseDetailsList payedPurchaseDetailsList = new PayedPurchaseDetailsList();
+            // Entity to Json
+            for(PurchaseEntity purchaseEntity : purchaseEntityList){
+                PayedPurchaseDetailsJson payedPurchaseDetailsJson = new PayedPurchaseDetailsJson(purchaseEntity);
+                payedPurchaseDetailsList.getPurchaseDetailsJsons().add(payedPurchaseDetailsJson);
+            }
+
+            userRequest(payedPurchaseDetailsList);
+            // Sync Request
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPayedData(payedPurchaseDetailsList);
+            // Server Response
+            Response<ResponseData> dataResponse = responseDataCall.execute();
+            ResponseData responseData = dataResponse.body();
+            // Success Response
+            int statusCode = responseData.getStatusCode();
+            if (statusCode == 200) {
+                // Update ServerSync Time and IsSync Flag
+                String response = responseData.getData();
+                List<PurchaseJson> purchaseJsons = gson.fromJson(response, new TypeToken<List<PurchaseJson>>() {
+                }.getType());
+                purchaseDao.updateServerSyncTime(purchaseJsons);
+
+            }
+
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Error in getUserDeliveryAddress", e);
+        }
+    }
+
 
     /**
      * Send UnSynced Declined Data to the server
@@ -382,7 +479,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             for (PurchaseEntity purchaseEntity : purchaseEntityList) {
                 DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
                 DiscardJson discardJson = new DiscardJson(discardEntity, purchaseEntity);
-                discardJsonList.getDiscardJsonList().add(discardJson);
+                discardJsonList.getDiscardJsons().add(discardJson);
                 isData = true;
             }
             if (isData) {
@@ -397,7 +494,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 if (statusCode == 200) {
                     // Update ServerSync Time and IsSync Flag
                     String response = responseData.getData();
-                    List<PurchaseJson> purchaseJsons = gson.fromJson(response, new TypeToken<List<PurchaseEntity>>() {
+                    List<PurchaseJson> purchaseJsons = gson.fromJson(response, new TypeToken<List<PurchaseJson>>() {
                     }.getType());
                     purchaseDao.updateServerSyncTime(purchaseJsons);
 

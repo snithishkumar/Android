@@ -118,7 +118,7 @@ public class PurHistoryListFragment extends Fragment  {
 
 
     private void getPurchaseModel(){
-        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getCurrentPurchase();
+        List<PurchaseModel> purchaseModelList =  homeActivity.getPurchaseService().getPurchaseHistoryList();
         this.purchaseModelList.clear();
         this.purchaseModelList.addAll(purchaseModelList);
         purHistoryListAdapter.notifyDataSetChanged();

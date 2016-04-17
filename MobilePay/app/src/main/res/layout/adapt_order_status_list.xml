@@ -32,7 +32,7 @@
             android:layout_margin="10dp"
             android:weightSum="4">
             <ImageView
-                android:id="@+id/luggage_icon"
+                android:id="@+id/adapt_order_status_shop_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/luggage_cart"
@@ -89,7 +89,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/luggage_pur_status"
-            android:text="Luggage: Packing..."
+            android:text="Order Status: Packing..."
             android:layout_margin="10dp"
             android:layout_below="@+id/seperator"/>
         <TextView

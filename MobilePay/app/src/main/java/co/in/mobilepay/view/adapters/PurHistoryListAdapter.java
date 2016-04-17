@@ -6,12 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.service.impl.ImageLoader;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 
@@ -25,12 +28,14 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
+    private ImageLoader imageLoader;
 
     private static final int EMPTY_VIEW = -1;
 
     public PurHistoryListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
         this.homeActivity = homeActivity;
+        imageLoader = new ImageLoader(homeActivity);
     }
 
     @Override
@@ -88,6 +93,13 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+            if(purchaseModel.getOrderStatus().equals(OrderStatus.CANCELED.toString())){
+                purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.cancel_32);
+            }else{
+                purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.delivered_img_32);
+            }
+
+            imageLoader.displayImage(purchaseModel.getMerchantGuid(),purchaseModel.getServerMerchantId(),purHistoryListViewHolder.vShopLogo);
 
         }
 
@@ -107,6 +119,8 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         protected TextView vBillNumber;
         protected TextView vTotalAmount;
         protected TextView vName;
+        protected ImageView vShopLogo;
+        protected ImageView vStatus;
 
 
 
@@ -116,6 +130,8 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             vBillNumber = (TextView) view.findViewById(R.id.adapt_pur_his_bill_no);
             vTotalAmount = (TextView) view.findViewById(R.id.adapt_pur_his_amount);
             vName = (TextView) view.findViewById(R.id.adapt_pur_his_shop_name);
+            vShopLogo = (ImageView)view.findViewById(R.id.adapt_pur_his_shop_logo);
+            vStatus = (ImageView)view.findViewById(R.id.adapt_pur_his_status);
 
         }
     }

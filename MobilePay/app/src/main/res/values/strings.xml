@@ -51,4 +51,10 @@
     <string name="alert_decline_feedback_two">Expensive</string>
     <string name="alert_decline_feedback_three">I don\'t like this purchased item</string>
     <string name="alert_decline_feedback_four">Not me</string>
+
+    <string name="error_purchase_list">OOPS! Something went wrong. Pls try again later</string>
+
 </resources>
+
+
+

@@ -15,5 +15,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".view.fragments.OrderStatusListFragment"
-    tools:listitem="@layout/adapt_luggage_list" />
+    tools:listitem="@layout/adapt_order_status_list" />
 </android.support.v4.widget.SwipeRefreshLayout>

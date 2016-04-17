@@ -48,4 +48,8 @@ public interface PurchaseDao {
     DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity)throws SQLException;
 
     void updateServerSyncTime(List<PurchaseJson> purchaseJsonList)throws SQLException;
+
+    List<PurchaseEntity> getUnSyncedPayedEntity()throws SQLException;
+
+    List<PurchaseEntity> getOrderStatusList()throws SQLException;
 }

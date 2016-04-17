@@ -31,6 +31,7 @@ public class PurchaseEntity {
     public static final String IS_DISCARD = "IsDiscard";
     public static final String IS_SYNC = "IsSync";
     public static final String TOTAL_AMOUNT = "TotalAmount";
+    public static final String ADDRESS_ENTITY = "AddressId";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
     private int purchaseId;
@@ -74,6 +75,9 @@ public class PurchaseEntity {
 
     @DatabaseField(columnName = TOTAL_AMOUNT)
     private String totalAmount;
+
+    @DatabaseField(columnName = ADDRESS_ENTITY,foreign = true,foreignAutoRefresh =  true)
+    private AddressEntity addressEntity;
 
 
     public PurchaseEntity(){
@@ -254,6 +258,14 @@ public class PurchaseEntity {
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public AddressEntity getAddressEntity() {
+        return addressEntity;
+    }
+
+    public void setAddressEntity(AddressEntity addressEntity) {
+        this.addressEntity = addressEntity;
     }
 
     @Override

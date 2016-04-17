@@ -69,7 +69,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getPurchaseList() throws SQLException {
-        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,false).query();
+        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,false).and().eq(PurchaseEntity.IS_DISCARD,false).query();
     }
 
     /**
@@ -102,7 +102,9 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getPurchaseHistoryList() throws SQLException {
-        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,true).query();
+        QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
+        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+       return currentPurchaseQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
     }
 
     /**
@@ -127,10 +129,27 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public long getRecentPurchaseHisServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
-        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, false).and().eq(PurchaseEntity.IS_DISCARD, false);
+        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+
         PurchaseEntity purchaseEntity =  currentPurchaseQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, false).queryForFirst();
         return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
     }
+
+
+    /**
+     * Returns Luggage List (Payed, not canceled and not delivered) Server Time
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public List<PurchaseEntity> getOrderStatusList()throws SQLException{
+        QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
+        luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+        return  luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
+    }
+
 
 
     /**
@@ -143,9 +162,9 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
-                .eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
-        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, true).queryForFirst();
-        return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
+        return  purchaseEntity != null ? purchaseEntity.getPurchaseDateTime() : -1;
     }
 
     /**
@@ -158,9 +177,9 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
-                .eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
-        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, true).queryForFirst();
-        return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
+        return  purchaseEntity != null ? purchaseEntity.getPurchaseDateTime() : -1;
     }
 
     /**
@@ -193,6 +212,12 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<PurchaseEntity> getUnSyncedDiscardEntity()throws SQLException{
        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.IS_DISCARD,true).and().eq(PurchaseEntity.IS_SYNC,false).query();
+    }
+
+
+    @Override
+    public List<PurchaseEntity> getUnSyncedPayedEntity()throws SQLException{
+        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.IS_PAYED,true).and().eq(PurchaseEntity.IS_SYNC,false).query();
     }
 
 

@@ -18,6 +18,7 @@ public class PurchaseModel {
     private String totalAmount;
     private String merchantGuid;
     private String serverMerchantId;
+    private String orderStatus;
 
     public PurchaseModel(PurchaseEntity purchaseEntity){
         this.dateTime = String.valueOf(purchaseEntity.getPurchaseDateTime());
@@ -26,6 +27,7 @@ public class PurchaseModel {
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
         this.area = purchaseEntity.getMerchantEntity().getArea();
+        this.orderStatus = purchaseEntity.getOrderStatus();
         this.totalAmount = purchaseEntity.getTotalAmount();
         this.merchantGuid = purchaseEntity.getMerchantEntity().getMerchantGuid();
         this.serverMerchantId = String.valueOf(purchaseEntity.getMerchantEntity().getServerMerchantId());
@@ -132,6 +134,14 @@ public class PurchaseModel {
 
     public void setTotalAmount(String totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override

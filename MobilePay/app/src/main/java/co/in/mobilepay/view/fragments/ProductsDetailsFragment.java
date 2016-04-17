@@ -40,6 +40,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
     private PurchaseDetailsActivity purchaseDetailsActivity;
     private PurchaseService purchaseService;
+    private ProductDetailsAdapter productDetailsAdapter;
     private int purchaseId = 0;
 
     private TextView shopName = null;
@@ -109,6 +110,8 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         shopOrderId = (TextView)view.findViewById(R.id.shop_order_id);
         cancel = (Button) view.findViewById(R.id.shop_details_cancel);
         cancel.setOnClickListener(this);
+        submit = (Button) view.findViewById(R.id.shop_details_pay);
+        submit.setOnClickListener(this);
 
     }
 
@@ -147,7 +150,8 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
-        recyclerView.setAdapter(new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson));
+        productDetailsAdapter = new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson);
+        recyclerView.setAdapter(productDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));
@@ -155,11 +159,13 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
 
     private void declineData(){
-        purchaseDetailsActivity.getPurchaseService().declinePurchase(purchaseEntity,reasonToDecline);
-        boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
+        purchaseDetailsActivity.getPurchaseService().declinePurchase(purchaseEntity, reasonToDecline);
+        purchaseDetailsActivity.finish();
+        // -- TODO Testing with common sync
+       /* boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
         if(isNet) {
             progressDialog = ActivityUtil.showProgress("In Progress", "Please wait...", purchaseDetailsActivity);
-        }
+        }*/
     }
 
 
@@ -173,16 +179,16 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId){
-                    case 1:
+                    case R.id.alert_decline_feedback_one:
                         reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_one);
                         break;
-                    case 2:
+                    case R.id.alert_decline_feedback_two:
                         reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_two);
                         break;
-                    case 3:
+                    case R.id.alert_decline_feedback_three:
                         reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_three);
                         break;
-                    case 4:
+                    case R.id.alert_decline_feedback_four:
                         reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_four);
                         break;
                 }
@@ -200,8 +206,13 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertDialogBox.dismiss();
-                declineData();
+                if(reasonToDecline != null){
+                    alertDialogBox.dismiss();
+                    declineData();
+                }else{
+                    ActivityUtil.toast(purchaseDetailsActivity,"Please select any one reason.");
+                }
+
             }
         });
         dialogView.findViewById(R.id.alert_decline_feedback_submit);
@@ -226,6 +237,10 @@ switch (v.getId()){
     case R.id.shop_details_cancel:
         showFeedBackWindow();
         break;
+
+    case R.id.shop_details_pay:
+        makePayment();
+        break;
     case R.id.alert_decline_feedback_back:
 
         break;
@@ -233,5 +248,18 @@ switch (v.getId()){
 
         break;
 }
+    }
+
+    private void makePayment(){
+
+        if(productDetailsAdapter.getDeliveryOptions() != null){
+            purchaseEntity.setDeliveryOptions(productDetailsAdapter.getDeliveryOptions());
+            purchaseEntity.setTotalAmount(String.valueOf(productDetailsAdapter.getTotalAmount()));
+            purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
+            purchaseService.makePayment(purchaseEntity,productDetailsAdapter.getDefaultAddress());
+            purchaseDetailsActivity.finish();
+        } else {
+            ActivityUtil.toast(purchaseDetailsActivity, "Please select any one Delivery.");
+        }
     }
 }

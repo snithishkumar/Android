@@ -7,6 +7,7 @@ import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
+import co.in.mobilepay.json.response.PayedPurchaseDetailsList;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
 import okhttp3.ResponseBody;
@@ -62,6 +63,10 @@ public interface  MobilePayAPI {
 
     @POST("mobile/syncDiscardData.html")
     Call<ResponseData> syncDiscardData(@Body DiscardJsonList requestData);
+
+
+    @POST("mobile/syncPayedData.html")
+    Call<ResponseData> syncPayedData(@Body PayedPurchaseDetailsList requestData);
 
 
     @FormUrlEncoded

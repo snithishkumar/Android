@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscountType;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -38,6 +40,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private double taxAmount;
     private double discount = 0;
     private double totalAmount;
+    private DeliveryOptions deliveryOptions;
+
 
     private int position;
 
@@ -95,10 +99,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemViewType(int position) {
         int size = productDetailsModels.size();
-        if(size - 2 == position){
+        if(size  == position){
             return HOME_DELIVERY_OPTIONS;
         }
-        if(size - 1 == position){
+        if(size + 1 == position){
             return TAX_DETAILS;
         }
         return PRODUCT_DETAILS;
@@ -109,7 +113,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.position = position;
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
-            ProductDetailsModel productDetailsModel = productDetailsModels.get(position);
+            productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
             calcAmount(position);
         }else if(viewHolder instanceof DeliveryOptionsViewHolder){
@@ -134,12 +138,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(totalAmount));
         }
 
-        productDetailsModel =  productDetailsModels.get(position);
+
 
     }
 
-    private void addRating(int rating){
-        productDetailsModel =  productDetailsModels.get(position);
+    private void addRating(int rating,int adapterPosition){
+        productDetailsModel =  productDetailsModels.get(adapterPosition);
         productDetailsModel.setRating(rating);
     }
 
@@ -271,7 +275,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate5.setImageResource(R.mipmap.fav_icon);
                     break;
             }
-            addRating(rating);
+            addRating(rating,getAdapterPosition());
         }
 
         @Override
@@ -348,6 +352,25 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_luggage);
             vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_billing);
+
+            RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_item_delivery_options);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.adapt_pur_item_delivery_addr:
+                            deliveryOptions = DeliveryOptions.HOME;
+                            break;
+                        case R.id.adapt_pur_item_delivery_luggage:
+                            deliveryOptions = DeliveryOptions.LUGGAGE;
+                            break;
+                        case R.id.adapt_pur_item_delivery_billing:
+                            deliveryOptions = DeliveryOptions.NONE;
+                            break;
+
+                    }
+                }
+            });
         }
     }
 
@@ -366,6 +389,28 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     return;
                 }
             });
+
+            /******/
+           /* RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.adapt_pur_delivery_home:
+                            vHomeDelivery
+                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_one);
+                            break;
+                        case R.id.adapt_pur_delivery_luggage:
+                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_two);
+                            break;
+                        case R.id.adapt_pur_delivery_billing:
+                            reasonToDecline = purchaseDetailsActivity.getResources().getString(R.string.alert_decline_feedback_three);
+                            break;
+
+                    }
+                }
+            });*/
+            /******/
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_luggage);
             vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_billing);
         }
@@ -399,4 +444,15 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         void viewFragment(int options);
     }
 
+    public DeliveryOptions getDeliveryOptions() {
+        return deliveryOptions;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public AddressEntity getDefaultAddress() {
+        return defaultAddress;
+    }
 }

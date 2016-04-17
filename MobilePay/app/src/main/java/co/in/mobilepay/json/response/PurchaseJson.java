@@ -21,6 +21,8 @@ public class PurchaseJson {
 	private String orderStatus;
 	private DeliveryOptions deliveryOptions;
 	private String totalAmount;
+	private AddressJson addressJson;
+    private DiscardJson discardJson;
 
 	public PurchaseJson(){
 		
@@ -164,7 +166,23 @@ public class PurchaseJson {
 		this.deliveryOptions = deliveryOptions;
 	}
 
-	@Override
+    public DiscardJson getDiscardJson() {
+        return discardJson;
+    }
+
+    public void setDiscardJson(DiscardJson discardJson) {
+        this.discardJson = discardJson;
+    }
+
+    public AddressJson getAddressJson() {
+        return addressJson;
+    }
+
+    public void setAddressJson(AddressJson addressJson) {
+        this.addressJson = addressJson;
+    }
+
+    @Override
 	public String toString() {
 		return "PurchaseJson{" +
 				"purchaseId='" + purchaseId + '\'' +

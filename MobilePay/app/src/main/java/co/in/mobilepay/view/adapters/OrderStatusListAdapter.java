@@ -1,21 +1,19 @@
 package co.in.mobilepay.view.adapters;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.service.impl.ImageLoader;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 
@@ -29,12 +27,14 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
+    private ImageLoader imageLoader;
 
     private static final int EMPTY_VIEW = -1;
 
     public OrderStatusListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
         this.homeActivity = homeActivity;
+        imageLoader = new ImageLoader(homeActivity);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
        final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
-                inflate(R.layout.adapt_luggage_list, viewGroup, false);
+                inflate(R.layout.adapt_order_status_list, viewGroup, false);
       /*  itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,19 +90,21 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
             luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+            luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
             luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
-                    try{
+                    try {
                         homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 }
             });
+            imageLoader.displayImage(purchaseModel.getMerchantGuid(), purchaseModel.getServerMerchantId(), luggageListViewHolder.vShopLogo);
         }
 
 
@@ -123,7 +125,8 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         protected TextView vName;
         protected TextView vCategory;
         protected TextView vCall;
-        protected TextView vLuggageStatus;
+        protected TextView vOrderStatus;
+        protected ImageView vShopLogo;
 
 
 
@@ -135,7 +138,8 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vName = (TextView) view.findViewById(R.id.luggage_pur_shop_name);
             vCategory = (TextView) view.findViewById(R.id.luggage_pur_shop_category);
             vCall = (TextView) view.findViewById(R.id.luggage_pur_call);
-            vLuggageStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
+            vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
+            vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
 
         }
     }

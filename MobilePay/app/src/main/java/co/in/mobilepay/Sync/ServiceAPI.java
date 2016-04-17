@@ -2,7 +2,9 @@ package co.in.mobilepay.sync;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -16,7 +18,11 @@ public enum ServiceAPI {
 
     ServiceAPI(){
         Executor executor = Executors.newCachedThreadPool();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.7:8081/mobilepay/").addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(5, TimeUnit.MINUTES)
+                .connectTimeout(5, TimeUnit.MINUTES)
+                .build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.2:8081/mobilepay/").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         mobilePayAPI = retrofit.create(MobilePayAPI.class);
     }
 

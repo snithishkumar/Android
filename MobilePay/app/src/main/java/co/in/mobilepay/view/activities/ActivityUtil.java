@@ -48,4 +48,9 @@ public class ActivityUtil {
 
 
     }
+
+    public static void toast(AppCompatActivity context,String message){
+        Toast.makeText(context, message,
+                Toast.LENGTH_LONG).show();
+    }
 }

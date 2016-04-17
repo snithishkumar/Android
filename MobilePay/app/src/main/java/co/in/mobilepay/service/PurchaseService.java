@@ -21,7 +21,6 @@ public interface PurchaseService {
 
     PurchaseDetailsModel getProductDetails(int purchaseId);
 
-    void syncPurchaseData();
 
     PurchaseEntity getPurchaseDetails(int purchaseId);
 
@@ -42,6 +41,13 @@ public interface PurchaseService {
     void updateDefaultAddress(int addressId);
 
     void declinePurchase(PurchaseEntity purchaseEntity,String reason);
+
+    List<PurchaseModel> getOrderStatusList();
+
+
+    List<PurchaseModel> getPurchaseHistoryList();
+
+    void makePayment(PurchaseEntity purchaseEntity,AddressEntity addressEntity);
 
 
 

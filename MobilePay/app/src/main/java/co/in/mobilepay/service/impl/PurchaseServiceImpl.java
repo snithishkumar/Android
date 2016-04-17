@@ -19,6 +19,7 @@ import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscardBy;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.response.ResponseData;
@@ -74,6 +75,41 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         return purchaseModelList;
     }
 
+
+    @Override
+    public List<PurchaseModel> getOrderStatusList(){
+        List<PurchaseModel> purchaseModelList = new ArrayList<>();
+        try {
+            List<PurchaseEntity> purchaseList =   purchaseDao.getOrderStatusList();
+            for (PurchaseEntity purchaseEntity : purchaseList){
+                PurchaseModel purchaseModel = new PurchaseModel(purchaseEntity);
+                purchaseModelList.add(purchaseModel);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return purchaseModelList;
+    }
+
+    /**
+     * Returns Purchase History (ISPAYED and CANCELED,DELIVERED)
+     * @return
+     */
+    @Override
+    public List<PurchaseModel> getPurchaseHistoryList(){
+        List<PurchaseModel> purchaseModelList = new ArrayList<>();
+        try{
+            List<PurchaseEntity> purchaseList =   purchaseDao.getPurchaseHistoryList();
+            for (PurchaseEntity purchaseEntity : purchaseList){
+                PurchaseModel purchaseModel = new PurchaseModel(purchaseEntity);
+                purchaseModelList.add(purchaseModel);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return purchaseModelList;
+    }
+
     @Override
     public PurchaseEntity getPurchaseDetails(int purchaseId){
         try{
@@ -103,22 +139,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     }
 
 
-    @Override
-    public void syncPurchaseData(){
-        /*try {
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    MobilePaySyncAdapter mobilePaySyncAdapter = new MobilePaySyncAdapter(context,false);
-                    mobilePaySyncAdapter.syncPurchaseData();
-                }
-            });
-            thread.start();
-           // responseDataCall.
-        }catch (Exception e){
-            Log.e("Error", "Error in  syncPurchaseData", e);
-        }*/
-    }
+
 
     @Override
     public void updatePurchaseData(PurchaseEntity purchaseEntity,List<ProductDetailsModel> productDetailsModelList){
@@ -129,7 +150,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);
         }catch (Exception e){
-            Log.e("Error","Error in updatePurchaseData",e);
+            Log.e("Error", "Error in updatePurchaseData", e);
         }
 
     }
@@ -144,26 +165,34 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);
             DiscardEntity discardEntity = new DiscardEntity();
-            discardEntity.setDiscardGuid(ServiceUtil.generateUUID());
             discardEntity.setCreatedDateTime(purchaseEntity.getLastModifiedDateTime());
             discardEntity.setDiscardBy(DiscardBy.USER);
             discardEntity.setPurchaseEntity(purchaseEntity);
             discardEntity.setReason(reason);
             purchaseDao.createDiscardEntity(discardEntity);
         }catch (Exception e){
+            e.printStackTrace();
             Log.e("Error","Error in declinePurchase",e);
         }
 
     }
 
 
-    public void syncDeclineData(){
-        try{
+    @Override
+   public void makePayment(PurchaseEntity purchaseEntity,AddressEntity addressEntity){
+       try {
+           purchaseEntity.setIsPayed(true);
+           purchaseEntity.setIsSync(false);
+           purchaseEntity.setOrderStatus(OrderStatus.PACKING.toString());
+           purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+           purchaseEntity.setAddressEntity(addressEntity);
+           purchaseDao.updatePurchase(purchaseEntity);
+       }catch (Exception e){
+           e.printStackTrace();
+           Log.e("Error","Error in makePayment",e);
+       }
 
-        }catch (Exception e){
-
-        }
-    }
+   }
 
     public UserEntity getUserEntity(){
         try{

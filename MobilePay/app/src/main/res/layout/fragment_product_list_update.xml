@@ -86,6 +86,7 @@
        <Button
            android:layout_width="0dp"
            android:text="Pay Now"
+           android:id="@+id/shop_details_pay"
            android:layout_weight="1"
            android:layout_height="match_parent" />
 

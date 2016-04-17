@@ -19,13 +19,18 @@ import java.io.FileOutputStream;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.sync.MobilePayAPI;
 import co.in.mobilepay.sync.ServiceAPI;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Nithishkumar on 4/12/2016.
@@ -41,9 +46,9 @@ public class ImageLoader {
     private  Context context;
 
     public ImageLoader(Context context) {
-        this.context = context;
-        fileCache = new FileCache(context);
-        init(context);
+        this.context = context.getApplicationContext();
+        fileCache = new FileCache(context.getApplicationContext());
+        init(context.getApplicationContext());
     }
 
 
