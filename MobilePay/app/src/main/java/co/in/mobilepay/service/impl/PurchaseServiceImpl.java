@@ -194,6 +194,23 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
 
    }
 
+    /**
+     * Returns Discard Entity
+     * @param purchaseEntity
+     * @return
+     */
+    @Override
+    public DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity){
+        try {
+            DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
+            return discardEntity;
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("Error", "Error in getDiscardEntity", e);
+        }
+        return null;
+    }
+
     public UserEntity getUserEntity(){
         try{
             return userDao.getUser();

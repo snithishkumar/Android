@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_margin="20dp"
+    android:layout_height="wrap_content">
+
+
+   <TextView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Delivery"
+       android:id="@+id/adapt_pur_order_status_item_delivery"
+       android:textSize="20dp"
+       android:textStyle="bold"
+       />
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/adapt_pur_order_status_item_delivery"
+        android:id="@+id/adapt_pur_order_status_item_delivery_options"
+        android:clickable="false"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:clickable="false"
+            android:id="@+id/adapt_pur_order_status_item_delivery_addr"
+            android:text="15/B, 2nd cross street, sir ram nagar, Tharamani,chennai - 600 113"
+            android:layout_height="wrap_content" />
+
+
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:text="Luggage"
+            android:clickable="false"
+            android:id="@+id/adapt_pur_order_status_item_delivery_luggage"
+            android:layout_height="wrap_content" />
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:text="Billing"
+            android:clickable="false"
+            android:id="@+id/adapt_pur_order_status_item_delivery_billing"
+            android:layout_height="wrap_content" />
+
+
+    </RadioGroup>
+
+    
+
+
+</RelativeLayout>

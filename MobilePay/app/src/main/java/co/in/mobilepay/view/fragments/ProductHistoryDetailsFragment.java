@@ -21,7 +21,7 @@ import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.MobilePayDividerItemDetoration;
-import co.in.mobilepay.view.adapters.OrderStatusDetailsAdapter;
+import co.in.mobilepay.view.adapters.ProductDetailsHistoryAdapter;
 import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
@@ -29,11 +29,11 @@ import co.in.mobilepay.view.model.ProductDetailsModel;
  * A fragment representing a list of Items.
  * <p/>
  */
-public class OrderStatusProductDetailsFragment extends Fragment{
+public class ProductHistoryDetailsFragment extends Fragment{
 
     private PurchaseDetailsActivity purchaseDetailsActivity;
     private PurchaseService purchaseService;
-    private OrderStatusDetailsAdapter orderStatusDetailsAdapter;
+    private ProductDetailsHistoryAdapter productDetailsHistoryAdapter;
     private int purchaseId = 0;
 
     private TextView shopName = null;
@@ -54,7 +54,7 @@ public class OrderStatusProductDetailsFragment extends Fragment{
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public OrderStatusProductDetailsFragment() {
+    public ProductHistoryDetailsFragment() {
 
     }
 
@@ -74,7 +74,7 @@ public class OrderStatusProductDetailsFragment extends Fragment{
         if(purchaseIdArgs != null){
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
         }
-        View view = inflater.inflate(R.layout.fragment_order_status_product_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_product_history_list, container, false);
         initView(view);
         populatePurchaseData(view);
         return view;
@@ -125,8 +125,8 @@ public class OrderStatusProductDetailsFragment extends Fragment{
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.purchase_history_product_items_view);
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
-        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
-        recyclerView.setAdapter(orderStatusDetailsAdapter);
+        productDetailsHistoryAdapter = new ProductDetailsHistoryAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
+        recyclerView.setAdapter(productDetailsHistoryAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));

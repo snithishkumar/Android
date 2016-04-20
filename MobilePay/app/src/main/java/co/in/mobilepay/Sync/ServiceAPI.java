@@ -22,7 +22,7 @@ public enum ServiceAPI {
                 .readTimeout(5, TimeUnit.MINUTES)
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.12:8081/mobilepay/").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.7:8081/mobilepay/").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         mobilePayAPI = retrofit.create(MobilePayAPI.class);
     }
 

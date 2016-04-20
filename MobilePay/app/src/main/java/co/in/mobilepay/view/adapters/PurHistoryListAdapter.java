@@ -25,7 +25,6 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private List<PurchaseModel> purchaseModelList;
 
-    private int position;
     PurchaseListClickListeners purchaseListClickListeners;
     private HomeActivity homeActivity;
     private ImageLoader imageLoader;
@@ -35,6 +34,7 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public PurHistoryListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
         this.homeActivity = homeActivity;
+        this.purchaseListClickListeners = homeActivity;
         imageLoader = new ImageLoader(homeActivity);
     }
 
@@ -66,16 +66,7 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
        final View itemView = LayoutInflater.
                 from(viewGroup.getContext()).
                 inflate(R.layout.adapt_purchase_history_list, viewGroup, false);
-      /*  itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PurchaseModel purchaseModel = purchaseModelList.get(position);
-                int purchaseId = purchaseModel.getPurchaseId();
-               // itemView.setFocusable(true);
-                purchaseListClickListeners.purchaseListOnClick(purchaseId);
-                //
-            }
-        });*/
+
 
 
 
@@ -87,7 +78,6 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(viewHolder instanceof PurHistoryListViewHolder){
             PurHistoryListViewHolder purHistoryListViewHolder =(PurHistoryListViewHolder)viewHolder;
 
-            this.position = position;
             final PurchaseModel purchaseModel =  purchaseModelList.get(position);
             purHistoryListViewHolder.vBillNumber.setText("Bill No: "+purchaseModel.getBillNumber());
             purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
@@ -132,11 +122,20 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             vName = (TextView) view.findViewById(R.id.adapt_pur_his_shop_name);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_pur_his_shop_logo);
             vStatus = (ImageView)view.findViewById(R.id.adapt_pur_his_status);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    int purchaseId = purchaseModel.getPurchaseId();
+                    // itemView.setFocusable(true);
+                    purchaseListClickListeners.purchaseListOnClick(purchaseId,3); //PurchaseDetailsActivity.PURCHASE_LIST
+                }
+            });
 
         }
     }
 
     public interface PurchaseListClickListeners{
-         void purchaseListOnClick(int purchaseId);
+        void purchaseListOnClick(int purchaseId,int fragmentOptions);
     }
 }

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.view.model.ProductDetailsModel;
@@ -48,6 +49,9 @@ public interface PurchaseService {
     List<PurchaseModel> getPurchaseHistoryList();
 
     void makePayment(PurchaseEntity purchaseEntity,AddressEntity addressEntity);
+
+
+    DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity);
 
 
 

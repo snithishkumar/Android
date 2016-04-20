@@ -51,8 +51,8 @@
         android:textStyle="bold"
         android:text="Order Id: #"
         android:layout_alignTop="@+id/shop_date_time"
-        android:layout_alignRight="@+id/shop_product_items_layout"
-        android:layout_alignEnd="@+id/shop_product_items_layout" />
+        android:layout_alignRight="@+id/purchase_history_product_items_layout"
+        android:layout_alignEnd="@+id/purchase_history_product_items_layout" />
 
 
 
@@ -61,7 +61,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/shop_product_items_footer"
         android:layout_below="@+id/shop_date_time"
-        android:id="@+id/shop_product_items_layout">
+        android:id="@+id/purchase_history_product_items_layout">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shop_product_items_view"
         android:layout_width="match_parent"

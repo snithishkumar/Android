@@ -427,7 +427,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public AmountDetailsViewHolder(View view){
             super(view);
             vSubTotalText = (TextView) view.findViewById(R.id.amount_details_sub_total_text);
-            vTaxText = (TextView) view.findViewById(R.id.amount_details_sub_total_tax);
+            vTaxText = (TextView) view.findViewById(R.id.adapt_pur_history_reason_message);
             vDiscountText = (TextView) view.findViewById(R.id.amount_details_sub_total_discount);
 
             vSubTotalAmount = (TextView) view.findViewById(R.id.amount_details_sub_total_amount);

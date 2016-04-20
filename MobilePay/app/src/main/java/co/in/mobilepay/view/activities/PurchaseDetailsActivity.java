@@ -20,6 +20,7 @@ import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.OrderStatusProductDetailsFragment;
 import co.in.mobilepay.view.fragments.PaymentFragment;
+import co.in.mobilepay.view.fragments.ProductHistoryDetailsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFabFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.ShopDetailsFragment;
@@ -81,6 +82,13 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
                 purchaseIdArgs.putInt("purchaseId",purchaseId);
                 orderStatusProductDetailsFragment.setArguments(purchaseIdArgs);
                 FragmentsUtil.addFragment(this, orderStatusProductDetailsFragment, R.id.pur_details_main_container);
+                break;
+            case PURCHASE_HISTORY_LIST:
+               ProductHistoryDetailsFragment productHistoryDetailsFragment = new ProductHistoryDetailsFragment();
+                purchaseIdArgs = new Bundle();
+                purchaseIdArgs.putInt("purchaseId",purchaseId);
+                productHistoryDetailsFragment.setArguments(purchaseIdArgs);
+                FragmentsUtil.addFragment(this, productHistoryDetailsFragment, R.id.pur_details_main_container);
                 break;
         }
 

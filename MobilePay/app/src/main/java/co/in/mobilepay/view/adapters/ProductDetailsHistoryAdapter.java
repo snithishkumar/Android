@@ -13,6 +13,7 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DiscountType;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -22,7 +23,7 @@ import co.in.mobilepay.view.model.ProductDetailsModel;
 /**
  * TODO: Replace the implementation with code for your data type.
  */
-public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
 
@@ -44,11 +45,12 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     private static final int PRODUCT_DETAILS = 1;
     private static final int HOME_DELIVERY_OPTIONS = 2;
     private static final int TAX_DETAILS = 3;
+    private static final int CANCEL = 4;
 
 
 
 
-    public OrderStatusDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson,PurchaseEntity  purchaseEntity) {
+    public ProductDetailsHistoryAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
         this.productDetailsModels = productDetailsModels;
         this.purchaseDetailsActivity = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
@@ -62,16 +64,22 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
             case HOME_DELIVERY_OPTIONS:
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.adapt_purchase_order_status_delivery, parent, false);
+                        .inflate(R.layout.adapt_purchase_history_delivery, parent, false);
                 return new DeliveryAddressViewHolder(view);
+
+            case CANCEL:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapt_purchase_history_reason_cancel, parent, false);
+                return new CancelViewHolder(view);
 
             case TAX_DETAILS:
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.adapt_purchase_amount_details, parent, false);
+                        .inflate(R.layout.adapt_purchase_history_amount_details, parent, false);
                 return new AmountDetailsViewHolder(view);
+
             default:
                  view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.adapt_order_status_purchase_items, parent, false);
+                        .inflate(R.layout.adapt_purchase_history_items, parent, false);
                 return new ProductDetailsViewHolder(view);
         }
 
@@ -86,6 +94,9 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     public int getItemViewType(int position) {
         int size = productDetailsModels.size();
         if(size  == position){
+            if(purchaseEntity.isDiscard()){
+                return CANCEL;
+            }
             return HOME_DELIVERY_OPTIONS;
         }
         if(size + 1 == position){
@@ -99,7 +110,10 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
-            toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
+            if(!purchaseEntity.isDiscard()){
+                toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
+            }
+
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
@@ -122,20 +136,25 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             }
 
 
-        }else{
-            AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
+        }else if (viewHolder instanceof CancelViewHolder) {
+            CancelViewHolder cancelViewHolder = (CancelViewHolder)viewHolder;
+            DiscardEntity discardEntity = purchaseDetailsActivity.getPurchaseService().getDiscardEntity(purchaseEntity);
+            cancelViewHolder.vCancelText.setText(discardEntity.getReason());
+
+        } else {
+            AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder) viewHolder;
             calcAmount();
-            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+amount);
+            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + amount);
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
-            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(taxAmount));
-            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
+            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(taxAmount));
+            if (amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()) {
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
-            }else{
+            } else {
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
-            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(discount));
-            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(totalAmount));
+            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(discount));
+            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(totalAmount));
         }
 
 
@@ -231,8 +250,9 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         private ImageView rate3;
         private ImageView rate4;
         private ImageView rate5;
-        private TextView totalAmount;
         private ImageView delete;
+        private TextView totalAmount;
+        private TextView rateIt;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
@@ -242,6 +262,18 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             rate3 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate3);
             rate4 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate4);
             rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);
+            rateIt = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
+            if(purchaseEntity.isDiscard()){
+                rate1.setVisibility(View.INVISIBLE);
+                rate2.setVisibility(View.INVISIBLE);
+                rate3.setVisibility(View.INVISIBLE);
+                rate4.setVisibility(View.INVISIBLE);
+                rate5.setVisibility(View.INVISIBLE);
+
+
+                rateIt.setVisibility(View.INVISIBLE);
+
+            }
             totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
 
@@ -298,6 +330,16 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             vSubDiscountAmount = (TextView) view.findViewById(R.id.amount_details_sub_discount_amount);
             vTotalAmount = (TextView) view.findViewById(R.id.amount_details_total_amount);
         }
+    }
+
+    private class CancelViewHolder extends RecyclerView.ViewHolder{
+        private TextView vCancelText;
+        public CancelViewHolder(View view){
+            super(view);
+            vCancelText = (TextView)view.findViewById(R.id.adapt_pur_history_reason_message);
+        }
+
+
     }
 
 

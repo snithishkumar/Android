@@ -22,6 +22,7 @@ import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.OrderStatusListAdapter;
+import co.in.mobilepay.view.adapters.PurHistoryListAdapter;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.FragmentDrawer;
 import co.in.mobilepay.view.fragments.OrderStatusListFragment;
@@ -29,7 +30,7 @@ import co.in.mobilepay.view.fragments.PurHistoryListFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
-public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners,OrderStatusListAdapter.PurchaseListClickListeners,FragmentDrawer.FragmentDrawerListener{
+public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners,OrderStatusListAdapter.PurchaseListClickListeners,PurHistoryListAdapter.PurchaseListClickListeners,FragmentDrawer.FragmentDrawerListener{
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
 
