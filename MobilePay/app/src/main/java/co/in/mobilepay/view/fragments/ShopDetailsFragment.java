@@ -2,6 +2,8 @@ package co.in.mobilepay.view.fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,7 @@ import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
+import co.in.mobilepay.view.model.PurchaseModel;
 
 /**
  * Created by ramse on 14-03-2016.
@@ -48,8 +51,29 @@ public class ShopDetailsFragment extends Fragment {
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText(merchantEntity.getArea());
         shopLandLine.setText(merchantEntity.getLandLineNumber() > 0 ? String.valueOf(merchantEntity.getLandLineNumber()) :"N/A");
+        setCall(shopLandLine,merchantEntity.getLandLineNumber());
         shopMobile.setText(merchantEntity.getMobileNumber() > 0 ? String.valueOf(merchantEntity.getMobileNumber()) :"N/A");
+        setCall(shopMobile,merchantEntity.getMobileNumber());
         shopAddress.setText(merchantEntity.getMerchantAddress());
+    }
+
+    private void setCall(TextView shopMobile,final long phoneNumber){
+        if(phoneNumber > 0){
+            shopMobile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" +phoneNumber));
+                    try {
+                        purchaseDetailsActivity.startActivity(callIntent);  // TODO -- Need to handle request
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
+
     }
 
 

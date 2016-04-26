@@ -148,6 +148,21 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             });
 
+            vCall.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
+                    try {
+                        homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
         }
     }
 
