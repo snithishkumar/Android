@@ -192,21 +192,25 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
             case 1:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
                 break;
             case 2:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
                 break;
             case 3:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
                 break;
             case 4:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
                 break;
             case 5:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
@@ -214,6 +218,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
                 break;
         }
     }
@@ -232,6 +237,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         private ImageView rate4;
         private ImageView rate5;
         private TextView totalAmount;
+        private TextView rateItText;
         private ImageView delete;
 
         public ProductDetailsViewHolder(View view) {
@@ -244,6 +250,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);
             totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
+            rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
 
 
         }

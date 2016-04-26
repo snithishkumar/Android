@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscountType;
 import co.in.mobilepay.view.activities.ActivityUtil;
@@ -35,6 +36,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private AddressEntity defaultAddress = null;
 
     private AmountDetailsJson amountDetailsJson;
+    private PurchaseEntity purchaseEntity;
 
     private double amount;
     private double taxAmount;
@@ -43,7 +45,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private DeliveryOptions deliveryOptions;
 
 
-    private int position;
 
     private static final int PRODUCT_DETAILS = 1;
     private static final int HOME_DELIVERY_OPTIONS = 2;
@@ -55,11 +56,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
 
-    public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels,AmountDetailsJson amountDetailsJson) {
+    public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
         this.productDetailsModels = productDetailsModels;
         this.purchaseDetailsActivity = purchaseDetailsActivity;
         this.showDeliveryAddress = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
+        this.purchaseEntity = purchaseEntity;
     }
 
     @Override
@@ -110,11 +112,14 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-        this.position = position;
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            if(!purchaseEntity.isEditable()){
+                productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
+            }
+            toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
             calcAmount(position);
         }else if(viewHolder instanceof DeliveryOptionsViewHolder){
             DeliveryOptionsViewHolder deliveryOptionsViewHolder = (DeliveryOptionsViewHolder)viewHolder;
@@ -190,7 +195,41 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
+    private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
+        switch (rating){
 
+            case 1:
+                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
+                break;
+            case 2:
+                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
+                break;
+            case 3:
+                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
+                break;
+            case 4:
+                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
+                break;
+            case 5:
+                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
+                break;
+        }
+    }
 
 
 
@@ -203,6 +242,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private ImageView rate4;
         private ImageView rate5;
         private TextView totalAmount;
+        private TextView rateItText;
         private ImageView delete;
         int imagePos = 0;
 
@@ -216,6 +256,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             rate5 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate5);
             totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
+            rateItText =  (TextView) view.findViewById(R.id.rate_it_text);
             rate1.setOnClickListener(this);
             rate2.setOnClickListener(this);
             rate3.setOnClickListener(this);
@@ -238,6 +279,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.rate_no_value);
                     rate4.setImageResource(R.mipmap.rate_no_value);
                     rate5.setImageResource(R.mipmap.rate_no_value);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_no));
                     break;
                 case 1:
                     rate1.setImageResource(R.mipmap.fav_icon);
@@ -245,6 +287,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.rate_no_value);
                     rate4.setImageResource(R.mipmap.rate_no_value);
                     rate5.setImageResource(R.mipmap.rate_no_value);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
                     break;
                 case 2:
                     rate1.setImageResource(R.mipmap.fav_icon);
@@ -252,6 +295,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.rate_no_value);
                     rate4.setImageResource(R.mipmap.rate_no_value);
                     rate5.setImageResource(R.mipmap.rate_no_value);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
                     break;
                 case 3:
                     rate1.setImageResource(R.mipmap.fav_icon);
@@ -259,6 +303,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.fav_icon);
                     rate4.setImageResource(R.mipmap.rate_no_value);
                     rate5.setImageResource(R.mipmap.rate_no_value);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
                     break;
                 case 4:
                     rate1.setImageResource(R.mipmap.fav_icon);
@@ -266,6 +311,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.fav_icon);
                     rate4.setImageResource(R.mipmap.fav_icon);
                     rate5.setImageResource(R.mipmap.rate_no_value);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
                     break;
                 case 5:
                     rate1.setImageResource(R.mipmap.fav_icon);
@@ -273,6 +319,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     rate3.setImageResource(R.mipmap.fav_icon);
                     rate4.setImageResource(R.mipmap.fav_icon);
                     rate5.setImageResource(R.mipmap.fav_icon);
+                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
                     break;
             }
             addRating(rating,getAdapterPosition());
@@ -382,12 +429,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public DeliveryOptionsViewHolder(View view){
             super(view);
             vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_home);
-            vHomeDelivery.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
             /******/
            RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);

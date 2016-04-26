@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.gcm.GcmRegistrationIntentService;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Check PlayService is Enable or not
+        ActivityUtil.checkPlayServices(this);
         // Check whether it called from Profile Update screen
         mobileNumber =  getIntent().getStringExtra("mobileNumber");
         isProfileUpdate =  getIntent().getBooleanExtra("isProfileUpdate", false);
@@ -99,7 +102,13 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     }
 
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        // Check PlayService is Enable or not
+        ActivityUtil.checkPlayServices(this);
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -122,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
     public AccountService getAccountService() {
@@ -157,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
                 FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
                 break;
             case MessageConstant.LOGIN_OK:
+                gcmRegistration();
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -168,5 +180,10 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
                 FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
                 break;
         }
+    }
+
+    private void gcmRegistration(){
+        Intent intent = new Intent(this, GcmRegistrationIntentService.class);
+        this.startService(intent);
     }
 }

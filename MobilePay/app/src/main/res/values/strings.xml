@@ -54,6 +54,13 @@
 
     <string name="error_purchase_list">OOPS! Something went wrong. Pls try again later</string>
 
+    <string name="rate_no">Rate it</string>
+    <string name="rate_bad">Bad</string>
+    <string name="rate_avg">Avg</string>
+    <string name="rate_ok">Ok</string>
+    <string name="rate_gud">Good</string>
+    <string name="rate_excellence">Excellence</string>
+
 </resources>
 
 

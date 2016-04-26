@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.service.impl;
 
 import android.app.ActivityManager;
@@ -32,9 +33,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+*/
 /**
  * Created by Nithishkumar on 4/12/2016.
- */
+ *//*
+
 //https://dzone.com/articles/android-listview-optimizations-0
 public class ImageLoader {
 
@@ -81,11 +84,13 @@ public class ImageLoader {
         }
     }
 
-    /**
+    */
+/**
      * Search for the image in the device, then in the web
      * @param url
      * @return
-     */
+     *//*
+
     private void queuePhoto( String merchantGuid,String merchantId, ImageView imageView) {
       final   PhotoToLoad   mPhoto = new PhotoToLoad(merchantGuid, imageView);
         //from SD cache
@@ -215,14 +220,17 @@ public class ImageLoader {
     }
 
 
- /*   private boolean imageViewReused(PhotoToLoad photoToLoad) {
+ */
+/*   private boolean imageViewReused(PhotoToLoad photoToLoad) {
         //tag used here
         String tag = imageViews.get(photoToLoad.imageView);
         if (tag == null || !tag.equals(photoToLoad.url))
             return true;
         return false;
-    }*/
+    }*//*
+
 
 
 
 }
+*/

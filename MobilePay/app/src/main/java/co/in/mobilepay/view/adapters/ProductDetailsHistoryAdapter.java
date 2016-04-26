@@ -211,21 +211,25 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
             case 1:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
                 break;
             case 2:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
                 break;
             case 3:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
                 break;
             case 4:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
                 break;
             case 5:
                 productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
@@ -233,6 +237,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
                 productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
                 productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
+                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
                 break;
         }
     }
@@ -252,7 +257,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
         private ImageView rate5;
         private ImageView delete;
         private TextView totalAmount;
-        private TextView rateIt;
+        private TextView rateItText;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
@@ -262,16 +267,14 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             rate3 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate3);
             rate4 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate4);
             rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);
-            rateIt = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
+            rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
             if(purchaseEntity.isDiscard()){
                 rate1.setVisibility(View.INVISIBLE);
                 rate2.setVisibility(View.INVISIBLE);
                 rate3.setVisibility(View.INVISIBLE);
                 rate4.setVisibility(View.INVISIBLE);
                 rate5.setVisibility(View.INVISIBLE);
-
-
-                rateIt.setVisibility(View.INVISIBLE);
+                rateItText.setVisibility(View.INVISIBLE);
 
             }
             totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);

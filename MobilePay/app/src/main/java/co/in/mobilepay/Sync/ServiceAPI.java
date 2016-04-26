@@ -15,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public enum ServiceAPI {
     INSTANCE;
     private MobilePayAPI mobilePayAPI = null;
+    private final String  url = "http://192.168.1.67:8082/mobilepay/";
 
     ServiceAPI(){
         Executor executor = Executors.newCachedThreadPool();
@@ -22,11 +23,15 @@ public enum ServiceAPI {
                 .readTimeout(5, TimeUnit.MINUTES)
                 .connectTimeout(5, TimeUnit.MINUTES)
                 .build();
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://192.168.0.7:8081/mobilepay/").client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(url).client(okHttpClient).addConverterFactory(GsonConverterFactory.create()).callbackExecutor(executor).build();
         mobilePayAPI = retrofit.create(MobilePayAPI.class);
     }
 
     public MobilePayAPI getMobilePayAPI(){
         return mobilePayAPI;
+    }
+
+    public String getUrl(){
+        return url;
     }
 }

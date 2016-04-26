@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.gcm.GcmRegistrationIntentService;
 import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.CardServiceImpl;
@@ -58,6 +59,9 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
          drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout), mToolbar);
         drawerFragment.setDrawerListener(this);
     }
+
+
+
 
     private void init(){
         try{

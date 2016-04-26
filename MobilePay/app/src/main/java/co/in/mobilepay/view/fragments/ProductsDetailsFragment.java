@@ -77,6 +77,9 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(gson == null){
+            gson = new Gson();
+        }
 
 
     }
@@ -85,8 +88,9 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle purchaseIdArgs = getArguments();
-        if(purchaseIdArgs != null){
+        if(purchaseIdArgs != null && purchaseEntity == null){
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
+            loadData();
         }
         View view = inflater.inflate(R.layout.fragment_product_list, container, false);
         initView(view);
@@ -99,9 +103,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
      * @param view
      */
     private void initView(View view){
-        if(gson == null){
-            gson = new Gson();
-        }
+
         shopName = (TextView)view.findViewById(R.id.shop_name);
         shopArea = (TextView)view.findViewById(R.id.shop_area);
         shoppingDateTime  = (TextView)view.findViewById(R.id.shop_date_time);
@@ -125,7 +127,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
      * Populate value
      */
     private void populatePurchaseData(View view){
-         purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText(merchantEntity.getArea());
@@ -133,12 +135,8 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         String purchaseDateTime =  MobilePayUtil.formatDate(purchaseEntity.getPurchaseDateTime());
         shoppingDateTime.setText(purchaseDateTime);
 
-        String productDetails = purchaseEntity.getProductDetails();
 
-       productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
-        }.getType());
-        productDetailsModelList.addAll(productDetailsModelList);
-        productDetailsModelList.addAll(productDetailsModelList);
+
 
 
 
@@ -148,11 +146,19 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
-        productDetailsAdapter = new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson);
+        productDetailsAdapter = new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
         recyclerView.setAdapter(productDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));
+    }
+
+    private void loadData(){
+        purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+        String productDetails = purchaseEntity.getProductDetails();
+
+        productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
+        }.getType());
     }
 
 

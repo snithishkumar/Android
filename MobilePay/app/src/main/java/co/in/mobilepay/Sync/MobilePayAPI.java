@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.CardJson;
+import co.in.mobilepay.json.response.CloudMessageJson;
 import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.PayedPurchaseDetailsList;
@@ -68,9 +69,12 @@ public interface  MobilePayAPI {
     @POST("mobile/syncPayedData.html")
     Call<ResponseData> syncPayedData(@Body PayedPurchaseDetailsList requestData);
 
+    @POST("mobile/addCloudId.html")
+    Call<ResponseData> addCloudId(@Body CloudMessageJson cloudMessageJson);
+
 
     @FormUrlEncoded
-    @POST("user/merchant/profilepic.html")
+    @POST("")
     @Streaming
     Call<ResponseBody> getImage(@Field("merchantGuid") String merchantGuid,@Field("merchantId")String merchantId);
 }
