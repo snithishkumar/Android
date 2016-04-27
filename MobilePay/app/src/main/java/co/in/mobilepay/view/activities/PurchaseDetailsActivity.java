@@ -131,6 +131,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
     public void onClick(View view){
         switch (view.getId()){
             case R.id.shop_details_layout:
+            case R.id.purchase_history_shop_details_layout:
                 ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
                 Bundle purchaseIdArgs = new Bundle();
                 purchaseIdArgs.putInt("purchaseId",purchaseId);

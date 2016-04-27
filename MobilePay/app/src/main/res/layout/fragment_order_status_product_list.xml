@@ -9,7 +9,7 @@
         android:id="@+id/purchase_history_shop_details_layout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:onClick="viewShopDetails"
+        android:onClick="onClick"
         android:background="@color/colorPrimary">
 
         <TextView

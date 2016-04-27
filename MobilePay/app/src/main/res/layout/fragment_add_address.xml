@@ -4,8 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:id="@+id/add_address_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="New Address"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+
+
+    </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
+        android:layout_below="@+id/add_address_details_layout"
         android:id="@+id/add_address_layout"
         android:layout_height="match_parent">
 
