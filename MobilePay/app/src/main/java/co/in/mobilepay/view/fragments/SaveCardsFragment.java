@@ -56,6 +56,7 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        naviDrawerActivity.getSupportActionBar().setTitle("Save Card List");
 
 
     }

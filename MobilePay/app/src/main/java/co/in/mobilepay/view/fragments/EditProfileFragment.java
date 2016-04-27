@@ -54,7 +54,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        naviDrawerActivity.getSupportActionBar().setTitle("Edit Profile");
         View view = inflater.inflate(R.layout.fragment_profile_update, container, false);
         init(view);
         loadData();
