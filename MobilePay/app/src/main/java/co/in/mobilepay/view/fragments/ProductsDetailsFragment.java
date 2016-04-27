@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,9 +59,9 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
     private  PurchaseEntity  purchaseEntity= null;
     private List<ProductDetailsModel> productDetailsModelList = null;
 
-    private int totalProduct = 0;
 
     ProgressDialog progressDialog = null;
+
 
 
 
@@ -135,18 +136,14 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         String purchaseDateTime =  MobilePayUtil.formatDate(purchaseEntity.getPurchaseDateTime());
         shoppingDateTime.setText(purchaseDateTime);
 
-
-
-
-
-
-
-        totalProduct = productDetailsModelList.size();
         // Set the adapter
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.shop_product_items_view);
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
         productDetailsAdapter = new ProductDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
+        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(purchaseDetailsActivity);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(productDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

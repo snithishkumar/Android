@@ -3,6 +3,7 @@ package co.in.mobilepay.view.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,6 +124,10 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
         // Set the adapter
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.purchase_history_product_items_view);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(purchaseDetailsActivity);
+        recyclerView.setLayoutManager(linearLayoutManager);
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
         orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
