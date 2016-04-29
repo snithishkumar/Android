@@ -3,7 +3,7 @@ package co.in.mobilepay.json.response;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LuggagesListJson {
+public class OrderStatusJsonsList {
 
 	private List<LuggageJson> luggageJsons = new ArrayList<>();
 	private List<PurchaseJson> purchaseJsons = new ArrayList<>();
@@ -26,7 +26,7 @@ public class LuggagesListJson {
 
 	@Override
 	public String toString() {
-		return "LuggagesListJson [luggageJsons=" + luggageJsons + ", purchaseJsons=" + purchaseJsons + "]";
+		return "OrderStatusJsonsList [luggageJsons=" + luggageJsons + ", purchaseJsons=" + purchaseJsons + "]";
 	}
 
 }

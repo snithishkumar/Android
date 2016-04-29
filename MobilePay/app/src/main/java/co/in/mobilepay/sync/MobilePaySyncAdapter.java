@@ -14,7 +14,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
@@ -32,14 +35,16 @@ import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
 import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
+import co.in.mobilepay.json.response.GetPurchaseDetailsList;
 import co.in.mobilepay.json.response.LuggageJson;
-import co.in.mobilepay.json.response.LuggagesListJson;
+import co.in.mobilepay.json.response.OrderStatusJsonsList;
 import co.in.mobilepay.json.response.PayedPurchaseDetailsJson;
 import co.in.mobilepay.json.response.PayedPurchaseDetailsList;
 import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.TokenJson;
 import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.service.impl.MessageConstant;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -55,6 +60,9 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private UserDao userDao;
     private MobilePayAPI mobilePayAPI;
     private Gson gson;
+
+    ExecutorService executorService = Executors.newFixedThreadPool(3);
+
 
     public MobilePaySyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -89,23 +97,73 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
 
-        // 1 - Purchase List, 2- Order Status List, 3 - Purchase History List
+        // 1 - Purchase List, 2- Order Status List, 3 - Purchase History List,4- SyncUnSyncedData,5- Call Purchase List,Order Status List and Purchase History List all at once
        int currentTab =  extras.getInt("currentTab",0);
         switch (currentTab){
             case 1:
-                syncUserDeliveryAddress();
-                sendUnSyncPayedData();
-                sendUnSyncDeclineData();
+                // Send If any UnSynced Data
+                sendUnSyncedDataAsync();
+                // Get Current Purchase List
                 syncPurchaseData();
                 break;
             case 2:
+                // Send If any UnSynced Data
+                sendUnSyncedDataAsync();
+                // Get Order Status
                 syncOrderStatus();
                 break;
             case 3:
+                // Send If any UnSynced Data
+                sendUnSyncedDataAsync();
+                // Get Purchase History List
                 syncPurchaseHistoryData();
                 break;
+
+            case 4:
+                sendUnSyncedDataSynchronize();
+                break;
+
+            case 5:
+                syncPurchaseData();
+                syncOrderStatus();
+                syncPurchaseHistoryData();
         }
 
+    }
+
+    /**
+     * Send UnSynced Data to the server
+     */
+    private void sendUnSyncedDataSynchronize(){
+        syncUserDeliveryAddress();
+        sendUnSyncDeclineData();
+        sendUnSyncPayedData();
+    }
+
+    /**
+     * Send UnSynced Data to the server. Each Process Runs Separate Thread
+     */
+    private void sendUnSyncedDataAsync(){
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                syncUserDeliveryAddress();
+            }
+        });
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                sendUnSyncDeclineData();
+            }
+        });
+
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                sendUnSyncPayedData();
+            }
+        });
     }
 
     /**
@@ -140,16 +198,12 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncPurchaseData(){
         try {
             // Get User and App Token
-            JsonObject requestData =  userRequest();
+            TokenJson tokenJson = new TokenJson();
+            userRequest(tokenJson);
 
-            /**
-             *  Get Most Recent Current Purchase Server time.Server send back based on this time.
-             *  If time is -1 ,then server sends all the current purchase list.
-             */
-            long serverTime = purchaseDao.getMostRecentPurchaseServerTime();
-            requestData.addProperty("serverTime",serverTime);
-            // Sync Request
-            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseData(requestData);
+            // Sync Request. It Returns Current Purchase UUIDs
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseListFromServer(tokenJson);
+
             // Server Response
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             ResponseData responseData = dataResponse.body();
@@ -158,23 +212,137 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             // Check the Status code, If its success or failure
             if(statusCode == 300){
                 // Process Server Response
-                String purchaseDetails = responseData.getData();
-                List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                String purchaseUUIDs = responseData.getData();
+                // Convert UUIDs to List
+                List<String> purchaseJsonList =     gson.fromJson(purchaseUUIDs, new TypeToken<List<String>>() {
                 }.getType());
-                processPurchaseJson(purchaseJsonList);
+                // Process Each UUIDs
+                processPurchaseUUIDs(purchaseJsonList);
+                // Once Process, Completed Need to Update List View
                 PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
                 purchaseListPoster.setStatusCode(200);
+                // Post Success message to List View
                 MobilePayBus.getInstance().post(purchaseListPoster);
             }else{
-                PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
-                purchaseListPoster.setStatusCode(500);
-                MobilePayBus.getInstance().post(purchaseListPoster);
+                // In the case of failure, Send Failure message to the server.
+                postErrorCode(statusCode);
             }
 
         }catch (Exception e){
-            Log.e("Error","Error in  syncPurchaseData",e);
+            Log.e("Error","Error in  syncPurchaseListFromServer",e);
             // -- TODO Need to Say Something wrong in mobile side
         }
+        //Send Error as Internal Error
+        postErrorCode(MessageConstant.REG_ERROR_CODE);
+    }
+
+    /**
+     * Post Error Message
+     * @param errorCode
+     */
+    private void postErrorCode(int errorCode){
+        PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
+        purchaseListPoster.setStatusCode(errorCode);
+        MobilePayBus.getInstance().post(purchaseListPoster);
+    }
+
+
+    /**
+     * Check given purchaseUUIDs with Database. If its not present, then download purchase Details. And also, PurchaseUUID present in local db and that is not in server. Then need to get updates for that PurchaseUUID
+     * @param purchaseUUIDs
+     * @throws Exception
+     */
+    private void processPurchaseUUIDs(List<String> purchaseUUIDs)throws  Exception{
+       if(purchaseUUIDs.size() > 0){
+           // Get Purchase UUID from Database
+           List<String> dbPurchaseUUIDs = purchaseDao.getPurchaseUUIDs();
+           if(dbPurchaseUUIDs.size() > 0){
+               List<String> purchaseJsonListTemp = new ArrayList<>(purchaseUUIDs);
+              // Need to Download
+               purchaseUUIDs.removeAll(dbPurchaseUUIDs);
+               // Need to Get Update.
+               dbPurchaseUUIDs.removeAll(purchaseJsonListTemp);
+               // If dbPurchaseUUIDs contains data. We must get updates
+               if(dbPurchaseUUIDs.size() > 0){
+                   // Get Purchase Details
+                   syncPurchaseDetailsList(dbPurchaseUUIDs);
+               }
+
+           }
+           // Get Purchase Details. It process one by one. Bsc to process slow internet
+           syncPurchaseDetails(purchaseUUIDs);
+
+       }
+
+    }
+
+    /**
+     * Get Purchase Details. It process one by one
+     * @param purchaseUUIDs
+     * @throws SQLException
+     */
+    private void syncPurchaseDetails(List<String> purchaseUUIDs)throws SQLException{
+        GetPurchaseDetailsList getPurchaseDetailsList = new GetPurchaseDetailsList();
+        userRequest(getPurchaseDetailsList);
+        do{
+            try{
+                getPurchaseDetailsList.getPurchaseUUIDs().clear();
+                getPurchaseDetailsList.getPurchaseUUIDs().add(purchaseUUIDs.get(0));
+                purchaseUUIDs.remove(0);
+                Call<ResponseData> responseDataCall =   mobilePayAPI.syncPurchaseDetailsData(getPurchaseDetailsList);
+
+                // Server Response
+                Response<ResponseData> dataResponse =  responseDataCall.execute();
+                ResponseData responseData = dataResponse.body();
+
+                int statusCode = responseData.getStatusCode();
+                // Check the Status code, If its success or failure
+                if(statusCode == 300){
+                    String purchaseDetails = responseData.getData();
+                    List<PurchaseJson> purchaseJsonList =     gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                    }.getType());
+                    processPurchaseJson(purchaseJsonList);
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e(LOG_TAG,"Error in syncPurchaseDetails",e);
+            }
+
+
+        }while (purchaseUUIDs.size() > 0);
+    }
+
+    /**
+     * Get Purchase Details. It sends all UUIDs once
+     * @param purchaseUUIDs
+     * @throws SQLException
+     */
+    private void syncPurchaseDetailsList(List<String> purchaseUUIDs)throws Exception{
+        GetPurchaseDetailsList getPurchaseDetailsList = new GetPurchaseDetailsList();
+        // Get User Token
+        userRequest(getPurchaseDetailsList);
+
+        getPurchaseDetailsList.getPurchaseUUIDs().addAll(purchaseUUIDs);
+        // Sync Request
+        Call<ResponseData> responseDataCall =   mobilePayAPI.syncPurchaseDetailsData(getPurchaseDetailsList);
+
+        // Server Response
+        Response<ResponseData> dataResponse =  responseDataCall.execute();
+        ResponseData responseData = dataResponse.body();
+
+        int statusCode = responseData.getStatusCode();
+
+        // Check the Status code, If its success or failure
+        if(statusCode == 300){
+            // Process Server Response
+            String purchaseDetails = responseData.getData();
+            List<PurchaseJson> purchaseJsonList = gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+            }.getType());
+            // Process Purchase Details Json
+            processPurchaseJson(purchaseJsonList);
+        }
+
     }
 
 
@@ -286,13 +454,17 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             ResponseData responseData = dataResponse.body();
 
+            // If any purchase UUIDs missed in local Database. Then need to get full details
+            List<String> purchaseUUIDs = new ArrayList<>();
+
             int statusCode = responseData.getStatusCode();
             // Check the Status code, If its success or failure
             if(statusCode == 300){
                 // Json to Object
-                LuggagesListJson luggagesListJson =  gson.fromJson(responseData.getData(), LuggagesListJson.class);
+                OrderStatusJsonsList orderStatusJsonsList =  gson.fromJson(responseData.getData(), OrderStatusJsonsList.class);
                 // Update Order Status only. Other details (Purchase data) are already present
-                List<LuggageJson>  luggageJsonList =  luggagesListJson.getLuggageJsons();
+                List<LuggageJson>  luggageJsonList =  orderStatusJsonsList.getLuggageJsons();
+
                 for(LuggageJson luggageJson : luggageJsonList){
                     //Check given Purchase details is already present or not.
                     PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(luggageJson.getPurchaseGuid());
@@ -302,24 +474,34 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                        purchaseEntity.setServerDateTime(luggageJson.getServerDateTime());
                        purchaseEntity.setOrderStatus(luggageJson.getOrderStatus());
                        purchaseDao.updatePurchase(purchaseEntity);
-                    }
+                    }else{ // If purchaseEntity is not present, then need to get purchase details data
+                       purchaseUUIDs.add(luggageJson.getPurchaseGuid());
+                   }
                 }
-                List<PurchaseJson> purchaseJsonList =   luggagesListJson.getPurchaseJsons();
+                // If purchaseEntity is not present, then Create New Purchase Record
+                List<PurchaseJson> purchaseJsonList =   orderStatusJsonsList.getPurchaseJsons();
                 processPurchaseJson(purchaseJsonList);
+                // Sometimes, There may be possible, PurchaseUUIDs missed in between order status time. So we need to process that missed data.It it not possible, but we need to do
+                if(purchaseUUIDs.size() > 0){
+                    syncPurchaseDetailsList(purchaseUUIDs);
+                }
+
+                // Once Process, Completed Need to Update List View
                 PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
                 purchaseListPoster.setStatusCode(200);
+                // Success Post
                 MobilePayBus.getInstance().post(purchaseListPoster);
-                // -- TODO Need to send notification to list view
-            }else{
-                PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
-                purchaseListPoster.setStatusCode(500);
-                MobilePayBus.getInstance().post(purchaseListPoster);
+
+            }else{  // Error Post
+               postErrorCode(statusCode);
             }
 
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in syncOrderStatus",e);
             // -- TODO Need to Say Something wrong in mobile side
         }
+        // Error Post
+        postErrorCode(MessageConstant.REG_ERROR_CODE);
     }
 
 
@@ -329,16 +511,12 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private void syncPurchaseHistoryData(){
         try {
             // Get User and App Token
-            JsonObject requestData =  userRequest();
+         TokenJson tokenJson = new TokenJson();
+            userRequest(tokenJson);
 
-            /**
-             *  Get Most Recent Purchase history Server time.Server send back based on this time.
-             *  If time is -1 ,then server sends all the current purchase list.
-             */
-            long serverTime = purchaseDao.getRecentPurchaseHisServerTime();
-            requestData.addProperty("serverTime", serverTime);
+
             // Sync Request
-            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryData(requestData);
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryList(tokenJson);
             // Server Response
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             ResponseData responseData = dataResponse.body();
@@ -348,19 +526,39 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             if(statusCode == 300){
                 // Process Server Response
                 String purchaseDetails = responseData.getData();
-                List<PurchaseJson> purchaseJsonList = gson.fromJson(purchaseDetails, new TypeToken<List<PurchaseJson>>() {
+                List<String> purchaseHistoryList = gson.fromJson(purchaseDetails, new TypeToken<List<String>>() {
                 }.getType());
-                processPurchaseJson(purchaseJsonList);
-                // -- TODO Need to send notification to list view
+
+                // Get PurchaseHistory UUID from Database
+                List<String> dBPurchaseHistoryUUIDs = purchaseDao.getPurchaseHistoryUUIDs();
+
+                if(dBPurchaseHistoryUUIDs.size() > 0){
+                    // Need to Download
+                    purchaseHistoryList.removeAll(dBPurchaseHistoryUUIDs);
+                    syncPurchaseDetailsList(purchaseHistoryList);
+
+                }
+
+                // Once Process, Completed Need to Update List View
+                PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
+                purchaseListPoster.setStatusCode(200);
+                // Success Post
+                MobilePayBus.getInstance().post(purchaseListPoster);
+
+
             }else{
-                // -- TODO Need to Say Something wrong in server
+                postErrorCode(statusCode);
             }
 
         }catch (Exception e){
-            Log.e("Error","Error in  syncPurchaseData",e);
-            // -- TODO Need to Say Something wrong in mobile side
+            Log.e(LOG_TAG,"Error in  syncPurchaseListFromServer",e);
         }
+        // Error Post
+        postErrorCode(MessageConstant.REG_ERROR_CODE);
     }
+
+
+
 
 
     /**

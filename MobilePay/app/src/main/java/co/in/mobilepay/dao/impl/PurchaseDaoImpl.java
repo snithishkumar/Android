@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.stmt.query.In;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.dao.PurchaseDao;
@@ -72,16 +73,33 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,false).and().eq(PurchaseEntity.IS_DISCARD,false).query();
     }
 
+
+
+    /**
+     * Get List of un payed Purchase UUIDS
+     * @return List of PurchaseEntity or empty list
+     * @throws SQLException
+     */
+    @Override
+    public List<String> getPurchaseUUIDs() throws SQLException {
+       List<String> purchaseUUIDS = new ArrayList<>();
+        List<PurchaseEntity> purchaseEntities = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().eq(PurchaseEntity.IS_PAYED,false).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        for(PurchaseEntity purchaseEntity : purchaseEntities){
+            purchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
+        }
+        return purchaseUUIDS;
+    }
+
     /**
      * Returns last Purchased uuid
      * @return purchase uuid or null
      * @throws SQLException
      */
-    @Override
+  /*  @Override
     public String getLastPurchaseId() throws SQLException {
         PurchaseEntity purchaseEntity = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).orderBy(PurchaseEntity.PURCHASE_ID,false).queryForFirst();
         return  purchaseEntity != null ? purchaseEntity.getPurchaseGuid() : null;
-    }
+    }*/
 
     @Override
     public PurchaseEntity getPurchaseEntity(int purchaseId) throws SQLException {
@@ -107,18 +125,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
        return currentPurchaseQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
     }
 
-    /**
-     * Returns Current Most recent Purchase (Not Payed and Not Discard) server time otherwise it will returns -1
-     * @return
-     * @throws SQLException
-     */
-    @Override
-    public long getMostRecentPurchaseServerTime()throws SQLException{
-       QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
-       currentPurchaseQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, false).and().eq(PurchaseEntity.IS_DISCARD, false);
-        PurchaseEntity purchaseEntity =  currentPurchaseQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, false).queryForFirst();
-        return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
-    }
+
 
 
     /**
@@ -127,12 +134,17 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      * @throws SQLException
      */
     @Override
-    public long getRecentPurchaseHisServerTime()throws SQLException{
+    public List<String> getPurchaseHistoryUUIDs()throws SQLException{
+        List<String> purchaseUUIDS = new ArrayList<>();
         QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
+        currentPurchaseQueryBuilder.selectColumns(PurchaseEntity.PURCHASE_GUID);
         currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
 
-        PurchaseEntity purchaseEntity =  currentPurchaseQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, false).queryForFirst();
-        return  purchaseEntity != null ? purchaseEntity.getServerDateTime() : -1;
+        List<PurchaseEntity> purchaseList =  currentPurchaseQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, false).query();
+        for(PurchaseEntity purchaseEntity : purchaseList){
+            purchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
+        }
+        return  purchaseUUIDS;
     }
 
 

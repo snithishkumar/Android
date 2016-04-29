@@ -21,13 +21,13 @@ public interface PurchaseDao {
 
     List<PurchaseEntity> getPurchaseHistoryList()throws SQLException;
 
-    String getLastPurchaseId()throws SQLException;
+
+    List<String> getPurchaseUUIDs() throws SQLException;
 
     PurchaseEntity getPurchaseEntity(int purchaseId)throws SQLException;
 
     PurchaseEntity getPurchaseEntity(String purchaseId)throws SQLException;
 
-    long getMostRecentPurchaseServerTime()throws SQLException;
 
     MerchantEntity getMerchantEntity(String merchantGuid)throws SQLException;
 
@@ -39,7 +39,7 @@ public interface PurchaseDao {
 
     long getMostRecentLuggageServerTime()throws SQLException;
 
-    long getRecentPurchaseHisServerTime()throws SQLException;
+    List<String> getPurchaseHistoryUUIDs()throws SQLException;
 
     void createDiscardEntity(DiscardEntity discardEntity)throws SQLException;
 
