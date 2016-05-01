@@ -133,7 +133,7 @@
 
         <activity
             android:name=".view.activities.NotificationActivity"
-            android:label="@string/title_activity_notification"
+            android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>

@@ -9,7 +9,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.squareup.otto.Subscribe;
+
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.gcm.GcmRegistrationIntentService;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
@@ -21,7 +25,7 @@ import co.in.mobilepay.view.fragments.MobileFragment;
 import co.in.mobilepay.view.fragments.OtpFragment;
 import co.in.mobilepay.view.fragments.RegistrationFragment;
 
-public class MainActivity extends AppCompatActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
+public class MainActivity extends NotificationBaseActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
 
 
     /* Fragments */
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     /* Service Layer */
     private AccountService accountService;
 
+    int notificationType = 0;
+    String  purchaseUuid = null;
 
 
     @Override
@@ -45,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
         // Check whether it called from Profile Update screen
         mobileNumber =  getIntent().getStringExtra("mobileNumber");
         isProfileUpdate =  getIntent().getBooleanExtra("isProfileUpdate", false);
+
+         notificationType =  getIntent().getIntExtra("notificationType",1);
+         purchaseUuid = getIntent().getStringExtra("purchaseUuid");
+
         // Initialize required object
         init();
         setContentView(R.layout.activity_main);
@@ -107,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     @Override
     public void onResume(){
         super.onResume();
+        MobilePayBus.getInstance().register(this);
         // Check PlayService is Enable or not
         ActivityUtil.checkPlayServices(this);
 
@@ -172,10 +183,14 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
             case MessageConstant.LOGIN_OK:
                 gcmRegistration();
                 ActivityUtil.IS_LOGIN = true;
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
+                if(purchaseUuid != null){
+                    callActivity(notificationType,purchaseUuid);
+                }else{
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
                 // Need to call home screen
                 break;
             case MessageConstant.LOGIN_INVALID_MOBILE:
@@ -188,5 +203,22 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     private void gcmRegistration(){
         Intent intent = new Intent(this, GcmRegistrationIntentService.class);
         this.startService(intent);
+    }
+
+
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+
+
+
+    @Subscribe
+    public void purchaseResponse(PurchaseListPoster purchaseListPoster){
+        processResponse(purchaseListPoster);
+
+
     }
 }
