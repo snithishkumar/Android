@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/purchase_history_list"
-        android:name="co.in.mobilepay.view.fragments.PurHistoryListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="16dp"
-        app:layoutManager="LinearLayoutManager"
-        tools:context=".view.activities.HomeActivity"
-        tools:listitem="@layout/adapt_purchase_history_list" />
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/purchase_history_list_swipe">
 
-</RelativeLayout>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/purchase_history_list"
+    android:name="co.in.mobilepay.view.fragments.PurHistoryListFragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".view.activities.HomeActivity"
+    tools:listitem="@layout/adapt_purchase_history_list" />
+</android.support.v4.widget.SwipeRefreshLayout>

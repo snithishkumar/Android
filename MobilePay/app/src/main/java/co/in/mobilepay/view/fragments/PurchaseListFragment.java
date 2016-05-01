@@ -2,6 +2,7 @@ package co.in.mobilepay.view.fragments;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.ActivityUtil;
+import co.in.mobilepay.view.activities.MainActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.PurchaseListAdapter;
@@ -147,6 +149,8 @@ public class PurchaseListFragment extends Fragment  {
         stopRefreshing();
         if(purchaseListPoster.getStatusCode() == 200){
             getPurchaseModel();
+        }else if(purchaseListPoster.getStatusCode() == 10){
+            showLoginActivity();
         }else{
             ActivityUtil.toast(homeActivity,getString(R.string.error_purchase_list));
         }
@@ -158,6 +162,14 @@ public class PurchaseListFragment extends Fragment  {
         if(refreshLayout != null){
             refreshLayout.setRefreshing(false);
         }
+    }
+
+
+    private void showLoginActivity(){
+        Intent intent = new Intent(homeActivity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        homeActivity.finish();
     }
 
 

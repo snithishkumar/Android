@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
     /* Service Layer */
     private AccountService accountService;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements RegistrationFragm
                 break;
             case MessageConstant.LOGIN_OK:
                 gcmRegistration();
+                ActivityUtil.IS_LOGIN = true;
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

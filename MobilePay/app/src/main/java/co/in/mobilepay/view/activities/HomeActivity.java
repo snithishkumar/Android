@@ -40,6 +40,8 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
+    private int tabPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,9 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         setupViewPager(viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.setCurrentItem(tabPosition);
+        tabPosition= 0;
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -67,6 +72,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         try{
             purchaseService = new PurchaseServiceImpl(this);
             cardService = new CardServiceImpl(this);
+            tabPosition = getIntent().getIntExtra("tabPosition",0);
             /*Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);

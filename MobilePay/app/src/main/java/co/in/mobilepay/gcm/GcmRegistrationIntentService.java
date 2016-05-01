@@ -44,7 +44,7 @@ public class GcmRegistrationIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try{
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken(getString(R.string.google_cloud_id),
+            String token = instanceID.getToken( getString(R.string.google_cloud_id),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             UserDao userDao = new UserDaoImpl(getApplicationContext());
             UserEntity userEntity = userDao.getUser();

@@ -180,6 +180,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements PaySav
     }
 
 
-
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

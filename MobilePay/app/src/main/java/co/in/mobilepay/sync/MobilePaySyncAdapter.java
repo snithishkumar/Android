@@ -127,6 +127,12 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 syncPurchaseData();
                 syncOrderStatus();
                 syncPurchaseHistoryData();
+                break;
+
+            case 6:
+                String purchaseUuid =  extras.getString("purchaseUuid");
+                getPurchaseDetailsData(purchaseUuid);
+                break;
         }
 
     }
@@ -180,6 +186,24 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
 
+    private void getPurchaseDetailsData(String purchaseUuid){
+        try {
+           List<String>  purchaseUuids = new ArrayList<String>();
+            purchaseUuids.add(purchaseUuid);
+            syncPurchaseDetails(purchaseUuids);
+            PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
+            purchaseListPoster.setStatusCode(200);
+            // Post Success message to Notification
+            MobilePayBus.getInstance().post(purchaseListPoster);
+            return;
+        }catch (Exception e){
+            Log.e(LOG_TAG,"Error in getPurchaseDetailsData",e);
+        }
+        //Send Error as Internal Error
+        postErrorCode(MessageConstant.REG_ERROR_CODE);
+    }
+
+
     /**
      * Get Current User  and App Token
      * @return
@@ -223,6 +247,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 purchaseListPoster.setStatusCode(200);
                 // Post Success message to List View
                 MobilePayBus.getInstance().post(purchaseListPoster);
+                return;
             }else{
                 // In the case of failure, Send Failure message to the server.
                 postErrorCode(statusCode);
@@ -491,6 +516,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 purchaseListPoster.setStatusCode(200);
                 // Success Post
                 MobilePayBus.getInstance().post(purchaseListPoster);
+                return;
 
             }else{  // Error Post
                postErrorCode(statusCode);
@@ -535,17 +561,20 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 if(dBPurchaseHistoryUUIDs.size() > 0){
                     // Need to Download
                     purchaseHistoryList.removeAll(dBPurchaseHistoryUUIDs);
-                    syncPurchaseDetailsList(purchaseHistoryList);
+
 
                 }
+                if(purchaseHistoryList.size() > 0){
+                    syncPurchaseDetailsList(purchaseHistoryList);
+                }
+
 
                 // Once Process, Completed Need to Update List View
                 PurchaseListPoster purchaseListPoster  = new PurchaseListPoster();
                 purchaseListPoster.setStatusCode(200);
                 // Success Post
                 MobilePayBus.getInstance().post(purchaseListPoster);
-
-
+                return;
             }else{
                 postErrorCode(statusCode);
             }

@@ -19,6 +19,8 @@ public class ActivityUtil {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
+    protected static boolean IS_LOGIN = false;
+
     public static ProgressDialog showProgress(String title,String message,Context context){
         ProgressDialog progressDialog = new ProgressDialog(context);
         progressDialog.setTitle(title);
