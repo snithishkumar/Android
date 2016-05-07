@@ -62,6 +62,8 @@
     <string name="rate_gud">Good</string>
     <string name="rate_excellence">Excellence</string>
 
+    <string name="otp_resend">You will receive the message shortly</string>
+
 </resources>
 
 

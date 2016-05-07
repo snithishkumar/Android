@@ -1,5 +1,7 @@
 package co.in.mobilepay.view.activities;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -73,11 +75,11 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
             purchaseService = new PurchaseServiceImpl(this);
             cardService = new CardServiceImpl(this);
             tabPosition = getIntent().getIntExtra("tabPosition",0);
-            /*Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
+            Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
             ContentResolver.addPeriodicSync(account, getString(R.string.auth_type), Bundle.EMPTY, 60);
-            cardService = new CardServiceImpl(this);*/
+            /*cardService = new CardServiceImpl(this);*/
         }catch (Exception e){
             e.printStackTrace();
 

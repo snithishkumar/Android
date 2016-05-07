@@ -30,6 +30,7 @@ public final class  MessageConstant {
     public static final int LOGIN_INVALID_PIN = 801;
     public static final int LOGIN_INTERNAL_ERROR = 802;
     public static final int LOGIN_INVALID_MOBILE = 803;
+    public static final int FORGET_PASSWORD = 804;
     public final static String LOGIN_ERROR = "Something went wrong. Please try later.";
     public final static String LOGIN_INVALID_PIN_ERROR = "Invalid Pin";
 

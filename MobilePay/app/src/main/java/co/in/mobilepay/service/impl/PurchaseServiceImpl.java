@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
@@ -175,6 +176,15 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             Log.e("Error","Error in declinePurchase",e);
         }
 
+    }
+
+    public void updatePurchaseEntity(PurchaseEntity purchaseEntity){
+        try{
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+            purchaseDao.updatePurchase(purchaseEntity);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

@@ -12,16 +12,18 @@ public class RegisterJson extends TokenJson{
     private String password;
     private String mobileNumber;
     private String imei;
+    private boolean isPasswordForget;
 
     public RegisterJson(){
 
     }
 
-    public RegisterJson(String name,String password,String mobileNumber,String imei){
+    public RegisterJson(String name,String password,String mobileNumber,String imei,boolean isPasswordForget){
         this.name = name;
         this.password = password;
         this.mobileNumber = mobileNumber;
         this.imei = imei;
+        this.isPasswordForget = isPasswordForget;
     }
 
     public RegisterJson(UserEntity userEntity){
@@ -29,6 +31,14 @@ public class RegisterJson extends TokenJson{
         this.password = userEntity.getPassword();
         this.mobileNumber = userEntity.getMobileNumber();
         this.imei = userEntity.getImei();
+    }
+
+    public boolean isPasswordForget() {
+        return isPasswordForget;
+    }
+
+    public void setPasswordForget(boolean passwordForget) {
+        isPasswordForget = passwordForget;
     }
 
     public String getName() {

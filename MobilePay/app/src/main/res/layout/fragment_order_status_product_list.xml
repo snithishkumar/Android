@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        tools:context="co.in.mobilepay.view.fragments.PaymentFragment"
+        tools:context=".view.fragments.PaymentOptionsFragment"
         tools:listitem="@layout/adapt_order_status_purchase_items" />
     </android.support.v7.widget.CardView>
 

@@ -19,6 +19,7 @@ import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.LoginFragment;
 import co.in.mobilepay.view.fragments.MobileFragment;
@@ -38,6 +39,9 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
     private boolean isProfileUpdate = false;
     /* Service Layer */
     private AccountService accountService;
+
+    private boolean isPasswordForget = false;
+
 
     int notificationType = 0;
     String  purchaseUuid = null;
@@ -176,6 +180,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
             case MessageConstant.OTP_OK:
                 registrationFragment = new RegistrationFragment();
                  bundle = new Bundle();
+                bundle.putBoolean("isPasswordForget",isPasswordForget);
                 bundle.putString("mobileNumber",(String)data);
                 registrationFragment.setArguments(bundle);
                 FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
@@ -196,6 +201,12 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
             case MessageConstant.LOGIN_INVALID_MOBILE:
                 mobileFragment = new MobileFragment();
                 FragmentsUtil.addFragment(this,mobileFragment,R.id.main_container);
+                break;
+
+            case MessageConstant.FORGET_PASSWORD:
+                mobileFragment = new MobileFragment();
+                isPasswordForget = true;
+                FragmentsUtil.replaceFragmentNoStack(this,mobileFragment,R.id.main_container);
                 break;
         }
     }

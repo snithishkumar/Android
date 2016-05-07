@@ -30,6 +30,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     ProgressDialog progressDialog = null;
     private MainActivityCallback mainActivityCallback =null;
     String mobileNumber = null;
+    boolean isPasswordForget;
 
     public RegistrationFragment(){
     }
@@ -45,6 +46,10 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mobileNumber = getArguments().getString("mobileNumber");
+        isPasswordForget = getArguments().getBoolean("isPasswordForget");
+        if(isPasswordForget){
+            mainActivity.getAccountService().deleteUser();
+        }
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         name = (EditText) view.findViewById(R.id.reg_name);
         password = (EditText)view.findViewById(R.id.reg_password);
@@ -71,7 +76,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             rePassword.setError("Password and retype password are mismatched");
         }
 
-        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"");
+        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"",isPasswordForget);
         return registerJson;
     }
 
@@ -84,6 +89,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+
                 mainActivity.getAccountService().createUser(registerJson,this);
             }else{
                 ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");

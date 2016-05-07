@@ -53,6 +53,8 @@ public interface PurchaseService {
 
     DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity);
 
+    void updatePurchaseEntity(PurchaseEntity purchaseEntity);
+
 
 
 }

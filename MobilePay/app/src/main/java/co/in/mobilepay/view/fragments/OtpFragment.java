@@ -1,7 +1,9 @@
 package co.in.mobilepay.view.fragments;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import com.squareup.otto.Subscribe;
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.listener.SMSReceiver;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
@@ -34,6 +37,12 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
     private ProgressDialog progressDialog = null;
     private String mobileNumber = null;
     private Boolean isProfileUpdate = false;
+    private Button  otpReset;
+
+    private boolean isOtpReceived = false;
+
+    private final BroadcastReceiver mySmsReceiver = new SMSReceiver();
+
 
     public OtpFragment(){
 
@@ -48,8 +57,18 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
         Button otpSubmit = (Button)view.findViewById(R.id.otp_submit);
         otpSubmit.setOnClickListener(this);
-        Button  otpReset = (Button)view.findViewById(R.id.otp_resend);
-       // otpReset.setOnClickListener(this);
+
+        otpReset = (Button)view.findViewById(R.id.otp_resend);
+        otpReset.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(!isOtpReceived){
+                    otpReset.setEnabled(true);
+                }
+
+            }
+        },30000);
+        otpReset.setOnClickListener(this);
         return view;
     }
 
@@ -66,6 +85,14 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
             return null;
         }
         return optNumberTemp;
+    }
+
+
+    @Subscribe
+    public void processOtpResponse(String otpResponse){
+        isOtpReceived = true;
+        otpReset.setEnabled(false);
+        otpNumber.setText(otpResponse);
     }
 
     @Subscribe
@@ -112,6 +139,15 @@ switch (v.getId()){
 
         break;
     case R.id.otp_resend:
+        if(mobileNumber != null){
+            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+            if(isNet){
+                mainActivity.getAccountService().resendOtp(mobileNumber);
+                ActivityUtil.toast(mainActivity,getString(R.string.otp_resend));
+            }else{
+                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+            }
+        }
         break;
 
 }
@@ -120,12 +156,17 @@ switch (v.getId()){
 
     @Override
     public void onPause() {
+        mainActivity.unregisterReceiver(mySmsReceiver);
         MobilePayBus.getInstance().unregister(this);
         super.onPause();
     }
 
     @Override
     public void onResume(){
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+        mainActivity.registerReceiver(mySmsReceiver, filter);
+
         MobilePayBus.getInstance().register(this);
         super.onResume();
     }

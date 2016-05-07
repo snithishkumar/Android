@@ -50,5 +50,7 @@ public interface UserDao {
 
     void setDefaultAddress(int addressId)throws  SQLException;
 
+    void removeUser()throws SQLException;
+
 
 }

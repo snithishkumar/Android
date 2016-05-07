@@ -21,8 +21,10 @@ public interface AccountService {
 
     void updateUser(RegisterJson registerJson);
 
-
+    void deleteUser();
     void login(String password,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
 
     void verifyMobile(String mobileNumber,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+
+    void resendOtp(String mobileNumber);
 }

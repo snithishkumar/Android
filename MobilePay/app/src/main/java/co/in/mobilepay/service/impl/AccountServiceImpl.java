@@ -52,6 +52,14 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
     }
 
+    public void resendOtp(String mobileNumber){
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("mobileNumber",mobileNumber);
+        Call<ResponseData> responseDataCall = mobilePayAPI.verifyMobileNo(jsonObject);
+        AccountCallbackManager accountCallbackManager = new AccountCallbackManager(5,null,null);
+        responseDataCall.enqueue(accountCallbackManager);
+    }
+
     public void verifyMobile(String mobileNumber,AccountServiceCallback accountServiceCallback){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("mobileNumber",mobileNumber);
@@ -116,6 +124,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
      * @return
      */
     public void createUser(RegisterJson registerJson,AccountServiceCallback accountServiceCallback){
+        deleteUser();
         String registerData = gson.toJson(registerJson);
         String regEncryption = null;
         try{
@@ -268,6 +277,16 @@ public class AccountServiceImpl extends BaseService implements AccountService {
             }
         }
 
+
+    }
+
+    @Override
+    public void deleteUser(){
+        try {
+            userDao.removeUser();;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

@@ -45,6 +45,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
         return count > 0 ? true : false;
     }
 
+
+    @Override
+    public void removeUser()throws SQLException{
+        userDao.deleteBuilder().delete();
+    }
+
     /**
      * Create New User
      * @param userEntity

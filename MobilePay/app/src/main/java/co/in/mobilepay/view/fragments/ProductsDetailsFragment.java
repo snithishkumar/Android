@@ -61,6 +61,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
 
     ProgressDialog progressDialog = null;
+    ShowPaymentOptions showPaymentOptions;
 
 
 
@@ -121,6 +122,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
     public void onAttach(Context context) {
         super.onAttach(context);
         purchaseDetailsActivity = (PurchaseDetailsActivity)context;
+        showPaymentOptions = purchaseDetailsActivity;
         purchaseService = purchaseDetailsActivity.getPurchaseService();
     }
 
@@ -257,10 +259,17 @@ switch (v.getId()){
             purchaseEntity.setDeliveryOptions(productDetailsAdapter.getDeliveryOptions());
             purchaseEntity.setTotalAmount(String.valueOf(productDetailsAdapter.getTotalAmount()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
-            purchaseService.makePayment(purchaseEntity,productDetailsAdapter.getDefaultAddress());
-            purchaseDetailsActivity.finish();
+            purchaseEntity.setAddressEntity(productDetailsAdapter.getDefaultAddress());
+            purchaseService.updatePurchaseEntity(purchaseEntity);
+           showPaymentOptions.viewFragment(4);
+            return;
         } else {
             ActivityUtil.toast(purchaseDetailsActivity, "Please select any one Delivery.");
         }
+    }
+
+
+   public interface ShowPaymentOptions{
+        void viewFragment(int options);
     }
 }

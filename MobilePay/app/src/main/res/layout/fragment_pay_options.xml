@@ -5,10 +5,31 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorgrey">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/shop_details_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:id="@+id/shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:text="Payment Options"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+
+
+
+        </RelativeLayout>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,40 +74,20 @@
         android:text="MY CARDS"
         android:textStyle="bold"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="1dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/pay_save_card_list"
         android:name="co.in.mobilepay.view.fragments.PaymentFragment"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         app:layoutManager="LinearLayoutManager"
         android:layout_below="@+id/pay_save_card_header"
-        tools:context=".view.fragments.PaymentFragment"
+        tools:context=".view.fragments.PaymentOptionsFragment"
         tools:listitem="@layout/adapt_pay_save_card_list"
         android:layout_above="@+id/save_card_create"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NETBANKING"
-            android:textStyle="bold"
-            android:layout_margin="20dp"/>
-        <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:dropDownWidth="fill_parent"
-            android:background="@android:color/white"
-            android:layout_marginLeft="10dp"
-            android:entries="@array/bank_list"
-            android:prompt="@string/bank_prompt"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"></Spinner>
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:text="Pay"/>
+
     </LinearLayout>
     </ScrollView>

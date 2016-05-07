@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="1"
-        android:enabled="true"
+        android:enabled="false"
         android:textColor="@color/white"
         android:background="@drawable/button"
         android:text="@string/resend_otp"/>

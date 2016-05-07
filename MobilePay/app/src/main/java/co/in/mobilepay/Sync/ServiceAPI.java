@@ -4,6 +4,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import co.in.mobilepay.util.MobilePayUtil;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public enum ServiceAPI {
     INSTANCE;
     private MobilePayAPI mobilePayAPI = null;
-    private final String  url = "http://192.168.0.5:8082/mobilepay/";
+    private final String  url = "http://192.168.0.13:8082/mobilepay/";
 
     ServiceAPI(){
         Executor executor = Executors.newCachedThreadPool();

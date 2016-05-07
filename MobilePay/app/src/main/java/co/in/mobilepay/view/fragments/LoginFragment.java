@@ -142,6 +142,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
                 }
                 break;
 
+            case R.id.log_forget_pin:
+            case MessageConstant.LOGIN_INVALID_MOBILE:
+                mainActivityCallback.success(MessageConstant.FORGET_PASSWORD, null);
+                break;
+
         }
         verifyLogin();
     }
@@ -173,17 +178,21 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
         Button eight = (Button) view.findViewById(R.id.log_eight);
         Button nine = (Button) view.findViewById(R.id.log_nine);
         Button delButton = (Button) view.findViewById(R.id.log_del);
-        zero.setOnClickListener(this);
-        one.setOnClickListener(this);
-        two.setOnClickListener(this);
-        three.setOnClickListener(this);
-        four.setOnClickListener(this);
-        five.setOnClickListener(this);
-        six.setOnClickListener(this);
-        seven.setOnClickListener(this);
-        eight.setOnClickListener(this);
-        nine.setOnClickListener(this);
-        delButton.setOnClickListener(this);
+        Button forgetButton = (Button) view.findViewById(R.id.log_forget_pin);
+        setListener(zero);
+        setListener(one);
+        setListener(two);
+        setListener(three);
+        setListener(four);
+        setListener(five);
+        setListener(six);
+        setListener(seven);
+        setListener(eight);
+        setListener(nine);
+        setListener(delButton);
+        setListener(forgetButton);
+
+
          firstPin = (Button)   view.findViewById(R.id.log_first_value);
          secondPin = (Button)   view.findViewById(R.id.log_second_value);
          thirdPin = (Button)   view.findViewById(R.id.log_third_value);
@@ -191,6 +200,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
          fifthPin = (Button)   view.findViewById(R.id.log_fifth_value);
          sixthPin = (Button)   view.findViewById(R.id.log_sixth_value);
 
+    }
+
+
+    private void setListener(Button button){
+        button.setOnClickListener(this);
     }
 
 

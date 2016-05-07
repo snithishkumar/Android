@@ -1,7 +1,6 @@
 package co.in.mobilepay.view.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
@@ -19,35 +18,88 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
-import co.in.mobilepay.view.fragments.PaymentFragment;
-import co.in.mobilepay.view.fragments.SaveCardsFragment;
+import co.in.mobilepay.view.fragments.PaymentOptionsFragment;
 
 /**
  * Created by Nithish on 19-03-2016.
  */
-public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapter.PaySaveCardViewHolder> {
+public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<CardJson> cardJsonList = new ArrayList<>();
-    PaymentFragment paymentFragment;
+    PaymentOptionsFragment paymentOptionsFragment;
     private int selectedPos = -1;
     private Activity activity;
 
-    public PaySaveCardsAdapter(Activity activity,List<CardJson> cardJsonList,PaymentFragment paymentFragment) {
+    private static final int CARD_DETAILS = 1;
+    private static final int NEW_CARDS = 2;
+    private static final int NET_BANKING = 3;
+
+
+
+    public PaymentOptsSaveCardsAdapter(Activity activity, List<CardJson> cardJsonList, PaymentOptionsFragment paymentOptionsFragment) {
         this.activity = activity;
         this.cardJsonList = cardJsonList;
-        this.paymentFragment = paymentFragment;
+        this.paymentOptionsFragment = paymentOptionsFragment;
     }
 
     @Override
-    public PaySaveCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.adapt_pay_save_card_list, parent, false);
-        return new PaySaveCardViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        switch (viewType){
+
+            case NEW_CARDS:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapt_pay_ops_cards, parent, false);
+                return new NewCreditDebitCardViewHolder(view);
+            case NET_BANKING:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapt_pay_ops_netbanking, parent, false);
+                return new NetBankViewHolder(view);
+            default:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapt_pay_save_card_list, parent, false);
+                return new PaySaveCardViewHolder(view);
+
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(final PaySaveCardViewHolder holder, final int position) {
-        if(position  <= (cardJsonList.size() - 2)){
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+        if(viewHolder instanceof  PaySaveCardViewHolder){
+           final PaySaveCardViewHolder paySaveCardViewHolder = (PaySaveCardViewHolder)viewHolder;
+
+            final CardJson cardJson =  cardJsonList.get(position);
+            CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
+            paySaveCardViewHolder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
+            paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
+            paySaveCardViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(selectedPos == position){
+                        paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
+                        paySaveCardViewHolder.cardCvv.setVisibility(View.GONE);
+                        paySaveCardViewHolder.fab.setVisibility(View.GONE);
+                        selectedPos = -1;
+                        cardJson.setIsExpanded(false);
+                    }else{
+                        paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_up);
+                        paySaveCardViewHolder.cardCvv.setVisibility(View.VISIBLE);
+                        paySaveCardViewHolder.fab.setVisibility(View.VISIBLE);
+                        selectedPos = position;
+                        cardJson.setIsExpanded(true);
+                    }
+                    refreshListviewHeight();
+
+                }
+            });
+
+        }else if(viewHolder instanceof  NewCreditDebitCardViewHolder){
+
+        }else if(viewHolder instanceof  NetBankViewHolder){
+
+        }
+       /* if(position  <= (cardJsonList.size() - 2)){
             final CardJson cardJson =  cardJsonList.get(position);
             CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
             holder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
@@ -87,7 +139,7 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
 
                 }
             });
-        }
+        }*/
 
 
 
@@ -95,7 +147,20 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
 
     @Override
     public int getItemCount() {
-        return cardJsonList.size();
+        return cardJsonList.size() + 2;
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        int size = cardJsonList.size();
+        if(size  == position){
+            return NEW_CARDS;
+        }
+        if(size + 1 == position){
+            return NET_BANKING;
+        }
+        return CARD_DETAILS;
     }
 
 
@@ -128,6 +193,42 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
 
     }
 
+
+    public class NewCreditDebitCardViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+
+
+        public NewCreditDebitCardViewHolder(View view) {
+            super(view);
+            mView = view;
+
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + "'";
+        }
+
+    }
+
+
+    public class NetBankViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+
+
+        public NetBankViewHolder(View view) {
+            super(view);
+            mView = view;
+
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + "'";
+        }
+
+    }
+
     private String getLastFourDigits(String cardNumber){
         int posAt = cardNumber.lastIndexOf("-");
         int totalSize= cardNumber.length();
@@ -137,9 +238,7 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
         return "xxxx";
     }
 
-    public interface PaySaveCardsCallback{
-        void  payment();
-    }
+
     public void refreshListviewHeight(){
         int size = 80;
         for(CardJson cardJson : cardJsonList){
@@ -149,6 +248,10 @@ public class PaySaveCardsAdapter extends RecyclerView.Adapter<PaySaveCardsAdapte
                 size += 80;
             }
         }
-        paymentFragment.refreshListviewHeight(size);
+        paymentOptionsFragment.refreshListviewHeight(size);
+    }
+
+  public interface PaySaveCardsCallback{
+        void payment();
     }
 }

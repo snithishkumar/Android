@@ -4,14 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -26,17 +24,17 @@ import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
-import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
-import co.in.mobilepay.view.adapters.PaySaveCardsAdapter;
+import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
  */
-public class PaymentFragment extends Fragment {
+public class PaymentOptionsFragment extends Fragment {
 
     private int purchaseId = 0;
 
@@ -47,12 +45,14 @@ public class PaymentFragment extends Fragment {
     private ProgressDialog progressDialog = null;
     private Gson gson = null;
 
+    List<CardJson> cardJsonList = new ArrayList<>();
+    PaymentOptsSaveCardsAdapter paymentOptsSaveCardsAdapter = null;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public PaymentFragment() {
+    public PaymentOptionsFragment() {
         gson = new Gson();
     }
 
@@ -73,6 +73,16 @@ public class PaymentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_pay_options, container, false);
         initView(view);
         recyclerView = (RecyclerView) view.findViewById(R.id.pay_save_card_list);
+
+        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(purchaseDetailsActivity);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        paymentOptsSaveCardsAdapter =  new PaymentOptsSaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this);
+
+        recyclerView.setAdapter(paymentOptsSaveCardsAdapter);
+
         boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", purchaseDetailsActivity);
@@ -115,12 +125,17 @@ public class PaymentFragment extends Fragment {
             String cardDetails = responseData.getData();
             List<CardJson> cardJsonList =  gson.fromJson(cardDetails, new TypeToken<List<CardJson>>() {
             }.getType());
-            CardJson cardJson = new CardJson();
+
+            this.cardJsonList.clear();
+            this.cardJsonList.addAll(cardJsonList);
+            paymentOptsSaveCardsAdapter.notifyDataSetChanged();
+
+          /*  CardJson cardJson = new CardJson();
             cardJson.setCardGuid("");
             cardJsonList.add(cardJson);
             int size = (80*cardJsonList.size())+80;
-            refreshListviewHeight(size);
-            recyclerView.setAdapter(new PaySaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this));
+            refreshListviewHeight(size);*/
+
         }
 
     }
@@ -148,5 +163,7 @@ public class PaymentFragment extends Fragment {
                 new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, size);
         recyclerView.setLayoutParams(lp);
     }
+
+
 
 }

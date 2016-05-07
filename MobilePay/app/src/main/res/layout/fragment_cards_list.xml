@@ -20,7 +20,7 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="co.in.mobilepay.view.fragments.PaymentFragment"
+    tools:context=".view.fragments.PaymentOptionsFragment"
     tools:listitem="@layout/fragment_cards" />
 
 </RelativeLayout>
