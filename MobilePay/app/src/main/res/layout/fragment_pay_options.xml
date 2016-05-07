@@ -1,4 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorgrey"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/shop_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/shop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="Payment Options"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pay_save_card_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".view.fragments.PaymentOptionsFragment"
+        tools:listitem="@layout/adapt_pay_save_card_list" />
+
+    </LinearLayout>
+<!--
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -26,9 +61,6 @@
                 android:text="Payment Options"
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true" />
-
-
-
         </RelativeLayout>
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -90,4 +122,4 @@
 
 
     </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->

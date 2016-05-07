@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -27,25 +28,33 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
 
     List<CardJson> cardJsonList = new ArrayList<>();
     PaymentOptionsFragment paymentOptionsFragment;
+    int purchaseId;
     private int selectedPos = -1;
-    private Activity activity;
+    private PurchaseDetailsActivity purchaseDetailsActivity;
 
     private static final int CARD_DETAILS = 1;
     private static final int NEW_CARDS = 2;
     private static final int NET_BANKING = 3;
+    private static final int AMOUNT_DETAILS = 4;
 
 
 
-    public PaymentOptsSaveCardsAdapter(Activity activity, List<CardJson> cardJsonList, PaymentOptionsFragment paymentOptionsFragment) {
-        this.activity = activity;
+    public PaymentOptsSaveCardsAdapter(PurchaseDetailsActivity activity, List<CardJson> cardJsonList, PaymentOptionsFragment paymentOptionsFragment,int purchaseId) {
+        this.purchaseDetailsActivity = activity;
         this.cardJsonList = cardJsonList;
         this.paymentOptionsFragment = paymentOptionsFragment;
+        this.purchaseId = purchaseId;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType){
+
+            case AMOUNT_DETAILS:
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.adapt_pay_amount_details, parent, false);
+                return new AmountDetailsViewHolder(view);
 
             case NEW_CARDS:
                 view = LayoutInflater.from(parent.getContext())
@@ -69,7 +78,7 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
         if(viewHolder instanceof  PaySaveCardViewHolder){
            final PaySaveCardViewHolder paySaveCardViewHolder = (PaySaveCardViewHolder)viewHolder;
 
-            final CardJson cardJson =  cardJsonList.get(position);
+            final CardJson cardJson =  cardJsonList.get(position - 1);
             CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
             paySaveCardViewHolder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
             paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
@@ -98,6 +107,11 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
 
         }else if(viewHolder instanceof  NetBankViewHolder){
 
+        }else if(viewHolder instanceof AmountDetailsViewHolder){
+            PurchaseEntity purchaseEntity =  purchaseDetailsActivity.getPurchaseService().getPurchaseDetails(purchaseId);
+            AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
+            amountDetailsViewHolder.vShopName.setText("for "+purchaseEntity.getMerchantEntity().getMerchantName());
+            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseEntity.getTotalAmount());
         }
        /* if(position  <= (cardJsonList.size() - 2)){
             final CardJson cardJson =  cardJsonList.get(position);
@@ -147,17 +161,20 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
 
     @Override
     public int getItemCount() {
-        return cardJsonList.size() + 2;
+        return cardJsonList.size() + 3;
     }
 
 
     @Override
     public int getItemViewType(int position) {
         int size = cardJsonList.size();
-        if(size  == position){
+        if(position == 0){
+            return AMOUNT_DETAILS;
+        }
+        if(position  == size + 1){
             return NEW_CARDS;
         }
-        if(size + 1 == position){
+        if(position == size + 2) {
             return NET_BANKING;
         }
         return CARD_DETAILS;
@@ -201,6 +218,24 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
         public NewCreditDebitCardViewHolder(View view) {
             super(view);
             mView = view;
+
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + "'";
+        }
+
+    }
+
+    public class AmountDetailsViewHolder extends RecyclerView.ViewHolder {
+        private TextView vTotalAmount;
+        private TextView vShopName;
+
+        public AmountDetailsViewHolder(View view) {
+            super(view);
+            vTotalAmount = (TextView)view.findViewById(R.id.pay_total_amt);
+            vShopName = (TextView)view.findViewById(R.id.pay_shop_name);
 
         }
 

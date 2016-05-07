@@ -71,7 +71,7 @@ public class PaymentOptionsFragment extends Fragment {
             purchaseId =  purchaseIdArgs.getInt("purchaseId");
         }
         View view = inflater.inflate(R.layout.fragment_pay_options, container, false);
-        initView(view);
+       // initView(view);
         recyclerView = (RecyclerView) view.findViewById(R.id.pay_save_card_list);
 
         LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(purchaseDetailsActivity);
@@ -79,7 +79,7 @@ public class PaymentOptionsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
 
-        paymentOptsSaveCardsAdapter =  new PaymentOptsSaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this);
+        paymentOptsSaveCardsAdapter =  new PaymentOptsSaveCardsAdapter(purchaseDetailsActivity,cardJsonList,this,purchaseId);
 
         recyclerView.setAdapter(paymentOptsSaveCardsAdapter);
 
@@ -98,16 +98,15 @@ public class PaymentOptionsFragment extends Fragment {
 
     /**
      * Initialize
-     * @param view
      */
-    private void initView(View view){
+  /*  private void initView(View view){
         PurchaseEntity purchaseEntity = purchaseDetailsActivity.getPurchaseService().getPurchaseDetails(purchaseId);
         totalAmount   = (TextView) view.findViewById(R.id.pay_total_amt);
         totalAmount.setText( getResources().getString(R.string.indian_rupee_symbol)+purchaseEntity.getTotalAmount());
         shopName =  (TextView) view.findViewById(R.id.pay_shop_name);
         shopName.setText("For "+purchaseEntity.getMerchantEntity().getMerchantName());
     }
-
+*/
     @Override
     public void onDetach() {
         super.onDetach();
