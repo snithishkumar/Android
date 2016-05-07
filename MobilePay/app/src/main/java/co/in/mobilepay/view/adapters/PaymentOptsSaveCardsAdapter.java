@@ -82,26 +82,14 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
             CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
             paySaveCardViewHolder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
             paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
-            paySaveCardViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+           /* paySaveCardViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(selectedPos == position){
-                        paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
-                        paySaveCardViewHolder.cardCvv.setVisibility(View.GONE);
-                        paySaveCardViewHolder.fab.setVisibility(View.GONE);
-                        selectedPos = -1;
-                        cardJson.setIsExpanded(false);
-                    }else{
-                        paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_up);
-                        paySaveCardViewHolder.cardCvv.setVisibility(View.VISIBLE);
-                        paySaveCardViewHolder.fab.setVisibility(View.VISIBLE);
-                        selectedPos = position;
-                        cardJson.setIsExpanded(true);
-                    }
+
                     refreshListviewHeight();
 
                 }
-            });
+            });*/
 
         }else if(viewHolder instanceof  NewCreditDebitCardViewHolder){
 
@@ -113,49 +101,6 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
             amountDetailsViewHolder.vShopName.setText("for "+purchaseEntity.getMerchantEntity().getMerchantName());
             amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseEntity.getTotalAmount());
         }
-       /* if(position  <= (cardJsonList.size() - 2)){
-            final CardJson cardJson =  cardJsonList.get(position);
-            CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
-            holder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
-            holder.arrow.setImageResource(R.mipmap.arrow_down);
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(selectedPos == position){
-                        holder.arrow.setImageResource(R.mipmap.arrow_down);
-                        holder.cardCvv.setVisibility(View.GONE);
-                        holder.fab.setVisibility(View.GONE);
-                        selectedPos = -1;
-                        cardJson.setIsExpanded(false);
-                    }else{
-                        holder.arrow.setImageResource(R.mipmap.arrow_up);
-                        holder.cardCvv.setVisibility(View.VISIBLE);
-                        holder.fab.setVisibility(View.VISIBLE);
-                        selectedPos = position;
-                        cardJson.setIsExpanded(true);
-                    }
-                    refreshListviewHeight();
-
-                }
-            });
-        }else{
-            holder.arrow.setVisibility(View.GONE);
-            holder.cardNumber.setText("New Card");
-            holder.cardNumber.setTextColor(Color.BLACK);
-            holder.cardText.setText("Debit card / Credit Card");
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PurchaseDetailsActivity purchaseDetailsActivity =  (PurchaseDetailsActivity)activity;
-                    purchaseDetailsActivity.payment();
-                    return;
-
-
-                }
-            });
-        }*/
-
-
 
     }
 
@@ -181,6 +126,8 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
 
+
+
     public class PaySaveCardViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         private TextView cardNumber;
@@ -200,7 +147,31 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
             cardCvv =  (EditText)view.findViewById(R.id.pay_save_card_cvv);
             fab = (FloatingActionButton)view.findViewById(R.id.pay_save_card_submit);
             cardText = (TextView)view.findViewById(R.id.pay_save_card_text);
+            arrow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveCardsOnClick(getAdapterPosition());
+                }
+            });
 
+        }
+
+
+        private void saveCardsOnClick(int position){
+            if(selectedPos == position){
+                arrow.setImageResource(R.mipmap.arrow_down);
+                cardCvv.setVisibility(View.GONE);
+                fab.setVisibility(View.GONE);
+                selectedPos = -1;
+               // cardJsonList.get(position - 1).setIsExpanded(false);
+            }else{
+                arrow.setImageResource(R.mipmap.arrow_up);
+                cardCvv.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                selectedPos = position;
+                //cardJsonList.get(position - 1).setIsExpanded(true);
+            }
+           // notifyDataSetChanged();// -- TODO Need to check any alternate
         }
 
         @Override
