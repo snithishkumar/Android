@@ -404,10 +404,13 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
                 //If its not present, it will create new one. Otherwise, it will update
                 if(purchaseEntity != null){
-                    purchaseEntity.toClone(purchaseJson);
-                    processAddressJson(purchaseJson, purchaseEntity);
-                    processDiscardJson(purchaseJson,purchaseEntity);
-                    purchaseDao.updatePurchase(purchaseEntity);
+                    if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime()){
+                        purchaseEntity.toClone(purchaseJson);
+                        processAddressJson(purchaseJson, purchaseEntity);
+                        processDiscardJson(purchaseJson,purchaseEntity);
+                        purchaseDao.updatePurchase(purchaseEntity);
+                    }
+
                 }else{
                     purchaseEntity = new PurchaseEntity(purchaseJson);
                     purchaseEntity.setMerchantEntity(merchantEntity);

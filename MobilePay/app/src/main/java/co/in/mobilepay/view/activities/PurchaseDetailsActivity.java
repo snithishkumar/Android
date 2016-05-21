@@ -182,7 +182,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            JSONObject options  = new JSONObject();
            //"{description:'Test Purchase',currency:'INR'}"
            options.put("currency","INR");
-           options.put("amount", purchaseEntity.getTotalAmount());
+           options.put("amount", Double.valueOf(purchaseEntity.getTotalAmount())*100);
            options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
            JSONObject prefill = new JSONObject();
            prefill.put("contact",purchaseEntity.getUserEntity().getMobileNumber());
