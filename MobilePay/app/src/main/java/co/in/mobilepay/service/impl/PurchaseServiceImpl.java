@@ -192,7 +192,6 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     @Override
    public void makePayment(PurchaseEntity purchaseEntity,AddressEntity addressEntity){
        try {
-           purchaseEntity.setIsPayed(true);
            purchaseEntity.setIsSync(false);
            purchaseEntity.setOrderStatus(OrderStatus.PACKING.toString());
            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());

@@ -55,7 +55,7 @@ public interface  MobilePayAPI {
     Call<ResponseData> syncPurchaseDetailsData(@Body GetPurchaseDetailsList requestData);
 
     /** Get Order Status. It contains both Order Updates and Purchase Details **/
-    @POST("mobile/getLuggageList.html")
+    @POST("mobile/getOrderStatusList.html")
     Call<ResponseData> syncOrderStatus(@Body JsonObject requestData);
 
     /** Get Last 25 Purchase History List**/

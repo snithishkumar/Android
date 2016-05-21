@@ -32,7 +32,7 @@ public class TransactionalDetailsEntity {
 	private String transactionUUID;
     @DatabaseField(columnName = DEVICE_TYPE)
 	private DeviceType deviceType;
-    @DatabaseField(columnName = PURCHASE_ENTITY)
+	@DatabaseField(columnName = PURCHASE_ENTITY,foreign = true,foreignAutoRefresh =  true)
 	private PurchaseEntity purchaseEntity;
     @DatabaseField(columnName = IMEI_NUMBER)
 	private String imeiNumber;

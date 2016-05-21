@@ -296,7 +296,10 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
            }
            // Get Purchase Details. It process one by one. Bsc to process slow internet
-           syncPurchaseDetails(purchaseUUIDs);
+           if(purchaseUUIDs.size() > 0){
+               syncPurchaseDetails(purchaseUUIDs);
+           }
+
 
        }
 
