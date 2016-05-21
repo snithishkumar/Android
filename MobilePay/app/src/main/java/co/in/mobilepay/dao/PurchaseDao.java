@@ -6,6 +6,7 @@ import java.util.List;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.json.response.PurchaseJson;
 
 /**
@@ -52,4 +53,8 @@ public interface PurchaseDao {
     List<PurchaseEntity> getUnSyncedPayedEntity()throws SQLException;
 
     List<PurchaseEntity> getOrderStatusList()throws SQLException;
+
+    void createTransactionalDetails(TransactionalDetailsEntity transactionalDetailsEntity)throws SQLException;
+
+    List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity)throws SQLException;
 }

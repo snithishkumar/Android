@@ -15,7 +15,9 @@ import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.OrderStatus;
+import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.PurchaseJson;
 
 /**
@@ -26,6 +28,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     private Dao<PurchaseEntity,Integer> purchaseDao = null;
     private Dao<MerchantEntity,Integer> merchantDao = null;
     private Dao<DiscardEntity,Integer> discardDao = null;
+    private Dao<TransactionalDetailsEntity,Integer> transactionalDetailsDao = null;
 
     public PurchaseDaoImpl(Context context) throws SQLException {
         super(context);
@@ -41,6 +44,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         purchaseDao = databaseHelper.getDao(PurchaseEntity.class);
         merchantDao = databaseHelper.getDao(MerchantEntity.class);
         discardDao = databaseHelper.getDao(DiscardEntity.class);
+        transactionalDetailsDao = databaseHelper.getDao(TransactionalDetailsEntity.class);
     }
 
     /**
@@ -70,7 +74,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getPurchaseList() throws SQLException {
-        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.IS_PAYED,false).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
     }
 
 
@@ -83,7 +87,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<String> getPurchaseUUIDs() throws SQLException {
        List<String> purchaseUUIDS = new ArrayList<>();
-        List<PurchaseEntity> purchaseEntities = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().eq(PurchaseEntity.IS_PAYED,false).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        List<PurchaseEntity> purchaseEntities = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
         for(PurchaseEntity purchaseEntity : purchaseEntities){
             purchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
         }
@@ -156,7 +160,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<PurchaseEntity> getOrderStatusList()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
         return  luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
@@ -172,7 +176,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public long getLeastLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
@@ -187,7 +191,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public long getMostRecentLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.IS_PAYED, true).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
@@ -220,6 +224,17 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         discardDao.create(discardEntity);
     }
 
+    @Override
+    public void createTransactionalDetails(TransactionalDetailsEntity transactionalDetailsEntity)throws SQLException{
+        transactionalDetailsDao.create(transactionalDetailsEntity);
+    }
+
+
+    @Override
+    public List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity)throws SQLException{
+        return  transactionalDetailsDao.queryBuilder().where().eq(TransactionalDetailsEntity.PURCHASE_ENTITY,purchaseEntity).and().eq(TransactionalDetailsEntity.IS_SYNC,false).query();
+    }
+
 
     @Override
     public List<PurchaseEntity> getUnSyncedDiscardEntity()throws SQLException{
@@ -229,7 +244,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<PurchaseEntity> getUnSyncedPayedEntity()throws SQLException{
-        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.IS_PAYED,true).and().eq(PurchaseEntity.IS_SYNC,false).query();
+        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and().eq(PurchaseEntity.IS_SYNC,false).query();
     }
 
 

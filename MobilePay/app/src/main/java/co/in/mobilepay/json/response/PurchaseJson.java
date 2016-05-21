@@ -1,6 +1,7 @@
 package co.in.mobilepay.json.response;
 
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.PaymentStatus;
 
 public class PurchaseJson {
 
@@ -17,7 +18,7 @@ public class PurchaseJson {
 	private long lastModifiedDateTime;
 	private long serverDateTime;
 	private boolean isDiscard;
-	private boolean isPayed;
+	private PaymentStatus paymentStatus;
 	private String orderStatus;
 	private DeliveryOptions deliveryOptions;
 	private String totalAmount;
@@ -142,12 +143,12 @@ public class PurchaseJson {
 		this.isDiscard = isDiscard;
 	}
 
-	public boolean isPayed() {
-		return isPayed;
+	public PaymentStatus getPaymentStatus() {
+		return paymentStatus;
 	}
 
-	public void setIsPayed(boolean isPayed) {
-		this.isPayed = isPayed;
+	public void setPaymentStatus(PaymentStatus paymentStatus) {
+		this.paymentStatus = paymentStatus;
 	}
 
 	public String getOrderStatus() {
@@ -182,7 +183,7 @@ public class PurchaseJson {
         this.addressJson = addressJson;
     }
 
-    @Override
+	@Override
 	public String toString() {
 		return "PurchaseJson{" +
 				"purchaseId='" + purchaseId + '\'' +
@@ -198,9 +199,12 @@ public class PurchaseJson {
 				", lastModifiedDateTime=" + lastModifiedDateTime +
 				", serverDateTime=" + serverDateTime +
 				", isDiscard=" + isDiscard +
-				", isPayed=" + isPayed +
+				", paymentStatus=" + paymentStatus +
 				", orderStatus='" + orderStatus + '\'' +
 				", deliveryOptions=" + deliveryOptions +
+				", totalAmount='" + totalAmount + '\'' +
+				", addressJson=" + addressJson +
+				", discardJson=" + discardJson +
 				'}';
 	}
 }

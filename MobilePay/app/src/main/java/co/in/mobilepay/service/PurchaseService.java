@@ -8,6 +8,7 @@ import java.util.List;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 import co.in.mobilepay.view.model.PurchaseDetailsModel;
@@ -55,6 +56,8 @@ public interface PurchaseService {
 
     void updatePurchaseEntity(PurchaseEntity purchaseEntity);
 
+    void createTransactionDetails(TransactionalDetailsEntity transactionalDetailsEntity);
 
+    List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity);
 
 }

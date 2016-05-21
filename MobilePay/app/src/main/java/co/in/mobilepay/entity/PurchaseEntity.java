@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.PurchaseJson;
 
 /**
@@ -18,7 +19,7 @@ public class PurchaseEntity {
     public static final String BILL_NUMBER = "BillNumber";
     public static final String PRODUCT_DETAILS = "ProductDetails";
     public static final String AMOUNT_DETAILS = "AmountDetails";
-    public static final String IS_PAYED = "isPayed";
+    public static final String PAYMENT_STATUS = "PaymentStatus";
     public static final String IS_EDITABLE = "isEditable";
     public static final String CATEGORY = "category";
     public static final String IS_DELIVERABLE = "isDeliverable";
@@ -47,8 +48,10 @@ public class PurchaseEntity {
     private String amountDetails;
     @DatabaseField(columnName = CATEGORY)
     private String category;
-    @DatabaseField(columnName = IS_PAYED)
-    private boolean isPayed;
+
+    @DatabaseField(columnName = PAYMENT_STATUS)
+    private PaymentStatus paymentStatus;
+
     @DatabaseField(columnName = IS_EDITABLE)
     private boolean isEditable;
     @DatabaseField(columnName = IS_DELIVERABLE)
@@ -101,7 +104,7 @@ public class PurchaseEntity {
         this.category = purchaseJson.getCategory();
         this.serverDateTime = purchaseJson.getServerDateTime();
         this.isDiscard = purchaseJson.isDiscard();
-        this.isPayed = purchaseJson.isPayed();
+        this.paymentStatus = purchaseJson.getPaymentStatus();
         this.orderStatus = purchaseJson.getOrderStatus();
         this.deliveryOptions = purchaseJson.getDeliveryOptions();
         this.totalAmount = purchaseJson.getTotalAmount();
@@ -163,13 +166,7 @@ public class PurchaseEntity {
         this.category = category;
     }
 
-    public boolean isPayed() {
-        return isPayed;
-    }
 
-    public void setIsPayed(boolean isPayed) {
-        this.isPayed = isPayed;
-    }
 
     public boolean isEditable() {
         return isEditable;
@@ -268,6 +265,14 @@ public class PurchaseEntity {
         this.addressEntity = addressEntity;
     }
 
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
     @Override
     public String toString() {
         return "PurchaseEntity{" +
@@ -278,7 +283,7 @@ public class PurchaseEntity {
                 ", productDetails='" + productDetails + '\'' +
                 ", amountDetails='" + amountDetails + '\'' +
                 ", category='" + category + '\'' +
-                ", isPayed=" + isPayed +
+                ", paymentStatus=" + paymentStatus +
                 ", isEditable=" + isEditable +
                 ", isDeliverable=" + isDeliverable +
                 ", lastModifiedDateTime=" + lastModifiedDateTime +
@@ -289,6 +294,8 @@ public class PurchaseEntity {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", deliveryOptions=" + deliveryOptions +
                 ", isSync=" + isSync +
+                ", totalAmount='" + totalAmount + '\'' +
+                ", addressEntity=" + addressEntity +
                 '}';
     }
 }

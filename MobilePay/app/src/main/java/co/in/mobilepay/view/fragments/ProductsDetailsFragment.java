@@ -261,7 +261,7 @@ switch (v.getId()){
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
             purchaseEntity.setAddressEntity(productDetailsAdapter.getDefaultAddress());
             purchaseService.updatePurchaseEntity(purchaseEntity);
-           showPaymentOptions.viewFragment(4);
+            showPaymentOptions.viewFragment(4);
             return;
         } else {
             ActivityUtil.toast(purchaseDetailsActivity, "Please select any one Delivery.");

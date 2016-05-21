@@ -1,7 +1,11 @@
 package co.in.mobilepay.json.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DiscardBy;
 
 public class DiscardJson extends TokenJson {
@@ -11,6 +15,7 @@ public class DiscardJson extends TokenJson {
 	private long createDateTime;
 	private String discardUUID;
 	private DiscardBy discardBy;
+	private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
 	public DiscardJson(){
 
@@ -61,6 +66,14 @@ public class DiscardJson extends TokenJson {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public List<TransactionalDetailsEntity> getTransactions() {
+		return transactions;
+	}
+
+	public void setTransactions(List<TransactionalDetailsEntity> transactions) {
+		this.transactions = transactions;
 	}
 
 	@Override

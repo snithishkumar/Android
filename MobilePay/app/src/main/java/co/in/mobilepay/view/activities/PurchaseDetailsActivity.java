@@ -6,10 +6,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import com.razorpay.Checkout;
+
+import org.json.JSONObject;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
+import co.in.mobilepay.enumeration.DeviceType;
+import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
@@ -148,15 +158,104 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
                 FragmentsUtil.backPressed(this);
                 break;
             case 4:
-                PaymentOptionsFragment paymentOptionsFragment = new PaymentOptionsFragment();
+                PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+                startPayment(purchaseEntity);
+                break;
+              /*  PaymentOptionsFragment paymentOptionsFragment = new PaymentOptionsFragment();
                 Bundle purchaseIdArgs = new Bundle();
                 purchaseIdArgs.putInt("purchaseId",purchaseId);
                 paymentOptionsFragment.setArguments(purchaseIdArgs);
                 FragmentsUtil.replaceFragment(this, paymentOptionsFragment, R.id.pur_details_main_container);
-                break;
+                break;*/
         }
 
     }
+
+
+   private void startPayment(PurchaseEntity purchaseEntity){
+       try {
+           String myKey = "rzp_test_sXXkgq2zryxkgg";
+
+           Checkout razorpayCheckout = new Checkout();
+           razorpayCheckout.setPublicKey(myKey);
+
+           JSONObject options  = new JSONObject();
+           //"{description:'Test Purchase',currency:'INR'}"
+           options.put("currency","INR");
+           options.put("amount", purchaseEntity.getTotalAmount());
+           options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
+           JSONObject prefill = new JSONObject();
+           prefill.put("contact",purchaseEntity.getUserEntity().getMobileNumber());
+           prefill.put("name",purchaseEntity.getUserEntity().getName());
+           options.put("prefill", prefill);
+           razorpayCheckout.open(this, options);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
+
+   }
+
+    /**
+            * The name of the function has to be
+    *   onPaymentSuccess
+    * Wrap your code in try catch, as shown, to ensure that this method runs correctly
+    */
+    public void onPaymentSuccess(String razorpayPaymentID){
+        try {
+            TransactionalDetailsEntity transactionalDetailsEntity =  getTransactionalDetailsEntity();
+            transactionalDetailsEntity.setTransactionUUID(razorpayPaymentID);
+            transactionalDetailsEntity.setPaymentStatus(PaymentStatus.SUCCESS);
+            purchaseService.createTransactionDetails(transactionalDetailsEntity);
+
+            PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
+            purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
+            purchaseEntity.setIsSync(false);
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+            purchaseService.updatePurchaseEntity(purchaseEntity);
+
+            Toast.makeText(this, "Payment Successfully made.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        catch (Exception e){
+            Log.e("com.merchant", e.getMessage(), e);
+        }
+    }
+
+    /**
+     * The name of the function has to be
+     *   onPaymentError
+     * Wrap your code in try catch, as shown, to ensure that this method runs correctly
+     */
+    public void onPaymentError(int code, String response) {
+        try {
+            TransactionalDetailsEntity transactionalDetailsEntity =  getTransactionalDetailsEntity();
+            transactionalDetailsEntity.setReason(response);
+            transactionalDetailsEntity.setPaymentStatus(PaymentStatus.FAILURE);
+            purchaseService.createTransactionDetails(transactionalDetailsEntity);
+            Toast.makeText(this, "Payment failed: " + Integer.toString(code) + " " + response, Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e("com.merchant", e.getMessage(), e);
+        }
+    }
+
+
+
+    private TransactionalDetailsEntity getTransactionalDetailsEntity(){
+        TransactionalDetailsEntity transactionalDetailsEntity = new TransactionalDetailsEntity();
+        PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+        transactionalDetailsEntity.setAmount(Double.valueOf(purchaseEntity.getTotalAmount()));
+        transactionalDetailsEntity.setDeviceType(DeviceType.Android);
+        transactionalDetailsEntity.setPaymentDate(ServiceUtil.getCurrentTimeMilli());
+        transactionalDetailsEntity.setPurchaseEntity(purchaseEntity);
+        transactionalDetailsEntity.setImeiNumber(ServiceUtil.getIMEINumber(this));
+        transactionalDetailsEntity.setTransactionUUID(ServiceUtil.generateUUID());
+        transactionalDetailsEntity.setSync(false);
+return transactionalDetailsEntity;
+    }
+
+
 
 
 

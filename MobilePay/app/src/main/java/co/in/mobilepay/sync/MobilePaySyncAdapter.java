@@ -30,6 +30,7 @@ import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
@@ -669,6 +670,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             // Entity to Json
             for(PurchaseEntity purchaseEntity : purchaseEntityList){
                 PayedPurchaseDetailsJson payedPurchaseDetailsJson = new PayedPurchaseDetailsJson(purchaseEntity);
+                List<TransactionalDetailsEntity>  entityList = getTransactionDetails(purchaseEntity);
+                payedPurchaseDetailsJson.getTransactions().addAll(entityList);
                 payedPurchaseDetailsList.getPurchaseDetailsJsons().add(payedPurchaseDetailsJson);
             }
 
@@ -706,6 +709,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             for (PurchaseEntity purchaseEntity : purchaseEntityList) {
                 DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
                 DiscardJson discardJson = new DiscardJson(discardEntity, purchaseEntity);
+                List<TransactionalDetailsEntity>  entityList = getTransactionDetails(purchaseEntity);
+                discardJson.getTransactions().addAll(entityList);
                 discardJsonList.getDiscardJsons().add(discardJson);
                 isData = true;
             }
@@ -732,6 +737,27 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error in getUserDeliveryAddress", e);
         }
+    }
+
+
+    /**
+     * Get TransactionalDetailsEntity
+     * @param purchaseEntity
+     * @return
+     */
+    private List<TransactionalDetailsEntity> getTransactionDetails(PurchaseEntity purchaseEntity){
+        try {
+            List<TransactionalDetailsEntity> transactionalDetailsEntities = purchaseDao.getTransactionalDetails(purchaseEntity);
+            for(TransactionalDetailsEntity transactionalDetailsEntity : transactionalDetailsEntities){
+                transactionalDetailsEntity.setPurchaseEntity(null);
+                transactionalDetailsEntity.setTransactionId(0);
+            }
+            return transactionalDetailsEntities;
+        }catch (Exception e){
+            Log.e(LOG_TAG, "Error in processTransactionDetails", e);
+        }
+        return new ArrayList<>();
+
     }
 
 

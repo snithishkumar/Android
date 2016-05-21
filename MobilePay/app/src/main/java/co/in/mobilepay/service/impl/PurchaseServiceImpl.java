@@ -19,6 +19,7 @@ import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscardBy;
@@ -323,6 +324,30 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             Log.e("Error","Error in getAddress",e);
         }
         return null;
+    }
+
+    /**
+     * Create Transactions
+     * @param transactionalDetailsEntity
+     */
+    @Override
+    public void createTransactionDetails(TransactionalDetailsEntity transactionalDetailsEntity){
+        try {
+            purchaseDao.createTransactionalDetails(transactionalDetailsEntity);
+        }catch (Exception e){
+            Log.e("Error","Error in createTransactionDetails",e);
+        }
+    }
+
+
+    @Override
+    public List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity){
+        try {
+            return purchaseDao.getTransactionalDetails(purchaseEntity);
+        }catch (Exception e){
+            Log.e("Error","Error in getTransactionalDetails",e);
+        }
+        return new ArrayList<>();
     }
 
 

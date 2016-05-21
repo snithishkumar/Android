@@ -1,7 +1,11 @@
 package co.in.mobilepay.json.response;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 
 public class PayedPurchaseDetailsJson {
@@ -13,6 +17,7 @@ public class PayedPurchaseDetailsJson {
     private long paymetTime;
     private AddressJson addressJson;
     private String addressGuid;
+    private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
     public PayedPurchaseDetailsJson() {
 
@@ -88,6 +93,14 @@ public class PayedPurchaseDetailsJson {
 
     public void setAddressGuid(String addressGuid) {
         this.addressGuid = addressGuid;
+    }
+
+    public List<TransactionalDetailsEntity> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionalDetailsEntity> transactions) {
+        this.transactions = transactions;
     }
 
     @Override
