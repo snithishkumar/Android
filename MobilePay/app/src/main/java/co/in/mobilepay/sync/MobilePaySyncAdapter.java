@@ -361,7 +361,10 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
      * @throws SQLException
      */
     private void syncPurchaseDetails(List<String> purchaseUUIDs)throws SQLException{
-        purchaseUUIDs = purchaseDao.getPurchaseUUIDs(purchaseUUIDs);
+       List<String> nonSyncPurchaseUUIDs = purchaseDao.getPurchaseUUIDs(purchaseUUIDs);
+        if(nonSyncPurchaseUUIDs.size() > 0){
+            purchaseUUIDs.removeAll(nonSyncPurchaseUUIDs);
+        }
         GetPurchaseDetailsList getPurchaseDetailsList = new GetPurchaseDetailsList();
         userRequest(getPurchaseDetailsList);
         do{
@@ -455,7 +458,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
                 //If its not present, it will create new one. Otherwise, it will update
                 if(purchaseEntity != null){
-                    if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime() && !purchaseEntity.isSync()){
+                    if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime() && purchaseEntity.isSync()){
                         purchaseEntity.toClone(purchaseJson);
                         processAddressJson(purchaseJson, purchaseEntity);
                         processDiscardJson(purchaseJson,purchaseEntity);

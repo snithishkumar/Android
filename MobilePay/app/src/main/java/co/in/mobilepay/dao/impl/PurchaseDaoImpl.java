@@ -103,7 +103,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<String> getPurchaseUUIDs(List<String> purchaseUUIDS)throws SQLException{
         List<String> resultPurchaseUUIDS = new ArrayList<>();
-        List<PurchaseEntity> purchaseEntities =  purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().in(PurchaseEntity.PURCHASE_GUID,purchaseUUIDS).and().eq(PurchaseEntity.IS_SYNC,true).query();
+        List<PurchaseEntity> purchaseEntities =  purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().in(PurchaseEntity.PURCHASE_GUID,purchaseUUIDS).and().eq(PurchaseEntity.IS_SYNC,false).query();
         for(PurchaseEntity purchaseEntity : purchaseEntities){
             resultPurchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
         }
@@ -176,11 +176,14 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getOrderStatusList()throws SQLException{
+        List<PurchaseEntity> test =  purchaseDao.queryForAll();
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
-        return  luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
+        luggageQueryBuilder = luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false);
+       String temp =  luggageQueryBuilder.prepareStatementString();
+        return  luggageQueryBuilder.query();
     }
 
 

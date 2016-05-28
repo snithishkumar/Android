@@ -16,6 +16,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeviceType;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
@@ -207,6 +208,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
             purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
             purchaseEntity.setIsSync(false);
+            purchaseEntity.setOrderStatus(OrderStatus.PACKING.toString());
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
 

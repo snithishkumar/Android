@@ -2,14 +2,23 @@ package co.in.mobilepay.view.activities;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.squareup.otto.Subscribe;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
@@ -58,7 +67,6 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
 
          notificationType =  getIntent().getIntExtra("notificationType",1);
          purchaseUuid = getIntent().getStringExtra("purchaseUuid");
-
         // Initialize required object
         init();
         setContentView(R.layout.activity_main);
@@ -73,6 +81,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
      */
     private void init(){
         try{
+           // copyDataBase(this);
             if(accountService == null){
                 accountService = new AccountServiceImpl(this);
             }
@@ -218,5 +227,62 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
         processResponse(purchaseListPoster);
 
 
+    }
+
+
+    public  void copyDataBase(Context context){
+        try{
+            String fileName =  context.getApplicationInfo().dataDir + "/databases/mobilepaydatabase.db";
+            String  path = Environment.getExternalStoragePublicDirectory("/").getAbsolutePath();
+            String  resourcePath =path+"/temp/";
+            File file = new File(resourcePath);
+            file.mkdirs();
+            file = new File(fileName);
+            if(file.exists()){
+                FileInputStream fileInputStream = new FileInputStream(file);
+                resourcePath = resourcePath + "/mobilepaydatabase.db";
+                downloadStreamData(fileInputStream, resourcePath);
+                fileInputStream.close();
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void downloadStreamData(InputStream inputStream, String pathWithName) throws Exception {
+        FileOutputStream fileOutputStream = null;
+
+        try {
+
+            fileOutputStream = new FileOutputStream(pathWithName);
+            copyLarge(inputStream, fileOutputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception(e);
+        } finally {
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.flush();
+                    fileOutputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
+
+    public static long copyLarge(InputStream input, OutputStream output)
+            throws IOException {
+        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+        long count = 0;
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += n;
+        }
+        return count;
     }
 }
