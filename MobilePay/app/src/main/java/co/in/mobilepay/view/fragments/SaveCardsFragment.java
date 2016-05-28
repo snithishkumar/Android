@@ -72,7 +72,7 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
         boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
-            naviDrawerActivity.getCardService().getCardList();
+           // naviDrawerActivity.getCardService().getCardList();
         }else{
 
             ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
@@ -163,7 +163,7 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
             progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", naviDrawerActivity);
             CardJson cardJson = new CardJson();
             cardJson.setCardGuid(cardGuid);
-            naviDrawerActivity.getCardService().removeCard(cardJson);
+          // naviDrawerActivity.getCardService().removeCard(cardJson);
         }else{
 
             ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");

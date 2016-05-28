@@ -2,9 +2,7 @@ package co.in.mobilepay.service;
 
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
-import retrofit2.Response;
 
 /**
  * Created by Nithish on 22-01-2016.

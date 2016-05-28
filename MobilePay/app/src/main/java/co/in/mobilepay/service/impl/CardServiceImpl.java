@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.service.impl;
 
 import android.content.Context;
@@ -16,9 +17,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+*/
 /**
  * Created by Nithish on 13-03-2016.
- */
+ *//*
+
 public class CardServiceImpl extends BaseService implements CardService {
 
     private UserDao userDao;
@@ -33,11 +36,13 @@ public class CardServiceImpl extends BaseService implements CardService {
 
     }
 
-    /**
+    */
+/**
      * Create New Card
      *
      * @param cardJson
-     */
+     *//*
+
     @Override
     public void createCard(CardJson cardJson) {
         try {
@@ -54,11 +59,13 @@ public class CardServiceImpl extends BaseService implements CardService {
 
     }
 
-    /**
+    */
+/**
      * Remove the given card
      *
      * @param cardJson
-     */
+     *//*
+
     @Override
     public void removeCard(CardJson cardJson) {
         try {
@@ -92,10 +99,12 @@ public class CardServiceImpl extends BaseService implements CardService {
         cardResponse(responseData);
     }
 
-    /**
+    */
+/**
      * Get the List of Card
      *
-     */
+     *//*
+
     @Override
     public void getCardList() {
         try {
@@ -130,3 +139,4 @@ public class CardServiceImpl extends BaseService implements CardService {
         }
     }
 }
+*/

@@ -2,7 +2,6 @@ package co.in.mobilepay.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -53,10 +52,8 @@ public class GcmRegistrationIntentService extends IntentService {
             }
             MobilePayAPI mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
             CloudMessageJson cloudMessageJson = new CloudMessageJson();
-            cloudMessageJson.setAccessToken(userEntity.getAccessToken());
-            cloudMessageJson.setServerToken(userEntity.getServerToken());
-            String imeiNumber = ServiceUtil.getIMEINumber(getApplicationContext());
-            cloudMessageJson.setImeiNumber(imeiNumber);
+           // String imeiNumber = ServiceUtil.getIMEINumber(getApplicationContext());
+           // cloudMessageJson.setImeiNumber(imeiNumber);
             cloudMessageJson.setDeviceType(DeviceType.Android);
             cloudMessageJson.setCloudId(token);
             Call<ResponseData>responseDataCall = mobilePayAPI.addCloudId(cloudMessageJson);

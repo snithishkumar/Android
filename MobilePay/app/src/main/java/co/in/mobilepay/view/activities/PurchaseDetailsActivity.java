@@ -17,10 +17,8 @@ import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeviceType;
 import co.in.mobilepay.enumeration.PaymentStatus;
-import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
 import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
@@ -47,7 +45,6 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
     // service
     PurchaseService purchaseService = null;
-    CardService cardService = null;
 
     private static final int PURCHASE_LIST = 1;
     private static final int ORDER_STATUS_LIST = 2;
@@ -71,7 +68,6 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             purchaseId = getIntent().getIntExtra("purchaseId",0);
             fragmentOptions = getIntent().getIntExtra("fragmentOptions",0);
             purchaseService = new PurchaseServiceImpl(this);
-            cardService = new CardServiceImpl(this);
         }catch (Exception e){
             Log.e("Error", "Error in init", e);
         }
@@ -274,9 +270,9 @@ return transactionalDetailsEntity;
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+       /* if (id == R.id.action_settings) {
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -285,9 +281,6 @@ return transactionalDetailsEntity;
         return purchaseService;
     }
 
-    public CardService getCardService() {
-        return cardService;
-    }
 
 
 

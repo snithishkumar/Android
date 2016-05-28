@@ -1,8 +1,6 @@
 package co.in.mobilepay.json.response;
 
 
-import co.in.mobilepay.entity.MerchantEntity;
-
 public class MerchantJson {
 
 	private String merchantName;

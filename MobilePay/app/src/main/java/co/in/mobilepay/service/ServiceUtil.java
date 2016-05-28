@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.telephony.TelephonyManager;
 import android.util.Base64;
 
-
 import org.joda.time.DateTime;
 
 import java.security.Key;
@@ -14,7 +13,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**

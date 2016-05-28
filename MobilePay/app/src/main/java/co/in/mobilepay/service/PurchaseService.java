@@ -1,8 +1,5 @@
 package co.in.mobilepay.service;
 
-import android.content.Context;
-
-import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.entity.AddressEntity;

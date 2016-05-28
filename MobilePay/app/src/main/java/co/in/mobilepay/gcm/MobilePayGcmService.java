@@ -9,21 +9,15 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.gson.Gson;
-
-import java.util.concurrent.Executors;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.enumeration.NotificationType;
-import co.in.mobilepay.json.response.NotificationJson;
-import co.in.mobilepay.view.activities.MainActivity;
 import co.in.mobilepay.view.activities.NotificationActivity;
 
 /**

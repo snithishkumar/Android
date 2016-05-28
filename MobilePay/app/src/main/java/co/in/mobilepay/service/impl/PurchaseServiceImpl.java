@@ -4,13 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
@@ -21,17 +19,13 @@ import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
-import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscardBy;
 import co.in.mobilepay.enumeration.OrderStatus;
-import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 import co.in.mobilepay.view.model.PurchaseDetailsModel;
 import co.in.mobilepay.view.model.PurchaseModel;
-import retrofit2.Call;
 
 /**
  * Created by Nithish on 30-01-2016.

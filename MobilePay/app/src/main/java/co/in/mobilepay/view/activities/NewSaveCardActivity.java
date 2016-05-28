@@ -12,9 +12,7 @@ import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.json.response.LoginError;
 import co.in.mobilepay.json.response.ResponseData;
-import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.SaveNewCardFragment;
@@ -24,14 +22,13 @@ import co.in.mobilepay.view.fragments.SaveNewCardFragment;
  */
 public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCardFragment.NewSaveCardActivityCallback{
 
-    private CardService cardService;
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MobilePayBus.getInstance().register(this);
-        init();
+        //init();
         setContentView(R.layout.activity_new_save_card);
         showFragment();
     }
@@ -39,13 +36,13 @@ public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCar
     /**
      * Initialize service layer
      */
-    private void init() {
+   /* private void init() {
         try {
             cardService = new CardServiceImpl(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
     private void showFragment(){
@@ -61,7 +58,7 @@ public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCar
         if(isNet) {
             progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", this);
             CardJson cardJson = (CardJson)data;
-            cardService.createCard(cardJson);
+           // cardService.createCard(cardJson);
         }else{
             ActivityUtil.showDialog(this, "No Network", "Check your connection.");
         }

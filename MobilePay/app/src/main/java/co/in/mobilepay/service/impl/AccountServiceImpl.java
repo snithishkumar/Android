@@ -17,6 +17,7 @@ import co.in.mobilepay.json.response.UserJson;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.PasswordHash;
 import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.sync.ServiceAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,6 +84,8 @@ public class AccountServiceImpl extends BaseService implements AccountService {
                 userEntity.setAccessToken(userJson.getAccessToken());
                 userEntity.setServerToken(userJson.getServerToken());
                 userDao.updateUser(userEntity);
+                ServiceAPI.INSTANCE.setAccessToken(userEntity.getAccessToken());
+                ServiceAPI.INSTANCE.setServerToken(userEntity.getServerToken());
                 accountServiceCallback.accountServiceCallback(MessageConstant.LOGIN_OK,null);
                 return;
             }catch (Exception e){
@@ -141,10 +144,6 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
     public void updateUser(RegisterJson registerJson){
         try{
-            String registerData = gson.toJson(registerJson);
-            UserEntity userEntity =  userDao.getUser();
-            registerJson.setServerToken(userEntity.getServerToken());
-            registerJson.setAccessToken(userEntity.getAccessToken());
             AccountCallbackManager accountCallbackManager = new AccountCallbackManager(5,registerJson,null);
             Call<ResponseData> dataCall =  mobilePayAPI.updateUser(registerJson);
             dataCall.enqueue(accountCallbackManager);

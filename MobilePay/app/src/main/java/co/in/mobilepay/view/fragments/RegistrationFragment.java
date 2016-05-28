@@ -63,17 +63,21 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         String nameTemp = name.getText().toString();
         if(nameTemp == null){
             name.setError("Name should not be blank");
+            return null;
         }
         String passwordTemp = password.getText().toString();
         if(passwordTemp == null){
             password.setError("Password should not be blank");
+            return null;
         }
         String rePasswordTemp = rePassword.getText().toString();
         if(rePasswordTemp == null){
             rePassword.setError("RePassword should not be blank");
+            return null;
         }
         if(!passwordTemp.equals(rePasswordTemp)){
             rePassword.setError("Password and retype password are mismatched");
+            return null;
         }
 
         RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"",isPasswordForget);

@@ -20,9 +20,7 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.gcm.GcmRegistrationIntentService;
-import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.PurchaseService;
-import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.OrderStatusListAdapter;
 import co.in.mobilepay.view.adapters.PurHistoryListAdapter;
@@ -38,7 +36,6 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private ViewPager viewPager = null;
 
     private PurchaseService purchaseService;
-    private CardService cardService;
     private Toolbar mToolbar;
     private FragmentDrawer drawerFragment;
 
@@ -73,7 +70,6 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void init(){
         try{
             purchaseService = new PurchaseServiceImpl(this);
-            cardService = new CardServiceImpl(this);
             tabPosition = getIntent().getIntExtra("tabPosition",0);
            /* Account account = co.in.mobilepay.sync.MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
@@ -149,10 +145,6 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
 
     public PurchaseService getPurchaseService() {
         return purchaseService;
-    }
-
-    public CardService getCardService() {
-        return cardService;
     }
 
     @Override

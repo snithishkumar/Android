@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 import co.in.mobilepay.dao.UserDao;
-import co.in.mobilepay.db.DatabaseHelper;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.UserEntity;
 

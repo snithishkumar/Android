@@ -8,7 +8,7 @@ import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DiscardBy;
 
-public class DiscardJson extends TokenJson {
+public class DiscardJson {
 	
 	private String purchaseGuid;
 	private String reason;

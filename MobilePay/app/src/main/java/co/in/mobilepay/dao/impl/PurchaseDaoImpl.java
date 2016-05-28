@@ -5,7 +5,6 @@ import android.content.Context;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.UpdateBuilder;
-import com.j256.ormlite.stmt.query.In;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -93,6 +92,24 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         }
         return purchaseUUIDS;
     }
+
+
+    /**
+     * Get Synced PurchaseUUIDS
+     * @param purchaseUUIDS
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public List<String> getPurchaseUUIDs(List<String> purchaseUUIDS)throws SQLException{
+        List<String> resultPurchaseUUIDS = new ArrayList<>();
+        List<PurchaseEntity> purchaseEntities =  purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().in(PurchaseEntity.PURCHASE_GUID,purchaseUUIDS).and().eq(PurchaseEntity.IS_SYNC,true).query();
+        for(PurchaseEntity purchaseEntity : purchaseEntities){
+            resultPurchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
+        }
+        return resultPurchaseUUIDS;
+    }
+
 
     /**
      * Returns last Purchased uuid

@@ -11,9 +11,7 @@ import com.squareup.otto.Subscribe;
 import co.in.mobilepay.R;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.AccountService;
-import co.in.mobilepay.service.CardService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
-import co.in.mobilepay.service.impl.CardServiceImpl;
 import co.in.mobilepay.view.fragments.EditProfileFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
@@ -25,7 +23,6 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
 
     private AccountService accountService = null;
 
-    private CardService cardService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
     private void init(){
         try{
             accountService = new AccountServiceImpl(this);
-            cardService = new CardServiceImpl(this);
         }catch (Exception e){
             Log.e("Error","Error in init - NaviDrawerActivity",e);
         }
@@ -85,7 +81,4 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
         return accountService;
     }
 
-    public CardService getCardService() {
-        return cardService;
-    }
 }

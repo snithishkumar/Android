@@ -86,7 +86,7 @@ public class PaymentOptionsFragment extends Fragment {
         boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
         if(isNet){
             progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", purchaseDetailsActivity);
-            purchaseDetailsActivity.getCardService().getCardList();
+          //  purchaseDetailsActivity.getCardService().getCardList();
         }else{
 
             ActivityUtil.showDialog(purchaseDetailsActivity, "No Network", "Check your connection.");

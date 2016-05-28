@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -62,7 +63,9 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private MobilePayAPI mobilePayAPI;
     private Gson gson;
 
-    ExecutorService executorService = Executors.newFixedThreadPool(3);
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
+    CountDownLatch countDownLatch = new CountDownLatch(4);
+
 
 
     public MobilePaySyncAdapter(Context context, boolean autoInitialize) {
@@ -96,6 +99,51 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
      */
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
+       try{
+           countDownLatch = new CountDownLatch(4);
+           executorService.execute(new Runnable() {
+               @Override
+               public void run() {
+                   sendUnSyncedDataSynchronize();
+                   countDownLatch.countDown();
+               }
+           });
+
+           executorService.execute(new Runnable() {
+               @Override
+               public void run() {
+                   syncPurchaseData();
+                   countDownLatch.countDown();
+               }
+           });
+
+           executorService.execute(new Runnable() {
+               @Override
+               public void run() {
+                   syncOrderStatus();
+                   countDownLatch.countDown();
+               }
+           });
+
+           executorService.execute(new Runnable() {
+               @Override
+               public void run() {
+                   syncPurchaseHistoryData();
+                   countDownLatch.countDown();
+               }
+           });
+           countDownLatch.await();
+           System.out.println("sdfasdfasdf");
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+        System.out.println("sdfasdfasdf");
+
+
+    }
+
+    @Deprecated
+    public void onPerformSync_old(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
         Log.i(LOG_TAG, "onPerformSync Called.");
 
         // 1 - Purchase List, 2- Order Status List, 3 - Purchase History List,4- SyncUnSyncedData,5- Call Purchase List,Order Status List and Purchase History List all at once
@@ -106,6 +154,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 sendUnSyncedDataAsync();
                 // Get Current Purchase List
                 syncPurchaseData();
+                syncOrderStatus();
+                syncPurchaseHistoryData();
                 break;
             case 2:
                 // Send If any UnSynced Data
@@ -227,7 +277,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             userRequest(tokenJson);
 
             // Sync Request. It Returns Current Purchase UUIDs
-            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseListFromServer(tokenJson);
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseListFromServer();
 
             // Server Response
             Response<ResponseData> dataResponse =  responseDataCall.execute();
@@ -311,6 +361,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
      * @throws SQLException
      */
     private void syncPurchaseDetails(List<String> purchaseUUIDs)throws SQLException{
+        purchaseUUIDs = purchaseDao.getPurchaseUUIDs(purchaseUUIDs);
         GetPurchaseDetailsList getPurchaseDetailsList = new GetPurchaseDetailsList();
         userRequest(getPurchaseDetailsList);
         do{
@@ -404,7 +455,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseJson.getPurchaseId());
                 //If its not present, it will create new one. Otherwise, it will update
                 if(purchaseEntity != null){
-                    if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime()){
+                    if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime() && !purchaseEntity.isSync()){
                         purchaseEntity.toClone(purchaseJson);
                         processAddressJson(purchaseJson, purchaseEntity);
                         processDiscardJson(purchaseJson,purchaseEntity);
@@ -549,7 +600,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
 
             // Sync Request
-            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryList(tokenJson);
+            Call<ResponseData> responseDataCall = mobilePayAPI.syncPurchaseHistoryList();
             // Server Response
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             ResponseData responseData = dataResponse.body();

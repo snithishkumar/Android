@@ -1,11 +1,8 @@
 package co.in.mobilepay.dao;
 
-import com.j256.ormlite.dao.Dao;
-
 import java.sql.SQLException;
 import java.util.List;
 
-import co.in.mobilepay.db.DatabaseHelper;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.UserEntity;
 

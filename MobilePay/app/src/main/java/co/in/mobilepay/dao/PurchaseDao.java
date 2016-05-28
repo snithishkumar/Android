@@ -57,4 +57,6 @@ public interface PurchaseDao {
     void createTransactionalDetails(TransactionalDetailsEntity transactionalDetailsEntity)throws SQLException;
 
     List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity)throws SQLException;
+
+    List<String> getPurchaseUUIDs(List<String> purchaseUUIDS)throws SQLException;
 }
