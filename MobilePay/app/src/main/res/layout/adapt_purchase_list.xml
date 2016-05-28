@@ -55,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="5000"
                 android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_alignBottom="@+id/adapt_pur_list_shop_logo"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true" />

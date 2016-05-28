@@ -92,6 +92,7 @@
             android:layout_height="wrap_content"
             android:text="500000"
             android:textSize="15dp"
+            android:textColor="@color/colorPrimaryDark"
             android:id="@+id/amount_details_total_amount"
             android:layout_marginTop="15dp"
             android:textStyle="bold"

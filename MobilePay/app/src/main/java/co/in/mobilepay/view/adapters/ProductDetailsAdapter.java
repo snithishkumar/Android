@@ -116,6 +116,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
             if(!purchaseEntity.isEditable()){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
@@ -192,6 +193,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
         totalAmount = totalAmount + taxAmount;
+        totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
     }
 
 

@@ -76,7 +76,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             PurchaseModel purchaseModel =  purchaseModelList.get(position);
             // purchaseListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purchaseListViewHolder.vShopName.setText(purchaseModel.getName());
-            purchaseListViewHolder.vOrderId.setText(purchaseModel.getBillNumber());
+            purchaseListViewHolder.vOrderId.setText("Order Id: #"+purchaseModel.getBillNumber());
             purchaseListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             purchaseListViewHolder.vPurchaseDate.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             //imageLoader.displayImage(purchaseModel.getMerchantGuid(),purchaseModel.getServerMerchantId(),purchaseListViewHolder.vShopLogo);
