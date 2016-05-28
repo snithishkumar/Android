@@ -41,7 +41,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2.5"
+                android:layout_weight="3"
                 android:layout_marginLeft="10dp"
                 android:orientation="vertical">
                 <TextView
@@ -54,11 +54,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:id="@+id/luggage_pur_shop_name"
                     android:text="Shop: Saravana stores"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:id="@+id/luggage_pur_shop_category"
+                    android:layout_marginTop="2dp"
                     android:layout_height="wrap_content"
                     android:text="Category: Shopping"/>
 
@@ -66,13 +68,15 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.5"
+                android:layout_weight="1"
+                android:layout_gravity="center"
                 android:gravity="right"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="wrap_content"
                     android:id="@+id/luggage_pur_total_amt"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:textColor="@color/colorPrimaryDark"
                     android:text="Rs: 1000"/>
             </LinearLayout>
@@ -83,14 +87,16 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
             android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@+id/details_layout"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/luggage_pur_status"
             android:text="Order Status: Packing..."
-            android:layout_margin="10dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@+id/seperator"/>
         <TextView
             android:layout_width="wrap_content"
@@ -99,7 +105,9 @@
             android:text="CALL"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
             android:layout_below="@+id/seperator"/>
     </RelativeLayout>
 
