@@ -1,8 +1,10 @@
 package co.in.mobilepay.gcm;
 
+import android.accounts.Account;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -18,6 +20,7 @@ import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.enumeration.NotificationType;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.NotificationActivity;
 
 /**
@@ -100,6 +103,16 @@ if(gson == null){
         try{
             NotificationDao  notificationDao = new NotificationDaoImpl(this);
             notificationDao.createNotification(notificationEntity);
+            Account account = MobilePaySyncAdapter.getSyncAccount(this);
+
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+            ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
         }catch (Exception e){
             e.printStackTrace();
         }
