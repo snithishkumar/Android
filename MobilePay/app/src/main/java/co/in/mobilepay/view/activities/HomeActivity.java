@@ -159,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 Intent intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",1);
                 startActivity(intent);
-                finish();
+                //finish();
                 break;
             case 1:
                 /*fragment = new FriendsFragment();
@@ -170,10 +170,10 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 title = getString(R.string.title_messages);*/
                 break;
             case 3:
-                intent = new Intent(this, NaviDrawerActivity.class);
+               /* intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",3);
-                startActivity(intent);
-                finish();
+                startActivity(intent);*/
+                //finish();
                 break;
             default:
                 break;

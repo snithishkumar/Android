@@ -3,8 +3,11 @@ package co.in.mobilepay.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -55,10 +58,20 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         naviDrawerActivity.getSupportActionBar().setTitle("Edit Profile");
+        initBackButton();
         View view = inflater.inflate(R.layout.fragment_profile_update, container, false);
+
         init(view);
         loadData();
         return view;
+    }
+
+    private void initBackButton(){
+        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
+        upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
+        naviDrawerActivity.getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
     private void  init(View view){

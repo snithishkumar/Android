@@ -3,13 +3,17 @@ package co.in.mobilepay.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
@@ -42,6 +46,12 @@ public class ShopDetailsFragment extends Fragment {
     }
 
     private void initView(View view,MerchantEntity merchantEntity ){
+
+        ImageView shopBackButton = (ImageView)view.findViewById(R.id.shop_back_button);
+        final Drawable upArrow = ContextCompat.getDrawable(purchaseDetailsActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
+        upArrow.setColorFilter( ContextCompat.getColor(purchaseDetailsActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        shopBackButton.setBackground(upArrow);
+
         TextView shopName = (TextView)view.findViewById(R.id.shop_details_name);
         TextView shopArea = (TextView) view.findViewById(R.id.shop_details_area);
         TextView shopCategory = (TextView)view.findViewById(R.id.shop_details_category);
