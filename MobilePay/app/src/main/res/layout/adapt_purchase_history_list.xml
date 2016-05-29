@@ -63,7 +63,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/adapt_pur_his_shop_name"
                 android:layout_marginLeft="10dp"
-                android:text="Saravana Stores,T.Nagar," />
+                android:layout_marginBottom="10dp"
+                android:text="Saravana Stores,T.Nagar Saravana Stores,T.Nagar Saravana Stores,T.Nagar," />
 
 
         </LinearLayout>
@@ -84,6 +85,7 @@
             android:id="@+id/adapt_pur_his_amount"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
             android:text="20689" />
 
         <ImageView
@@ -100,7 +102,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/adapt_pur_his_icon"
         android:layout_below="@+id/adapt_pur_his_data"/>
 
