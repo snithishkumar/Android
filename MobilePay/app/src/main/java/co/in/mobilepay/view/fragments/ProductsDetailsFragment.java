@@ -163,6 +163,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
     private void declineData(){
         purchaseDetailsActivity.getPurchaseService().declinePurchase(purchaseEntity, reasonToDecline);
+        purchaseDetailsActivity.syncPaymentData();
         purchaseDetailsActivity.finish();
         // -- TODO Testing with common sync
        /* boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);

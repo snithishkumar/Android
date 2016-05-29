@@ -1,5 +1,7 @@
 package co.in.mobilepay.view.activities;
 
+import android.accounts.Account;
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +23,7 @@ import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
 import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
 import co.in.mobilepay.view.fragments.AddDeliveryAddressFragment;
@@ -212,13 +215,28 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             purchaseEntity.setOrderStatus(OrderStatus.PACKING);
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
-
+            syncPaymentData();
             Toast.makeText(this, "Payment Successfully made.", Toast.LENGTH_SHORT).show();
+
             finish();
         }
         catch (Exception e){
             Log.e("com.merchant", e.getMessage(), e);
         }
+    }
+
+
+    public void syncPaymentData(){
+        Account account = MobilePaySyncAdapter.getSyncAccount(this);
+
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+
+        ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
     }
 
     /**
