@@ -133,7 +133,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
-        shopArea.setText(merchantEntity.getArea());
+        shopArea.setText("("+merchantEntity.getArea()+")");
         shopOrderId.append( purchaseEntity.getBillNumber());
         String purchaseDateTime =  MobilePayUtil.formatDate(purchaseEntity.getPurchaseDateTime());
         shoppingDateTime.setText(purchaseDateTime);

@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/purchase_history_shop_details_layout"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:onClick="onClick"
         android:background="@color/colorPrimary">
 
@@ -20,6 +20,7 @@
             android:textColor="@color/white"
             android:layout_marginTop="10dp"
             android:textSize="20sp"
+            android:textAlignment="center"
             android:text="Saravana stores thanga nagai maligai"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
@@ -30,6 +31,7 @@
             android:textColor="@color/white"
             android:textSize="18sp"
             android:text="(T-Nagar)"
+            android:layout_marginBottom="10dp"
             android:layout_below="@+id/purchase_history_shop_name"
             android:layout_centerHorizontal="true" />
 
