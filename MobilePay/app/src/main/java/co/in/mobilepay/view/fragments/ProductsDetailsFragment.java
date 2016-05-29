@@ -257,7 +257,7 @@ switch (v.getId()){
 
         if(productDetailsAdapter.getDeliveryOptions() != null){
             purchaseEntity.setDeliveryOptions(productDetailsAdapter.getDeliveryOptions());
-            purchaseEntity.setTotalAmount(String.valueOf(productDetailsAdapter.getTotalAmount()));
+            purchaseEntity.setTotalAmount( String.format("%.2f", productDetailsAdapter.getTotalAmount()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
             purchaseEntity.setAddressEntity(productDetailsAdapter.getDefaultAddress());
             purchaseService.updatePurchaseEntity(purchaseEntity);

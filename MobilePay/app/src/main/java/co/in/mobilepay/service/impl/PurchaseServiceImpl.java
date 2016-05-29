@@ -156,7 +156,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     public void declinePurchase(PurchaseEntity purchaseEntity,String reason){
         try {
             purchaseEntity.setIsDiscard(true);
-            purchaseEntity.setOrderStatus(OrderStatus.CANCELED.toString());
+            purchaseEntity.setOrderStatus(OrderStatus.CANCELED);
             purchaseEntity.setIsSync(false);
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);
@@ -187,7 +187,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
    public void makePayment(PurchaseEntity purchaseEntity,AddressEntity addressEntity){
        try {
            purchaseEntity.setIsSync(false);
-           purchaseEntity.setOrderStatus(OrderStatus.PACKING.toString());
+           purchaseEntity.setOrderStatus(OrderStatus.PACKING);
            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
            purchaseEntity.setAddressEntity(addressEntity);
            purchaseDao.updatePurchase(purchaseEntity);

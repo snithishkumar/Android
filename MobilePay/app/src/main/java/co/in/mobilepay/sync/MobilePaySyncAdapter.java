@@ -28,13 +28,16 @@ import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
+import co.in.mobilepay.json.response.CounterDetailsJson;
 import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.GetPurchaseDetailsList;
@@ -473,6 +476,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     processDiscardJson(purchaseJson,purchaseEntity);
                     purchaseDao.createPurchase(purchaseEntity);
                 }
+                createCounterDetails(purchaseJson.getCounterDetails(),purchaseEntity);
             }catch (Exception e){
                 Log.e(LOG_TAG, "Error while processing purchase Details. Raw data["+purchaseJson+"]", e);
             }
@@ -563,6 +567,11 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     }else{ // If purchaseEntity is not present, then need to get purchase details data
                        purchaseUUIDs.add(luggageJson.getPurchaseGuid());
                    }
+                    // Process Counter Details
+                    if(luggageJson.getCounterDetails() != null){
+                        createCounterDetails(luggageJson.getCounterDetails(),purchaseEntity);
+                    }
+
                 }
                 // If purchaseEntity is not present, then Create New Purchase Record
                 List<PurchaseJson> purchaseJsonList =   orderStatusJsonsList.getPurchaseJsons();
@@ -589,6 +598,23 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
         }
         // Error Post
         postErrorCode(MessageConstant.REG_ERROR_CODE);
+    }
+
+
+    /**
+     * Create Counter Details Entity
+     * @param counterDetails
+     * @param purchaseEntity
+     * @throws SQLException
+     */
+    private void createCounterDetails(CounterDetailsJson counterDetails,PurchaseEntity purchaseEntity)throws SQLException{
+        if(purchaseEntity.getOrderStatus().toString().equals(OrderStatus.READY_TO_COLLECT.toString())){
+            CounterDetailsEntity counterDetailsEntity = purchaseDao.getCounterDetailsEntity(purchaseEntity);
+            if(counterDetailsEntity == null){
+                counterDetailsEntity = new CounterDetailsEntity(counterDetails);
+                purchaseDao.createCounterDetails(counterDetailsEntity);
+            }
+        }
     }
 
 

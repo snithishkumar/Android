@@ -1,6 +1,7 @@
 package co.in.mobilepay.json.response;
 
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 
 public class PurchaseJson {
@@ -19,11 +20,12 @@ public class PurchaseJson {
 	private long serverDateTime;
 	private boolean isDiscard;
 	private PaymentStatus paymentStatus;
-	private String orderStatus;
+	private OrderStatus orderStatus;
 	private DeliveryOptions deliveryOptions;
 	private String totalAmount;
 	private AddressJson addressJson;
     private DiscardJson discardJson;
+	private CounterDetailsJson counterDetails;
 
 	public PurchaseJson(){
 		
@@ -151,11 +153,11 @@ public class PurchaseJson {
 		this.paymentStatus = paymentStatus;
 	}
 
-	public String getOrderStatus() {
+	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(String orderStatus) {
+	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
@@ -183,7 +185,15 @@ public class PurchaseJson {
         this.addressJson = addressJson;
     }
 
-	@Override
+    public CounterDetailsJson getCounterDetails() {
+        return counterDetails;
+    }
+
+    public void setCounterDetails(CounterDetailsJson counterDetails) {
+        this.counterDetails = counterDetails;
+    }
+
+    @Override
 	public String toString() {
 		return "PurchaseJson{" +
 				"purchaseId='" + purchaseId + '\'' +

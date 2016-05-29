@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.dao.PurchaseDao;
+import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
@@ -18,6 +19,7 @@ import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.PurchaseJson;
+import okhttp3.internal.Internal;
 
 /**
  * Created by Nithish on 24-01-2016.
@@ -28,6 +30,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     private Dao<MerchantEntity,Integer> merchantDao = null;
     private Dao<DiscardEntity,Integer> discardDao = null;
     private Dao<TransactionalDetailsEntity,Integer> transactionalDetailsDao = null;
+    private Dao<CounterDetailsEntity,Internal> counterDetailsDao = null;
 
     public PurchaseDaoImpl(Context context) throws SQLException {
         super(context);
@@ -44,6 +47,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         merchantDao = databaseHelper.getDao(MerchantEntity.class);
         discardDao = databaseHelper.getDao(DiscardEntity.class);
         transactionalDetailsDao = databaseHelper.getDao(TransactionalDetailsEntity.class);
+        counterDetailsDao = databaseHelper.getDao(CounterDetailsEntity.class);
     }
 
     /**
@@ -142,7 +146,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<PurchaseEntity> getPurchaseHistoryList() throws SQLException {
         QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
-        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
        return currentPurchaseQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false).query();
     }
 
@@ -159,7 +163,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         List<String> purchaseUUIDS = new ArrayList<>();
         QueryBuilder<PurchaseEntity,Integer> currentPurchaseQueryBuilder =  purchaseDao.queryBuilder();
         currentPurchaseQueryBuilder.selectColumns(PurchaseEntity.PURCHASE_GUID);
-        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+        currentPurchaseQueryBuilder.where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).or().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
 
         List<PurchaseEntity> purchaseList =  currentPurchaseQueryBuilder.orderBy(PurchaseEntity.SERVER_DATE_TIME, false).query();
         for(PurchaseEntity purchaseEntity : purchaseList){
@@ -179,8 +183,8 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         List<PurchaseEntity> test =  purchaseDao.queryForAll();
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).and()
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         luggageQueryBuilder = luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false);
        String temp =  luggageQueryBuilder.prepareStatementString();
         return  luggageQueryBuilder.query();
@@ -197,8 +201,8 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     public long getLeastLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).and()
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
         return  purchaseEntity != null ? purchaseEntity.getPurchaseDateTime() : -1;
     }
@@ -212,8 +216,8 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     public long getMostRecentLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED.toString()).and()
-                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED.toString());
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).and()
+                .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
         return  purchaseEntity != null ? purchaseEntity.getPurchaseDateTime() : -1;
     }
@@ -284,5 +288,20 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity)throws SQLException{
         return discardDao.queryBuilder().where().eq(DiscardEntity.PURCHASE_ID,purchaseEntity).queryForFirst();
+    }
+
+    @Override
+    public CounterDetailsEntity getCounterDetailsEntity(PurchaseEntity purchaseEntity)throws SQLException{
+        return counterDetailsDao.queryBuilder().where().eq(CounterDetailsEntity.PURCHASE_ID,purchaseEntity).queryForFirst();
+    }
+
+    @Override
+    public void createCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException{
+        counterDetailsDao.create(counterDetailsEntity);
+    }
+
+    @Override
+    public void updateCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException{
+        counterDetailsDao.update(counterDetailsEntity);
     }
 }

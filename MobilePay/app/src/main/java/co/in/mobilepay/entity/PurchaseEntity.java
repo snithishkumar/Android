@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.PurchaseJson;
 
@@ -69,7 +70,7 @@ public class PurchaseEntity {
     @DatabaseField(columnName = IS_DISCARD)
     private boolean  isDiscard;
     @DatabaseField(columnName = ORDER_STATUS)
-    private String orderStatus;
+    private OrderStatus orderStatus;
     @DatabaseField(columnName = DELIVERY_OPTIONS)
     private DeliveryOptions deliveryOptions;
 
@@ -225,11 +226,11 @@ public class PurchaseEntity {
         this.isDiscard = isDiscard;
     }
 
-    public String getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 

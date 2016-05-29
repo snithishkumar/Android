@@ -1,10 +1,13 @@
 package co.in.mobilepay.json.response;
 
+import co.in.mobilepay.enumeration.OrderStatus;
+
 public class LuggageJson {
 	private long serverDateTime;
 	private String purchaseGuid;
-	private String orderStatus;
+	private OrderStatus orderStatus;
 	private long updatedDateTime;
+	private CounterDetailsJson counterDetails;
 
 	public long getServerDateTime() {
 		return serverDateTime;
@@ -22,11 +25,11 @@ public class LuggageJson {
 		this.purchaseGuid = purchaseGuid;
 	}
 
-	public String getOrderStatus() {
+	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-	public void setOrderStatus(String orderStatus) {
+	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
@@ -38,4 +41,11 @@ public class LuggageJson {
 		this.updatedDateTime = updatedDateTime;
 	}
 
+	public CounterDetailsJson getCounterDetails() {
+		return counterDetails;
+	}
+
+	public void setCounterDetails(CounterDetailsJson counterDetails) {
+		this.counterDetails = counterDetails;
+	}
 }

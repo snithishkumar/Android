@@ -27,7 +27,7 @@ public class PurchaseModel {
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
         this.area = purchaseEntity.getMerchantEntity().getArea();
-        this.orderStatus = purchaseEntity.getOrderStatus();
+        this.orderStatus = purchaseEntity.getOrderStatus() != null ?  purchaseEntity.getOrderStatus().toString().replaceAll("_",""): null;
         this.totalAmount = purchaseEntity.getTotalAmount();
         this.merchantGuid = purchaseEntity.getMerchantEntity().getMerchantGuid();
         this.serverMerchantId = String.valueOf(purchaseEntity.getMerchantEntity().getServerMerchantId());

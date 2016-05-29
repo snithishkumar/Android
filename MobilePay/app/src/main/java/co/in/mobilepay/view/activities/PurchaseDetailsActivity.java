@@ -179,7 +179,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            JSONObject options  = new JSONObject();
            //"{description:'Test Purchase',currency:'INR'}"
            options.put("currency","INR");
-           options.put("amount", Double.valueOf(purchaseEntity.getTotalAmount())*100);
+//String.format("%.2f", Double.valueOf(purchaseEntity.getTotalAmount())* 100)
+           options.put("amount",20000);
            options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
            JSONObject prefill = new JSONObject();
            prefill.put("contact",purchaseEntity.getUserEntity().getMobileNumber());
@@ -208,7 +209,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
             purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
             purchaseEntity.setIsSync(false);
-            purchaseEntity.setOrderStatus(OrderStatus.PACKING.toString());
+            purchaseEntity.setOrderStatus(OrderStatus.PACKING);
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
 
