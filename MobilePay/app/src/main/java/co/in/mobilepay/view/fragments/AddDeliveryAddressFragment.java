@@ -1,13 +1,17 @@
 package co.in.mobilepay.view.fragments;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
@@ -54,6 +58,12 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
     }
 
     private void  init(View view) {
+
+        ImageView shopBackButton = (ImageView)view.findViewById(R.id.shop_back_button);
+        final Drawable upArrow = ContextCompat.getDrawable(purchaseDetailsActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
+        upArrow.setColorFilter( ContextCompat.getColor(purchaseDetailsActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        shopBackButton.setBackground(upArrow);
+
         vName = (EditText) view.findViewById(R.id.add_address_name);
         vMobileNumber = (EditText) view.findViewById(R.id.add_address_phone_number);
         vStreet = (EditText) view.findViewById(R.id.add_address_street);

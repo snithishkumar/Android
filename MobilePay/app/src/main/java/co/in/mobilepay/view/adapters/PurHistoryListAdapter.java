@@ -80,7 +80,7 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             PurHistoryListViewHolder purHistoryListViewHolder =(PurHistoryListViewHolder)viewHolder;
 
             final PurchaseModel purchaseModel =  purchaseModelList.get(position);
-            purHistoryListViewHolder.vBillNumber.setText("Bill No: "+purchaseModel.getBillNumber());
+            purHistoryListViewHolder.vBillNumber.setText("Order Id: "+purchaseModel.getBillNumber());
             purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());

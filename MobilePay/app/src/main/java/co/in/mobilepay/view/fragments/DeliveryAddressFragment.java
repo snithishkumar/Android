@@ -3,14 +3,18 @@ package co.in.mobilepay.view.fragments;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class DeliveryAddressFragment extends Fragment {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +60,10 @@ public class DeliveryAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_delivery_address, container, false);
 
-
+        ImageView shopBackButton = (ImageView)view.findViewById(R.id.shop_back_button);
+        final Drawable upArrow = ContextCompat.getDrawable(purchaseDetailsActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
+        upArrow.setColorFilter( ContextCompat.getColor(purchaseDetailsActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        shopBackButton.setBackground(upArrow);
 
         RecyclerView  recyclerView = (RecyclerView) view.findViewById(R.id.fragment_delivery_addr_list);
         recyclerView.setHasFixedSize(true);

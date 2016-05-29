@@ -113,8 +113,9 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             if(!purchaseEntity.isDiscard()){
                 toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
             }
-
+// purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;

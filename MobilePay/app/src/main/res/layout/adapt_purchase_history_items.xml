@@ -78,6 +78,7 @@
         android:textSize="15dp"
         android:layout_marginRight="5dp"
         android:text="Rs.5000"
+        android:textColor="@color/colorPrimaryDark"
         android:id="@+id/adapt_order_status_pur_item_amount"
         android:layout_below="@+id/adapt_order_status_pur_item_desc"
         android:textStyle="bold"
