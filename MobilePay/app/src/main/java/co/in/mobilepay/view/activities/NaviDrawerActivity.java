@@ -80,6 +80,11 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 
 
     @Override

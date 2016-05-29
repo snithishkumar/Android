@@ -59,7 +59,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
     private void  init(View view) {
 
-        ImageView shopBackButton = (ImageView)view.findViewById(R.id.shop_back_button);
+        ImageView shopBackButton = (ImageView)view.findViewById(R.id.add_address_back_button);
         final Drawable upArrow = ContextCompat.getDrawable(purchaseDetailsActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
         upArrow.setColorFilter( ContextCompat.getColor(purchaseDetailsActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
         shopBackButton.setBackground(upArrow);

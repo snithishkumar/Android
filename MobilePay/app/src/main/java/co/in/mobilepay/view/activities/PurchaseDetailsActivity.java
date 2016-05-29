@@ -139,6 +139,11 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
                 AddDeliveryAddressFragment addDeliveryAddressFragment = new AddDeliveryAddressFragment();
                 FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
                 break;
+
+            case R.id.add_address_back_button:
+            case R.id.address_list_back_button:
+                onBackPressed();
+                break;
         }
     }
 
