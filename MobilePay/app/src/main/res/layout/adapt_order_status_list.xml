@@ -98,6 +98,16 @@
             android:layout_marginTop="7dp"
             android:layout_marginLeft="10dp"
             android:layout_below="@+id/seperator"/>
+
+        <ImageView
+            android:id="@+id/adapt_order_status_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/adapt_order_status_info"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@+id/seperator"
+            android:layout_toRightOf="@+id/luggage_pur_status"
+            android:layout_toEndOf="@+id/luggage_pur_status" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

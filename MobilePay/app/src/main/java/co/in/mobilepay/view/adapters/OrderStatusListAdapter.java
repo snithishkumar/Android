@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.sync.ServiceAPI;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
+import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 /**
  * Created by Nithish on 16-02-2016.
@@ -49,6 +51,18 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             return EMPTY_VIEW;
         }
         return super.getItemViewType(position);
+    }
+
+
+    private void showInfo1(View view,String msg){
+        new SimpleTooltip.Builder(homeActivity)
+                .anchorView(view)
+                .text(msg)
+                .gravity(Gravity.TOP)
+                .dismissOnOutsideTouch(true)
+                .dismissOnInsideTouch(true)
+                .build()
+                .show();
     }
 
 
@@ -83,7 +97,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
             luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
-            luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
+            /*luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -95,7 +109,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
 
                 }
-            });
+            });*/
 
             Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
@@ -125,6 +139,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         protected TextView vCall;
         protected TextView vOrderStatus;
         protected ImageView vShopLogo;
+        protected ImageView vInfo;
 
 
 
@@ -138,6 +153,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vCall = (TextView) view.findViewById(R.id.luggage_pur_call);
             vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
+            vInfo = (ImageView)view.findViewById(R.id.adapt_order_status_info);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,6 +176,14 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         e.printStackTrace();
                     }
 
+                }
+            });
+
+            vInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    showInfo1(v,"Your order is ready. Please collect your order in ground floor. Your counter id  is 10");
                 }
             });
 
