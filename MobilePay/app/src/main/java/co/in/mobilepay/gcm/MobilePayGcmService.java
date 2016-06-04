@@ -60,7 +60,7 @@ if(gson == null){
 
         // Creates an explicit intent for an Activity in your app
         Intent intent = new Intent(this, NotificationActivity.class);
-        intent.putExtra("notificationType",notificationEntity.getNotificationType().getNotificationType());
+       // intent.putExtra("notificationType",notificationEntity.getNotificationType().getNotificationType());
         intent.putExtra("purchaseUuid",notificationEntity.getPurchaseGuid());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -77,7 +77,7 @@ if(gson == null){
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle("MobilePay")
                 .setContentText(notificationEntity.getMessage())
-                .setSmallIcon(R.drawable.notification_icon)
+                .setSmallIcon(R.mipmap.mobilepay_logo)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(resultPendingIntent);

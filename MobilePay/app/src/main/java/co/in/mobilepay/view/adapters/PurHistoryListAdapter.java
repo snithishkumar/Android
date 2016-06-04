@@ -104,7 +104,7 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         protected TextView vPurchaseDateTime;
         public PurHistoryEmptyViewHolder(View view){
             super(view);
-            vPurchaseDateTime = (TextView) view.findViewById(R.id.empty_history_list_text);
+            vPurchaseDateTime = (TextView) view.findViewById(R.id.empty_purchase_his_list_text);
         }
     }
 

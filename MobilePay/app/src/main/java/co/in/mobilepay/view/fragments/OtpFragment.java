@@ -80,8 +80,8 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
     }
     public String getOtpNumber(){
         String optNumberTemp = otpNumber.getText().toString();
-        if(optNumberTemp == null || optNumberTemp.isEmpty()){
-            otpNumber.setError("Otp Should not be blank");
+        if(optNumberTemp == null || optNumberTemp.trim().isEmpty()){
+            otpNumber.setError(getString(R.string.error_otp_number));
             return null;
         }
         return optNumberTemp;

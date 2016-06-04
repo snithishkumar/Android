@@ -23,6 +23,7 @@ import co.in.mobilepay.view.activities.MainActivity;
  */
 public class RegistrationFragment extends Fragment implements View.OnClickListener,AccountServiceImpl.AccountServiceCallback{
     EditText name = null;
+    EditText email = null;
     EditText password = null;
     EditText rePassword = null;
 
@@ -52,6 +53,8 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         }
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         name = (EditText) view.findViewById(R.id.reg_name);
+        email = (EditText) view.findViewById(R.id.reg_email);
+
         password = (EditText)view.findViewById(R.id.reg_password);
         rePassword = (EditText) view.findViewById(R.id.reg_repassword);
         FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.reg_submit);
@@ -61,26 +64,37 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     public RegisterJson getRegistrationJson(){
         String nameTemp = name.getText().toString();
-        if(nameTemp == null){
-            name.setError("Name should not be blank");
+        if(nameTemp == null  || nameTemp.trim().isEmpty()){
+            name.setError(getString(R.string.error_reg_name));
             return null;
         }
-        String passwordTemp = password.getText().toString();
-        if(passwordTemp == null){
-            password.setError("Password should not be blank");
-            return null;
-        }
-        String rePasswordTemp = rePassword.getText().toString();
-        if(rePasswordTemp == null){
-            rePassword.setError("RePassword should not be blank");
-            return null;
-        }
-        if(!passwordTemp.equals(rePasswordTemp)){
-            rePassword.setError("Password and retype password are mismatched");
+        String emailTemp = email.getText().toString();
+        if(emailTemp == null  || emailTemp.trim().isEmpty()){
+            email.setError(getString(R.string.error_reg_email));
             return null;
         }
 
-        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"",isPasswordForget);
+        String passwordTemp = password.getText().toString();
+        if(passwordTemp == null || passwordTemp.trim().isEmpty()){
+            password.setError(getString(R.string.error_reg_pass));
+            return null;
+        }
+        String rePasswordTemp = rePassword.getText().toString();
+        if(rePasswordTemp == null || rePasswordTemp.trim().isEmpty()){
+            rePassword.setError(getString(R.string.error_reg_re_pass));
+            return null;
+        }
+        if(!passwordTemp.equals(rePasswordTemp)){
+            rePassword.setError(getString(R.string.error_reg_re_pass_not_same));
+            return null;
+        }
+
+        if(passwordTemp.length() < 6){
+            rePassword.setError(getString(R.string.error_reg_pass_len));
+            return null;
+        }
+
+        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"",isPasswordForget,emailTemp);
         return registerJson;
     }
 

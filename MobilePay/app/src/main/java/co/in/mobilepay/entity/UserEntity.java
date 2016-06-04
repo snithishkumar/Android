@@ -18,6 +18,7 @@ public class UserEntity {
     public static final String IS_ACTIVE = "IsActive";
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String SEVER_TOKEN = "serverToken";
+    public static final String EMAIL = "EMail";
 
     @DatabaseField(columnName = USER_ID,generatedId = true)
     private int userId;
@@ -35,6 +36,8 @@ public class UserEntity {
     private String accessToken;
     @DatabaseField(columnName = SEVER_TOKEN)
     private String serverToken;
+    @DatabaseField(columnName = EMAIL)
+    private String email;
 
     public UserEntity(){
 
@@ -46,6 +49,7 @@ public class UserEntity {
         this.password = registerJson.getPassword();
         this.mobileNumber = registerJson.getMobileNumber();
         this.isActive = true;
+        this.email = registerJson.getEmail();
     }
 
     public int getUserId() {
@@ -111,6 +115,18 @@ public class UserEntity {
 
     public void setServerToken(String serverToken) {
         this.serverToken = serverToken;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

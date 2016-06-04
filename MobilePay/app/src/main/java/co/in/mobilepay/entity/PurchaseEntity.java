@@ -65,7 +65,7 @@ public class PurchaseEntity {
     @DatabaseField(columnName = SERVER_DATE_TIME)
     private long serverDateTime;
 
-    @DatabaseField(columnName = USER_ID,foreign = true)
+    @DatabaseField(columnName = USER_ID,foreign = true,foreignAutoRefresh =  true)
     private UserEntity userEntity;
     @DatabaseField(columnName = IS_DISCARD)
     private boolean  isDiscard;

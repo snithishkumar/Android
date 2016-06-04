@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:layout_height="match_parent">
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_gravity="center"
+android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:id="@+id/empty_order_status_list_text"
-        android:layout_height="wrap_content"
-        android:text="Purchase List is Empty"
-        />
 
-</LinearLayout>
+<TextView
+    android:layout_width="wrap_content"
+    android:id="@+id/empty_order_status_list_text"
+    android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:textSize="18dp"
+    android:text="Your Bucket is Empty. Purchase in shop and pay here and Get Your Status"
+    android:layout_above="@+id/empty_purchase_list_icon"
+    android:layout_centerHorizontal="true" />
+
+<ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/empty_purchase_list_icon"
+    android:background="@mipmap/empty_purcase_status_list"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true" />
+
+</RelativeLayout >

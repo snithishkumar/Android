@@ -31,7 +31,13 @@ public class SMSReceiver extends BroadcastReceiver {
                 }
                 String phoneNumber = messages[i].getOriginatingAddress();// -- TODO
                 String message = messages[i].getMessageBody();
-                MobilePayBus.getInstance().post(message);
+                int pos = message.indexOf("is");
+                if(pos > -1){
+                    message =  message.substring(0,pos);
+                    message =   message.trim();
+                    MobilePayBus.getInstance().post(message);
+                }
+
                 break;
             }
         }

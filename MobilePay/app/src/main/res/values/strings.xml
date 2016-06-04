@@ -64,6 +64,19 @@
 
     <string name="otp_resend">You will receive the message shortly</string>
 
+    <string name="purchase_list_empty">Your Bucket is Empty. Purchase in shop and pay here.</string>
+
+
+    <string name="error_reg_name">Name should not be blank</string>
+    <string name="error_reg_email">Email should not be blank</string>
+    <string name="error_reg_pass">Password should not be blank</string>
+    <string name="error_reg_pass_len">Password should be 6 digits</string>
+    <string name="error_reg_re_pass">RePassword should not be blank</string>
+    <string name="error_reg_re_pass_not_same">Password and retype password are mismatched</string>
+
+
+    <string name="error_otp_number">Otp Should not be blank</string>
+
 </resources>
 
 

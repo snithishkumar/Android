@@ -11,18 +11,20 @@ public class RegisterJson{
     private String password;
     private String mobileNumber;
     private String imei;
+    private String email;
     private boolean isPasswordForget;
 
     public RegisterJson(){
 
     }
 
-    public RegisterJson(String name,String password,String mobileNumber,String imei,boolean isPasswordForget){
+    public RegisterJson(String name,String password,String mobileNumber,String imei,boolean isPasswordForget,String email){
         this.name = name;
         this.password = password;
         this.mobileNumber = mobileNumber;
         this.imei = imei;
         this.isPasswordForget = isPasswordForget;
+        this.email = email;
     }
 
     public RegisterJson(UserEntity userEntity){
@@ -30,6 +32,7 @@ public class RegisterJson{
         this.password = userEntity.getPassword();
         this.mobileNumber = userEntity.getMobileNumber();
         this.imei = userEntity.getImei();
+        this.email = userEntity.getEmail();
     }
 
     public boolean isPasswordForget() {
@@ -70,6 +73,14 @@ public class RegisterJson{
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

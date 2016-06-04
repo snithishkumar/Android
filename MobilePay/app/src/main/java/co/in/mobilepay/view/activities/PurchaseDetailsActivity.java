@@ -142,6 +142,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
             case R.id.add_address_back_button:
             case R.id.address_list_back_button:
+            case R.id.shop_back_button:
                 onBackPressed();
                 break;
         }
@@ -187,11 +188,12 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            JSONObject options  = new JSONObject();
            //"{description:'Test Purchase',currency:'INR'}"
            options.put("currency","INR");
-//String.format("%.2f", Double.valueOf(purchaseEntity.getTotalAmount())* 100)
-           options.put("amount",20000);
+          Double amt =  Double.valueOf(purchaseEntity.getTotalAmount())* 100;
+           options.put("amount",amt);
            options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
            JSONObject prefill = new JSONObject();
            prefill.put("contact",purchaseEntity.getUserEntity().getMobileNumber());
+           prefill.put("email",purchaseEntity.getUserEntity().getEmail());
            prefill.put("name",purchaseEntity.getUserEntity().getName());
            options.put("prefill", prefill);
            razorpayCheckout.open(this, options);

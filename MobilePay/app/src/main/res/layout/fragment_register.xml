@@ -96,8 +96,9 @@
                         style="@style/RegisterEdittextmargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:inputType="number" />
+                        android:hint="mPIN (must be 6 digits)"
+                        android:maxLength="6"
+                        android:inputType="numberPassword" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,7 +117,8 @@
                         style="@style/RegisterEdittextmargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Re-enter password"
+                        android:maxLength="6"
+                        android:hint="Re-enter mPIN"
                         android:inputType="number" />
                 </LinearLayout>
             </LinearLayout>

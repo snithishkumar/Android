@@ -20,7 +20,7 @@
         android:layout_margin="10dp"
         android:layout_weight="1"
         android:id="@+id/otp_number"
-        android:inputType="numberPassword"
+        android:inputType="number"
         android:hint="@string/enter_otp"/>
     <Button
         android:id="@+id/otp_submit"

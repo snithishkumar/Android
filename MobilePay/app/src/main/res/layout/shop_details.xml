@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
     <RelativeLayout
         android:id="@+id/shop_details_layout"
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
             android:scaleType="centerCrop"
             android:layout_marginLeft="5dp"
             android:id="@+id/shop_back_button"
+            android:onClick="onClick"
             android:background="@drawable/abc_ic_ab_back_mtrl_am_alpha"
             android:layout_alignBottom="@+id/shop_name"
             android:layout_alignParentLeft="true"
@@ -36,113 +38,146 @@
 
 
     </RelativeLayout>
-   <!-- <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shop Details"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:textColor="@color/colorAccent"/>-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="20dp"
-        android:gravity="right"
-        android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:gravity="right"
             android:textColor="@android:color/darker_gray"
-            android:text="Shop Name :"/>
+            android:layout_marginRight="10dp"
+            android:text="Shop name:"/>
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="Area :"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="Category :"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="Mobile No :"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="Land Line :"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textColor="@android:color/darker_gray"
-            android:text="Address :"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20dp"
-        android:orientation="vertical"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
             android:id="@+id/shop_details_name"
             android:textColor="@android:color/black"
-            android:text="Shop Name"/>
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:text="skjfklsdjkfsjdklafj kldfjskdjf sdalfjkdsajf ksjdakfjskadjfskd jfklsd j kfj sdkajfksdjagk jsadkkjsdkfjskadjfksadgjhsajhdsfjaskljdfklasj"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginRight="10dp"
+            android:text="Area:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
             android:id="@+id/shop_details_area"
             android:textColor="@android:color/black"
-            android:text="Shop Name"/>
+            android:text="Adyar"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Category:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/shop_details_category"
             android:textColor="@android:color/black"
-            android:text="Shop Name"/>
+            android:layout_marginLeft="10dp"
+            android:text="Shpopping"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Mobile No:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/shop_details_phone"
-            android:layout_margin="20dp"
             android:textColor="@android:color/holo_blue_dark"
-            android:text="Phone No"/>
+            android:layout_marginLeft="10dp"
+            android:text="9942320690"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/darker_gray"
+            android:text="Land Line:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/shop_details_land"
-            android:layout_margin="20dp"
             android:textColor="@android:color/holo_blue_dark"
-            android:text="Phone No"/>
+            android:layout_marginLeft="10dp"
+            android:text="04283 234635"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:weightSum="2"
+        android:orientation="horizontal">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginRight="10dp"
+            android:text="Address:"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:id="@+id/shop_details_address"
             android:textColor="@android:color/black"
-            android:text="Address"/>
-
+            android:layout_marginLeft="10dp"
+            android:text="15/B,2nd Cross Street,Sri Ram Nagar,Tharamani,Chennai"/>
     </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+</LinearLayout>
