@@ -51,4 +51,14 @@ public class NotificationDaoImpl  extends BaseDaoImpl implements NotificationDao
        return dao.queryBuilder().where().eq(NotificationEntity.NOTIFICATION_TYPE,notificationType).countOf();
     }
 
+
+    public NotificationEntity getNotificationEntity(String purchaseUUID)throws SQLException{
+        return dao.queryBuilder().where().eq(NotificationEntity.PURCHASE_UUID,purchaseUUID).queryForFirst();
+    }
+
+
+    public void updateNotification(NotificationEntity notificationEntity)throws SQLException{
+        dao.update(notificationEntity);
+    }
+
 }

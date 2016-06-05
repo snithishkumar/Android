@@ -15,4 +15,8 @@ public interface NotificationDao {
     void clearNotification(NotificationType notificationType)throws SQLException;
 
     long getNotificationCount(NotificationType notificationType)throws SQLException;
+
+    NotificationEntity getNotificationEntity(String purchaseUUID)throws SQLException;
+
+    void updateNotification(NotificationEntity notificationEntity)throws SQLException;
 }

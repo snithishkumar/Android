@@ -12,6 +12,8 @@ import android.util.Log;
 
 import com.squareup.otto.Subscribe;
 
+import java.sql.SQLException;
+
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
@@ -19,6 +21,7 @@ import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
+import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
@@ -43,6 +46,41 @@ public class NotificationBaseActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * There is an possible, user may made payment or oder will be update without opening notification.So update that corresponding status
+     * @param purchaseUuid
+     * @param notificationDao
+     * @param notificationType
+     * @throws SQLException
+     */
+    private int getNotificationType(String purchaseUuid,NotificationDao notificationDao,int notificationType)throws SQLException{
+        PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseUuid);
+        if(purchaseEntity != null){
+            if(notificationType == NotificationType.STATUS.getNotificationType()){
+                if(purchaseEntity.getOrderStatus() != null){
+                    switch (purchaseEntity.getOrderStatus()){
+                        case CANCELED:
+                        case DELIVERED:
+                            return NotificationType.CANCEL.getNotificationType();
+                    }
+                }
+            }else if(notificationType == NotificationType.PURCHASE.getNotificationType()){
+                if(purchaseEntity.getOrderStatus() != null){
+                    switch (purchaseEntity.getOrderStatus()){
+                        case PACKING:
+                        case FAILED_TO_DELIVER:
+                        case OUT_FOR_DELIVERY:
+                        case READY_TO_COLLECT:
+                        case READY_TO_SHIPPING:
+                            return NotificationType.STATUS.getNotificationType();
+                    }
+                }
+            }
+
+        }
+        return notificationType;
+    }
+
 
     protected void callActivity(int notificationType,String purchaseUuid){
         try{
@@ -52,19 +90,22 @@ public class NotificationBaseActivity extends AppCompatActivity {
             Log.i("Noti","ActivityUtil.IS_LOGIN"+ActivityUtil.IS_LOGIN);
             // Check User is already login or not. If its login, then call corresponding activity
             if(ActivityUtil.IS_LOGIN){
+             int currentNotificationType =   getNotificationType(purchaseUuid,notificationDao,notificationType);
+
                 // Check given notification is  Order_Status. If its Order_Status, then call HomeActivity and navigate to Order status tab.
-                if(notificationType == NotificationType.STATUS.getNotificationType()){
+                if(currentNotificationType == NotificationType.STATUS.getNotificationType()){
+
                     // Clear notification data from Database
-                    notificationDao.clearNotification(NotificationType.STATUS);
+                    notificationDao.clearNotification(NotificationType.STATUS.getNotificationType(notificationType));
                     // Call HomeActivity. 1 indicates Order_status tab
                     callHomeActivity(1);
                     return;
                     //Check given notification is Purchase. If its purchase, then check only one purchase data or group of purchase data and call according
-                }else if(notificationType == NotificationType.PURCHASE.getNotificationType()){
+                }else if(currentNotificationType == NotificationType.PURCHASE.getNotificationType()){
                     // Get Purchase count.
                     long count =  notificationDao.getNotificationCount(NotificationType.PURCHASE);
                     // Clear notification data from Database
-                    notificationDao.clearNotification(NotificationType.PURCHASE);
+                    notificationDao.clearNotification(NotificationType.STATUS.getNotificationType(notificationType));
                     // If its more than one, then call HomeActivity
                     if(count > 1){
                         callHomeActivity(0);

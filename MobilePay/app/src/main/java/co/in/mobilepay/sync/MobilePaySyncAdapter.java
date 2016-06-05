@@ -23,17 +23,21 @@ import java.util.concurrent.Executors;
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
+import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
+import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
+import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
@@ -65,6 +69,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private UserDao userDao;
     private MobilePayAPI mobilePayAPI;
     private Gson gson;
+    private NotificationDao notificationDao;
 
     ExecutorService executorService = Executors.newFixedThreadPool(5);
     CountDownLatch countDownLatch = new CountDownLatch(4);
@@ -87,6 +92,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             userDao = new UserDaoImpl(context);
             mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
             gson = new Gson();
+            notificationDao = new NotificationDaoImpl(context);
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in MobilePaySyncAdapter",e);
         }
@@ -564,6 +570,13 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                        purchaseEntity.setServerDateTime(luggageJson.getServerDateTime());
                        purchaseEntity.setOrderStatus(luggageJson.getOrderStatus());
                        purchaseDao.updatePurchase(purchaseEntity);
+
+                     /*  NotificationEntity notificationEntity = notificationDao.getNotificationEntity(purchaseEntity.getPurchaseGuid());
+                       if(notificationEntity != null){
+                           notificationEntity.setNotificationType(NotificationType.STATUS);
+                           notificationDao.updateNotification(notificationEntity);
+                       }*/
+
                     }else{ // If purchaseEntity is not present, then need to get purchase details data
                        purchaseUUIDs.add(luggageJson.getPurchaseGuid());
                    }
