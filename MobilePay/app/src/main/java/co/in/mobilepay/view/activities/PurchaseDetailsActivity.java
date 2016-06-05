@@ -2,6 +2,7 @@ package co.in.mobilepay.view.activities;
 
 import android.accounts.Account;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -56,6 +57,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
     private int fragmentOptions = 0;
     private int purchaseId = 0;
+    private boolean isNotification = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +73,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
         try{
             purchaseId = getIntent().getIntExtra("purchaseId",0);
             fragmentOptions = getIntent().getIntExtra("fragmentOptions",0);
+            isNotification = getIntent().getBooleanExtra("isNotification",false);
             purchaseService = new PurchaseServiceImpl(this);
         }catch (Exception e){
             Log.e("Error", "Error in init", e);
@@ -331,6 +334,15 @@ return transactionalDetailsEntity;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(isNotification){
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("tabPosition",fragmentOptions - 1);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }else {
+            super.onBackPressed();
+        }
+
     }
 }

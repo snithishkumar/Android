@@ -19,6 +19,7 @@ public class PurchaseModel {
     private String merchantGuid;
     private String serverMerchantId;
     private String orderStatus;
+    private String counterNumber;
 
     public PurchaseModel(PurchaseEntity purchaseEntity){
         this.dateTime = String.valueOf(purchaseEntity.getPurchaseDateTime());
@@ -27,9 +28,10 @@ public class PurchaseModel {
         this.purchaseId = purchaseEntity.getPurchaseId();
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
         this.area = purchaseEntity.getMerchantEntity().getArea();
-        this.orderStatus = purchaseEntity.getOrderStatus() != null ?  purchaseEntity.getOrderStatus().toString().replaceAll("_",""): null;
+        this.orderStatus = purchaseEntity.getOrderStatus() != null ?  purchaseEntity.getOrderStatus().toString().replaceAll("_"," "): null;
         this.totalAmount = purchaseEntity.getTotalAmount();
         this.merchantGuid = purchaseEntity.getMerchantEntity().getMerchantGuid();
+
         this.serverMerchantId = String.valueOf(purchaseEntity.getMerchantEntity().getServerMerchantId());
 
 
@@ -46,6 +48,14 @@ public class PurchaseModel {
         this.category = category;
         this.noOfItems = noOfItems;
         this.totalAmount = totalAmount;
+    }
+
+    public String getCounterNumber() {
+        return counterNumber;
+    }
+
+    public void setCounterNumber(String counterNumber) {
+        this.counterNumber = counterNumber;
     }
 
     public String getMerchantGuid() {

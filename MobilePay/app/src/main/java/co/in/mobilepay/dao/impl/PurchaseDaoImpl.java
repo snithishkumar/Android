@@ -218,7 +218,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
-        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
+        PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, false).queryForFirst();
         return  purchaseEntity != null ? purchaseEntity.getPurchaseDateTime() : -1;
     }
 

@@ -101,7 +101,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             productDetailsModel = productDetailsModels.get(position);
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
-            calcAmount(position);
+            calcAmount(position,productDetailsModel);
+            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
            ;
@@ -166,8 +167,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         return  stringBuilder.toString();
     }
 
-    private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
+    private void calcAmount(int position,ProductDetailsModel productDetailsModel){
+        amount = amount +  Double.valueOf(productDetailsModel.getAmount());
     }
 
     private void calcAmount(){

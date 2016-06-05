@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,11 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         String emailTemp = email.getText().toString();
         if(emailTemp == null  || emailTemp.trim().isEmpty()){
             email.setError(getString(R.string.error_reg_email));
+            return null;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailTemp).matches()){
+            email.setError(getString(R.string.error_reg_email_not_valid));
             return null;
         }
 

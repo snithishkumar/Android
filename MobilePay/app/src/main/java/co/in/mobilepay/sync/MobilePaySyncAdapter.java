@@ -625,7 +625,13 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             CounterDetailsEntity counterDetailsEntity = purchaseDao.getCounterDetailsEntity(purchaseEntity);
             if(counterDetailsEntity == null){
                 counterDetailsEntity = new CounterDetailsEntity(counterDetails);
+                counterDetailsEntity.setPurchaseEntity(purchaseEntity);
                 purchaseDao.createCounterDetails(counterDetailsEntity);
+            }else{
+                counterDetailsEntity.setCounterNumber(counterDetails.getCounterNumber());
+                counterDetailsEntity.setMessage(counterDetails.getMessage());
+                counterDetailsEntity.setPurchaseEntity(purchaseEntity);
+                purchaseDao.updateCounterDetails(counterDetailsEntity);
             }
         }
     }

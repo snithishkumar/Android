@@ -54,7 +54,9 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
-    private void showInfo1(View view,String msg){
+    private void showInfo1(View view,PurchaseModel purchaseModel){
+        String msg = "Your order is ready. Please collect " +
+                "your order in ground floor("+purchaseModel.getName()+"). Your counter id  is "+purchaseModel.getCounterNumber();
         new SimpleTooltip.Builder(homeActivity)
                 .anchorView(view)
                 .text(msg)
@@ -97,20 +99,12 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
             luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
-            /*luggageListViewHolder.vCall.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
-                    try {
-                        homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
 
-                }
-            });*/
-
+            if(purchaseModel.getOrderStatus().equals("READY TO COLLECT")){
+                luggageListViewHolder.vInfo.setVisibility(View.VISIBLE);
+            }else{
+                luggageListViewHolder.vOrderStatus.setOnClickListener(null);
+            }
             Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
                     .placeholder(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
@@ -183,7 +177,15 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onClick(View v) {
                     PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
-                    showInfo1(v,"Your order is ready. Please collect your order in ground floor. Your counter id  is 10");
+                    showInfo1(v,purchaseModel);
+                }
+            });
+
+            vOrderStatus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
+                    showInfo1(v,purchaseModel);
                 }
             });
 

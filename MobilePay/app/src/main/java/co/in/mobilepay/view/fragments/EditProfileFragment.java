@@ -166,6 +166,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         switch (responseData.getStatusCode()){
             case MessageConstant.REG_OK:
                 if(isPasswordChanged || !previousMobile.equals(newMobile)){
+                    accountService.verifyMobile(newMobile,null);
                     editProfileFragmentCallBack.onSuccess(1,newMobile);
                     // Need to call OTP
                 }else {

@@ -70,8 +70,11 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     }
 
     private void processMobileNoSuccessResponse(ResponseData responseData,String mobileNo,AccountServiceCallback accountServiceCallback){
-        int statusCode = responseData.getStatusCode();
-        accountServiceCallback.accountServiceCallback(statusCode, mobileNo);
+       if(accountServiceCallback != null){
+           int statusCode = responseData.getStatusCode();
+           accountServiceCallback.accountServiceCallback(statusCode, mobileNo);
+       }
+
 
     }
 

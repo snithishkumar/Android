@@ -67,7 +67,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
                 }
 
             }
-        },30000);
+        },10000);
         otpReset.setOnClickListener(this);
         return view;
     }
@@ -97,7 +97,10 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
 
     @Subscribe
     public void processOtpResponse(ResponseData responseData){
-        progressDialog.dismiss();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+
         switch (responseData.getStatusCode()){
             case MessageConstant.OTP_OK:
                 // Success

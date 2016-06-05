@@ -15,6 +15,7 @@ import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
@@ -79,6 +80,11 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             List<PurchaseEntity> purchaseList =   purchaseDao.getOrderStatusList();
             for (PurchaseEntity purchaseEntity : purchaseList){
                 PurchaseModel purchaseModel = new PurchaseModel(purchaseEntity);
+                if(purchaseEntity.getOrderStatus().toString().equals(OrderStatus.READY_TO_COLLECT.toString())){
+                    CounterDetailsEntity counterDetailsEntity = purchaseDao.getCounterDetailsEntity(purchaseEntity);
+                    purchaseModel.setCounterNumber(counterDetailsEntity.getCounterNumber());
+                }
+
                 purchaseModelList.add(purchaseModel);
             }
         }catch (Exception e){
