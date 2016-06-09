@@ -49,4 +49,10 @@ public final class  MessageConstant {
 
 
     public static final int PROFILE_UPDATE_SUCCESS = 256;
+
+
+    public static final int MOBILE = 1;
+    public static final int OTP = 2;
+    public static final int REGISTER = 3;
+    public static final int LOGIN = 4;
 }

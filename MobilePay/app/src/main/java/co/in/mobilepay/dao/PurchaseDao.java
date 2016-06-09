@@ -66,4 +66,5 @@ public interface PurchaseDao {
     void createCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException;
 
     void updateCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException;
+
 }

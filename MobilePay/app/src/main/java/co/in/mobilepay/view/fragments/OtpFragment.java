@@ -20,54 +20,48 @@ import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.listener.SMSReceiver;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.MainActivity;
-import retrofit2.Response;
 
 /**
  * Created by Nithish on 07-02-2016.
  */
-public class OtpFragment extends Fragment implements View.OnClickListener{
+public class OtpFragment extends Fragment implements View.OnClickListener {
 
     private EditText otpNumber;
-    private MainActivity mainActivity =  null;
+    private MainActivity mainActivity = null;
     private MainActivityCallback mainActivityCallback = null;
     private ProgressDialog progressDialog = null;
-    private String mobileNumber = null;
-    private Boolean isProfileUpdate = false;
-    private Button  otpReset;
+    private Button otpReset;
 
     private boolean isOtpReceived = false;
 
     private final BroadcastReceiver mySmsReceiver = new SMSReceiver();
 
 
-    public OtpFragment(){
+    public OtpFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mobileNumber = getArguments().getString("mobileNumber");
-        isProfileUpdate = getArguments().getBoolean("isProfileUpdate");
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
-        Button otpSubmit = (Button)view.findViewById(R.id.otp_submit);
+        Button otpSubmit = (Button) view.findViewById(R.id.otp_submit);
         otpSubmit.setOnClickListener(this);
 
-        otpReset = (Button)view.findViewById(R.id.otp_resend);
+        otpReset = (Button) view.findViewById(R.id.otp_resend);
         otpReset.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(!isOtpReceived){
+                if (!isOtpReceived) {
                     otpReset.setEnabled(true);
                 }
 
             }
-        },10000);
+        }, 10000);
         otpReset.setOnClickListener(this);
         return view;
     }
@@ -75,12 +69,13 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mainActivity = (MainActivity)context;
+        this.mainActivity = (MainActivity) context;
         this.mainActivityCallback = mainActivity;
     }
-    public String getOtpNumber(){
+
+    public String getOtpNumber() {
         String optNumberTemp = otpNumber.getText().toString();
-        if(optNumberTemp == null || optNumberTemp.trim().isEmpty()){
+        if (optNumberTemp == null || optNumberTemp.trim().isEmpty()) {
             otpNumber.setError(getString(R.string.error_otp_number));
             return null;
         }
@@ -89,71 +84,68 @@ public class OtpFragment extends Fragment implements View.OnClickListener{
 
 
     @Subscribe
-    public void processOtpResponse(String otpResponse){
+    public void processOtpResponse(String otpResponse) {
         isOtpReceived = true;
         otpReset.setEnabled(false);
         otpNumber.setText(otpResponse);
     }
 
     @Subscribe
-    public void processOtpResponse(ResponseData responseData){
-        if(progressDialog != null){
+    public void processOtpResponse(ResponseData responseData) {
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
-
-        switch (responseData.getStatusCode()){
+        switch (responseData.getStatusCode()) {
             case MessageConstant.OTP_OK:
-                // Success
-                if(isProfileUpdate){
-                    mainActivityCallback.success(MessageConstant.PROFILE_UPDATE_SUCCESS,mobileNumber);
-                }else{
-                    mainActivityCallback.success(MessageConstant.OTP_OK,mobileNumber);
-                }
-
+                mainActivityCallback.success(MessageConstant.OTP_OK, null);
                 break;
-            case  MessageConstant.OTP_ERROR_CODE :
-                ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.OTP_ERROR);
+            case MessageConstant.OTP_ERROR_CODE:
+                ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.OTP_ERROR);
                 break;
 
             default:
                 // Toast
-                Toast.makeText(mainActivity,responseData.getData(),Toast.LENGTH_LONG).show();
+                Toast.makeText(mainActivity, responseData.getData(), Toast.LENGTH_LONG).show();
                 break;
         }
     }
 
 
-
     @Override
     public void onClick(View v) {
-switch (v.getId()){
-    case R.id.otp_submit:
-        String otpNumber = getOtpNumber();
-        if(otpNumber != null){
-            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
-            if(isNet){
-                progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-                mainActivity.getAccountService().validateOtp(otpNumber,mobileNumber);
+        switch (v.getId()) {
+            case R.id.otp_submit:
+                String otpNumber = getOtpNumber();
+                if (otpNumber != null) {
+                    boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+                    if (isNet) {
+                        progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+                        if (mainActivity.getRegisterJson() != null) {
+                            mainActivity.getAccountService().validateOtp(otpNumber, mainActivity.getRegisterJson(), mainActivity);
+                        } else {
+                            mainActivity.getAccountService().validateOtp(otpNumber, mainActivity.getMobileNumber(), mainActivity);
+                        }
+                    } else {
+                        ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+                    }
+                }
+                break;
+            case R.id.otp_resend:
+                boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+                if (isNet) {
+                    if (mainActivity.getRegisterJson() != null) {
+                        mainActivity.getAccountService().requestOtp(mainActivity.getRegisterJson().getMobileNumber(), mainActivity);
+                    }else{
+                        mainActivity.getAccountService().requestOtp(mainActivity.getMobileNumber(), mainActivity);
+                    }
 
-            }else{
-                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
-            }
+                    ActivityUtil.toast(mainActivity, getString(R.string.otp_resend));
+                } else {
+                    ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+                }
+                break;
+
         }
-
-        break;
-    case R.id.otp_resend:
-        if(mobileNumber != null){
-            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
-            if(isNet){
-                mainActivity.getAccountService().resendOtp(mobileNumber);
-                ActivityUtil.toast(mainActivity,getString(R.string.otp_resend));
-            }else{
-                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
-            }
-        }
-        break;
-
-}
     }
 
 
@@ -165,7 +157,7 @@ switch (v.getId()){
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.provider.Telephony.SMS_RECEIVED");
         mainActivity.registerReceiver(mySmsReceiver, filter);
@@ -174,7 +166,7 @@ switch (v.getId()){
         super.onResume();
     }
 
-    public  interface MainActivityCallback {
-        void success(int code,Object data);
+    public interface MainActivityCallback {
+        void success(int code, Object data);
     }
 }

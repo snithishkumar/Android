@@ -41,14 +41,17 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private AccountService accountService;
     private NaviDrawerActivity naviDrawerActivity;
-    private EditProfileFragmentCallBack editProfileFragmentCallBack;
 
-    private ProgressDialog progressDialog = null;
 
     private boolean isPasswordChanged = false;
 
+    private ProgressDialog progressDialog = null;
+
+    private EditProfileFragmentCallBack editProfileFragmentCallBack;
+
     private String previousMobile = null;
     private String newMobile = null;
+
 
     public EditProfileFragment(){
 
@@ -103,7 +106,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         previousMobile = userEntity.getMobileNumber();
         vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
-        vPassword.setText(".....");
+        vPassword.setText(userEntity.getPassword());
     }
 
 
@@ -111,8 +114,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     public void onAttach(Context context) {
         super.onAttach(context);
         this.naviDrawerActivity = (NaviDrawerActivity)context;
-        editProfileFragmentCallBack = naviDrawerActivity;
         this.accountService = naviDrawerActivity.getAccountService();
+        editProfileFragmentCallBack = naviDrawerActivity;
     }
 
     @Override
@@ -148,16 +151,26 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         String imeiNumber = ServiceUtil.getIMEINumber(naviDrawerActivity);
         registerJson.setImei(imeiNumber);
-        boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
-        if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
-            naviDrawerActivity.getAccountService().updateUser(registerJson);
+
+        if(isPasswordChanged || !previousMobile.equals(newMobile)){
+            // Need to call OTP
+            //accountService.verifyMobile(newMobile);
+            editProfileFragmentCallBack.onSuccess(1,registerJson);
+
         }else{
-            ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
+            boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
+            if(isNet){
+                progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
+              //  naviDrawerActivity.getAccountService().updateUser(registerJson);
+            }else{
+                ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
+            }
         }
 
 
+
     }
+
 
     @Subscribe
     public void processEditProResponse(ResponseData responseData){
@@ -165,14 +178,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         switch (responseData.getStatusCode()){
             case MessageConstant.REG_OK:
-                if(isPasswordChanged || !previousMobile.equals(newMobile)){
-                    accountService.verifyMobile(newMobile,null);
-                    editProfileFragmentCallBack.onSuccess(1,newMobile);
-                    // Need to call OTP
-                }else {
-                    // Need to call home screen
-                    editProfileFragmentCallBack.onSuccess(2,newMobile);
-                }
+                // Need to call home screen
+                editProfileFragmentCallBack.onSuccess(2,null);
                 break;
             case MessageConstant.REG_ERROR_CODE:
                 ActivityUtil.showDialog(naviDrawerActivity, "Error", MessageConstant.REG_ERROR);
@@ -183,6 +190,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
 
     }
+
 
 
     @Override
@@ -198,9 +206,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     }
 
 
-
     public interface EditProfileFragmentCallBack{
-        void onSuccess(int option,String mobile);
+        void onSuccess(int option,RegisterJson registerJson);
     }
 
 

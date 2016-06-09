@@ -24,6 +24,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.gcm.GcmRegistrationIntentService;
+import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
@@ -44,7 +45,8 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
     private LoginFragment loginFragment = null;
     private MobileFragment mobileFragment = null;
     /* Local variable*/
-    private String mobileNumber = null;
+    private RegisterJson registerJson = null;
+    private String mobileNumber;
     private boolean isProfileUpdate = false;
     /* Service Layer */
     private AccountService accountService;
@@ -61,8 +63,9 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
         super.onCreate(savedInstanceState);
         // Check PlayService is Enable or not
         ActivityUtil.checkPlayServices(this);
+
         // Check whether it called from Profile Update screen
-        mobileNumber =  getIntent().getStringExtra("mobileNumber");
+        registerJson =  getIntent().getParcelableExtra("registration");
         isProfileUpdate =  getIntent().getBooleanExtra("isProfileUpdate", false);
 
          notificationType =  getIntent().getIntExtra("notificationType",1);
@@ -107,7 +110,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
         if(isProfileUpdate){
             otpFragment = new OtpFragment();
             Bundle bundle = new Bundle();
-            bundle.putString("mobileNumber",mobileNumber);
+            bundle.putString("mobileNumber",registerJson.getMobileNumber());
             bundle.putBoolean("isProfileUpdate",isProfileUpdate);
             otpFragment.setArguments(bundle);
             FragmentsUtil.addFragment(this, otpFragment, R.id.main_container);
@@ -163,9 +166,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
         switch (code){
             case MessageConstant.MOBILE_VERIFY_OK:
                 otpFragment = new OtpFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("mobileNumber",(String)data);
-                otpFragment.setArguments(bundle);
+                mobileNumber = (String)data;
                 FragmentsUtil.replaceFragment(this,otpFragment,R.id.main_container);
                 break;
             case MessageConstant.REG_OK:
@@ -175,10 +176,6 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
                 break;
             case MessageConstant.OTP_OK:
                 registrationFragment = new RegistrationFragment();
-                 bundle = new Bundle();
-                bundle.putBoolean("isPasswordForget",isPasswordForget);
-                bundle.putString("mobileNumber",(String)data);
-                registrationFragment.setArguments(bundle);
                 FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
                 break;
             case MessageConstant.LOGIN_OK:
@@ -220,8 +217,6 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
     }
 
 
-
-
     @Subscribe
     public void purchaseResponse(PurchaseListPoster purchaseListPoster){
         processResponse(purchaseListPoster);
@@ -229,60 +224,15 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
 
     }
 
-
-    public  void copyDataBase(Context context){
-        try{
-            String fileName =  context.getApplicationInfo().dataDir + "/databases/mobilepaydatabase.db";
-            String  path = Environment.getExternalStoragePublicDirectory("/").getAbsolutePath();
-            String  resourcePath =path+"/temp/";
-            File file = new File(resourcePath);
-            file.mkdirs();
-            file = new File(fileName);
-            if(file.exists()){
-                FileInputStream fileInputStream = new FileInputStream(file);
-                resourcePath = resourcePath + "/mobilepaydatabase.db";
-                downloadStreamData(fileInputStream, resourcePath);
-                fileInputStream.close();
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
-    public static void downloadStreamData(InputStream inputStream, String pathWithName) throws Exception {
-        FileOutputStream fileOutputStream = null;
-
-        try {
-
-            fileOutputStream = new FileOutputStream(pathWithName);
-            copyLarge(inputStream, fileOutputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new Exception(e);
-        } finally {
-            if (fileOutputStream != null) {
-                try {
-                    fileOutputStream.flush();
-                    fileOutputStream.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
+    public RegisterJson getRegisterJson() {
+        return registerJson;
     }
-    private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 
-    public static long copyLarge(InputStream input, OutputStream output)
-            throws IOException {
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        long count = 0;
-        int n = 0;
-        while (-1 != (n = input.read(buffer))) {
-            output.write(buffer, 0, n);
-            count += n;
-        }
-        return count;
+    public boolean isPasswordForget() {
+        return isPasswordForget;
     }
 }

@@ -14,6 +14,7 @@ import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.MerchantEntity;
+import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.OrderStatus;
@@ -304,4 +305,5 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     public void updateCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException{
         counterDetailsDao.update(counterDetailsEntity);
     }
+
 }

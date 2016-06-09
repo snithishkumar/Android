@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
@@ -67,10 +68,10 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
     }
 
     @Override
-    public void onSuccess(int option, String mobile) {
+    public void onSuccess(int option, RegisterJson registerJson) {
         if(option == 1){
             Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("mobileNumber",mobile);
+            intent.putExtra("registration",registerJson);
             intent.putExtra("isProfileUpdate",true);
            // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

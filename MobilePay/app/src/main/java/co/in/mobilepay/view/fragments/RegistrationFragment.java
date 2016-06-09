@@ -2,6 +2,7 @@ package co.in.mobilepay.view.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.squareup.otto.Subscribe;
+
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
+import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
@@ -22,7 +28,7 @@ import co.in.mobilepay.view.activities.MainActivity;
 /**
  * Created by Nithish on 06-02-2016.
  */
-public class RegistrationFragment extends Fragment implements View.OnClickListener,AccountServiceImpl.AccountServiceCallback{
+public class RegistrationFragment extends Fragment implements View.OnClickListener{
     EditText name = null;
     EditText email = null;
     EditText password = null;
@@ -31,8 +37,6 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     private MainActivity mainActivity = null;
     ProgressDialog progressDialog = null;
     private MainActivityCallback mainActivityCallback =null;
-    String mobileNumber = null;
-    boolean isPasswordForget;
 
     public RegistrationFragment(){
     }
@@ -47,11 +51,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mobileNumber = getArguments().getString("mobileNumber");
-        isPasswordForget = getArguments().getBoolean("isPasswordForget");
-        if(isPasswordForget){
-            mainActivity.getAccountService().deleteUser();
-        }
+
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         name = (EditText) view.findViewById(R.id.reg_name);
         email = (EditText) view.findViewById(R.id.reg_email);
@@ -60,6 +60,9 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         rePassword = (EditText) view.findViewById(R.id.reg_repassword);
         FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.reg_submit);
         floatingActionButton.setOnClickListener(this);
+        if(mainActivity.isPasswordForget()){
+            loadData();
+        }
         return view;
     }
 
@@ -100,7 +103,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             return null;
         }
 
-        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mobileNumber,"",isPasswordForget,emailTemp);
+        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mainActivity.getMobileNumber(),"",mainActivity.isPasswordForget(),emailTemp);
         return registerJson;
     }
 
@@ -113,8 +116,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-
-                mainActivity.getAccountService().createUser(registerJson,this);
+                mainActivity.getAccountService().createUser(registerJson,mainActivity);
             }else{
                 ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
             }
@@ -122,22 +124,47 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     }
 
 
-    @Override
-    public void accountServiceCallback(int statusCode, Object data) {
+    @Subscribe
+    public void processRegistrationResponse(ResponseData responseData){
+       if(progressDialog != null){
+           progressDialog.dismiss();
+       }
+        if(responseData.getStatusCode() == MessageConstant.REG_OK){
+            mainActivityCallback.success(MessageConstant.REG_OK,null);
+            return;
+        }else {
+            if(responseData.getData() != null){
+                ActivityUtil.showDialog(mainActivity,"Error",responseData.getData());
+            }else{
+                ActivityUtil.showDialog(mainActivity,"Error",mainActivity.getString(R.string.error_purchase_list));
+            }
 
-        progressDialog.dismiss();
-        switch (statusCode){
-            case MessageConstant.REG_OK:
-                mainActivityCallback.success(MessageConstant.REG_OK,null);
-                break;
-            case MessageConstant.REG_ERROR_CODE:
-                ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.REG_ERROR);
-                break;
-            default:
-                ActivityUtil.showDialog(mainActivity,"Error",(String)data);
-                break;
+            return;
         }
     }
+
+    private void loadData(){
+        UserEntity userEntity = mainActivity.getAccountService().getUserDetails();
+        if(userEntity != null){
+            name.setText(userEntity.getName());
+            email.setText(userEntity.getEmail());
+
+        }
+    }
+
+
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        MobilePayBus.getInstance().register(this);
+        super.onResume();
+    }
+
 
     public  interface MainActivityCallback {
         void success(int code,Object data);

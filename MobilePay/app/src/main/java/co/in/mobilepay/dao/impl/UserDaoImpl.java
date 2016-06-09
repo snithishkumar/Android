@@ -10,7 +10,14 @@ import java.util.List;
 
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.CounterDetailsEntity;
+import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.MerchantEntity;
+import co.in.mobilepay.entity.NotificationEntity;
+import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
+import okhttp3.internal.Internal;
 
 /**
  * Created by Nithish on 22-01-2016.
@@ -227,6 +234,27 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     @Override
     public UserEntity getUser(String mobileNumber)throws SQLException{
         return  userDao.queryBuilder().where().eq(UserEntity.MOBILE_NUMBER,mobileNumber).queryForFirst();
+    }
+
+
+    public void removeData()throws SQLException{
+        addressDao.deleteBuilder().delete();
+        userDao.deleteBuilder().delete();
+
+         Dao<PurchaseEntity,Integer> purchaseDao = databaseHelper.getDao(PurchaseEntity.class);
+         Dao<MerchantEntity,Integer> merchantDao = databaseHelper.getDao(MerchantEntity.class);
+         Dao<DiscardEntity,Integer> discardDao = databaseHelper.getDao(DiscardEntity.class);
+         Dao<TransactionalDetailsEntity,Integer> transactionalDetailsDao = databaseHelper.getDao(TransactionalDetailsEntity.class);
+         Dao<CounterDetailsEntity,Internal> counterDetailsDao = databaseHelper.getDao(CounterDetailsEntity.class);
+
+
+        counterDetailsDao.deleteBuilder().delete();
+        transactionalDetailsDao.deleteBuilder().delete();
+        discardDao.deleteBuilder().delete();
+        merchantDao.deleteBuilder().delete();
+        purchaseDao.deleteBuilder().delete();
+        Dao<NotificationEntity,Integer> notificationDao = databaseHelper.getDao(NotificationEntity.class);
+        notificationDao.deleteBuilder().delete();
     }
 
 

@@ -1,5 +1,7 @@
 package co.in.mobilepay.service;
 
+import android.content.Context;
+
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
@@ -9,20 +11,27 @@ import co.in.mobilepay.service.impl.AccountServiceImpl;
  */
 public interface AccountService {
 
-    void createUser(RegisterJson registerJson,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+
+   void createUser(RegisterJson registerJson,Context context);
 
     boolean isUserPresent();
 
     UserEntity getUserDetails();
 
-   void validateOtp(String otpPassword,String mobileNumber);
+    void requestOtp(String mobileNumber,Context context);
 
-    void updateUser(RegisterJson registerJson);
+   void validateOtp(String otpPassword,String mobileNumber,Context context);
 
-    void deleteUser();
-    void login(String password,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+    void validateOtp(String otpPassword, RegisterJson registerJson, Context context);
 
-    void verifyMobile(String mobileNumber,AccountServiceImpl.AccountServiceCallback accountServiceCallback);
+ /*   void updateUser(RegisterJson registerJson);
+
+    void deleteUser();*/
+    void login(String password);
+
+  /*  void verifyMobile(String mobileNumber);
 
     void resendOtp(String mobileNumber);
+
+    void resetApp(String mobileNumber);*/
 }

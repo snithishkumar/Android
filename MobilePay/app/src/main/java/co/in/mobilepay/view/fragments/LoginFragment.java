@@ -19,10 +19,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
@@ -32,7 +36,7 @@ import co.in.mobilepay.view.activities.MainActivity;
 /**
  * Created by Nithish on 07-02-2016.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener,AccountServiceImpl.AccountServiceCallback{
+public class LoginFragment extends Fragment implements View.OnClickListener{
 
     List<String> selectedPin = new ArrayList<>(6);
     Button firstPin = null;
@@ -57,8 +61,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        activity = getActivity();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mainActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         init(view);
         return view;
@@ -89,7 +92,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", mainActivity);
                 String data = TextUtils.join("",selectedPin);
-                mainActivity.getAccountService().login(data, this);
+                mainActivity.getAccountService().login(data);
             }else{
                 ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
             }
@@ -232,32 +235,50 @@ public class LoginFragment extends Fragment implements View.OnClickListener,Acco
         }
     }
 
-    @Override
-    public void accountServiceCallback(int statusCode, Object data) {
-        progressDialog.dismiss();
-switch (statusCode){
-    case MessageConstant.LOGIN_OK:
-        mainActivityCallback.success(MessageConstant.LOGIN_OK,null);
-        // Need to callback acitivity
-        break;
-    case MessageConstant.LOGIN_INTERNAL_ERROR:
-        ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.LOGIN_ERROR);
-        break;
-    case MessageConstant.LOGIN_INVALID_MOBILE:
-        mainActivityCallback.success(MessageConstant.LOGIN_INVALID_MOBILE, null);
-        break;
-    default:
 
-       ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.LOGIN_INVALID_PIN_ERROR);
-        mainActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                reSetPin();
-            }
-        });
-        break;
-}
+
+    @Subscribe
+    public void processLoginResponse(ResponseData responseData){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+        switch (responseData.getStatusCode()){
+            case MessageConstant.LOGIN_OK:
+                mainActivityCallback.success(MessageConstant.LOGIN_OK,null);
+                // Need to callback acitivity
+                break;
+            case MessageConstant.LOGIN_INTERNAL_ERROR:
+                ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.LOGIN_ERROR);
+                break;
+            case MessageConstant.LOGIN_INVALID_MOBILE:
+                mainActivityCallback.success(MessageConstant.LOGIN_INVALID_MOBILE, null);
+                break;
+            default:
+
+                ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.LOGIN_INVALID_PIN_ERROR);
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        reSetPin();
+                    }
+                });
+                break;
+        }
     }
+
+
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        MobilePayBus.getInstance().register(this);
+        super.onResume();
+    }
+
 
 
     public  interface MainActivityCallback {

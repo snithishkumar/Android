@@ -20,7 +20,7 @@ public interface  MobilePayAPI {
 
     /** Create User **/
     @POST("mobile/register.html")
-    Call<ResponseData> createUser(@Body String data);
+    Call<ResponseData> createUser(@Body RegisterJson registerJson);
 
     /** Update Profile Changes **/
     @POST("mobilePayUser/mobile/updateProfile.html")

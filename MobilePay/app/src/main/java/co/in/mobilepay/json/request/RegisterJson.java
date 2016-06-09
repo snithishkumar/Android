@@ -1,11 +1,14 @@
 package co.in.mobilepay.json.request;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import co.in.mobilepay.entity.UserEntity;
 
 /**
  * Created by Nithish on 23-01-2016.
  */
-public class RegisterJson{
+public class RegisterJson implements Parcelable{
 
     private String name;
     private String password;
@@ -27,6 +30,32 @@ public class RegisterJson{
         this.email = email;
     }
 
+
+    public RegisterJson(Parcel in){
+        this.name = in.readString();
+        this.password = in.readString();
+        this.mobileNumber = in.readString();
+        this.email = in.readString();
+        this.imei = in.readString();
+
+    }
+
+
+    @Override
+    public int describeContents(){
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.password);
+        dest.writeString(this.mobileNumber);
+        dest.writeString(this.email);
+        dest.writeString(this.imei);
+
+    }
+
     public RegisterJson(UserEntity userEntity){
         this.name = userEntity.getName();
         this.password = userEntity.getPassword();
@@ -34,6 +63,17 @@ public class RegisterJson{
         this.imei = userEntity.getImei();
         this.email = userEntity.getEmail();
     }
+
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public RegisterJson createFromParcel(Parcel in) {
+            return new RegisterJson(in);
+        }
+
+        public RegisterJson[] newArray(int size) {
+            return new RegisterJson[size];
+        }
+    };
 
     public boolean isPasswordForget() {
         return isPasswordForget;

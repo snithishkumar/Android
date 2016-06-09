@@ -50,4 +50,7 @@ public interface UserDao {
     void removeUser()throws SQLException;
 
 
+    void removeData()throws SQLException;
+
+
 }

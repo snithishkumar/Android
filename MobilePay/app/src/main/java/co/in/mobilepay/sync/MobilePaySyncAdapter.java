@@ -39,6 +39,7 @@ import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
+import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
 import co.in.mobilepay.json.response.CounterDetailsJson;
@@ -70,6 +71,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private MobilePayAPI mobilePayAPI;
     private Gson gson;
     private NotificationDao notificationDao;
+    private SyncAccountDetails syncAccountDetails;
 
     ExecutorService executorService = Executors.newFixedThreadPool(5);
     CountDownLatch countDownLatch = new CountDownLatch(4);
@@ -93,6 +95,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
             gson = new Gson();
             notificationDao = new NotificationDaoImpl(context);
+
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in MobilePaySyncAdapter",e);
         }
@@ -109,45 +112,82 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
        try{
-           countDownLatch = new CountDownLatch(4);
-           executorService.execute(new Runnable() {
-               @Override
-               public void run() {
-                   sendUnSyncedDataSynchronize();
-                   countDownLatch.countDown();
-               }
-           });
 
-           executorService.execute(new Runnable() {
-               @Override
-               public void run() {
-                   syncPurchaseData();
-                   countDownLatch.countDown();
-               }
-           });
+           int currentScreen =  extras.getInt("currentScreen",0);
+           if(currentScreen > 0){
+               initSyncAccountDetails();
+               switch (currentScreen){
+                   case MessageConstant.MOBILE:
+                       String  mobileNumber =  extras.getString("mobileNumber");
+                       ResponseData requestOtpResponseData =   syncAccountDetails.requestOtp(mobileNumber);
+                       MobilePayBus.getInstance().post(requestOtpResponseData);
+                       break;
 
-           executorService.execute(new Runnable() {
-               @Override
-               public void run() {
-                   syncOrderStatus();
-                   countDownLatch.countDown();
-               }
-           });
+                   case MessageConstant.OTP:
+                       mobileNumber =  extras.getString("mobileNumber");
+                       String otpPassword =  extras.getString("otpPassword");
+                       ResponseData requestValidateOtpResponseData =   syncAccountDetails.validateOtp(otpPassword,mobileNumber);
+                       MobilePayBus.getInstance().post(requestValidateOtpResponseData);
+                       break;
 
-           executorService.execute(new Runnable() {
-               @Override
-               public void run() {
-                   syncPurchaseHistoryData();
-                   countDownLatch.countDown();
+                   case MessageConstant.REGISTER:
+                       String registerJson =  extras.getString("registration");
+                       RegisterJson registerJsonObject = gson.fromJson(registerJson,RegisterJson.class);
+                       ResponseData registrationResponseData =   syncAccountDetails.userRegistration(registerJsonObject);
+                       MobilePayBus.getInstance().post(registrationResponseData);
+                       break;
                }
-           });
-           countDownLatch.await();
-           System.out.println("sdfasdfasdf");
+           }else{
+               countDownLatch = new CountDownLatch(4);
+               executorService.execute(new Runnable() {
+                   @Override
+                   public void run() {
+                       sendUnSyncedDataSynchronize();
+                       countDownLatch.countDown();
+                   }
+               });
+
+               executorService.execute(new Runnable() {
+                   @Override
+                   public void run() {
+                       syncPurchaseData();
+                       countDownLatch.countDown();
+                   }
+               });
+
+               executorService.execute(new Runnable() {
+                   @Override
+                   public void run() {
+                       syncOrderStatus();
+                       countDownLatch.countDown();
+                   }
+               });
+
+               executorService.execute(new Runnable() {
+                   @Override
+                   public void run() {
+                       syncPurchaseHistoryData();
+                       countDownLatch.countDown();
+                   }
+               });
+               countDownLatch.await();
+               System.out.println("sdfasdfasdf");
+           }
+
+
        }catch (Exception e){
            e.printStackTrace();
        }
         System.out.println("sdfasdfasdf");
 
+
+    }
+
+
+    private void initSyncAccountDetails(){
+        if(syncAccountDetails == null){
+            syncAccountDetails = new SyncAccountDetails(getContext());
+        }
 
     }
 
