@@ -85,7 +85,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         init();
         account = MobilePaySyncAdapter.getSyncAccount(context);
         settingsBundle.putInt("currentScreen",MessageConstant.OTP);
-        settingsBundle.putParcelable("registerJson",registerJson);
+        settingsBundle.putString("registration", GsonAPI.INSTANCE.getGson().toJson(registerJson));
         settingsBundle.putString("otpPassword",otpPassword);
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }

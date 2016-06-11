@@ -171,7 +171,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         amount = amount +  Double.valueOf(productDetailsModel.getAmount());
     }
 
-    private void calcAmount(){
+  /*  private void calcAmount(){
         if(amountDetailsJson.getDiscount() >  -1 && amount > amountDetailsJson.getDiscountMiniVal()){
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
                 totalAmount =   amount - amountDetailsJson.getDiscount();
@@ -186,6 +186,29 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
         taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
         totalAmount = totalAmount + taxAmount;
+    }*/
+
+    private void calcAmount(){
+        double dis = 0;
+        if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
+            dis = Double.valueOf(amountDetailsJson.getDiscount());
+        }
+
+        if(dis >  0 ){
+            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
+                totalAmount =   amount - dis;
+                discount = dis;
+            }else if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.PERCENTAGE.getDiscountType()){
+                discount = Double.valueOf(String.format("%.2f", ((amount * dis) / 100)));
+                totalAmount = amount - discount;
+            }
+        }else{
+            totalAmount = amount;
+        }
+
+        taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
+        totalAmount = totalAmount + taxAmount;
+        totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
     }
 
 

@@ -1,21 +1,28 @@
 package co.in.mobilepay.view.fragments;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -38,6 +45,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     private EditText vMobileNumber;
     private EditText vProfileName;
     private EditText vPassword;
+    private EditText vEmail = null;
 
     private AccountService accountService;
     private NaviDrawerActivity naviDrawerActivity;
@@ -51,6 +59,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private String previousMobile = null;
     private String newMobile = null;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
 
     public EditProfileFragment(){
@@ -79,6 +89,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     private void  init(View view){
         vMobileNumber = (EditText) view.findViewById(R.id.profile_edit_mobile_no);
+        vEmail = (EditText) view.findViewById(R.id.profile_email);
+
         vProfileName = (EditText) view.findViewById(R.id.profile_name);
         vPassword = (EditText) view.findViewById(R.id.profile_edit_pass);
         vPassword.addTextChangedListener(new TextWatcher() {
@@ -107,6 +119,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
         vPassword.setText(userEntity.getPassword());
+        vEmail.setText(userEntity.getEmail());
+        isPasswordChanged = false;
     }
 
 
@@ -149,6 +163,19 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
         registerJson.setMobileNumber(newMobile);
 
+        String emailTemp = vEmail.getText().toString();
+        if(emailTemp == null  || emailTemp.trim().isEmpty()){
+            vEmail.setError(getString(R.string.error_reg_email));
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailTemp).matches()){
+            vEmail.setError(getString(R.string.error_reg_email_not_valid));
+            return;
+        }
+
+        registerJson.setEmail(emailTemp);
+
         String imeiNumber = ServiceUtil.getIMEINumber(naviDrawerActivity);
         registerJson.setImei(imeiNumber);
 
@@ -161,7 +188,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
-              //  naviDrawerActivity.getAccountService().updateUser(registerJson);
+                naviDrawerActivity.getAccountService().createUser(registerJson,naviDrawerActivity);
             }else{
                 ActivityUtil.showDialog(naviDrawerActivity, "No Network", "Check your connection.");
             }
@@ -208,6 +235,63 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     public interface EditProfileFragmentCallBack{
         void onSuccess(int option,RegisterJson registerJson);
+    }
+
+
+    private void requestPermission(){
+        requestPermissions(new String[] {Manifest.permission.READ_PHONE_STATE},
+                REQUEST_CODE_ASK_PERMISSIONS);
+    }
+
+
+    private void checkPermission() {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(naviDrawerActivity,
+                Manifest.permission.READ_PHONE_STATE);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(naviDrawerActivity,Manifest.permission.READ_PHONE_STATE)) {
+                showMessageOKCancel("You need to allow access IMEI Number",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermission();
+                            }
+                        });
+                return;
+            }
+
+            requestPermission();
+            return;
+        }else{
+           // syncRegistration();
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(naviDrawerActivity)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                   // syncRegistration();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(naviDrawerActivity, "Unable to read IMEI Number", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
 

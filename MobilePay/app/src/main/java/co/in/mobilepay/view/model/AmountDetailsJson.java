@@ -6,9 +6,9 @@ import co.in.mobilepay.enumeration.DiscountType;
 public class AmountDetailsJson{
 
 private float taxAmount;
-private double discount;
+private String discount;
 private DiscountType discountType;
-private double discountMiniVal;
+private String discountMiniVal;
 
 		public float getTaxAmount() {
 			return taxAmount;
@@ -18,11 +18,11 @@ private double discountMiniVal;
 			this.taxAmount = taxAmount;
 		}
 
-		public double getDiscount() {
+		public String getDiscount() {
 			return discount;
 		}
 
-		public void setDiscount(double discount) {
+		public void setDiscount(String discount) {
 			this.discount = discount;
 		}
 
@@ -34,11 +34,11 @@ private double discountMiniVal;
 			this.discountType = discountType;
 		}
 
-		public double getDiscountMiniVal() {
+		public String getDiscountMiniVal() {
 			return discountMiniVal;
 		}
 
-		public void setDiscountMiniVal(double discountMiniVal) {
+		public void setDiscountMiniVal(String discountMiniVal) {
 			this.discountMiniVal = discountMiniVal;
 		}
 

@@ -179,12 +179,17 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void calcAmount(){
-        if(amountDetailsJson.getDiscount() >  -1 && amount > amountDetailsJson.getDiscountMiniVal()){
+        double dis = 0;
+        if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
+            dis = Double.valueOf(amountDetailsJson.getDiscount());
+        }
+
+        if(dis >  0 ){
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - amountDetailsJson.getDiscount();
-                discount = amountDetailsJson.getDiscount();
-            }else{
-                discount = Double.valueOf(String.format("%.2f", ((amount * amountDetailsJson.getDiscount()) / 100)));
+                totalAmount =   amount - dis;
+                discount = dis;
+            }else if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.PERCENTAGE.getDiscountType()){
+                discount = Double.valueOf(String.format("%.2f", ((amount * dis) / 100)));
                 totalAmount = amount - discount;
             }
         }else{

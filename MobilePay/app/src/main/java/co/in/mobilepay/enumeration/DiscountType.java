@@ -1,7 +1,7 @@
 package co.in.mobilepay.enumeration;
 
 public enum DiscountType {
-	AMOUNT(0),PERCENTAGE(1);
+	AMOUNT(0),PERCENTAGE(1),NONE(3);
 	
 private int discountType;
 	

@@ -126,12 +126,19 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                    case MessageConstant.OTP:
                        mobileNumber =  extras.getString("mobileNumber");
                        String otpPassword =  extras.getString("otpPassword");
-                       ResponseData requestValidateOtpResponseData =   syncAccountDetails.validateOtp(otpPassword,mobileNumber);
-                       MobilePayBus.getInstance().post(requestValidateOtpResponseData);
+                       String registerJson =  extras.getString("registration");
+                       if(registerJson != null){
+                           RegisterJson registerJsonObject = gson.fromJson(registerJson,RegisterJson.class);
+                           ResponseData requestValidateOtpResponseData =   syncAccountDetails.validateOtp(otpPassword,registerJsonObject);
+                           MobilePayBus.getInstance().post(requestValidateOtpResponseData);
+                       }else{
+                           ResponseData requestValidateOtpResponseData =   syncAccountDetails.validateOtp(otpPassword,mobileNumber);
+                           MobilePayBus.getInstance().post(requestValidateOtpResponseData);
+                       }
                        break;
 
                    case MessageConstant.REGISTER:
-                       String registerJson =  extras.getString("registration");
+                       registerJson =  extras.getString("registration");
                        RegisterJson registerJsonObject = gson.fromJson(registerJson,RegisterJson.class);
                        ResponseData registrationResponseData =   syncAccountDetails.userRegistration(registerJsonObject);
                        MobilePayBus.getInstance().post(registrationResponseData);
