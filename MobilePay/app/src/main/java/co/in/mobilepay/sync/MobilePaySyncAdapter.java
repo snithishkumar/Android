@@ -114,7 +114,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
        try{
 
            int currentScreen =  extras.getInt("currentScreen",0);
-           if(currentScreen > 0){
+               if(currentScreen > 0){
                initSyncAccountDetails();
                switch (currentScreen){
                    case MessageConstant.MOBILE:

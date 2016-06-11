@@ -209,6 +209,11 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
         this.startService(intent);
     }
 
+  /*  @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+*/
 
     @Override
     public void onPause() {
@@ -220,8 +225,6 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
     @Subscribe
     public void purchaseResponse(PurchaseListPoster purchaseListPoster){
         processResponse(purchaseListPoster);
-
-
     }
 
     public String getMobileNumber() {

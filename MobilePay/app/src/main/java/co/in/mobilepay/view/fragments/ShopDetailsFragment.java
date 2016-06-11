@@ -72,13 +72,15 @@ public class ShopDetailsFragment extends Fragment {
             shopMobile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    purchaseDetailsActivity.makeCall(String.valueOf(phoneNumber));
+
+                  /*  Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse("tel:" +phoneNumber));
                     try {
                         purchaseDetailsActivity.startActivity(callIntent);  // TODO -- Need to handle request
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 }
             });
 

@@ -49,7 +49,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
     private MainActivity mainActivity;
     private MainActivityCallback mainActivityCallback;
     ProgressDialog progressDialog = null;
-    private Activity activity = null;
 
     private String token = null;
 
@@ -287,7 +286,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onDestroyView() {
+        mainActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         super.onDestroyView();
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+
     }
 }

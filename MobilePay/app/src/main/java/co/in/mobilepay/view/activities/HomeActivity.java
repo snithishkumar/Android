@@ -1,26 +1,30 @@
 package co.in.mobilepay.view.activities;
 
-import android.accounts.Account;
-import android.content.ContentResolver;
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.gcm.GcmRegistrationIntentService;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.OrderStatusListAdapter;
@@ -29,7 +33,6 @@ import co.in.mobilepay.view.adapters.PurchaseListAdapter;
 import co.in.mobilepay.view.fragments.FragmentDrawer;
 import co.in.mobilepay.view.fragments.OrderStatusListFragment;
 import co.in.mobilepay.view.fragments.PurHistoryListFragment;
-import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
 public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners,OrderStatusListAdapter.PurchaseListClickListeners,PurHistoryListAdapter.PurchaseListClickListeners,FragmentDrawer.FragmentDrawerListener{
@@ -41,6 +44,10 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private FragmentDrawer drawerFragment;
 
     private int tabPosition;
+
+    private String mobileNumber;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,4 +199,74 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
             getSupportActionBar().setTitle(title);
         }*/
     }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_PHONE_STATE},
+                REQUEST_CODE_ASK_PERMISSIONS);
+    }
+
+
+    public void makeCall(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_PHONE_STATE)) {
+                showMessageOKCancel("You need to allow access to call",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermission();
+                            }
+                        });
+                return;
+            }
+
+            requestPermission();
+            return;
+        }else{
+            makeCall();
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    makeCall();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, "Unable to call.Please enable the Phone permission.", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
+    private void makeCall(){
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:" + mobileNumber));
+        try {
+            startActivity(callIntent);  // TODO -- Need to handle request
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

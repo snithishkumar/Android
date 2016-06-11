@@ -1,8 +1,13 @@
 package co.in.mobilepay.view.adapters;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +39,8 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private HomeActivity homeActivity;
 
     private static final int EMPTY_VIEW = -1;
+
+
 
     public OrderStatusListAdapter(List<PurchaseModel> purchaseModelList, HomeActivity homeActivity){
         this.purchaseModelList = purchaseModelList;
@@ -125,6 +133,8 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     class LuggageListViewHolder extends RecyclerView.ViewHolder{
+
+
         protected TextView vPurchaseDateTime;
         protected TextView vBillNumber;
         protected TextView vTotalAmount;
@@ -161,15 +171,9 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vCall.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
                     PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
-                    callIntent.setData(Uri.parse("tel:" + purchaseModel.getContactNumber()));
-                    try {
-                        homeActivity.startActivity(callIntent);  // TODO -- Need to handle request
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    homeActivity.makeCall(purchaseModel.getContactNumber());
+                   return;
                 }
             });
 
@@ -190,9 +194,16 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             });
 
         }
+
+
     }
 
     public interface PurchaseListClickListeners{
         void purchaseListOnClick(int purchaseId,int fragmentOptions);
     }
+
+
+
+
+
 }

@@ -1,16 +1,23 @@
 package co.in.mobilepay.view.fragments;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -37,6 +44,10 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     private MainActivity mainActivity = null;
     ProgressDialog progressDialog = null;
     private MainActivityCallback mainActivityCallback =null;
+
+    RegisterJson registerJson;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     public RegistrationFragment(){
     }
@@ -109,17 +120,23 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        RegisterJson registerJson = getRegistrationJson();
+        registerJson = getRegistrationJson();
         if(registerJson != null){
-            String imeiNumber = ServiceUtil.getIMEINumber(mainActivity);
-            registerJson.setImei(imeiNumber);
-            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
-            if(isNet){
-                progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
-                mainActivity.getAccountService().createUser(registerJson,mainActivity);
-            }else{
-                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
-            }
+            checkPermission();
+        }
+    }
+
+
+
+    private void syncRegistration(){
+        String imeiNumber = ServiceUtil.getIMEINumber(mainActivity);
+        registerJson.setImei(imeiNumber);
+        boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+        if(isNet){
+            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+            mainActivity.getAccountService().createUser(registerJson,mainActivity);
+        }else{
+            ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
         }
     }
 
@@ -163,6 +180,62 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     public void onResume(){
         MobilePayBus.getInstance().register(this);
         super.onResume();
+    }
+
+    private void requestPermission(){
+        requestPermissions(new String[] {Manifest.permission.READ_PHONE_STATE},
+                REQUEST_CODE_ASK_PERMISSIONS);
+    }
+
+
+    private void checkPermission() {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(mainActivity,
+                Manifest.permission.READ_PHONE_STATE);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,Manifest.permission.READ_PHONE_STATE)) {
+                showMessageOKCancel("You need to allow access IMEI Number",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermission();
+                            }
+                        });
+                return;
+            }
+
+            requestPermission();
+            return;
+        }else{
+            syncRegistration();
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(mainActivity)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    syncRegistration();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(mainActivity, "Unable to read IMEI Number", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
 
