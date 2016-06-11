@@ -44,9 +44,16 @@ public class UserEntity {
     }
 
     public UserEntity(RegisterJson registerJson){
+        toUser(registerJson);
+    }
+
+
+    public void toUser(RegisterJson registerJson){
         this.name = registerJson.getName();
         this.imei = registerJson.getImei();
-        this.password = registerJson.getPassword();
+        if(registerJson.getPassword() != null){
+            this.password = registerJson.getPassword();
+        }
         this.mobileNumber = registerJson.getMobileNumber();
         this.isActive = true;
         this.email = registerJson.getEmail();

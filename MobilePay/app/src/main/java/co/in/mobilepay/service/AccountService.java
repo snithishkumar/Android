@@ -16,6 +16,8 @@ public interface AccountService {
 
     boolean isUserPresent();
 
+    void getUserProfile(Context context);
+
     UserEntity getUserDetails();
 
     void requestOtp(String mobileNumber,Context context);

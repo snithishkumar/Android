@@ -42,7 +42,7 @@ import co.in.mobilepay.view.activities.NaviDrawerActivity;
  * Created by Nithishkumar on 3/26/2016.
  */
 public class EditProfileFragment extends Fragment implements View.OnClickListener{
-    private EditText vMobileNumber;
+    //private EditText vMobileNumber;
     private EditText vProfileName;
     private EditText vPassword;
     private EditText vEmail = null;
@@ -75,7 +75,14 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_profile_update, container, false);
 
         init(view);
-        loadData();
+        boolean isNet = ServiceUtil.isNetworkConnected(naviDrawerActivity);
+        if(isNet){
+            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", naviDrawerActivity);
+            naviDrawerActivity.getAccountService().getUserProfile(naviDrawerActivity);
+        }else{
+            loadData();
+        }
+
         return view;
     }
 
@@ -88,7 +95,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private void  init(View view){
-        vMobileNumber = (EditText) view.findViewById(R.id.profile_edit_mobile_no);
+      //  vMobileNumber = (EditText) view.findViewById(R.id.profile_edit_mobile_no);
         vEmail = (EditText) view.findViewById(R.id.profile_email);
 
         vProfileName = (EditText) view.findViewById(R.id.profile_name);
@@ -116,7 +123,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     private void loadData(){
         UserEntity userEntity = accountService.getUserDetails();
         previousMobile = userEntity.getMobileNumber();
-        vMobileNumber.setText(userEntity.getMobileNumber());
+      //  vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
         vPassword.setText(userEntity.getPassword());
         vEmail.setText(userEntity.getEmail());
@@ -151,7 +158,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
         registerJson.setName(nameTemp);
 
-        newMobile = vMobileNumber.getText().toString();
+       /* newMobile = vMobileNumber.getText().toString();
         if(newMobile == null || newMobile.trim().isEmpty()){
             vMobileNumber.setError("mobile should not be blank");
             return;
@@ -160,8 +167,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         if(newMobile.length() != 10){
             vMobileNumber.setError("mobile Number must be 10 digits");
             return;
-        }
-        registerJson.setMobileNumber(newMobile);
+        }*/
+        registerJson.setMobileNumber(previousMobile);
 
         String emailTemp = vEmail.getText().toString();
         if(emailTemp == null  || emailTemp.trim().isEmpty()){
@@ -179,9 +186,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         String imeiNumber = ServiceUtil.getIMEINumber(naviDrawerActivity);
         registerJson.setImei(imeiNumber);
 
-        if(isPasswordChanged || !previousMobile.equals(newMobile)){
+        if(isPasswordChanged){
+            naviDrawerActivity.getAccountService().requestOtp(previousMobile, naviDrawerActivity);
             // Need to call OTP
-            //accountService.verifyMobile(newMobile);
             editProfileFragmentCallBack.onSuccess(1,registerJson);
 
         }else{
@@ -207,6 +214,9 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             case MessageConstant.REG_OK:
                 // Need to call home screen
                 editProfileFragmentCallBack.onSuccess(2,null);
+                break;
+            case MessageConstant.PROFILE_OK:
+                loadData();
                 break;
             case MessageConstant.REG_ERROR_CODE:
                 ActivityUtil.showDialog(naviDrawerActivity, "Error", MessageConstant.REG_ERROR);

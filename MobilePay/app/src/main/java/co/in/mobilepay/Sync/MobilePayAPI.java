@@ -71,4 +71,9 @@ public interface  MobilePayAPI {
     Call<ResponseData> addCloudId(@Body CloudMessageJson cloudMessageJson);
 
 
+    /** Send User Home Address **/
+    @POST("mobilePayUser/mobile/getUserProfile.html")
+    Call<ResponseData> getUserProfile();
+
+
 }

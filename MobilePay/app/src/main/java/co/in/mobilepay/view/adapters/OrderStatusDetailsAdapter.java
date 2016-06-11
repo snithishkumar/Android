@@ -189,17 +189,23 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }*/
 
     private void calcAmount(){
-        double dis = 0;
+        double discountAmount = 0;
+        double discountMinAmount = 0;
+
         if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
-            dis = Double.valueOf(amountDetailsJson.getDiscount());
+            discountAmount = Double.valueOf(amountDetailsJson.getDiscount());
         }
 
-        if(dis >  0 ){
+        if(amountDetailsJson.getDiscountMiniVal() != null && !amountDetailsJson.getDiscountMiniVal().trim().isEmpty()){
+            discountMinAmount = Double.valueOf(amountDetailsJson.getDiscountMiniVal());
+        }
+
+        if(discountAmount >  0 && amount > discountMinAmount){
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - dis;
-                discount = dis;
+                totalAmount =   amount - discountAmount;
+                discount = discountAmount;
             }else if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.PERCENTAGE.getDiscountType()){
-                discount = Double.valueOf(String.format("%.2f", ((amount * dis) / 100)));
+                discount = Double.valueOf(String.format("%.2f", ((amount * discountAmount) / 100)));
                 totalAmount = amount - discount;
             }
         }else{

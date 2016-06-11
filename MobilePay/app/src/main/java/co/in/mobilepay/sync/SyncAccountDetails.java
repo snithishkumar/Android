@@ -76,6 +76,36 @@ public class SyncAccountDetails {
 
 
     /**
+     * Get User Profile from the server
+     * @return
+     */
+    public ResponseData getUserProfile(){
+        try{
+            Call<ResponseData> dataCall =  mobilePayAPI.getUserProfile();
+            Response<ResponseData> response = dataCall.execute();
+            if(response != null && response.isSuccess()){
+                ResponseData responseData = response.body();
+                int statusCode = response.body().getStatusCode();
+                if(statusCode == MessageConstant.PROFILE_OK){
+                    UserEntity userEntity =   userDao.getUser();
+                    String profileData = responseData.getData();
+                    RegisterJson registerJson =  gson.fromJson(profileData,RegisterJson.class);
+                    userEntity.toUser(registerJson);
+                    userDao.updateUser(userEntity);
+                }
+                return responseData;
+            }else{
+                logErrorResponse(response);
+            }
+
+        }catch (Exception e){
+            Log.e(LOG_TAG,"Error in userRegistration",e);
+        }
+        return getErrorResponse();
+    }
+
+
+    /**
      * Create New User
      * @param registerJson
      * @return

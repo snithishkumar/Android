@@ -72,6 +72,14 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.reg_submit);
         floatingActionButton.setOnClickListener(this);
         if(mainActivity.isPasswordForget()){
+            // TODO
+            /*boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+            if(isNet){
+                progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+                mainActivity.getAccountService().getUserProfile(mainActivity);
+            }else{
+                loadData();
+            }*/
             loadData();
         }
         return view;
@@ -146,10 +154,15 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
        if(progressDialog != null){
            progressDialog.dismiss();
        }
+
         if(responseData.getStatusCode() == MessageConstant.REG_OK){
             mainActivityCallback.success(MessageConstant.REG_OK,null);
             return;
-        }else {
+        }else if(responseData.getStatusCode() == MessageConstant.PROFILE_OK){
+            loadData();
+            return;
+        }
+        else {
             if(responseData.getData() != null){
                 ActivityUtil.showDialog(mainActivity,"Error",responseData.getData());
             }else{

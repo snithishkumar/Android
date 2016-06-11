@@ -112,6 +112,15 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                 ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.OTP_ERROR);
                 break;
 
+            // Profile Update (OTP Call)
+            case MessageConstant.MOBILE_VERIFY_OK:
+                break;
+
+            // Profile Update(No need to Login)
+            case MessageConstant.REG_OK:
+                mainActivityCallback.success(MessageConstant.LOGIN_OK, null);
+                break;
+
             default:
                 // Toast
                 Toast.makeText(mainActivity, responseData.getData(), Toast.LENGTH_LONG).show();

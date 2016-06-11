@@ -100,6 +100,16 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
     }
 
+
+
+    @Override
+    public void getUserProfile(Context context) {
+        init();
+        account = MobilePaySyncAdapter.getSyncAccount(context);
+        settingsBundle.putInt("currentScreen",MessageConstant.PROFILE);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+    }
+
     private void init(){
         if(settingsBundle == null){
             settingsBundle = new Bundle();
