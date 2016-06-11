@@ -1,11 +1,17 @@
 package co.in.mobilepay.view.fragments;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +43,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
     private boolean isOtpReceived = false;
 
-    private final BroadcastReceiver mySmsReceiver = new SMSReceiver();
+    private  BroadcastReceiver mySmsReceiver = null;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
 
     public OtpFragment() {
@@ -47,6 +55,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        checkPermission();
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
         Button otpSubmit = (Button) view.findViewById(R.id.otp_submit);
@@ -151,20 +160,86 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onPause() {
-        mainActivity.unregisterReceiver(mySmsReceiver);
+        if(mySmsReceiver != null){
+            mainActivity.unregisterReceiver(mySmsReceiver);
+        }
         MobilePayBus.getInstance().unregister(this);
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction("android.provider.Telephony.SMS_RECEIVED");
-        mainActivity.registerReceiver(mySmsReceiver, filter);
-
+        if(mySmsReceiver != null){
+            IntentFilter filter = new IntentFilter();
+            filter.addAction("android.provider.Telephony.SMS_RECEIVED");
+            mainActivity.registerReceiver(mySmsReceiver, filter);
+        }
         MobilePayBus.getInstance().register(this);
         super.onResume();
     }
+
+
+
+    private void requestPermission(){
+        requestPermissions(new String[] {Manifest.permission.READ_SMS},
+                REQUEST_CODE_ASK_PERMISSIONS);
+    }
+
+    private void registerReceiver(){
+        mySmsReceiver = new SMSReceiver();
+    }
+
+
+    private void checkPermission() {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(mainActivity,
+                Manifest.permission.READ_SMS);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,Manifest.permission.READ_SMS)) {
+                showMessageOKCancel("You need to allow access IMEI Number",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermission();
+                            }
+                        });
+                return;
+            }
+
+            requestPermission();
+            return;
+        }else{
+            registerReceiver();
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(mainActivity)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    registerReceiver();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(mainActivity, "Unable to read IMEI Number", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 
     public interface MainActivityCallback {
         void success(int code, Object data);
