@@ -64,6 +64,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.purchaseEntity = purchaseEntity;
     }
 
+    private void clearValue(){
+        amount = 0;
+        taxAmount = 0;
+        discount = 0;
+        totalAmount = 0;
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = null;
@@ -124,6 +131,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             calcAmount(position);
         }else if(viewHolder instanceof DeliveryOptionsViewHolder){
             DeliveryOptionsViewHolder deliveryOptionsViewHolder = (DeliveryOptionsViewHolder)viewHolder;
+            if(purchaseEntity.isDeliverable()){
+                deliveryOptionsViewHolder.vHomeDelivery.setVisibility(View.VISIBLE);
+            }
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             String address  = getAddress(purchaseDetailsActivity.getPurchaseService().getDefaultAddress());
@@ -389,9 +399,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                     break;
                 case R.id.adapt_pur_item_delete:
-                    if(productDetailsModels.size() <= 3){
+                    if(productDetailsModels.size() <= 1){
                         ActivityUtil.showDialog(purchaseDetailsActivity,"Message","Please Decline.");
                     }else {
+                        clearValue();
                         productDetailsModels.remove(getAdapterPosition());
                         notifyDataSetChanged();
                     }
@@ -409,7 +420,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public DeliveryAddressViewHolder(View view){
             super(view);
             vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_addr);
-
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_luggage);
             vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_billing);
 

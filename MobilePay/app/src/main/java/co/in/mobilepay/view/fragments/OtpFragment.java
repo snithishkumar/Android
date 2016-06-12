@@ -204,7 +204,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                 Manifest.permission.READ_SMS);
         if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,Manifest.permission.READ_SMS)) {
-                showMessageOKCancel("You need to allow access IMEI Number",
+                showMessageOKCancel("You need to allow to read OTP Password",
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

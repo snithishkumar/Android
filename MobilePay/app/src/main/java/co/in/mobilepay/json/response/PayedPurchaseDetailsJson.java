@@ -17,6 +17,7 @@ public class PayedPurchaseDetailsJson {
     private long paymetTime;
     private AddressJson addressJson;
     private String addressGuid;
+    private String totalAmount;
     private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
     public PayedPurchaseDetailsJson() {
@@ -29,6 +30,7 @@ public class PayedPurchaseDetailsJson {
         this.amountDetails = purchaseEntity.getAmountDetails();
         this.deliveryOptions = purchaseEntity.getDeliveryOptions();
         this.paymetTime = purchaseEntity.getLastModifiedDateTime();
+        this.totalAmount = purchaseEntity.getTotalAmount();
         if(purchaseEntity.getAddressEntity()  != null){
             if(purchaseEntity.getAddressEntity().isSynced()){
                 this.addressGuid = purchaseEntity.getAddressEntity().getAddressUUID();
@@ -37,6 +39,14 @@ public class PayedPurchaseDetailsJson {
             }
         }
 
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public String getPurchaseId() {

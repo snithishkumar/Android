@@ -21,6 +21,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -261,6 +262,7 @@ switch (v.getId()){
             purchaseEntity.setTotalAmount( String.format("%.2f", productDetailsAdapter.getTotalAmount()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
             purchaseEntity.setAddressEntity(productDetailsAdapter.getDefaultAddress());
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
             showPaymentOptions.viewFragment(4);
             return;
