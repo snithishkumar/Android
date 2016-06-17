@@ -172,8 +172,9 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 //finish();
                 break;
             case 1:
-                /*fragment = new FriendsFragment();
-                title = getString(R.string.title_friends);*/
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",2);
+                startActivity(intent);
                 break;
             case 2:
                 /*fragment = new MessagesFragment();

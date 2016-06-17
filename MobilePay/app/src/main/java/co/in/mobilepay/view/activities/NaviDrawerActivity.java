@@ -21,6 +21,7 @@ import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.view.fragments.AboutAsFragment;
 import co.in.mobilepay.view.fragments.EditProfileFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
+import co.in.mobilepay.view.fragments.HelpFragment;
 import co.in.mobilepay.view.fragments.SaveCardsFragment;
 
 /**
@@ -54,6 +55,11 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
             case 1:
                EditProfileFragment editProfileFragment = new EditProfileFragment();
                 FragmentsUtil.addFragment(this, editProfileFragment, R.id.navi_drawer_container);
+                break;
+
+            case 2:
+                HelpFragment helpFragment = new HelpFragment();
+                FragmentsUtil.addFragment(this, helpFragment, R.id.navi_drawer_container);
                 break;
 
             case 4:
