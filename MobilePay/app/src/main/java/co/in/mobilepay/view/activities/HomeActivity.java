@@ -180,10 +180,14 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 title = getString(R.string.title_messages);*/
                 break;
             case 3:
-               /* intent = new Intent(this, NaviDrawerActivity.class);
-                intent.putExtra("options",3);
-                startActivity(intent);*/
-                //finish();
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",4);
+                startActivity(intent);
+                break;
+            case 4:
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",5);
+                startActivity(intent);
                 break;
             default:
                 break;

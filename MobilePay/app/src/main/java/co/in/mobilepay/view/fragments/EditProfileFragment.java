@@ -149,6 +149,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 vPassword.setError("Invalid Password");
                 return;
             }
+            if(password.length() < 6){
+                vPassword.setError(getString(R.string.error_reg_pass_len));
+                return;
+            }
             registerJson.setPassword(password);
         }
         String nameTemp = vProfileName.getText().toString();

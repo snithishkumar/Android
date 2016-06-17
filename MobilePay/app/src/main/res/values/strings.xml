@@ -42,8 +42,8 @@
         <item>Account</item>
         <item>Support</item>
         <item>Terms of service</item>
-        <item>Saved cards</item>
         <item>About</item>
+        <item>Rate the App</item>
     </string-array>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
