@@ -10,18 +10,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.squareup.otto.Subscribe;
-
 import java.sql.SQLException;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
-import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
@@ -59,9 +55,10 @@ public class NotificationBaseActivity extends AppCompatActivity {
             if(notificationType == NotificationType.STATUS.getNotificationType()){
                 if(purchaseEntity.getOrderStatus() != null){
                     switch (purchaseEntity.getOrderStatus()){
-                        case CANCELED:
+                        case CANCELLED:
                         case DELIVERED:
                             return NotificationType.CANCEL.getNotificationType();
+
                     }
                 }
             }else if(notificationType == NotificationType.PURCHASE.getNotificationType()){
@@ -73,6 +70,10 @@ public class NotificationBaseActivity extends AppCompatActivity {
                         case READY_TO_COLLECT:
                         case READY_TO_SHIPPING:
                             return NotificationType.STATUS.getNotificationType();
+
+                        case CANCELLED:
+                        case DELIVERED:
+                            return NotificationType.CANCEL.getNotificationType();
                     }
                 }
             }
@@ -241,7 +242,7 @@ public class NotificationBaseActivity extends AppCompatActivity {
             try{
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseUuid);
                 int fragmentOptions = 1;
-                if(purchaseEntity.getOrderStatus() != null &&(purchaseEntity.getOrderStatus().equals(OrderStatus.CANCELED.toString()) || purchaseEntity.getOrderStatus().equals(OrderStatus.DELIVERED.toString()))){
+                if(purchaseEntity.getOrderStatus() != null &&(purchaseEntity.getOrderStatus().equals(OrderStatus.CANCELLED.toString()) || purchaseEntity.getOrderStatus().equals(OrderStatus.DELIVERED.toString()))){
                     fragmentOptions = 3;
                 }
                 callPurchaseDetailsActivity(purchaseEntity.getPurchaseId(),fragmentOptions);

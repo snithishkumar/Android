@@ -531,9 +531,10 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     purchaseEntity = new PurchaseEntity(purchaseJson);
                     purchaseEntity.setMerchantEntity(merchantEntity);
                     purchaseEntity.setUserEntity(dbUserEntity);
+                    purchaseDao.createPurchase(purchaseEntity);
                     processAddressJson(purchaseJson, purchaseEntity);
                     processDiscardJson(purchaseJson,purchaseEntity);
-                    purchaseDao.createPurchase(purchaseEntity);
+
                 }
                 createCounterDetails(purchaseJson.getCounterDetails(),purchaseEntity);
             }catch (Exception e){

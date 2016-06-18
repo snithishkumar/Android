@@ -94,7 +94,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     }
 
     /**
-     * Returns Purchase History (ISPAYED and CANCELED,DELIVERED)
+     * Returns Purchase History (ISPAYED and CANCELLED,DELIVERED)
      * @return
      */
     @Override
@@ -162,7 +162,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     public void declinePurchase(PurchaseEntity purchaseEntity,String reason){
         try {
             purchaseEntity.setIsDiscard(true);
-            purchaseEntity.setOrderStatus(OrderStatus.CANCELED);
+            purchaseEntity.setOrderStatus(OrderStatus.CANCELLED);
             purchaseEntity.setIsSync(false);
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);

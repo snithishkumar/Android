@@ -1,7 +1,5 @@
 package co.in.mobilepay.view.adapters;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -84,7 +82,7 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
-            if(purchaseModel.getOrderStatus().equals(OrderStatus.CANCELED.toString())){
+            if(purchaseModel.getOrderStatus().equals(OrderStatus.CANCELLED.toString())){
                 purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.cancel_32);
             }else{
                 purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.delivered_img_32);
