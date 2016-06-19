@@ -104,6 +104,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
     }
 
 
+
+
     /***
      * Get LastModifiedTime (Delivery address)
      * @return

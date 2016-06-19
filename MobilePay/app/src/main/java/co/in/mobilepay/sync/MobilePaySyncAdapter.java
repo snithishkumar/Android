@@ -149,6 +149,12 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                        MobilePayBus.getInstance().post(userProfileResponse);
                        break;
 
+                   case MessageConstant.REGISTER_PROF_DATA:
+                       mobileNumber =  extras.getString("mobileNumber");
+                       ResponseData userProfileResponseData =   syncAccountDetails.getUserProfile(mobileNumber);
+                       MobilePayBus.getInstance().post(userProfileResponseData);
+                       break;
+
                }
            }else{
                countDownLatch = new CountDownLatch(4);

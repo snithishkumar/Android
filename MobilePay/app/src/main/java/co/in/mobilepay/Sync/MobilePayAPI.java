@@ -12,6 +12,7 @@ import co.in.mobilepay.json.response.ResponseData;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Nithish on 23-01-2016.
@@ -74,6 +75,11 @@ public interface  MobilePayAPI {
     /** Send User Home Address **/
     @POST("mobilePayUser/mobile/getUserProfile.html")
     Call<ResponseData> getUserProfile();
+
+
+    /** Send User Home Address **/
+    @POST("mobile/getUserProfile/{mobileNumber}.html")
+    Call<ResponseData> getUserProfile(@Path("mobileNumber") String mobileNumber);
 
 
 }

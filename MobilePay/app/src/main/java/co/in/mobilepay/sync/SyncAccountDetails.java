@@ -105,6 +105,29 @@ public class SyncAccountDetails {
     }
 
 
+
+    /**
+     * Get User Profile from the server
+     * @return
+     */
+    public ResponseData getUserProfile(String mobileNumber){
+        try{
+            Call<ResponseData> dataCall =  mobilePayAPI.getUserProfile(mobileNumber);
+            Response<ResponseData> response = dataCall.execute();
+            if(response != null && response.isSuccess()){
+                ResponseData responseData = response.body();
+                return responseData;
+            }else{
+                logErrorResponse(response);
+            }
+
+        }catch (Exception e){
+            Log.e(LOG_TAG,"Error in userRegistration",e);
+        }
+        return getErrorResponse();
+    }
+
+
     /**
      * Create New User
      * @param registerJson

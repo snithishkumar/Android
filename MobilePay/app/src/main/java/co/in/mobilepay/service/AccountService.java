@@ -26,6 +26,10 @@ public interface AccountService {
 
     void validateOtp(String otpPassword, RegisterJson registerJson, Context context);
 
+    void getUserProfile(String mobileNumber,Context context);
+
+    UserEntity getUserDetails(String mobileNumber);
+
  /*   void updateUser(RegisterJson registerJson);
 
     void deleteUser();*/

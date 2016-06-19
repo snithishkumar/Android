@@ -52,6 +52,7 @@ public final class  MessageConstant {
 
 
     public static final int PROFILE_OK = 25601;
+    public static final int INVALID_MOBILE = 201;
 
 
     public static final int MOBILE = 1;
@@ -59,4 +60,5 @@ public final class  MessageConstant {
     public static final int REGISTER = 3;
     public static final int LOGIN = 4;
     public static final int PROFILE = 5;
+    public static final int REGISTER_PROF_DATA = 6;
 }

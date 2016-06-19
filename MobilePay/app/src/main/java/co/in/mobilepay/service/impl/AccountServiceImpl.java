@@ -101,6 +101,16 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     }
 
 
+    @Override
+    public void getUserProfile(String mobileNumber,Context context) {
+        init();
+        account = MobilePaySyncAdapter.getSyncAccount(context);
+        settingsBundle.putString("mobileNumber",mobileNumber);
+        settingsBundle.putInt("currentScreen",MessageConstant.REGISTER_PROF_DATA);
+        ContentResolver.requestSync(account, context.getString(R.string.auth_type), settingsBundle);
+    }
+
+
 
     @Override
     public void getUserProfile(Context context) {
@@ -191,6 +201,17 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     public UserEntity getUserDetails(){
         try{
             return  userDao.getUser();
+        }catch (Exception e){
+            Log.e("Error","Error in getUserDetails",e);
+        }
+        return null;
+    }
+
+
+    @Override
+    public UserEntity getUserDetails(String mobileNumber){
+        try{
+            return  userDao.getUser(mobileNumber);
         }catch (Exception e){
             Log.e("Error","Error in getUserDetails",e);
         }

@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
@@ -71,17 +72,26 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         rePassword = (EditText) view.findViewById(R.id.reg_repassword);
         FloatingActionButton floatingActionButton = (FloatingActionButton)view.findViewById(R.id.reg_submit);
         floatingActionButton.setOnClickListener(this);
-        if(mainActivity.isPasswordForget()){
-            // TODO
-            /*boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+
+        boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
+        if(isNet){
+            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+            mainActivity.getAccountService().getUserProfile(mainActivity.getMobileNumber(),mainActivity);
+        }else{
+            loadData();
+        }
+
+        /*if(mainActivity.isPasswordForget()){
+
+            boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
                 progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
                 mainActivity.getAccountService().getUserProfile(mainActivity);
             }else{
                 loadData();
-            }*/
+            }
             loadData();
-        }
+        }*/
         return view;
     }
 
@@ -159,10 +169,11 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             mainActivityCallback.success(MessageConstant.REG_OK,null);
             return;
         }else if(responseData.getStatusCode() == MessageConstant.PROFILE_OK){
-            loadData();
+            loadData(responseData);
             return;
-        }
-        else {
+        }else if(responseData.getStatusCode() == MessageConstant.INVALID_MOBILE){
+            return;
+        }else {
             if(responseData.getData() != null){
                 ActivityUtil.showDialog(mainActivity,"Error",responseData.getData());
             }else{
@@ -173,8 +184,19 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    private void loadData(ResponseData responseData){
+        if(responseData.getStatusCode() == MessageConstant.PROFILE_OK){
+            Gson gson = new Gson();
+            String profileData = responseData.getData();
+            RegisterJson registerJson =  gson.fromJson(profileData,RegisterJson.class);
+            name.setText(registerJson.getName());
+            email.setText(registerJson.getEmail());
+        }
+
+    }
+
     private void loadData(){
-        UserEntity userEntity = mainActivity.getAccountService().getUserDetails();
+        UserEntity userEntity = mainActivity.getAccountService().getUserDetails(mainActivity.getMobileNumber());
         if(userEntity != null){
             name.setText(userEntity.getName());
             email.setText(userEntity.getEmail());
