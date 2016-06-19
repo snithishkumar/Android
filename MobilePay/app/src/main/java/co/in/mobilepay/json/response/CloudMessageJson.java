@@ -7,6 +7,16 @@ public class CloudMessageJson{
 	
 	private String cloudId;
 	private DeviceType deviceType;
+	private String imeiNumber;
+
+	public String getImeiNumber() {
+		return imeiNumber;
+	}
+
+	public void setImeiNumber(String imeiNumber) {
+		this.imeiNumber = imeiNumber;
+	}
+
 	public String getCloudId() {
 		return cloudId;
 	}

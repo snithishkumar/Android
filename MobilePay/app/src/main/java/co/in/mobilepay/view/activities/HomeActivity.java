@@ -273,5 +273,9 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        ActivityUtil.IS_LOGIN = false;
+        super.onBackPressed();
+    }
 }

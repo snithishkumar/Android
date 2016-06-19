@@ -1,15 +1,22 @@
 package co.in.mobilepay.view.activities;
 
+import android.Manifest;
 import android.accounts.Account;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -56,6 +63,8 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
 
     int notificationType = 0;
     String  purchaseUuid = null;
+
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
 
     @Override
@@ -118,6 +127,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
             // Check first time or already registered.
             boolean isUserPresent = accountService.isUserPresent();
             if(isUserPresent){
+                ActivityUtil.IS_LOGIN = false;
                 loginFragment = new LoginFragment();
                 FragmentsUtil.addFragment(this,loginFragment,R.id.main_container);
             }else{
@@ -171,6 +181,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
                 break;
             case MessageConstant.REG_OK:
             case MessageConstant.PROFILE_UPDATE_SUCCESS:
+                ActivityUtil.IS_LOGIN = false;
                 loginFragment = new LoginFragment();
                 FragmentsUtil.replaceFragment(this,loginFragment,R.id.main_container);
                 break;
@@ -179,7 +190,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
                 FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
                 break;
             case MessageConstant.LOGIN_OK:
-                gcmRegistration();
+                checkPermission();
                 ActivityUtil.IS_LOGIN = true;
                 if(purchaseUuid != null){
                     callActivity(notificationType,purchaseUuid);
@@ -237,5 +248,61 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
 
     public boolean isPasswordForget() {
         return isPasswordForget;
+    }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.READ_PHONE_STATE},
+                REQUEST_CODE_ASK_PERMISSIONS);
+    }
+
+
+    private void checkPermission() {
+        int hasWriteContactsPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_PHONE_STATE);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_PHONE_STATE)) {
+                showMessageOKCancel("You need to allow access to call",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                requestPermission();
+                            }
+                        });
+                return;
+            }
+
+            requestPermission();
+            return;
+        }else{
+            gcmRegistration();
+        }
+
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    gcmRegistration();
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, "Unable to call.Please enable the Phone permission.", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }

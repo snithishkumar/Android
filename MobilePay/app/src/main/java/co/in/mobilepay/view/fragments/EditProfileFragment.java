@@ -125,7 +125,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         previousMobile = userEntity.getMobileNumber();
       //  vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
-        vPassword.setText(userEntity.getPassword());
+       if(userEntity !=null){
+           vPassword.setText(userEntity.getPassword());
+       }
+
         vEmail.setText(userEntity.getEmail());
         isPasswordChanged = false;
     }
@@ -257,7 +260,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 REQUEST_CODE_ASK_PERMISSIONS);
     }
 
-
+// TODO
     private void checkPermission() {
         int hasWriteContactsPermission = ContextCompat.checkSelfPermission(naviDrawerActivity,
                 Manifest.permission.READ_PHONE_STATE);

@@ -271,7 +271,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             transactionalDetailsEntity.setReason(response);
             transactionalDetailsEntity.setPaymentStatus(PaymentStatus.FAILURE);
             purchaseService.createTransactionDetails(transactionalDetailsEntity);
-            Toast.makeText(this, "Payment failed: " + Integer.toString(code) + " " + response, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Payment failed: " + Integer.toString(code) + " " + response, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Payment failed. ", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
             Log.e("com.merchant", e.getMessage(), e);
