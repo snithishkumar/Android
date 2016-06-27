@@ -107,11 +107,11 @@ public class NotificationBaseActivity extends AppCompatActivity {
                     long count =  notificationDao.getNotificationCount(NotificationType.PURCHASE);
                     // Clear notification data from Database
                     notificationDao.clearNotification(NotificationType.STATUS.getNotificationType(notificationType));
-                    // If its more than one, then call HomeActivity
-                    if(count > 1){
-                        callHomeActivity(0);
-                    }else{// Otherwise call PurchaseDetails Activity
+                    // If its one then, call PurchaseDetails Activity
+                    if(count == 1){
                         callPurchaseDetails(purchaseUuid,1); // 1 - PURCHASE_LIST
+                    }else{  // If its more than one, then call HomeActivity
+                        callHomeActivity(0);
                     }
                     return;
                 }else{  //Check given notification is Cancel. If its Cancel, then check only one Cancel data or group of Cancel data and call according
