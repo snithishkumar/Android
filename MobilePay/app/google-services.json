@@ -1,36 +1,32 @@
 {
   "project_info": {
-    "project_id": "mobilepay-1250",
     "project_number": "207427538099",
-    "name": "mobilepay"
+    "project_id": "mobilepay-1250"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:207427538099:android:73d6100383b18d07",
-        "client_id": "android:co.in.mobilepay",
-        "client_type": 1,
         "android_client_info": {
-          "package_name": "co.in.mobilepay",
-          "certificate_hash": []
+          "package_name": "co.in.mobilepay"
         }
       },
       "oauth_client": [],
-      "api_key": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwxc_4F-lyBP5uLQFf8MTf8osJZtgUWxk"
+        }
+      ],
       "services": {
         "analytics_service": {
-          "status": 1
-        },
-        "cloud_messaging_service": {
           "status": 2,
-          "apns_config": []
+          "analytics_property": {
+            "tracking_id": "UA-80031523-1"
+          }
         },
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "google_signin_service": {
-          "status": 1
         },
         "ads_service": {
           "status": 1
@@ -38,6 +34,5 @@
       }
     }
   ],
-  "client_info": [],
-  "ARTIFACT_VERSION": "1"
+  "configuration_version": "1"
 }
