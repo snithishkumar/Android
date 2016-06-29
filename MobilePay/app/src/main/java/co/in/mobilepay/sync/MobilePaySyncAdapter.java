@@ -37,6 +37,7 @@ import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.GsonAPI;
 import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.request.RegisterJson;
@@ -70,13 +71,12 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
     private UserDao userDao;
     private MobilePayAPI mobilePayAPI;
     private Gson gson;
-    private NotificationDao notificationDao;
     private SyncAccountDetails syncAccountDetails;
 
     ExecutorService executorService = Executors.newFixedThreadPool(5);
     CountDownLatch countDownLatch = new CountDownLatch(4);
 
-
+private boolean isLoginFailed = false;
 
     public MobilePaySyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -93,8 +93,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             purchaseDao = new PurchaseDaoImpl(context);
             userDao = new UserDaoImpl(context);
             mobilePayAPI = ServiceAPI.INSTANCE.getMobilePayAPI();
-            gson = new Gson();
-            notificationDao = new NotificationDaoImpl(context);
+            gson =GsonAPI.INSTANCE.getGson();
 
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in MobilePaySyncAdapter",e);
@@ -157,6 +156,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
                }
            }else{
+                   isLoginFailed = false;
                countDownLatch = new CountDownLatch(4);
                executorService.execute(new Runnable() {
                    @Override
@@ -190,6 +190,11 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                    }
                });
                countDownLatch.await();
+                   if(isLoginFailed){
+                       ResponseData responseData = new ResponseData();
+                       responseData.setStatusCode(401);
+                       MobilePayBus.getInstance().post(responseData);
+                   }
                System.out.println("sdfasdfasdf");
            }
 
@@ -221,31 +226,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
         sendUnSyncPayedData();
     }
 
-    /**
-     * Send UnSynced Data to the server. Each Process Runs Separate Thread
-     */
-    private void sendUnSyncedDataAsync(){
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                syncUserDeliveryAddress();
-            }
-        });
 
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                sendUnSyncDeclineData();
-            }
-        });
-
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                sendUnSyncPayedData();
-            }
-        });
-    }
 
     /**
      * Get Current User  and App Token
@@ -307,6 +288,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             int responseCode = dataResponse.code();
             if(responseCode == 401){
+                isLoginFailed = true;
                 return;
             }else if(responseCode == 200){
                 ResponseData responseData = dataResponse.body();
@@ -631,6 +613,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     postErrorCode(statusCode);
                 }
             }else if(httpStatusCode == 401){
+                isLoginFailed = true;
                 return;
             }else {
 
@@ -719,6 +702,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
                     postErrorCode(statusCode);
                 }
             }else if(httpStatusCode == 401){
+                isLoginFailed = true;
                 return;
             }else {
 
@@ -768,6 +752,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             int httpResponseCode = dataResponse.code();
             if(httpResponseCode == 401){
+                isLoginFailed = true;
                 return;
             }else if(httpResponseCode == 200){
                 ResponseData responseData = dataResponse.body();
@@ -848,6 +833,7 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
                 }
             }else if(httpStatusCode == 401){
+                isLoginFailed = true;
                 return;
             }else{
 
@@ -896,9 +882,8 @@ public class MobilePaySyncAdapter extends AbstractThreadedSyncAdapter {
 
                     }
                 }else if(httpStatusCode == 401){
+                    isLoginFailed = true;
                     return;
-                }else{
-
                 }
 
             }

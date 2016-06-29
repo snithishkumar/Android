@@ -21,6 +21,7 @@ import java.util.List;
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
+import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
@@ -158,6 +159,14 @@ public class OrderStatusListFragment extends Fragment  {
             ActivityUtil.toast(homeActivity, getString(R.string.error_purchase_list));
         }
 
+    }
+
+    @Subscribe
+    public void loginError(ResponseData responseData){
+        if(responseData.getStatusCode() == 401){
+            ActivityUtil.toast(homeActivity,getString(R.string.login_error));
+            showLoginActivity();
+        }
     }
 
     private void stopRefreshing(){

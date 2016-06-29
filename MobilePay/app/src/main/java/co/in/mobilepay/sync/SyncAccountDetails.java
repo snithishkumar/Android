@@ -83,18 +83,27 @@ public class SyncAccountDetails {
         try{
             Call<ResponseData> dataCall =  mobilePayAPI.getUserProfile();
             Response<ResponseData> response = dataCall.execute();
-            if(response != null && response.isSuccess()){
-                ResponseData responseData = response.body();
-                int statusCode = response.body().getStatusCode();
-                if(statusCode == MessageConstant.PROFILE_OK){
-                    UserEntity userEntity =   userDao.getUser();
-                    String profileData = responseData.getData();
-                    RegisterJson registerJson =  gson.fromJson(profileData,RegisterJson.class);
-                    userEntity.toUser(registerJson);
-                    userDao.updateUser(userEntity);
+            if(response != null){
+                if(response.code() == 200){
+                    ResponseData responseData = response.body();
+                    int statusCode = response.body().getStatusCode();
+                    if(statusCode == MessageConstant.PROFILE_OK){
+                        UserEntity userEntity =   userDao.getUser();
+                        String profileData = responseData.getData();
+                        RegisterJson registerJson =  gson.fromJson(profileData,RegisterJson.class);
+                        userEntity.toUser(registerJson);
+                        userDao.updateUser(userEntity);
+                    }
+                    return responseData;
+                }else if(response.code() == 401){
+                    ResponseData responseData = new ResponseData();
+                    responseData.setStatusCode(401);
+                    return responseData;
+                }else{
+                    logErrorResponse(response);
                 }
-                return responseData;
-            }else{
+            }
+           else{
                 logErrorResponse(response);
             }
 

@@ -37,7 +37,7 @@ public class MobilePayGcmService extends GcmListenerService {
 if(gson == null){
     gson = new Gson();
 }
-
+        //gcm.notification.
         NotificationEntity notificationEntity = new NotificationEntity();
         notificationEntity.setMessage(data.getString("message"));
         notificationEntity.setNotificationType(NotificationType.valueOf(data.getString("notificationType")));

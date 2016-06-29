@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
@@ -228,6 +229,11 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
             case MessageConstant.REG_ERROR_CODE:
                 ActivityUtil.showDialog(naviDrawerActivity, "Error", MessageConstant.REG_ERROR);
                 break;
+
+            case 401:
+                ActivityUtil.toast(naviDrawerActivity,getString(R.string.login_error));
+                showLoginActivity();
+                break;
             default:
                 ActivityUtil.showDialog(naviDrawerActivity,"Error",responseData.getData());
                 break;
@@ -311,6 +317,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    private void showLoginActivity(){
+        Intent intent = new Intent(naviDrawerActivity, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        naviDrawerActivity.finish();
+    }
 
 
 }
