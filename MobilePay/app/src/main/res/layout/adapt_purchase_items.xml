@@ -8,9 +8,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/adapt_pur_item_desc"
+        android:layout_below="@+id/adapt_pur_item_delete"
         android:textSize="14dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="15dp"
         android:text="Peter England Navy T Shirt Navy \nT Shirt Navy"
         android:singleLine="false"
         android:textStyle="bold"
@@ -84,14 +84,13 @@
         android:layout_alignRight="@+id/adapt_pur_item_delete"
         android:layout_alignEnd="@+id/adapt_pur_item_delete" />
 
-
-
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:id="@+id/adapt_pur_item_delete"
-        android:background="@mipmap/purchase_item_delete"
+        android:src="@android:drawable/ic_delete"
+        android:tint="#666666"
         />
 
 

@@ -1,8 +1,10 @@
 package co.in.mobilepay.view.fragments;
 
 import android.Manifest;
+import android.accounts.Account;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
@@ -23,10 +25,12 @@ import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.bus.MobilePayBus;
+import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.listener.SMSReceiver;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
+import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.MainActivity;
 
@@ -60,7 +64,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
         Button otpSubmit = (Button) view.findViewById(R.id.otp_submit);
         otpSubmit.setOnClickListener(this);
-
+        syncData();
         otpReset = (Button) view.findViewById(R.id.otp_resend);
         otpReset.postDelayed(new Runnable() {
             @Override
@@ -252,5 +256,20 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
     public interface MainActivityCallback {
         void success(int code, Object data);
+    }
+
+    private void syncData(){
+        UserEntity userEntity = mainActivity.getAccountService().getUserDetails();
+        if(userEntity != null && !mainActivity.getMobileNumber().equals(userEntity.getMobileNumber())){
+
+            Account account = MobilePaySyncAdapter.getSyncAccount(mainActivity);
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_MANUAL, true);
+            settingsBundle.putBoolean(
+                    ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+            settingsBundle.putInt("currentTab",MessageConstant.SYNC_DATA);
+            ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
+        }
     }
 }

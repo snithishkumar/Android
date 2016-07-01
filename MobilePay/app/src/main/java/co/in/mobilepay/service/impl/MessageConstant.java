@@ -61,4 +61,6 @@ public final class  MessageConstant {
     public static final int LOGIN = 4;
     public static final int PROFILE = 5;
     public static final int REGISTER_PROF_DATA = 6;
+
+    public static final int SYNC_DATA = 7;
 }

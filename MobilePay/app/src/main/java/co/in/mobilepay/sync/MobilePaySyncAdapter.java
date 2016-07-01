@@ -154,6 +154,10 @@ private boolean isLoginFailed = false;
                        MobilePayBus.getInstance().post(userProfileResponseData);
                        break;
 
+                   case MessageConstant.SYNC_DATA:
+                       sendUnSyncedDataSynchronize();
+                       break;
+
                }
            }else{
                    isLoginFailed = false;

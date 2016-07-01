@@ -154,9 +154,9 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
                 FragmentsUtil.replaceFragment(this, addDeliveryAddressFragment, R.id.pur_details_main_container);
                 break;
 
-            case R.id.add_address_back_button:
-            case R.id.address_list_back_button:
-            case R.id.shop_back_button:
+            case R.id.add_address_back_button_click:
+            case R.id.address_list_back_button_click:
+            case R.id.shop_back_button_click:
                 onBackPressed();
                 break;
         }

@@ -124,7 +124,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
             productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
-            if(!purchaseEntity.isEditable()){
+            if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);

@@ -51,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:layout_marginRight="5dp"
         android:text="Order Id: #"
         android:layout_alignTop="@+id/shop_date_time"
         android:layout_alignRight="@+id/purchase_history_product_items_layout"
@@ -69,6 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
+        android:layout_marginRight="5dp"
         tools:context=".view.fragments.PaymentOptionsFragment"
         tools:listitem="@layout/adapt_purchase_items" />
     </android.support.v7.widget.CardView>
