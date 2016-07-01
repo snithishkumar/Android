@@ -38,6 +38,8 @@
             android:layout_weight="1"
             android:id="@+id/mobile_number"
             android:inputType="number"
+            android:singleLine="true"
+            android:imeOptions="actionSend"
             android:maxLength="10"
             android:hint="@string/enter_mobile"/>
         </LinearLayout>

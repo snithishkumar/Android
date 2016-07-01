@@ -212,6 +212,17 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onDestroyView() {
+        hideKeyboard();
+        super.onDestroyView();
+    }
+
+
+    private void hideKeyboard(){
+        ActivityUtil.hideKeyboard(mainActivity);
+    }
+
+    @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
         super.onResume();

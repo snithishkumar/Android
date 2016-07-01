@@ -249,6 +249,17 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         super.onPause();
     }
 
+ /*   @Override
+    public void onDestroyView() {
+        hideKeyboard();
+        super.onDestroyView();
+    }
+
+    private void hideKeyboard(){
+        ActivityUtil.hideKeyboard(naviDrawerActivity);
+    }*/
+
+
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);

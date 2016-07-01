@@ -181,6 +181,18 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onDestroyView() {
+        hideKeyboard();
+        super.onDestroyView();
+    }
+
+
+
+    private void hideKeyboard(){
+        ActivityUtil.hideKeyboard(mainActivity);
+    }
+
+    @Override
     public void onResume() {
         if(mySmsReceiver != null){
             IntentFilter filter = new IntentFilter();

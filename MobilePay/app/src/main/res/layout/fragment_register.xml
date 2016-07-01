@@ -55,6 +55,8 @@
                         android:id="@+id/reg_name"
                         style="@style/RegisterEdittextmargin"
                         android:layout_width="match_parent"
+                       android:nextFocusDown="@+id/reg_email"
+                        android:singleLine="true"
                         android:layout_height="wrap_content"
                         android:hint="Name" />
                 </LinearLayout>
@@ -75,6 +77,7 @@
                         style="@style/RegisterEdittextmargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
                         android:hint="Email" />
                 </LinearLayout>

@@ -10,6 +10,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -112,7 +114,18 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         MobilePayBus.getInstance().unregister(this);
+
         super.onPause();
+    }
+
+    @Override
+    public void onDestroyView() {
+        hideKeyboard();
+        super.onDestroyView();
+    }
+
+    private void hideKeyboard(){
+      ActivityUtil.hideKeyboard(mainActivity);
     }
 
     @Override
