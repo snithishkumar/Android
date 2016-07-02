@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
@@ -123,11 +124,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
-            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
+
+            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(productDetailsModel.getAmount())));
             if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
-            toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
+            productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
+            toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             calcAmount(position);
         }else if(viewHolder instanceof DeliveryOptionsViewHolder){
             DeliveryOptionsViewHolder deliveryOptionsViewHolder = (DeliveryOptionsViewHolder)viewHolder;
@@ -141,24 +144,26 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }else{
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
             calcAmount();
-            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+amount);
+
+            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",amount));
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
-            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(taxAmount));
+
+            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",taxAmount));
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
             }else{
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
-            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(discount));
-            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.valueOf(totalAmount));
+            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",discount));
+            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",totalAmount));
         }
 
 
 
     }
 
-    private void addRating(int rating,int adapterPosition){
+    private void addRating(float rating,int adapterPosition){
         productDetailsModel =  productDetailsModels.get(adapterPosition);
         productDetailsModel.setRating(rating);
     }
@@ -218,39 +223,19 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
-        switch (rating){
-
-            case 1:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
-                break;
-            case 2:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
-                break;
-            case 3:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
-                break;
-            case 4:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
-                break;
-            case 5:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
-                break;
+    private void toggleImg(float rating,TextView rateItText){
+        if(rating > 0){
+            if(rating < 2){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
+            }else if(rating < 3){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
+            }else if(rating < 4){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
+            }else if(rating < 5){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
+            }else{
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
+            }
         }
     }
 
@@ -259,32 +244,41 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView name;
-        private ImageView rate1;
+       /* private ImageView rate1;
         private ImageView rate2;
         private ImageView rate3;
         private ImageView rate4;
-        private ImageView rate5;
+        private ImageView rate5;*/
         private TextView totalAmount;
         private TextView rateItText;
         private ImageView delete;
+        private RatingBar ratingBar;
         int imagePos = 0;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.adapt_pur_item_desc);
-            rate1 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate1);
+         /*   rate1 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate1);
             rate2 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate2);
             rate3 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate3);
             rate4 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate4);
-            rate5 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate5);
+            rate5 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate5);*/
             totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
             rateItText =  (TextView) view.findViewById(R.id.rate_it_text);
-            rate1.setOnClickListener(this);
+            ratingBar = (RatingBar) view.findViewById(R.id.rate_it_star);
+            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                @Override
+                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                    toggleImg(rating,rateItText);
+                    addRating(rating,getAdapterPosition());
+                }
+            });
+           /* rate1.setOnClickListener(this);
             rate2.setOnClickListener(this);
             rate3.setOnClickListener(this);
             rate4.setOnClickListener(this);
-            rate5.setOnClickListener(this);
+            rate5.setOnClickListener(this);*/
             delete.setOnClickListener(this);
 
         }
@@ -294,7 +288,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return super.toString() + " '" + "'";
         }
 
-        private void toggleImg(int rating){
+      /*  private void toggleImg(int rating){
             switch (rating){
                 case 0:
                     rate1.setImageResource(R.mipmap.rate_no_value);
@@ -346,12 +340,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     break;
             }
             addRating(rating,getAdapterPosition());
-        }
+        }*/
 
         @Override
         public void onClick(View v) {
             switch (v.getId()){
-                case R.id.adapt_pur_item_rate1:
+              /*  case R.id.adapt_pur_item_rate1:
                     if( imagePos == 0){
                         toggleImg(1);
 
@@ -397,7 +391,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         toggleImg(4);
                         imagePos = 0;
                     }
-                    break;
+                    break;*/
                 case R.id.adapt_pur_item_delete:
                     if(productDetailsModels.size() <= 1){
                         ActivityUtil.showDialog(purchaseDetailsActivity,"Message","Please Decline.");

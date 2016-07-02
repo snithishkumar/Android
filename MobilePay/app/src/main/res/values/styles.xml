@@ -38,4 +38,10 @@
     <style name="small_round_style">
         <item name="android:background">@drawable/small_round_background</item>
     </style>
+
+   <!-- <style name="foodRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@android:drawable/ratingbar_small</item>
+        <item name="android:minHeight">22dip</item>
+        <item name="android:maxHeight">22dip</item>
+    </style>-->
 </resources>

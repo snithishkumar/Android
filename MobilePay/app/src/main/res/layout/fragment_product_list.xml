@@ -70,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
-        android:layout_marginRight="5dp"
         tools:context=".view.fragments.PaymentOptionsFragment"
         tools:listitem="@layout/adapt_purchase_items" />
     </android.support.v7.widget.CardView>

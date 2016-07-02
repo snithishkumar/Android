@@ -77,7 +77,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // purchaseListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             purchaseListViewHolder.vShopName.setText(purchaseModel.getName());
             purchaseListViewHolder.vOrderId.setText("Order Id: #"+purchaseModel.getBillNumber());
-            purchaseListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+            purchaseListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(purchaseModel.getTotalAmount())));
             purchaseListViewHolder.vPurchaseDate.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             //imageLoader.displayImage(purchaseModel.getMerchantGuid(),purchaseModel.getServerMerchantId(),purchaseListViewHolder.vShopLogo);
            //Picasso.with(context).load(images[0]).placeholder(ContextCompat.getDrawable(context,R.mipmap.test_image)).into(holder.imageView);

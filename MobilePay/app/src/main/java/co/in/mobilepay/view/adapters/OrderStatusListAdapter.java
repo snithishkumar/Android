@@ -105,7 +105,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             luggageListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
-            luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+            luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(purchaseModel.getTotalAmount())));
             luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
 
             if(purchaseModel.getOrderStatus().equals("READY TO COLLECT")){

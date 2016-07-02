@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+   android:layout_marginRight="5dp"
     android:layout_height="wrap_content">
 
 
@@ -26,6 +27,20 @@
         android:layout_marginLeft="25dp"
 
         android:id="@+id/order_status_linearLayout">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:ratingBarStyleSmall"
+            android:minHeight="18dp"
+            android:transformPivotX="0dp"
+            android:id="@+id/order_status_rate_it_star"
+            android:transformPivotY="0dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            />
+
+<!--
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +73,7 @@
             android:id="@+id/adapt_order_status_pur_item_rate5"
             android:background="@mipmap/rate_no_value"
             />
+-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -65,7 +81,7 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:id="@+id/adapt_order_status_pur_item_rate_it"
-            android:text="Rate it"
+            android:text="No Rating"
             />
 
 
@@ -79,6 +95,7 @@
         android:layout_marginRight="5dp"
         android:text="Rs.5000"
         android:id="@+id/adapt_order_status_pur_item_amount"
+        android:textColor="@color/colorPrimaryDark"
         android:layout_below="@+id/adapt_order_status_pur_item_desc"
         android:textStyle="bold"
         android:layout_alignRight="@+id/adapt_pur_item_delete"

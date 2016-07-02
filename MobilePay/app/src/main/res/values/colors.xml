@@ -7,6 +7,6 @@
     <color name="colorgrey">#ccc</color>
     <color name="lightgrey">#eee</color>
     <color name="white">#ffffff</color>
-
+<color name="darkgray">@android:color/darker_gray</color>
     <color name="simpletooltip_text">#ffffff</color>
 </resources>

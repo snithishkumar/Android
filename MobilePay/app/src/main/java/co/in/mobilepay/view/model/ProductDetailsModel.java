@@ -11,7 +11,7 @@ public class ProductDetailsModel{
     private String description;
     private int quantity;
     private String amount;
-    private int rating = 0;
+    private float rating = 0;
 
     public ProductDetailsModel(){
 
@@ -57,11 +57,11 @@ this.itemNo = parcel.readInt();
         this.amount = amount;
     }
 
-    public int getRating() {
+    public float getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(float rating) {
         this.rating = rating;
     }
 

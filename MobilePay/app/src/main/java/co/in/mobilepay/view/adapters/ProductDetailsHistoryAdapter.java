@@ -111,7 +111,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
             if(!purchaseEntity.isDiscard()){
-                toggleImg(productDetailsModel.getRating(),productDetailsViewHolder);
+                toggleImg((int)productDetailsModel.getRating(),productDetailsViewHolder);
             }
 // purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
