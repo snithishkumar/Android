@@ -272,7 +272,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
     private void syncData(){
         UserEntity userEntity = mainActivity.getAccountService().getUserDetails();
-        if(userEntity != null && !mainActivity.getMobileNumber().equals(userEntity.getMobileNumber())){
+        if(userEntity != null && mainActivity.getMobileNumber() != null && !mainActivity.getMobileNumber().equals(userEntity.getMobileNumber())){
 
             Account account = MobilePaySyncAdapter.getSyncAccount(mainActivity);
             Bundle settingsBundle = new Bundle();
