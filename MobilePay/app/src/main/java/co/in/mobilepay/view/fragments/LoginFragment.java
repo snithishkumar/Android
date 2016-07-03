@@ -252,6 +252,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
             case MessageConstant.LOGIN_INVALID_MOBILE:
                 mainActivityCallback.success(MessageConstant.LOGIN_INVALID_MOBILE, null);
                 break;
+
+            case MessageConstant.OTP_INVALID:
+                break;
             default:
 
                 ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.LOGIN_INVALID_PIN_ERROR);

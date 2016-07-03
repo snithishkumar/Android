@@ -237,7 +237,9 @@ public class NotificationBaseActivity extends AppCompatActivity {
     }
 
     protected void processResponse(PurchaseListPoster purchaseListPoster){
-        progressDialog.dismiss();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
         if(purchaseListPoster.getStatusCode() == 200) {
             try{
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseUuid);

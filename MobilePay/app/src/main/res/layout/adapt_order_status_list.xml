@@ -109,17 +109,26 @@
             android:visibility="gone"
             android:layout_toRightOf="@+id/luggage_pur_status"
             android:layout_toEndOf="@+id/luggage_pur_status" />
-        <TextView
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/luggage_pur_call"
-            android:text="CALL"
-            android:textColor="@android:color/holo_blue_dark"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_below="@+id/seperator"/>
+            android:layout_below="@+id/seperator"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/luggage_pur_call"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="CALL"
+                android:textColor="@android:color/holo_blue_dark"
+                />
+        </LinearLayout>
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
