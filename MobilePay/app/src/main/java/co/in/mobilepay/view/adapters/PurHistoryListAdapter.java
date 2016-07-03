@@ -16,6 +16,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.sync.ServiceAPI;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 
@@ -81,7 +82,8 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             purHistoryListViewHolder.vBillNumber.setText("Order Id: "+purchaseModel.getBillNumber());
             purHistoryListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             purHistoryListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
-            purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
+
+            purHistoryListViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(homeActivity,purchaseModel.getTotalAmount()));
             if(purchaseModel.getOrderStatus().equals(OrderStatus.CANCELLED.toString())){
                 purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.cancel_32);
             }else{

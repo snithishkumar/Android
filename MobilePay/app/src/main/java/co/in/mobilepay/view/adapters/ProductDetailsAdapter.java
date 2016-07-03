@@ -15,6 +15,7 @@ import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscountType;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
@@ -125,7 +126,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
 
-            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(productDetailsModel.getAmount())));
+            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
             if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
@@ -145,18 +146,19 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
             calcAmount();
 
-            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",amount));
+            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,amount));
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
 
-            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",taxAmount));
+            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,taxAmount));
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
             }else{
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
-            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",discount));
-            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",totalAmount));
+
+            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,discount));
+            amountDetailsViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
         }
 
 

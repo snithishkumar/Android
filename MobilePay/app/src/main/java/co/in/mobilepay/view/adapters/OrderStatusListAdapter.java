@@ -24,6 +24,7 @@ import java.util.List;
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.sync.ServiceAPI;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
 import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
@@ -105,7 +106,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vName.setText("Shop: "+purchaseModel.getName()+","+purchaseModel.getArea());
             luggageListViewHolder.vPurchaseDateTime.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             luggageListViewHolder.vCategory.setText("Category: "+purchaseModel.getCategory());
-            luggageListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(purchaseModel.getTotalAmount())));
+            luggageListViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(homeActivity,purchaseModel.getTotalAmount()));
             luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
 
             if(purchaseModel.getOrderStatus().equals("READY TO COLLECT")){

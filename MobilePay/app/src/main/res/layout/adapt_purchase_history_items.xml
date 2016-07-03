@@ -3,8 +3,116 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/adapt_pur_his_right_view"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content">
 
-    <TextView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapt_pur_item_delete"
+            android:layout_gravity="end|right"
+            android:visibility="invisible"
+            android:src="@mipmap/close"
+            />
+        <!--ic_menu_close_clear_cancel-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="5dp"
+            android:text="Rs.5000"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/adapt_pur_his_item_amount"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+
+<!--
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/adapt_pur_his_right_view"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content">
+
+
+        &lt;!&ndash;ic_menu_close_clear_cancel&ndash;&gt;
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:text="Rs.500000"
+            android:textColor="@color/colorPrimaryDark"
+            android:id="@+id/adapt_pur_his_item_amount"
+            android:textStyle="bold"></TextView>
+    </LinearLayout>
+-->
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/adapt_pur_his_left_view"
+        android:layout_toLeftOf="@+id/adapt_pur_his_right_view"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapt_pur_his_item_desc"
+            android:textSize="14dp"
+            android:text="Peter England Navy T Shirt Navy T Shirt Navy"
+            android:singleLine="false"
+            android:textStyle="bold"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+
+            android:id="@+id/linearLayout">
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:ratingBarStyleSmall"
+                android:minHeight="18dp"
+                android:transformPivotX="0dp"
+                android:id="@+id/adapt_pur_his_item_rate_it"
+                android:transformPivotY="0dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/adapt_pur_his_item_rate_it_text"
+                android:layout_marginLeft="10dp"
+                android:text="No Rating"
+                />
+
+
+        </LinearLayout>
+
+        </LinearLayout>
+
+
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/adapt_order_status_pur_item_desc"
@@ -14,9 +122,9 @@
         android:text="Peter England Navy T Shirt Navy \nT Shirt Navy"
         android:singleLine="false"
         android:textStyle="bold"
-        />
+        />-->
 
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:layout_below="@+id/adapt_order_status_pur_item_desc"
         android:orientation="horizontal"
@@ -69,10 +177,10 @@
             />
 
 
-    </LinearLayout>
+    </LinearLayout>-->
 
 
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
@@ -83,11 +191,11 @@
         android:layout_below="@+id/adapt_order_status_pur_item_desc"
         android:textStyle="bold"
         android:layout_alignRight="@+id/adapt_pur_item_delete"
-        android:layout_alignEnd="@+id/adapt_pur_item_delete" />
+        android:layout_alignEnd="@+id/adapt_pur_item_delete" />-->
 
 
 
-    <ImageView
+ <!--   <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
@@ -95,7 +203,7 @@
         android:id="@+id/adapt_pur_item_delete"
         android:background="@mipmap/purchase_item_delete"
         />
-
+-->
 
 
 </RelativeLayout>

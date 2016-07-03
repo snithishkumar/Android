@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Order Id: #"
+        android:layout_marginRight="5dp"
         android:layout_alignTop="@+id/purchase_history_shop_date_time"
         android:layout_alignRight="@+id/purchase_history_product_items_layout"
         android:layout_alignEnd="@+id/purchase_history_product_items_layout" />

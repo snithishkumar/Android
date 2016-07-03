@@ -1,11 +1,13 @@
 package co.in.mobilepay.view.adapters;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DiscountType;
+import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
@@ -111,28 +114,35 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
             if(!purchaseEntity.isDiscard()){
-                toggleImg((int)productDetailsModel.getRating(),productDetailsViewHolder);
+                productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
+                toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             }
 // purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
-            productDetailsViewHolder.totalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol)+""+productDetailsModel.getAmount());
+
+            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-           ;
             switch ( purchaseEntity.getDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
                         String address  = getAddress(purchaseEntity.getAddressEntity());
                         deliveryAddressViewHolder.vHomeDelivery.setText(address);
                         deliveryAddressViewHolder.vHomeDelivery.setChecked(true);
+                        deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                        deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     }
                     break;
                 case LUGGAGE:
                     deliveryAddressViewHolder.vLuggage.setChecked(true);
+                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                    deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     break;
                 case NONE:
                     deliveryAddressViewHolder.vBilling.setChecked(true);
+                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                    deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     break;
             }
 
@@ -145,17 +155,20 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
         } else {
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder) viewHolder;
             calcAmount();
-            amountDetailsViewHolder.vSubTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + amount);
+
+            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,amount));
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
-            amountDetailsViewHolder.vSubTaxAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(taxAmount));
+
+            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,taxAmount));
             if (amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()) {
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
             } else {
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
-            amountDetailsViewHolder.vSubDiscountAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(discount));
-            amountDetailsViewHolder.vTotalAmount.setText(purchaseDetailsActivity.getResources().getString(R.string.indian_rupee_symbol) + "" + String.valueOf(totalAmount));
+
+            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,discount));
+            amountDetailsViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
         }
 
 
@@ -236,7 +249,24 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
 
-    private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
+    private void toggleImg(float rating,TextView rateItText){
+        if(rating > 0){
+            if(rating < 2){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
+            }else if(rating < 3){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
+            }else if(rating < 4){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
+            }else if(rating < 5){
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
+            }else{
+                rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
+            }
+        }
+    }
+
+
+   /* private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
         switch (rating){
 
             case 1:
@@ -271,7 +301,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
                 break;
         }
     }
-
+*/
 
 
 
@@ -280,35 +310,26 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder{
 
         private TextView name;
-        private ImageView rate1;
-        private ImageView rate2;
+        private RatingBar ratingBar;
+      /*  private ImageView rate2;
         private ImageView rate3;
         private ImageView rate4;
         private ImageView rate5;
-        private ImageView delete;
+        private ImageView delete;*/
         private TextView totalAmount;
         private TextView rateItText;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_desc);
-            rate1 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate1);
-            rate2 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate2);
-            rate3 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate3);
-            rate4 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate4);
-            rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);
-            rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
+            name = (TextView) view.findViewById(R.id.adapt_pur_his_item_desc);
+            ratingBar = (RatingBar) view.findViewById(R.id.adapt_pur_his_item_rate_it);
+            rateItText = (TextView) view.findViewById(R.id.adapt_pur_his_item_rate_it_text);
             if(purchaseEntity.isDiscard()){
-                rate1.setVisibility(View.INVISIBLE);
-                rate2.setVisibility(View.INVISIBLE);
-                rate3.setVisibility(View.INVISIBLE);
-                rate4.setVisibility(View.INVISIBLE);
-                rate5.setVisibility(View.INVISIBLE);
+                ratingBar.setVisibility(View.INVISIBLE);
                 rateItText.setVisibility(View.INVISIBLE);
 
             }
-            totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
-            delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
+            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_his_item_amount);
 
 
         }
@@ -343,7 +364,6 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
 
     public class AmountDetailsViewHolder extends RecyclerView.ViewHolder{
-        private TextView vSubTotalText;
         private TextView vTaxText;
         private TextView vDiscountText;
 
@@ -354,10 +374,9 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
         public AmountDetailsViewHolder(View view){
             super(view);
-            vSubTotalText = (TextView) view.findViewById(R.id.amount_details_sub_total_text);
             vTaxText = (TextView) view.findViewById(R.id.adapt_pur_history_reason_message);
             vDiscountText = (TextView) view.findViewById(R.id.amount_details_sub_total_discount);
-
+///adapt_order_status_pur_item_amount
             vSubTotalAmount = (TextView) view.findViewById(R.id.amount_details_sub_total_amount);
             vSubTaxAmount = (TextView) view.findViewById(R.id.amount_details_sub_tax_amount);
             vSubDiscountAmount = (TextView) view.findViewById(R.id.amount_details_sub_discount_amount);
