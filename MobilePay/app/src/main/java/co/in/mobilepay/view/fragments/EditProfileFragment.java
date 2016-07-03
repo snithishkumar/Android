@@ -126,7 +126,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         previousMobile = userEntity.getMobileNumber();
       //  vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
-       if(userEntity !=null){
+       if(userEntity.getPassword() !=null){
            vPassword.setText(userEntity.getPassword());
        }
 
@@ -216,7 +216,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
     @Subscribe
     public void processEditProResponse(ResponseData responseData){
-        progressDialog.dismiss();
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
+
 
         switch (responseData.getStatusCode()){
             case MessageConstant.REG_OK:
@@ -249,15 +252,6 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         super.onPause();
     }
 
- /*   @Override
-    public void onDestroyView() {
-        hideKeyboard();
-        super.onDestroyView();
-    }
-
-    private void hideKeyboard(){
-        ActivityUtil.hideKeyboard(naviDrawerActivity);
-    }*/
 
 
     @Override

@@ -1,6 +1,7 @@
 package co.in.mobilepay.view.adapters;
 
 import android.graphics.Typeface;
+import android.media.Rating;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -102,6 +104,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
+            productDetailsViewHolder.rating.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
             calcAmount(position,productDetailsModel);
@@ -297,6 +300,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
         private ImageView rate5;*/
         private TextView totalAmount;
         private TextView rateItText;
+        private  RatingBar rating;
        /* private ImageView delete;*/
 
         public ProductDetailsViewHolder(View view) {
@@ -309,6 +313,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);*/
             totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
             //delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
+
+            rating = (RatingBar) view.findViewById(R.id.order_status_rate_it_star);
             rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
 
 
