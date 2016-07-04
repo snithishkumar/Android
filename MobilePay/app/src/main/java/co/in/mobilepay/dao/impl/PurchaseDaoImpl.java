@@ -77,7 +77,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getPurchaseList() throws SQLException {
-        return purchaseDao.queryBuilder().where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.PURCHASE_DATE_TIME,false).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
     }
 
 
@@ -186,7 +186,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELLED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         luggageQueryBuilder = luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false);
-       String temp =  luggageQueryBuilder.prepareStatementString();
+     //  String temp =  luggageQueryBuilder.prepareStatementString();
         return  luggageQueryBuilder.query();
     }
 
