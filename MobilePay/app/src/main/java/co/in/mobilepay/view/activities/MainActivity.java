@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.otto.Subscribe;
 
 import java.io.File;
@@ -28,6 +30,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.gcm.GcmRegistrationIntentService;
@@ -66,6 +69,8 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
+   // private Tracker mTracker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +102,13 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
             if(accountService == null){
                 accountService = new AccountServiceImpl(this);
             }
+
+            // Obtain the shared Tracker instance.
+            MobilePayAnalytics application = (MobilePayAnalytics) getApplication();
+            /*mTracker = application.getDefaultTracker();
+            mTracker.setScreenName("MainActivity");
+            mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/
+
            /* Account account = MobilePaySyncAdapter.getSyncAccount(this);
             ContentResolver.setIsSyncable(account,getString(R.string.auth_type),1);
             ContentResolver.setSyncAutomatically(account, getString(R.string.auth_type), true);
