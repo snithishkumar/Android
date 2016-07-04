@@ -238,8 +238,12 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             purchaseService.updatePurchaseEntity(purchaseEntity);
             syncPaymentData();
             Toast.makeText(this, "Payment Successfully made.", Toast.LENGTH_SHORT).show();
+            if(isNotification){
+                backToHome();
+            }else{
+                finish();
+            }
 
-            finish();
         }
         catch (Exception e){
             Log.e("com.merchant", e.getMessage(), e);
@@ -342,16 +346,19 @@ return transactionalDetailsEntity;
     }
 
 
+    private void backToHome(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("tabPosition",fragmentOptions - 1);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
 
 
     @Override
     public void onBackPressed() {
         if(isNotification){
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("tabPosition",fragmentOptions - 1);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+            backToHome();
         }else {
             super.onBackPressed();
         }
