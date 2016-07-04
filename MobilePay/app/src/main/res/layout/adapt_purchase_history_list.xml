@@ -85,12 +85,14 @@
             android:id="@+id/adapt_pur_his_amount"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_marginRight="10dp"
             android:textColor="@color/colorPrimaryDark"
             android:text="20689" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:id="@+id/adapt_pur_his_status"
             android:background="@mipmap/delivered_img_32"/>
