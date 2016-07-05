@@ -73,7 +73,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
 
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
         if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.reg_submit_heading), getString(R.string.reg_submit_message), mainActivity);
             mainActivity.getAccountService().getUserProfile(mainActivity.getMobileNumber(),mainActivity);
         }else{
             loadData();
@@ -96,37 +96,37 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     public RegisterJson getRegistrationJson(){
         String nameTemp = name.getText().toString();
         if(nameTemp == null  || nameTemp.trim().isEmpty()){
-            name.setError(getString(R.string.error_reg_name));
+            name.setError(getString(R.string.reg_name_error));
             return null;
         }
         String emailTemp = email.getText().toString();
         if(emailTemp == null  || emailTemp.trim().isEmpty()){
-            email.setError(getString(R.string.error_reg_email));
+            email.setError(getString(R.string.reg_email_error));
             return null;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailTemp).matches()){
-            email.setError(getString(R.string.error_reg_email_not_valid));
+            email.setError(getString(R.string.reg_email_not_valid_error));
             return null;
         }
 
         String passwordTemp = password.getText().toString();
         if(passwordTemp == null || passwordTemp.trim().isEmpty()){
-            password.setError(getString(R.string.error_reg_pass));
+            password.setError(getString(R.string.reg_pass_error));
             return null;
         }
         String rePasswordTemp = rePassword.getText().toString();
         if(rePasswordTemp == null || rePasswordTemp.trim().isEmpty()){
-            rePassword.setError(getString(R.string.error_reg_re_pass));
+            rePassword.setError(getString(R.string.reg_re_pass_error));
             return null;
         }
         if(!passwordTemp.equals(rePasswordTemp)){
-            rePassword.setError(getString(R.string.error_reg_re_pass_not_same));
+            rePassword.setError(getString(R.string.reg_re_pass_not_same_error));
             return null;
         }
 
         if(passwordTemp.length() < 6){
-            rePassword.setError(getString(R.string.error_reg_pass_len));
+            rePassword.setError(getString(R.string.reg_pass_len_error));
             return null;
         }
 
@@ -149,10 +149,10 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         registerJson.setImei(imeiNumber);
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
         if(isNet){
-            progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.reg_submit_heading), getString(R.string.reg_submit_message), mainActivity);
             mainActivity.getAccountService().createUser(registerJson,mainActivity);
         }else{
-            ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
 
@@ -173,9 +173,9 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             return;
         }else {
             if(responseData.getData() != null){
-                ActivityUtil.showDialog(mainActivity,"Error",responseData.getData());
+                ActivityUtil.showDialog(mainActivity,getString(R.string.error),responseData.getData());
             }else{
-                ActivityUtil.showDialog(mainActivity,"Error",mainActivity.getString(R.string.internal_error));
+                ActivityUtil.showDialog(mainActivity,getString(R.string.error),getString(R.string.internal_error));
             }
 
             return;
@@ -237,7 +237,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
                 Manifest.permission.READ_PHONE_STATE);
         if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,Manifest.permission.READ_PHONE_STATE)) {
-                showMessageOKCancel("You need to allow access IMEI Number",
+                showMessageOKCancel(getString(R.string.call_permission),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -258,8 +258,8 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(mainActivity)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(getString(R.string.ok), okListener)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create()
                 .show();
     }
@@ -273,7 +273,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
                     syncRegistration();
                 } else {
                     // Permission Denied
-                    Toast.makeText(mainActivity, "Unable to read IMEI Number", Toast.LENGTH_SHORT)
+                    Toast.makeText(mainActivity, getString(R.string.call_permission_denied), Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;

@@ -21,9 +21,23 @@
     <string name="otp_submit_heading">@string/mobile_submit_heading</string>
     <string name="otp_submit_message">Validating...</string>
     <string name="error">Error</string>
-    <!--OTP Screen permission button-->
-    <string name="ok">Ok</string>
-    <string name="cancel">Ok</string>
+
+
+    <!--Registration-->
+    <string name="reg_name_hint">Name</string>
+    <string name="reg_email_hint">Email</string>
+    <string name="reg_mpin_hint">mPin (Must be 6 digits)</string>
+    <string name="reg_rempin_hint">Re-Enter mPin</string>
+    <string name="reg_submit_heading">@string/mobile_submit_heading</string>
+    <string name="reg_submit_message">Loading...</string>
+
+    <string name="reg_name_error">Name should not be blank</string>
+    <string name="reg_email_error">Email should not be blank</string>
+    <string name="reg_email_not_valid_error">Invalid Email</string>
+    <string name="reg_pass_error">Password should not be blank</string>
+    <string name="reg_pass_len_error">Password should be 6 digits</string>
+    <string name="reg_re_pass_error">RePassword should not be blank</string>
+    <string name="reg_re_pass_not_same_error">Password and retype password are mismatched</string>
 
 
     <string name="enter_mpin">Please enter your mPIN</string>
@@ -87,13 +101,7 @@
     <string name="purchase_list_empty">Your Bucket is Empty. Purchase in shop and pay here.</string>
 
 
-    <string name="error_reg_name">Name should not be blank</string>
-    <string name="error_reg_email">Email should not be blank</string>
-    <string name="error_reg_email_not_valid">Invalid Email</string>
-    <string name="error_reg_pass">Password should not be blank</string>
-    <string name="error_reg_pass_len">Password should be 6 digits</string>
-    <string name="error_reg_re_pass">RePassword should not be blank</string>
-    <string name="error_reg_re_pass_not_same">Password and retype password are mismatched</string>
+
 
 
 
@@ -101,12 +109,18 @@
     <!--permissions-->
     <string name="sms_permission">Please authorize the App to read the OTP automatically</string>
     <string name="sms_permission_denied">Unable to read SMS Number</string>
+    <string name="call_permission">Please provide go-ahead, you could place calls direct to seller</string>
+    <string name="call_permission_denied">Unable to make call</string>
 
+    <!-- Screen permission button-->
+    <string name="ok">Ok</string>
+    <string name="cancel">Ok</string>
 
     <!--Common Message-->
     <string name="no_network">Check your connection.</string>
     <string name="internal_error">OOPS! Something went wrong. Pls try again later</string>
     <string name="no_network_heading">No Network</string>
+    <string name="current_tab">currentTab</string>
 </resources>
 
 

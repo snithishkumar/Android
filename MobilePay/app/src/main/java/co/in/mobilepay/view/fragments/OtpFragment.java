@@ -280,7 +280,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                     ContentResolver.SYNC_EXTRAS_MANUAL, true);
             settingsBundle.putBoolean(
                     ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
-            settingsBundle.putInt("currentTab",MessageConstant.SYNC_DATA);
+            settingsBundle.putInt(getString(R.string.current_tab),MessageConstant.SYNC_DATA);
             ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
         }
     }

@@ -11,28 +11,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <!--<RelativeLayout
-                android:id="@+id/image_layout"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="@color/colorLight">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:src="@mipmap/user" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="10dp"
-                    android:src="@mipmap/camera_icon" />
-            </RelativeLayout>-->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -49,6 +27,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+
                         android:background="@mipmap/name_icon" />
 
                     <EditText
@@ -58,7 +37,7 @@
                        android:nextFocusDown="@+id/reg_email"
                         android:singleLine="true"
                         android:layout_height="wrap_content"
-                        android:hint="Name" />
+                        android:hint="@string/reg_name_hint" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -70,7 +49,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:background="@mipmap/name_icon" />
+                        android:background="@drawable/ic_email" />
 
                     <EditText
                         android:id="@+id/reg_email"
@@ -79,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="textEmailAddress"
-                        android:hint="Email" />
+                        android:hint="@string/reg_email_hint" />
                 </LinearLayout>
 
 
@@ -92,14 +71,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:background="@mipmap/grey_lock" />
+                        android:background="@drawable/ic_lock" />
 
                     <EditText
                         android:id="@+id/reg_password"
                         style="@style/RegisterEdittextmargin"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="mPIN (must be 6 digits)"
+                        android:hint="@string/reg_mpin_hint"
                         android:maxLength="6"
                         android:inputType="numberPassword" />
                 </LinearLayout>
@@ -113,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:background="@mipmap/grey_lock" />
+                        android:background="@drawable/ic_lock" />
 
                     <EditText
                         android:id="@+id/reg_repassword"
@@ -121,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="6"
-                        android:hint="Re-enter mPIN"
+                        android:hint="@string/reg_rempin_hint"
                         android:inputType="number" />
                 </LinearLayout>
             </LinearLayout>

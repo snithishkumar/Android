@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
@@ -154,7 +152,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 return;
             }
             if(password.length() < 6){
-                vPassword.setError(getString(R.string.error_reg_pass_len));
+                vPassword.setError(getString(R.string.reg_pass_len_error));
                 return;
             }
             registerJson.setPassword(password);
@@ -180,12 +178,12 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
 
         String emailTemp = vEmail.getText().toString();
         if(emailTemp == null  || emailTemp.trim().isEmpty()){
-            vEmail.setError(getString(R.string.error_reg_email));
+            vEmail.setError(getString(R.string.reg_email_error));
             return;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailTemp).matches()){
-            vEmail.setError(getString(R.string.error_reg_email_not_valid));
+            vEmail.setError(getString(R.string.reg_email_not_valid_error));
             return;
         }
 
