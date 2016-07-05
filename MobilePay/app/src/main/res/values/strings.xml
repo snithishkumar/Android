@@ -39,8 +39,13 @@
     <string name="reg_re_pass_error">RePassword should not be blank</string>
     <string name="reg_re_pass_not_same_error">Password and retype password are mismatched</string>
 
+<!--Login-->
+    <string name="login_enter_mpin">Please enter your mPIN</string>
+    <string name="login_forget_mpin">Forget mPIN</string>
+    <string name="login_submit_heading">@string/mobile_submit_heading</string>
+    <string name="login_submit_message">Authenticating...</string>
+    <string name="invalid_pin">Invalid Pin</string>
 
-    <string name="enter_mpin">Please enter your mPIN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -87,7 +92,7 @@
 
 
 
-    <string name="login_error">OOPS! You are logged on Another device.Please login again or continue that device</string>
+
 
     <string name="rate_no">Rate it</string>
     <string name="rate_bad">Bad</string>
@@ -121,6 +126,7 @@
     <string name="internal_error">OOPS! Something went wrong. Pls try again later</string>
     <string name="no_network_heading">No Network</string>
     <string name="current_tab">currentTab</string>
+    <string name="login_error">OOPS! You are logged on Another device.Please login again or continue that device</string>
 </resources>
 
 

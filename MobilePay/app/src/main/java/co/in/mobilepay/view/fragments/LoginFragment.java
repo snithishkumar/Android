@@ -89,11 +89,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
         if(count == 6){
             boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
             if(isNet){
-                progressDialog = ActivityUtil.showProgress("In Progress", "Authenticating...", mainActivity);
+                progressDialog = ActivityUtil.showProgress(getString(R.string.login_submit_heading), getString(R.string.login_submit_message), mainActivity);
                 String data = TextUtils.join("",selectedPin);
                 mainActivity.getAccountService().login(data);
             }else{
-                ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+                ActivityUtil.showDialog(mainActivity,getString(R.string.no_network_heading), getString(R.string.no_network));
             }
 
 
@@ -247,7 +247,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 // Need to callback acitivity
                 break;
             case MessageConstant.LOGIN_INTERNAL_ERROR:
-                ActivityUtil.showDialog(mainActivity,"Error",MessageConstant.LOGIN_ERROR);
+                ActivityUtil.showDialog(mainActivity,getString(R.string.error),getString(R.string.internal_error));
                 break;
             case MessageConstant.LOGIN_INVALID_MOBILE:
                 mainActivityCallback.success(MessageConstant.LOGIN_INVALID_MOBILE, null);
@@ -257,7 +257,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                 break;
             default:
 
-                ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.LOGIN_INVALID_PIN_ERROR);
+                ActivityUtil.showDialog(mainActivity, getString(R.string.error), getString(R.string.invalid_pin));
                 mainActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

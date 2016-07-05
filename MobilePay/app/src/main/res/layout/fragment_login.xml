@@ -10,7 +10,7 @@
         android:textColor="#9e9e9e"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/enter_mpin"/>
+        android:text="@string/login_enter_mpin"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                 android:layout_width="55dp"
                 android:layout_height="55dp"
                 style="@style/key_style"
-                android:text="Forgot mPIN"
+                android:text="@string/login_forget_mpin"
                 android:layout_margin="20dp"
                 android:layout_toLeftOf="@+id/log_zero"/>
             <Button
