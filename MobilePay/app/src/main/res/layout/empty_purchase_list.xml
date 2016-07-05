@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="20dp"
-        android:text="Your Bucket is Empty. Purchase in shop and pay here"
+        android:text="@string/shopping_bag_empty"
         android:layout_above="@+id/empty_purchase_list_icon"
         android:layout_centerHorizontal="true" />
 

@@ -93,7 +93,7 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    class PurchaseListViewHolder extends RecyclerView.ViewHolder{
+    class  PurchaseListViewHolder extends RecyclerView.ViewHolder{
         protected ImageView vShopLogo;
         protected TextView vShopName;
         protected TextView vOrderId;

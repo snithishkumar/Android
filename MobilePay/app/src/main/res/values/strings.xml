@@ -46,6 +46,12 @@
     <string name="login_submit_message">Authenticating...</string>
     <string name="invalid_pin">Invalid Pin</string>
 
+    <!--Home Screen-->
+    <string name="exit_double_click">Please click BACK again to exit</string>
+
+    <!--Shopping Bag-->
+    <string name="shopping_bag_empty">Your Bucket is Empty. Purchase in shop and pay here</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -115,7 +121,7 @@
     <string name="sms_permission">Please authorize the App to read the OTP automatically</string>
     <string name="sms_permission_denied">Unable to read SMS Number</string>
     <string name="call_permission">Please provide go-ahead, you could place calls direct to seller</string>
-    <string name="call_permission_denied">Unable to make call</string>
+    <string name="call_permission_denied">Unable to make call. Please enable call permission</string>
 
     <!-- Screen permission button-->
     <string name="ok">Ok</string>

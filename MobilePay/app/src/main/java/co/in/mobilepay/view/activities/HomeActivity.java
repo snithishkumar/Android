@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new PurchaseListFragment(), "Purchase");
+        adapter.addFragment(new PurchaseListFragment(), "Shopping Bag");
         adapter.addFragment(new OrderStatusListFragment(), "Order status");
         adapter.addFragment(new PurHistoryListFragment(), "History");
         viewPager.setAdapter(adapter);
@@ -165,8 +165,6 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         displayView(position);
     }
     private void displayView(int position) {
-        Fragment fragment = null;
-        String title = getString(R.string.app_name);
         switch (position) {
             case 0:
                 Intent intent = new Intent(this, NaviDrawerActivity.class);
@@ -220,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                 Manifest.permission.READ_PHONE_STATE);
         if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_PHONE_STATE)) {
-                showMessageOKCancel("You need to allow access to call",
+                showMessageOKCancel(getString(R.string.call_permission),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -241,8 +239,8 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(this)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(getString(R.string.ok), okListener)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create()
                 .show();
     }
@@ -256,7 +254,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
                     makeCall();
                 } else {
                     // Permission Denied
-                    Toast.makeText(this, "Unable to call.Please enable the Phone permission.", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, getString(R.string.call_permission_denied), Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
@@ -290,7 +288,7 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         }
 
         this.doubleBackToExitPressedOnce = true;
-        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.exit_double_click), Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
 
