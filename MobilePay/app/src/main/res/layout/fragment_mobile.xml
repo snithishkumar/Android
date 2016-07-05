@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/mobile_message"
         android:gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:textColor="@android:color/black"
         android:layout_weight="1"
         android:text="@string/mobile_title"/>
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/mobile_main_layout"
         android:layout_below="@+id/mobile_message"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -41,18 +41,19 @@
             android:singleLine="true"
             android:imeOptions="actionSend"
             android:maxLength="10"
-            android:hint="@string/enter_mobile"/>
+            android:hint="@string/mobile_number_hint"/>
         </LinearLayout>
 
 
     <Button
         android:id="@+id/mobile_submit"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="36dp"
         android:layout_below="@+id/mobile_main_layout"
         android:enabled="true"
         android:layout_weight="1"
-        android:text="@string/submit"
+        android:focusableInTouchMode="true"
+        android:text="@string/otp_submit_button_text"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:elevation="2dp"

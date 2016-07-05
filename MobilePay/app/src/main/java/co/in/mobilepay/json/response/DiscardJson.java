@@ -17,6 +17,10 @@ public class DiscardJson {
 	private DiscardBy discardBy;
 	private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
+	private String productDetails;
+	private String amountDetails;
+	private String totalAmount;
+
 	public DiscardJson(){
 
 	}
@@ -25,6 +29,9 @@ public class DiscardJson {
 		this.reason = discardEntity.getReason();
 		this.purchaseGuid = purchaseEntity.getPurchaseGuid();
 		this.createDateTime = discardEntity.getCreatedDateTime();
+		this.productDetails = purchaseEntity.getProductDetails();
+		this.amountDetails = purchaseEntity.getAmountDetails();
+		this.totalAmount = purchaseEntity.getTotalAmount();
 	}
 
 
@@ -76,12 +83,42 @@ public class DiscardJson {
 		this.transactions = transactions;
 	}
 
+	public String getProductDetails() {
+		return productDetails;
+	}
+
+	public void setProductDetails(String productDetails) {
+		this.productDetails = productDetails;
+	}
+
+	public String getAmountDetails() {
+		return amountDetails;
+	}
+
+	public void setAmountDetails(String amountDetails) {
+		this.amountDetails = amountDetails;
+	}
+
+	public String getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(String totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
 	@Override
 	public String toString() {
 		return "DiscardJson{" +
 				"purchaseGuid='" + purchaseGuid + '\'' +
 				", reason='" + reason + '\'' +
 				", createDateTime=" + createDateTime +
+				", discardUUID='" + discardUUID + '\'' +
+				", discardBy=" + discardBy +
+				", transactions=" + transactions +
+				", productDetails='" + productDetails + '\'' +
+				", amountDetails='" + amountDetails + '\'' +
+				", totalAmount='" + totalAmount + '\'' +
 				'}';
 	}
 }

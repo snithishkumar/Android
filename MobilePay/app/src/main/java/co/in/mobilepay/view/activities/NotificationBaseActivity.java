@@ -253,7 +253,7 @@ public class NotificationBaseActivity extends AppCompatActivity {
             }
 
         }else{
-            ActivityUtil.toast(this,getString(R.string.error_purchase_list));
+            ActivityUtil.toast(this,getString(R.string.internal_error));
             callHomeActivity(0);
         }
     }

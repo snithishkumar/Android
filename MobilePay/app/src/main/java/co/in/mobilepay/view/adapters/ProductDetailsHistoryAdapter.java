@@ -113,10 +113,8 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
-            if(!purchaseEntity.isDiscard()){
-                productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
-                toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
-            }
+            productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
+            toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
 // purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
 

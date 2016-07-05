@@ -163,14 +163,12 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
 
     private void declineData(){
+        purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
+        purchaseEntity.setTotalAmount( String.format("%.2f", productDetailsAdapter.getTotalAmount()));
         purchaseDetailsActivity.getPurchaseService().declinePurchase(purchaseEntity, reasonToDecline);
         purchaseDetailsActivity.syncPaymentData();
         purchaseDetailsActivity.onBackPressed();
-        // -- TODO Testing with common sync
-       /* boolean isNet = ServiceUtil.isNetworkConnected(purchaseDetailsActivity);
-        if(isNet) {
-            progressDialog = ActivityUtil.showProgress("In Progress", "Please wait...", purchaseDetailsActivity);
-        }*/
+
     }
 
 

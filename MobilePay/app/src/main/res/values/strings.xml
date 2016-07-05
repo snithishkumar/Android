@@ -1,13 +1,30 @@
 <resources>
+    <!--App Settings-->
     <string name="app_name">MobilePay</string>
     <string name="action_settings">Settings</string>
+
+    <!--Mobile Screen-->
+    <string name="mobile_title">(Please provide your mobile number to progress registration)</string>
+    <string name="mobile_number_hint">Mobile</string>
+    <string name="mobile_number_missing_error">Please enter the mobile number.</string>
+    <string name="mobile_number_length_error">Mobile Number must be 10 digits.</string>
+    <string name="mobile_submit_heading">In Progress</string>
+    <string name="mobile_submit_message">Validating...</string>
+
+<!--OTP Screen-->
     <string name="otp_title">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
-    <string name="mobile_title">(Enter the Mobile Number below in case if we fail to detect the SMS automatically)</string>
-    <string name="enter_otp">Enter OTP</string>
-    <string name="enter_mobile">Mobile</string>
-    <string name="submit">Submit</string>
-    <string name="or">(or)</string>
-    <string name="resend_otp">Re-Send OTP</string>
+    <string name="otp_number_hint">Enter OTP</string>
+    <string name="otp_submit_button_text">Submit</string>
+    <string name="otp_or">(or)</string>
+    <string name="otp_resend_button_text">Re-Send OTP</string>
+    <string name="otp_number_error">Otp Should not be blank</string>
+    <string name="otp_submit_heading">@string/mobile_submit_heading</string>
+    <string name="otp_submit_message">Validating...</string>
+    <!--OTP Screen permission button-->
+    <string name="ok">Ok</string>
+    <string name="cancel">Ok</string>
+
+
     <string name="enter_mpin">Please enter your mPIN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -19,11 +36,11 @@
 
     <string name="google_cloud_id">207427538099</string>
     <!-- //AIzaSyBuFk_OddMviHfKLK7eilEw3P5v0KEG7tc -->
-       <!-- Account Details -->
+    <!-- Account Details -->
 
     <string name="auth_type">co.in.mobilepay.sync</string>
     <string name="content_authority">co.in.mobilepay.sync</string>
-    
+
     <string name="bank_prompt">Choose a Country</string>
     <string-array name="bank_list">
         <item>ICICI Bank</item>
@@ -53,7 +70,7 @@
     <string name="alert_decline_feedback_three">I don\'t like this purchased item</string>
     <string name="alert_decline_feedback_four">Not me</string>
 
-    <string name="error_purchase_list">OOPS! Something went wrong. Pls try again later</string>
+
 
     <string name="login_error">OOPS! You are logged on Another device.Please login again or continue that device</string>
 
@@ -78,8 +95,17 @@
     <string name="error_reg_re_pass_not_same">Password and retype password are mismatched</string>
 
 
-    <string name="error_otp_number">Otp Should not be blank</string>
 
+
+    <!--permissions-->
+    <string name="sms_permission">Please authorize the App to read the OTP automatically</string>
+    <string name="sms_permission_denied">Unable to read SMS Number</string>
+
+
+    <!--Common Message-->
+    <string name="no_network">Check your connection.</string>
+    <string name="internal_error">OOPS! Something went wrong. Pls try again later</string>
+    <string name="no_network_heading">No Network</string>
 </resources>
 
 

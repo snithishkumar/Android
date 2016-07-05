@@ -89,7 +89,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
     public String getOtpNumber() {
         String optNumberTemp = otpNumber.getText().toString();
         if (optNumberTemp == null || optNumberTemp.trim().isEmpty()) {
-            otpNumber.setError(getString(R.string.error_otp_number));
+            otpNumber.setError(getString(R.string.otp_number_error));
             return null;
         }
         return optNumberTemp;
@@ -141,14 +141,14 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                 if (otpNumber != null) {
                     boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
                     if (isNet) {
-                        progressDialog = ActivityUtil.showProgress("In Progress", "Loading...", mainActivity);
+                        progressDialog = ActivityUtil.showProgress(getString(R.string.otp_submit_heading), getString(R.string.otp_submit_message), mainActivity);
                         if (mainActivity.getRegisterJson() != null) {
                             mainActivity.getAccountService().validateOtp(otpNumber, mainActivity.getRegisterJson(), mainActivity);
                         } else {
                             mainActivity.getAccountService().validateOtp(otpNumber, mainActivity.getMobileNumber(), mainActivity);
                         }
                     } else {
-                        ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+                        ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading),getString(R.string.no_network));
                     }
                 }
                 break;
@@ -163,7 +163,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
                     ActivityUtil.toast(mainActivity, getString(R.string.otp_resend));
                 } else {
-                    ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+                    ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading),getString(R.string.no_network));
                 }
                 break;
 
@@ -220,7 +220,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                 Manifest.permission.READ_SMS);
         if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,Manifest.permission.READ_SMS)) {
-                showMessageOKCancel("You need to allow to read OTP Password",
+                showMessageOKCancel(getString(R.string.sms_permission),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -241,8 +241,8 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(mainActivity)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton(getString(R.string.ok), okListener)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .create()
                 .show();
     }
@@ -256,7 +256,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                     registerReceiver();
                 } else {
                     // Permission Denied
-                    Toast.makeText(mainActivity, "Unable to read IMEI Number", Toast.LENGTH_SHORT)
+                    Toast.makeText(mainActivity, getString(R.string.sms_permission_denied), Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;

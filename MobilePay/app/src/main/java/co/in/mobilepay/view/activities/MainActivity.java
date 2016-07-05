@@ -104,7 +104,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
             }
 
             // Obtain the shared Tracker instance.
-            MobilePayAnalytics application = (MobilePayAnalytics) getApplication();
+
             /*mTracker = application.getDefaultTracker();
             mTracker.setScreenName("MainActivity");
             mTracker.send(new HitBuilders.ScreenViewBuilder().build());*/

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,7 +27,6 @@ import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.MainActivity;
@@ -177,7 +175,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             if(responseData.getData() != null){
                 ActivityUtil.showDialog(mainActivity,"Error",responseData.getData());
             }else{
-                ActivityUtil.showDialog(mainActivity,"Error",mainActivity.getString(R.string.error_purchase_list));
+                ActivityUtil.showDialog(mainActivity,"Error",mainActivity.getString(R.string.internal_error));
             }
 
             return;

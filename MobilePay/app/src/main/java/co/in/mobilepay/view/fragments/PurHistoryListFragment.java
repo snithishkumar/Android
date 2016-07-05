@@ -172,7 +172,7 @@ public class PurHistoryListFragment extends Fragment  {
         }else if(purchaseListPoster.getStatusCode() == 10){
             showLoginActivity();
         }else{
-            ActivityUtil.toast(homeActivity, getString(R.string.error_purchase_list));
+            ActivityUtil.toast(homeActivity, getString(R.string.internal_error));
         }
 
     }

@@ -169,7 +169,7 @@
                     android:id="@+id/add_address_submit"
                     android:layout_height="wrap_content"
                     android:height="50dp"
-                    android:text="@string/submit"
+                    android:text="@string/otp_submit_button_text"
                     android:layout_gravity="center_horizontal" />
                 <View
                     android:layout_width="match_parent"

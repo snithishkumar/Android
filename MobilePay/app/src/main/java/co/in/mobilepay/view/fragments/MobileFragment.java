@@ -10,8 +10,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -33,7 +31,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     private TextView mobileNumber = null;
     private String mobile;
     private MainActivity mainActivity = null;
-    private Button otpSubmit = null;
+    private Button onSubmit = null;
 
     private MainActivityCallback mainActivityCallback;
 
@@ -44,7 +42,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mobile, container, false);
-        otpSubmit = (Button) view.findViewById(R.id.mobile_submit);
+        onSubmit = (Button) view.findViewById(R.id.mobile_submit);
         mobileNumber = (TextView) view.findViewById(R.id.mobile_number);
         mobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -60,13 +58,13 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 10) {
-                    otpSubmit.setBackground(ContextCompat.getDrawable(mainActivity, R.drawable.button));
-                    otpSubmit.setTextColor(ContextCompat.getColor(mainActivity, R.color.white));
+                    onSubmit.setBackground(ContextCompat.getDrawable(mainActivity, R.drawable.button));
+                    onSubmit.setTextColor(ContextCompat.getColor(mainActivity, R.color.white));
                 }
             }
         });
 
-        otpSubmit.setOnClickListener(this);
+        onSubmit.setOnClickListener(this);
         return view;
     }
 
@@ -75,19 +73,19 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         mobile = mobileNumber.getText().toString();
         if (mobile == null || mobile.isEmpty()) {
-            mobileNumber.setError("Please enter the mobile number.");
+            mobileNumber.setError(getString(R.string.mobile_number_missing_error));
             return;
         }
         if (mobile.length() != 10) {
-            mobileNumber.setError("mobile Number must be 10 digits.");
+            mobileNumber.setError(getString(R.string.mobile_number_length_error));
             return;
         }
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);
         if (isNet) {
-            progressDialog = ActivityUtil.showProgress("In Progress", "Validating...", mainActivity);
+            progressDialog = ActivityUtil.showProgress(getString(R.string.mobile_submit_heading), getString(R.string.mobile_submit_message), mainActivity);
             mainActivity.getAccountService().requestOtp(mobile, mainActivity);
         } else {
-            ActivityUtil.showDialog(mainActivity, "No Network", "Check your connection.");
+            ActivityUtil.showDialog(mainActivity, getString(R.string.no_network_heading), getString(R.string.no_network));
         }
     }
 
@@ -107,7 +105,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
             mainActivityCallback.success(MessageConstant.MOBILE_VERIFY_OK, mobile);
             return;
         }
-        ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.MOBILE_VERIFY_INTERNAL_ERROR_MSG);
+        ActivityUtil.showDialog(mainActivity, "Error",getString(R.string.internal_error));
     }
 
 
