@@ -20,6 +20,7 @@
     <string name="otp_number_error">Otp Should not be blank</string>
     <string name="otp_submit_heading">@string/mobile_submit_heading</string>
     <string name="otp_submit_message">Validating...</string>
+    <string name="error">Error</string>
     <!--OTP Screen permission button-->
     <string name="ok">Ok</string>
     <string name="cancel">Ok</string>

@@ -113,7 +113,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
                 mainActivityCallback.success(MessageConstant.OTP_OK, null);
                 break;
             case MessageConstant.OTP_ERROR_CODE:
-                ActivityUtil.showDialog(mainActivity, "Error", MessageConstant.OTP_ERROR);
+                ActivityUtil.showDialog(mainActivity, getString(R.string.error), getString(R.string.internal_error));
                 break;
 
             // Profile Update (OTP Call)
