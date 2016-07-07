@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -141,7 +142,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         protected TextView vTotalAmount;
         protected TextView vName;
         protected TextView vCategory;
-        protected TextView vCall;
+        protected LinearLayout vCall;
         protected TextView vOrderStatus;
         protected ImageView vShopLogo;
         protected ImageView vInfo;
@@ -155,7 +156,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vTotalAmount = (TextView) view.findViewById(R.id.luggage_pur_total_amt);
             vName = (TextView) view.findViewById(R.id.luggage_pur_shop_name);
             vCategory = (TextView) view.findViewById(R.id.luggage_pur_shop_category);
-            vCall = (TextView) view.findViewById(R.id.luggage_pur_call);
+            vCall = (LinearLayout) view.findViewById(R.id.luggage_layout_pur_call);
             vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
             vInfo = (ImageView)view.findViewById(R.id.adapt_order_status_info);

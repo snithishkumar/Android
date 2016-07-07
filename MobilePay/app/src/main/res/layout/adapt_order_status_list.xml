@@ -114,8 +114,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:id="@+id/luggage_layout_pur_call"
             android:layout_below="@+id/seperator"
             >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:background="@drawable/ic_call_blue_18dp"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,8 +131,8 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="CALL"
+                android:layout_marginLeft="5dp"
+                android:text="Call to Shop"
                 android:textColor="@android:color/holo_blue_dark"
                 />
         </LinearLayout>
