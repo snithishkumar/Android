@@ -1,30 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginLeft="20dp"
+    android:layout_marginBottom="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginBottom="20dp"
     android:layout_height="wrap_content">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reason"
-        android:id="@+id/adapt_pur_history_reason_text"
-        android:textSize="20dp"
-        android:textStyle="bold"
+        android:id="@+id/adapt_pur_history_reason_img"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/ic_cancel_black_24dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/adapt_pur_history_reason_text"
-        android:id="@+id/adapt_pur_history_reason_message"
-        android:text="Not me"
-        android:textSize="18dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/adapt_pur_history_reason_img"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reason"
+            android:id="@+id/adapt_pur_history_reason_text"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapt_pur_history_reason_message"
+            android:text="Not me"
+            android:textSize="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            />
+
+    </LinearLayout>
+
+
+
+
 
    <!-- <TextView
         android:layout_width="wrap_content"

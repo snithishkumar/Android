@@ -16,7 +16,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@mipmap/name_icon" />
+                android:background="@drawable/ic_person_black_24dp" />
 
             <TextView
                 style="@style/RegisterEdittextmargin"
@@ -102,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@mipmap/name_icon" />
+            android:background="@drawable/ic_email" />
 
         <TextView
             style="@style/RegisterEdittextmargin"
@@ -141,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:background="@mipmap/grey_lock" />
+            android:background="@drawable/ic_lock" />
 
         <TextView
             style="@style/RegisterEdittextmargin"

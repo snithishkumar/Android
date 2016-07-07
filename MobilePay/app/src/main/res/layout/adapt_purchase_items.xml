@@ -16,14 +16,16 @@
             android:layout_height="wrap_content"
             android:id="@+id/adapt_pur_item_delete"
             android:layout_gravity="end|right"
-            android:src="@mipmap/close"
+            android:src="@drawable/ic_clear_black_18dp"
             />
+       <!-- //@mipmap/close-->
 <!--ic_menu_close_clear_cancel-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
             android:text="Rs.5000"
             android:textColor="@color/colorPrimaryDark"
             android:id="@+id/adapt_pur_item_amount"

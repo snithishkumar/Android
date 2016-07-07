@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@mipmap/name_icon"
         android:layout_marginLeft="30dp"
+        android:id="@+id/navi_drawer_img"
         android:layout_gravity="center_vertical"/>
     <TextView
         android:id="@+id/title"
