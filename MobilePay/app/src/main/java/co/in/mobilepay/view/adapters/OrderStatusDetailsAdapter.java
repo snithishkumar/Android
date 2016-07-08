@@ -1,13 +1,10 @@
 package co.in.mobilepay.view.adapters;
 
-import android.graphics.Typeface;
-import android.media.Rating;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -128,13 +125,12 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
                     deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     break;
-                case NONE:
+                case BILLING:
                     deliveryAddressViewHolder.vBilling.setChecked(true);
                     deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
                     break;
             }
-
 
         }else{
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;

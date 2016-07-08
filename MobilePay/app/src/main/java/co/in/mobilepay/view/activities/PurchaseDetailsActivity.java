@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DeviceType;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
@@ -233,7 +234,12 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
             purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
             purchaseEntity.setIsSync(false);
-            purchaseEntity.setOrderStatus(OrderStatus.PACKING);
+            if(purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.BILLING.toString())){
+                purchaseEntity.setOrderStatus(OrderStatus.DELIVERED);
+            }else{
+                purchaseEntity.setOrderStatus(OrderStatus.PACKING);
+            }
+
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
             syncPaymentData();

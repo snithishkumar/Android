@@ -431,7 +431,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             deliveryOptions = DeliveryOptions.LUGGAGE;
                             break;
                         case R.id.adapt_pur_item_delivery_billing:
-                            deliveryOptions = DeliveryOptions.NONE;
+                            deliveryOptions = DeliveryOptions.BILLING;
                             break;
 
                     }
@@ -462,7 +462,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             deliveryOptions = DeliveryOptions.LUGGAGE;
                             break;
                         case R.id.adapt_pur_delivery_billing:
-                            deliveryOptions = DeliveryOptions.NONE;
+                            deliveryOptions = DeliveryOptions.BILLING;
                             break;
 
                     }

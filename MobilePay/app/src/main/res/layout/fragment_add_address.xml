@@ -81,13 +81,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@mipmap/name_icon" />
+                    android:background="@drawable/ic_person_black_24dp" />
 
                 <EditText
                     android:id="@+id/add_address_name"
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
                     android:hint="Name" />
             </LinearLayout>
 
@@ -101,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@mipmap/grey_lock" />
+                    android:background="@drawable/ic_phone" />
 
                 <EditText
                     android:id="@+id/add_address_phone_number"
@@ -121,13 +123,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@mipmap/location_icon_16" />
+                    android:background="@drawable/ic_place_black_24dp" />
 
                 <EditText
                     android:id="@+id/add_address_street"
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:hint="Door No/Street" />
 
 
@@ -143,6 +146,7 @@
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
                     android:hint="Address" />
 
                 <EditText
@@ -150,18 +154,24 @@
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
                     android:hint="Area" />
                 <EditText
                     android:id="@+id/add_address_city"
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"
                     android:hint="City" />
                 <EditText
                     android:id="@+id/add_address_post_code"
                     style="@style/RegisterEdittextmargin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
                     android:hint="Postal Code" />
                 
                 <Button
