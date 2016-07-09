@@ -131,7 +131,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
         String nameTemp = vName.getText().toString();
         if(nameTemp == null || nameTemp.trim().isEmpty()){
-            vName.setError("Name should not be blank");
+            vName.setError(getString(R.string.add_delivery_address_name_error));
             vName.requestFocus();
             return;
         }
@@ -139,13 +139,13 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
         String newMobile = vMobileNumber.getText().toString();
         if(newMobile == null || newMobile.trim().isEmpty()){
-            vMobileNumber.setError("mobile should not be blank");
+            vMobileNumber.setError(getString(R.string.add_delivery_address_mobile_error));
             vMobileNumber.requestFocus();
             return;
         }
 
         if(newMobile.length() != 10){
-            vMobileNumber.setError("mobile Number must be 10 digits");
+            vMobileNumber.setError(getString(R.string.add_delivery_address_mobile_number_error));
             vMobileNumber.requestFocus();
             vMobileNumber.setSelection(newMobile.length());
             return;
@@ -155,7 +155,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
         String street = vStreet.getText().toString();
         if(street == null || street.trim().isEmpty()){
-            vStreet.setError("Street Name should not be blank");
+            vStreet.setError(getString(R.string.add_delivery_address_street_error));
             vStreet.requestFocus();
             return;
         }
@@ -169,7 +169,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
         String city = vCity.getText().toString();
         if(city == null || city.trim().isEmpty()){
-            vCity.setError("City should not be blank");
+            vCity.setError(getString(R.string.add_delivery_address_city_error));
             vCity.requestFocus();
             return;
         }
@@ -177,7 +177,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
         String postalCode = vPostalCode.getText().toString();
         if(postalCode == null || postalCode.trim().isEmpty()){
-            vPostalCode.setError("Postal code should not be blank");
+            vPostalCode.setError(getString(R.string.add_delivery_address_postal_error));
             vPostalCode.requestFocus();
             return;
         }

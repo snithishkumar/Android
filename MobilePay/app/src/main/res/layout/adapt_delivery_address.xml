@@ -15,12 +15,21 @@
         android:layout_margin="10dp"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/adapt_delivery_address_name_img"
+            android:background="@drawable/ic_people_black_18dp"
+            />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/adapt_delivery_address_name"
             android:text="Nithish Kunar"
-            android:layout_marginLeft="25dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/adapt_delivery_address_name_img"
             android:textStyle="bold"
 
             />
@@ -48,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@mipmap/phone_icon_16"
+                android:background="@drawable/ic_phone_black_18dp"
                 />
 
             <TextView
@@ -73,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@mipmap/location_icon_16"
+                android:background="@drawable/ic_place_black_18dp"
                 />
 
             <TextView

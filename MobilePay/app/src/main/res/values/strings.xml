@@ -53,6 +53,15 @@
     <!--Shopping Bag-->
     <string name="shopping_bag_empty">Your Bucket is Empty. Purchase in shop and pay here</string>
 
+    <!--Add Delivery Address-->
+    <string name="add_delivery_address_name_error">Name should not be blank</string>
+    <string name="add_delivery_address_mobile_error">mobile should not be blank</string>
+    <string name="add_delivery_address_mobile_number_error">mobile Number must be 10 digits</string>
+    <string name="add_delivery_address_street_error">Street Name should not be blank</string>
+    <string name="add_delivery_address_city_error">City should not be blank</string>
+    <string name="add_delivery_address_postal_error">Postal code should not be blank</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">LoginActivity</string>
