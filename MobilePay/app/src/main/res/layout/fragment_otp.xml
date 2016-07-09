@@ -14,6 +14,11 @@
     android:textColor="@android:color/black"
     android:layout_weight="1"
     android:text="@string/otp_title"/>
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_otp_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +27,7 @@
         android:id="@+id/otp_number"
         android:inputType="number"
         android:hint="@string/otp_number_hint"/>
+    </android.support.design.widget.TextInputLayout>
     <Button
         android:id="@+id/otp_submit"
         android:layout_width="match_parent"

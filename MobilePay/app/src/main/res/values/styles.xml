@@ -35,6 +35,10 @@
         <item name="android:background">@drawable/round_button_click</item>
     </style>
 
+    <style name="FloatLabelColor" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="small_round_style">
         <item name="android:background">@drawable/small_round_background</item>
     </style>

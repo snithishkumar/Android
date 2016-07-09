@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,12 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     EditText password = null;
     EditText rePassword = null;
 
+    TextInputLayout nameFloatLabel = null;
+    TextInputLayout emailFloatLabel = null;
+    TextInputLayout passwordFloatLabel = null;
+    TextInputLayout rePasswordFloatLabel = null;
+
+
     private MainActivity mainActivity = null;
     ProgressDialog progressDialog = null;
     private MainActivityCallback mainActivityCallback =null;
@@ -65,6 +72,15 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         name = (EditText) view.findViewById(R.id.reg_name);
         email = (EditText) view.findViewById(R.id.reg_email);
+        nameFloatLabel = (TextInputLayout) view.findViewById(R.id.input_layout_reg_name);
+        emailFloatLabel = (TextInputLayout) view.findViewById(R.id.input_layout_reg_email);
+        passwordFloatLabel = (TextInputLayout) view.findViewById(R.id.input_layout_reg_password);
+        rePasswordFloatLabel = (TextInputLayout) view.findViewById(R.id.input_layout_reg_repassword);
+        nameFloatLabel.setHintTextAppearance(R.style.FloatLabelColor);
+        emailFloatLabel.setHintTextAppearance(R.style.FloatLabelColor);
+        passwordFloatLabel.setHintTextAppearance(R.style.FloatLabelColor);
+        rePasswordFloatLabel.setHintTextAppearance(R.style.FloatLabelColor);
+
 
         password = (EditText)view.findViewById(R.id.reg_password);
         rePassword = (EditText) view.findViewById(R.id.reg_repassword);
@@ -97,36 +113,46 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         String nameTemp = name.getText().toString();
         if(nameTemp == null  || nameTemp.trim().isEmpty()){
             name.setError(getString(R.string.reg_name_error));
+            name.requestFocus();
             return null;
         }
         String emailTemp = email.getText().toString();
         if(emailTemp == null  || emailTemp.trim().isEmpty()){
             email.setError(getString(R.string.reg_email_error));
+            email.requestFocus();
             return null;
         }
 
         if(!Patterns.EMAIL_ADDRESS.matcher(emailTemp).matches()){
             email.setError(getString(R.string.reg_email_not_valid_error));
+            email.setSelection(emailTemp.length());
+            email.requestFocus();
             return null;
         }
 
         String passwordTemp = password.getText().toString();
         if(passwordTemp == null || passwordTemp.trim().isEmpty()){
             password.setError(getString(R.string.reg_pass_error));
+            password.requestFocus();
             return null;
         }
         String rePasswordTemp = rePassword.getText().toString();
         if(rePasswordTemp == null || rePasswordTemp.trim().isEmpty()){
             rePassword.setError(getString(R.string.reg_re_pass_error));
+            rePassword.requestFocus();
             return null;
         }
         if(!passwordTemp.equals(rePasswordTemp)){
             rePassword.setError(getString(R.string.reg_re_pass_not_same_error));
+            rePassword.setSelection(rePasswordTemp.length());
+            rePassword.requestFocus();
             return null;
         }
 
         if(passwordTemp.length() < 6){
-            rePassword.setError(getString(R.string.reg_pass_len_error));
+            password.setError(getString(R.string.reg_pass_len_error));
+            password.setSelection(rePasswordTemp.length());
+            password.requestFocus();
             return null;
         }
 
@@ -170,6 +196,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             loadData(responseData);
             return;
         }else if(responseData.getStatusCode() == MessageConstant.INVALID_MOBILE){
+            name.requestFocus();
             return;
         }else {
             if(responseData.getData() != null){
@@ -189,6 +216,9 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             RegisterJson registerJson =  gson.fromJson(profileData,RegisterJson.class);
             name.setText(registerJson.getName());
             email.setText(registerJson.getEmail());
+            password.requestFocus();
+        }else{
+            name.requestFocus();
         }
 
     }
@@ -198,7 +228,9 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
         if(userEntity != null){
             name.setText(userEntity.getName());
             email.setText(userEntity.getEmail());
-
+            password.requestFocus();
+        }else{
+            name.requestFocus();
         }
     }
 

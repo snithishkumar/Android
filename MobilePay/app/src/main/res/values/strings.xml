@@ -14,6 +14,7 @@
 <!--OTP Screen-->
     <string name="otp_title">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
     <string name="otp_number_hint">Enter OTP</string>
+    <string name="otp_number_hint_msg">OTP Number</string>
     <string name="otp_submit_button_text">Submit</string>
     <string name="otp_or">(or)</string>
     <string name="otp_resend_button_text">Re-Send OTP</string>
@@ -26,8 +27,8 @@
     <!--Registration-->
     <string name="reg_name_hint">Name</string>
     <string name="reg_email_hint">Email</string>
-    <string name="reg_mpin_hint">mPin (Must be 6 digits)</string>
-    <string name="reg_rempin_hint">Re-Enter mPin</string>
+    <string name="reg_mpin_hint">Login Id (Must be 6 digits)</string>
+    <string name="reg_rempin_hint">Re-Enter Login Id</string>
     <string name="reg_submit_heading">@string/mobile_submit_heading</string>
     <string name="reg_submit_message">Loading...</string>
 

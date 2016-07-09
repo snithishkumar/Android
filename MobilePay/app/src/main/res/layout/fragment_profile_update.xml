@@ -38,6 +38,8 @@
         android:layout_marginLeft="55dp"
         android:layout_marginTop="-20dp"
         android:textStyle="bold"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
         android:layout_below="@+id/profile_name_text"
         android:layout_height="wrap_content"/>
 
@@ -124,6 +126,8 @@
         android:layout_marginLeft="55dp"
         android:layout_marginTop="-20dp"
         android:textStyle="bold"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
         android:layout_below="@+id/profile_email_text"
         android:layout_height="wrap_content"/>
 
@@ -165,6 +169,8 @@
         android:textStyle="bold"
         android:inputType="numberPassword"
         android:maxLength="6"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
         android:layout_below="@+id/profile_edit_pass_text"
         android:layout_height="wrap_content"
         android:text="......" />

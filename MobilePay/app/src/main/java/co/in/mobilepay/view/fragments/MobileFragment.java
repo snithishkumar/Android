@@ -3,6 +3,8 @@ package co.in.mobilepay.view.fragments;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.StyleRes;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -32,7 +34,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     private String mobile;
     private MainActivity mainActivity = null;
     private Button onSubmit = null;
-
+private TextInputLayout textInputLayout;
     private MainActivityCallback mainActivityCallback;
 
     ProgressDialog progressDialog = null;
@@ -44,6 +46,8 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_mobile, container, false);
         onSubmit = (Button) view.findViewById(R.id.mobile_submit);
         mobileNumber = (TextView) view.findViewById(R.id.mobile_number);
+        textInputLayout = (TextInputLayout)view.findViewById(R.id.input_layout_mobile);
+        textInputLayout.setHintTextAppearance(R.style.FloatLabelColor);
         mobileNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -77,7 +81,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (mobile.length() != 10) {
-            mobileNumber.setError(getString(R.string.mobile_number_length_error));
+             mobileNumber.setError(getString(R.string.mobile_number_length_error));
             return;
         }
         boolean isNet = ServiceUtil.isNetworkConnected(mainActivity);

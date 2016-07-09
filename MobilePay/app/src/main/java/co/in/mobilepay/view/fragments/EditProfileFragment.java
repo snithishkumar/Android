@@ -115,6 +115,14 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
                 isPasswordChanged = true;
             }
         });
+        vPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!isPasswordChanged && (vPassword.getText() != null && vPassword.getText().equals("......"))){
+                    vPassword.getText().clear();
+                }
+            }
+        });
         Button vButton = (Button)view.findViewById(R.id.profile_edit_submit);
         vButton.setOnClickListener(this);
     }
@@ -124,6 +132,7 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
         previousMobile = userEntity.getMobileNumber();
       //  vMobileNumber.setText(userEntity.getMobileNumber());
         vProfileName.setText(userEntity.getName());
+        vProfileName.setSelection(userEntity.getName().length());
        if(userEntity.getPassword() !=null){
            vPassword.setText(userEntity.getPassword());
        }

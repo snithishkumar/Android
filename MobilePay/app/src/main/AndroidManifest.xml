@@ -4,25 +4,20 @@
 
     <!-- Internet permission -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-        <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- end -->
     <!-- Read Phone state -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- Permissions required by the sync adapter -->
-    <uses-permission
-        android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission
-        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
-<!-- Permission to call -->
+    <!-- Permission to call -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <permission
@@ -32,27 +27,28 @@
     <uses-permission android:name="co.in.mobilepay.permission.C2D_MESSAGE" />
 
     <application
-        android:allowBackup="true"
         android:name=".application.MobilePayAnalytics"
+        android:allowBackup="true"
         android:icon="@mipmap/mobilepay_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<!-- https://developers.google.com/cloud-messaging/android/client?configured=true#manifest -->
+
+        <!-- https://developers.google.com/cloud-messaging/android/client?configured=true#manifest -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="co.in.mobilepay" />
             </intent-filter>
         </receiver>
 
-
         <service
             android:name=".gcm.MobilePayGcmService"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
@@ -64,38 +60,40 @@
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
-
-
-        <service android:name=".gcm.GcmRegistrationIntentService" android:exported="false">
+        <service
+            android:name=".gcm.GcmRegistrationIntentService"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
 
- <!-- Sync Adapter starts -->
-        <!-- Ref : https://www.udacity.com/course/viewer#!/c-ud853/l-1614738811/m-3612129996 &
+        <!-- Sync Adapter starts -->
+        <!--
+        Ref : https://www.udacity.com/course/viewer#!/c-ud853/l-1614738811/m-3612129996 &
         http://developer.android.com/training/sync-adapters/creating-sync-adapter.html
-        http://www.coderzheaven.com/2015/07/04/sync-adapter-android-simple-example/-->
+        http://www.coderzheaven.com/2015/07/04/sync-adapter-android-simple-example/
+        -->
         <provider
-            android:authorities="@string/content_authority"
             android:name=".sync.MobilePayProvider"
+            android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
 
         <!-- SyncAdapter's dummy authentication service -->
-        <service
-            android:name=".sync.MobilePayAuthenticatorService">
+        <service android:name=".sync.MobilePayAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
-<!-- Need to check exported ture or false -->
+        <!-- Need to check exported ture or false -->
         <service
             android:name=".sync.MobilePaySyncService"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
@@ -104,7 +102,8 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
-        <!--<service
+        <!--
+        <service
             android:name=".sync.MobilePaySyncService"
             android:exported="true"
             android:process=":mobilepaysync" >
@@ -115,13 +114,14 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
-        </service>-->
-<!--  Sync Adapter starts End-->
+        </service>
+        -->
+        <!-- Sync Adapter starts End -->
         <activity
             android:name=".view.activities.MainActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -131,40 +131,37 @@
         </activity>
         <activity
             android:name=".view.activities.HomeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".view.activities.NotificationActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".view.activities.PurchaseDetailsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_purchase"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".view.activities.NewSaveCardActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_new_savecard"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".view.activities.NaviDrawerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
-
-        <activity android:name="com.razorpay.CheckoutActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name="com.razorpay.CheckoutActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
     </application>
 
 </manifest>

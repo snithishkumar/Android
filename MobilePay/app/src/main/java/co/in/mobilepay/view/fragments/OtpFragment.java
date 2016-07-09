@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,7 @@ import co.in.mobilepay.view.activities.MainActivity;
 public class OtpFragment extends Fragment implements View.OnClickListener {
 
     private EditText otpNumber;
+    private TextInputLayout otpNumberLayout;
     private MainActivity mainActivity = null;
     private MainActivityCallback mainActivityCallback = null;
     private ProgressDialog progressDialog = null;
@@ -62,6 +64,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
         checkPermission();
         View view = inflater.inflate(R.layout.fragment_otp, container, false);
         otpNumber = (EditText) view.findViewById(R.id.otp_number);
+        otpNumberLayout = (TextInputLayout)view.findViewById(R.id.input_layout_otp_number);
+        otpNumberLayout.setHint(getString(R.string.otp_number_hint_msg));
+        otpNumberLayout.setHintTextAppearance(R.style.FloatLabelColor);
         Button otpSubmit = (Button) view.findViewById(R.id.otp_submit);
         otpSubmit.setOnClickListener(this);
         syncData();
