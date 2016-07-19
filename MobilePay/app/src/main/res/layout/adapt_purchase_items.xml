@@ -34,23 +34,27 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="5dp"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_remove_circle_outline_black_24dp"
+                android:id="@+id/adapt_pur_item_reduce"
                 android:layout_height="wrap_content" />
             <TextView
                 android:layout_width="wrap_content"
                 android:text="5"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:id="@+id/adapt_pur_item_quantity_dub"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_add_circle_outline_black_24dp"
+                android:id="@+id/adapt_pur_item_add"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
@@ -93,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkgray"
+                android:id="@+id/adapt_pur_item_quantity"
                 android:text="5"
                 />
 
@@ -109,6 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkgray"
+                android:id="@+id/adapt_pur_item_rate"
                 android:text="200"
                 />
         </LinearLayout>

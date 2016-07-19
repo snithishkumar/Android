@@ -126,6 +126,11 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
 
+
+            productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
+            productDetailsViewHolder.quantityDub.setText(String.valueOf(productDetailsModel.getQuantity()));
+            productDetailsViewHolder.rate.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+
             productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
             if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
@@ -246,25 +251,30 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView name;
-       /* private ImageView rate1;
-        private ImageView rate2;
-        private ImageView rate3;
-        private ImageView rate4;
-        private ImageView rate5;*/
+        private TextView quantity;
+        private TextView rate;
+        private TextView quantityDub;
         private TextView totalAmount;
         private TextView rateItText;
         private ImageView delete;
+
+        private ImageView add;
+        private ImageView reduce;
+
         private RatingBar ratingBar;
         int imagePos = 0;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.adapt_pur_item_desc);
-         /*   rate1 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate1);
-            rate2 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate2);
-            rate3 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate3);
-            rate4 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate4);
-            rate5 = (ImageView) view.findViewById(R.id.adapt_pur_item_rate5);*/
+
+            quantity = (TextView) view.findViewById(R.id.adapt_pur_item_quantity);
+            rate = (TextView) view.findViewById(R.id.adapt_pur_item_rate);
+            quantityDub = (TextView) view.findViewById(R.id.adapt_pur_item_quantity_dub);
+
+            add = (ImageView)view.findViewById(R.id.adapt_pur_item_add);
+            reduce = (ImageView)view.findViewById(R.id.adapt_pur_item_reduce);
+
             totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
             rateItText =  (TextView) view.findViewById(R.id.rate_it_text);
@@ -276,13 +286,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     addRating(rating,getAdapterPosition());
                 }
             });
-           /* rate1.setOnClickListener(this);
-            rate2.setOnClickListener(this);
-            rate3.setOnClickListener(this);
-            rate4.setOnClickListener(this);
-            rate5.setOnClickListener(this);*/
-            delete.setOnClickListener(this);
 
+            delete.setOnClickListener(this);
+            add.setOnClickListener(this);
+            reduce.setOnClickListener(this);
         }
 
         @Override
@@ -347,6 +354,21 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         @Override
         public void onClick(View v) {
             switch (v.getId()){
+
+                case R.id.adapt_pur_item_add:
+                    clearValue();
+                    ProductDetailsModel productDetailsModel =  productDetailsModels.get(getAdapterPosition());
+                    productDetailsModel.setQuantity(productDetailsModel.getQuantity() + 1);
+                    notifyDataSetChanged();
+                    break;
+
+
+                case R.id.adapt_pur_item_reduce:
+                    clearValue();
+                    ProductDetailsModel productDetailsModelTemp =  productDetailsModels.get(getAdapterPosition());
+                    productDetailsModelTemp.setQuantity(productDetailsModelTemp.getQuantity() - 1);
+                    notifyDataSetChanged();
+                    break;
               /*  case R.id.adapt_pur_item_rate1:
                     if( imagePos == 0){
                         toggleImg(1);
