@@ -11,7 +11,7 @@
     <string name="mobile_submit_heading">In Progress</string>
     <string name="mobile_submit_message">Validating...</string>
 
-<!--OTP Screen-->
+    <!--OTP Screen-->
     <string name="otp_title">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
     <string name="otp_number_hint">Enter OTP</string>
     <string name="otp_number_hint_msg">OTP Number</string>
@@ -40,7 +40,7 @@
     <string name="reg_re_pass_error">Invalid mPIN</string>
     <string name="reg_re_pass_not_same_error">mPIN and retype mPIN are mismatched</string>
 
-<!--Login-->
+    <!--Login-->
     <string name="login_enter_mpin">Enter your mPIN</string>
     <string name="login_forget_mpin">Forget mPIN</string>
     <string name="login_submit_heading">@string/mobile_submit_heading</string>
