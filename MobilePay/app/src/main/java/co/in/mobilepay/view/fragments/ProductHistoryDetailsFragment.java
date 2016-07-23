@@ -16,6 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
@@ -138,7 +139,11 @@ public class ProductHistoryDetailsFragment extends Fragment{
         ));
     }
 
-
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Product History Details-F Screen");
+        super.onResume();
+    }
 
 
     @Override

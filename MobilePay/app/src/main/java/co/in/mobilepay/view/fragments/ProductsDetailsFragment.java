@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
@@ -267,6 +268,12 @@ switch (v.getId()){
         } else {
             ActivityUtil.toast(purchaseDetailsActivity, "Please select any one Delivery.");
         }
+    }
+
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Purchase Bag Product  Details-F Screen");
+        super.onResume();
     }
 
 

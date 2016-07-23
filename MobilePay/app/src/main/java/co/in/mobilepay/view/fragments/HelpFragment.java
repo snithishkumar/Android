@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.view.activities.NaviDrawerActivity;
 import co.in.mobilepay.view.adapters.HelpListAdapter;
 
@@ -72,5 +73,12 @@ public class HelpFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.naviDrawerActivity = (NaviDrawerActivity)context;
+    }
+
+
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Help-F Screen");
+        super.onResume();
     }
 }

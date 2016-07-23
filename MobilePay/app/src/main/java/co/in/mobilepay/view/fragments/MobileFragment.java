@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
@@ -133,8 +134,11 @@ private TextInputLayout textInputLayout;
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Mobile-F Screen");
         super.onResume();
     }
+
+
 
     public interface MainActivityCallback {
         void success(int code, Object data);

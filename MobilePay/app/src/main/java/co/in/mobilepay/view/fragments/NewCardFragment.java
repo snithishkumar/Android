@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.enumeration.PaymentType;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
@@ -161,4 +163,7 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
+
+
 }

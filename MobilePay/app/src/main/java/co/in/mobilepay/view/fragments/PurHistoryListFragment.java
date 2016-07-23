@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.json.response.ResponseData;
@@ -129,6 +130,7 @@ public class PurHistoryListFragment extends Fragment  {
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Purchase History List-F Screen");
         super.onResume();
     }
 

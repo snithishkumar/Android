@@ -155,6 +155,7 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
     @Override
     public void onResume(){
         super.onResume();
+        MobilePayAnalytics.getInstance().trackScreenView("Main Screen");
         MobilePayBus.getInstance().register(this);
         // Check PlayService is Enable or not
         ActivityUtil.checkPlayServices(this);

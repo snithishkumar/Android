@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.json.response.ResponseData;
@@ -128,6 +129,7 @@ public class OrderStatusListFragment extends Fragment  {
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Order Status List-F Screen");
         super.onResume();
     }
 
@@ -181,6 +183,8 @@ public class OrderStatusListFragment extends Fragment  {
         startActivity(intent);
         homeActivity.finish();
     }
+
+
 
 
 }

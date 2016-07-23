@@ -23,6 +23,7 @@ import com.razorpay.Checkout;
 import org.json.JSONObject;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
@@ -70,6 +71,9 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private String mobileNumber;
 
+
+    public final String LOG_TAG = PurchaseDetailsActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +92,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             isNotification = getIntent().getBooleanExtra("isNotification",false);
             purchaseService = new PurchaseServiceImpl(this);
         }catch (Exception e){
-            Log.e("Error", "Error in init", e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in init - PurchaseDetailsActivity");
+            Log.e(LOG_TAG,"Error in init",e);
         }
 
     }
@@ -213,7 +218,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            options.put("prefill", prefill);
            razorpayCheckout.open(this, options);
        }catch (Exception e){
-           e.printStackTrace();
+           MobilePayAnalytics.getInstance().trackException(e,"Error in startPayment - PurchaseDetailsActivity,Raw Data["+purchaseEntity+"]");
+           Log.e(LOG_TAG,"Error in startPayment - PurchaseDetailsActivity,Raw Data["+purchaseEntity+"]",e);
        }
 
 
@@ -252,7 +258,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
         }
         catch (Exception e){
-            Log.e("com.merchant", e.getMessage(), e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in onPaymentSuccess - PurchaseDetailsActivity,Raw Data["+razorpayPaymentID+"]");
+            Log.e(LOG_TAG,"Error in onPaymentSuccess - PurchaseDetailsActivity,Raw Data["+razorpayPaymentID+"]",e);
         }
     }
 
@@ -285,7 +292,8 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             Toast.makeText(this, "Payment failed. ", Toast.LENGTH_SHORT).show();
 
         } catch (Exception e) {
-            Log.e("com.merchant", e.getMessage(), e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in onPaymentError - PurchaseDetailsActivity,Raw Data["+response+"]");
+            Log.e(LOG_TAG,"Error in onPaymentError - PurchaseDetailsActivity,Raw Data["+response+"]",e);
         }
     }
 
@@ -437,7 +445,14 @@ return transactionalDetailsEntity;
         try {
             startActivity(callIntent);  // TODO -- Need to handle request
         } catch (Exception e) {
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in makeCall - PurchaseDetailsActivity,Raw Data["+mobileNumber+"]");
+            Log.e(LOG_TAG,"Error in makeCall - PurchaseDetailsActivity,Raw Data["+mobileNumber+"]",e);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("PurchaseDetails Screen");
+        super.onResume();
     }
 }

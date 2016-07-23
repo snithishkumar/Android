@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressJson;
@@ -205,6 +206,13 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
         this.purchaseDetailsActivity = (PurchaseDetailsActivity)context;
         purchaseService = purchaseDetailsActivity.getPurchaseService();
         showDeliveryAddress = purchaseDetailsActivity;
+    }
+
+
+    @Override
+    public void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("Add Delivery Address-F Screen");
+        super.onResume();
     }
 
     public interface ShowDeliveryAddress{

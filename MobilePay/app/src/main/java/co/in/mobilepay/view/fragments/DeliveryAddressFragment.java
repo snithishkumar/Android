@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
@@ -101,5 +102,11 @@ public class DeliveryAddressFragment extends Fragment {
         this.addressEntityList.clear();
         this.addressEntityList.addAll(addressEntityList);
         deliveryAddressAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("Delivery Address List-F Screen");
+        super.onResume();
     }
 }

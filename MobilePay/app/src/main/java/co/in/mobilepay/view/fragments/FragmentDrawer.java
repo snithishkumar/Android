@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.NavigationDrawerAdapter;
@@ -192,7 +194,15 @@ public class FragmentDrawer extends Fragment {
  
  
     }
- 
+
+
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Fragment Drawer-F Screen");
+        super.onResume();
+    }
+
+
     public interface FragmentDrawerListener {
         public void onDrawerItemSelected(View view, int position);
     }

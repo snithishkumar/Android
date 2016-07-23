@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.app.AlertDialog;
@@ -28,11 +29,13 @@ import co.in.mobilepay.view.adapters.SaveCardsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * A fragment representing a list of Items.
  * <p/>
  * interface.
- */
+ *//*
+
 public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnItemLongClickListener{
 
     private NaviDrawerActivity naviDrawerActivity;
@@ -43,10 +46,12 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
     private SaveCardsAdapter saveCardsAdapter;
 
 
-    /**
+    */
+/**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
-     */
+     *//*
+
     public SaveCardsFragment() {
         gson = new Gson();
     }
@@ -171,3 +176,4 @@ public class SaveCardsFragment extends Fragment implements SaveCardsAdapter.OnIt
 
     }
 }
+*/

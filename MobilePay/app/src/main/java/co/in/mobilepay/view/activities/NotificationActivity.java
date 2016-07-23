@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.entity.PurchaseEntity;
@@ -49,6 +50,7 @@ public class NotificationActivity extends NotificationBaseActivity {
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Notification Screen");
         super.onResume();
     }
 

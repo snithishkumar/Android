@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.AccountService;
@@ -48,6 +49,12 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
             Log.e("Error","Error in init - NaviDrawerActivity",e);
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobilePayAnalytics.getInstance().trackScreenView("Navigation Screen");
     }
 
     private void showFragment(int options){

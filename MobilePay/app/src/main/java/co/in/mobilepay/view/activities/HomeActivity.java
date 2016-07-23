@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.view.adapters.OrderStatusListAdapter;
@@ -263,6 +264,11 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         }
     }
 
+    @Override
+    protected void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("Home Screen");
+        super.onResume();
+    }
 
     private void makeCall(){
         Intent callIntent = new Intent(Intent.ACTION_CALL);

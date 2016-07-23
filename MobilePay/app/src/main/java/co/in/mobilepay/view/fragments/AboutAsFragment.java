@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.view.activities.NaviDrawerActivity;
 
 /**
@@ -38,7 +39,11 @@ public class AboutAsFragment  extends Fragment {
         naviDrawerActivity.getSupportActionBar().setHomeAsUpIndicator(upArrow);
     }
 
-
+    @Override
+    public void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("AboutUS-F Screen");
+        super.onResume();
+    }
 
     @Override
     public void onAttach(Context context) {

@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
@@ -87,6 +89,14 @@ public class ShopDetailsFragment extends Fragment {
         }
 
     }
+
+
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Shop Details -F Screen");
+        super.onResume();
+    }
+
 
 
     @Override

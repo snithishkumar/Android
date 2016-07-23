@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
@@ -264,8 +265,10 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Edit Profile-F Screen");
         super.onResume();
     }
+
 
 
     public interface EditProfileFragmentCallBack{

@@ -16,6 +16,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
@@ -135,6 +137,13 @@ public class OrderStatusProductDetailsFragment extends Fragment{
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
         ));
+    }
+
+
+    @Override
+    public void onResume(){
+        MobilePayAnalytics.getInstance().trackScreenView("Order Status Product Details-F Screen");
+        super.onResume();
     }
 
 

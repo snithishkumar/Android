@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.response.ResponseData;
@@ -199,6 +200,7 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onResume() {
+        MobilePayAnalytics.getInstance().trackScreenView("Otp Fragment-F Screen");
         if(mySmsReceiver != null){
             IntentFilter filter = new IntentFilter();
             filter.addAction("android.provider.Telephony.SMS_RECEIVED");
@@ -207,6 +209,9 @@ public class OtpFragment extends Fragment implements View.OnClickListener {
         MobilePayBus.getInstance().register(this);
         super.onResume();
     }
+
+
+
 
 
 

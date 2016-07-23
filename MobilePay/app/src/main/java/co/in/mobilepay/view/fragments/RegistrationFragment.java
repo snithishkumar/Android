@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
@@ -255,8 +256,11 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
     @Override
     public void onResume(){
         MobilePayBus.getInstance().register(this);
+        MobilePayAnalytics.getInstance().trackScreenView("Registration -F Screen");
         super.onResume();
     }
+
+
 
     private void requestPermission(){
         requestPermissions(new String[] {Manifest.permission.READ_PHONE_STATE},
