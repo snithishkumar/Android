@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.UserEntity;
@@ -60,6 +61,7 @@ public class SyncAccountDetails {
                 logErrorResponse(response);
             }
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in requestOtp,mobileNumber["+mobileNumber+"]");
             Log.e(LOG_TAG,"Error in requestOtp,mobileNumber["+mobileNumber+"]",e);
         }
         return getErrorResponse();
@@ -109,6 +111,7 @@ public class SyncAccountDetails {
 
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in userRegistration",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in userRegistration");
         }
         return getErrorResponse();
     }
@@ -131,7 +134,8 @@ public class SyncAccountDetails {
             }
 
         }catch (Exception e){
-            Log.e(LOG_TAG,"Error in userRegistration",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getUserProfile");
+            Log.e(LOG_TAG,"Error in getUserProfile",e);
         }
         return getErrorResponse();
     }
@@ -160,6 +164,7 @@ public class SyncAccountDetails {
             }
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in userRegistration,registerJson["+registerJson+"]");
             Log.e(LOG_TAG,"Error in userRegistration,registerJson["+registerJson+"]",e);
         }
         return getErrorResponse();
@@ -174,6 +179,7 @@ public class SyncAccountDetails {
             }
             return responseData;
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in validateOtp,otpPassword["+otpPassword+"],registerJson["+registerJson+"]");
             Log.e(LOG_TAG,"Error in validateOtp,otpPassword["+otpPassword+"],registerJson["+registerJson+"]",e);
         }
         return getErrorResponse();
@@ -201,6 +207,7 @@ public class SyncAccountDetails {
             }
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in validate,OtpmobileNumber["+mobileNumber+"],otpPassword["+otpPassword+"]");
             Log.e(LOG_TAG,"Error in validate,OtpmobileNumber["+mobileNumber+"],otpPassword["+otpPassword+"]",e);
         }
         return getErrorResponse();
@@ -220,7 +227,8 @@ public class SyncAccountDetails {
                 }
             }
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in resetApp,mobileNumber["+mobileNumber+"]");
+            Log.e(LOG_TAG,"Error in resetApp,mobileNumber["+mobileNumber+"]",e);
         }
     }
 
@@ -243,7 +251,8 @@ public class SyncAccountDetails {
             }
 
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in deleteUser");
+            Log.e(LOG_TAG,"Error in deleteUser",e);
         }
 
     }

@@ -7,6 +7,8 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.Map;
+
 import co.in.mobilepay.R;
 
 /**
@@ -14,20 +16,28 @@ import co.in.mobilepay.R;
  */
 public class MobilePayAnalytics extends Application {
 
-    private Tracker mTracker;
-    /**
-     * Gets the default {@link Tracker} for this {@link Application}.
-     * @return tracker
-     */
-    synchronized public Tracker getGoogleAnalyticsTracker() {
-        if (mTracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
-            mTracker = analytics.newTracker(R.xml.app_tracker);
-        }
-        return mTracker;
+    public static final String TAG = MobilePayAnalytics.class
+            .getSimpleName();
+
+    private static MobilePayAnalytics mInstance;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
+
+        MobilePayAnalyticsConf.initialize(this);
+        MobilePayAnalyticsConf.getInstance().get(MobilePayAnalyticsConf.Target.APP);
     }
 
+    public static synchronized MobilePayAnalytics getInstance() {
+        return mInstance;
+    }
+
+    public synchronized Tracker getGoogleAnalyticsTracker() {
+        MobilePayAnalyticsConf analyticsTrackers = MobilePayAnalyticsConf.getInstance();
+        return analyticsTrackers.get(MobilePayAnalyticsConf.Target.APP);
+    }
 
     /***
      * Tracking screen view
@@ -46,26 +56,24 @@ public class MobilePayAnalytics extends Application {
         GoogleAnalytics.getInstance(this).dispatchLocalHits();
     }
 
-
     /***
      * Tracking exception
      *
      * @param e exception to be tracked
      */
-    public void trackException(Exception e) {
+    public void trackException(Exception e,String data) {
         if (e != null) {
             Tracker t = getGoogleAnalyticsTracker();
-
-            t.send(new HitBuilders.ExceptionBuilder()
+            Map<String,String> hitBuilders = new HitBuilders.ExceptionBuilder()
                     .setDescription(
                             new StandardExceptionParser(this, null)
                                     .getDescription(Thread.currentThread().getName(), e))
                     .setFatal(false)
-                    .build()
-            );
+                    .build();
+            hitBuilders.put("message",data);
+            t.send(hitBuilders);
         }
     }
-
 
     /***
      * Tracking event

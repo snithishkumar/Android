@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.dao.NotificationDao;
@@ -96,6 +97,7 @@ private boolean isLoginFailed = false;
             gson =GsonAPI.INSTANCE.getGson();
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in init - MobilePaySyncAdapter");
             Log.e(LOG_TAG,"Error in MobilePaySyncAdapter",e);
         }
     }
@@ -199,14 +201,13 @@ private boolean isLoginFailed = false;
                        responseData.setStatusCode(401);
                        MobilePayBus.getInstance().post(responseData);
                    }
-               System.out.println("sdfasdfasdf");
            }
 
 
        }catch (Exception e){
-           e.printStackTrace();
+           Log.e(LOG_TAG,"Error in onPerformSync",e);
+           MobilePayAnalytics.getInstance().trackException(e,"Error in onPerformSync - MobilePaySyncAdapter");
        }
-        System.out.println("sdfasdfasdf");
 
 
     }
@@ -246,6 +247,7 @@ private boolean isLoginFailed = false;
     }
 
 
+/*
     private void getPurchaseDetailsData(String purchaseUuid){
         try {
            List<String>  purchaseUuids = new ArrayList<String>();
@@ -262,6 +264,7 @@ private boolean isLoginFailed = false;
         //Send Error as Internal Error
         postErrorCode(MessageConstant.REG_ERROR_CODE);
     }
+*/
 
 
     /**
@@ -280,6 +283,7 @@ private boolean isLoginFailed = false;
      * Get Current Purchase List from the server
      */
     private void syncPurchaseData(){
+        ResponseData responseData = null;
         try {
             // Get User and App Token
             TokenJson tokenJson = new TokenJson();
@@ -295,7 +299,7 @@ private boolean isLoginFailed = false;
                 isLoginFailed = true;
                 return;
             }else if(responseCode == 200){
-                ResponseData responseData = dataResponse.body();
+                responseData = dataResponse.body();
 
                 int statusCode = responseData.getStatusCode();
                 // Check the Status code, If its success or failure
@@ -323,8 +327,8 @@ private boolean isLoginFailed = false;
 
 
         }catch (Exception e){
-            Log.e("Error","Error in  syncPurchaseListFromServer",e);
-            // -- TODO Need to Say Something wrong in mobile side
+            Log.e("Error","Error in  syncPurchaseListFromServer,responseData["+responseData+"]",e);
+           MobilePayAnalytics.getInstance().trackException(e,"Error in  syncPurchaseListFromServer,responseData["+responseData+"]");
         }
         //Send Error as Internal Error
         postErrorCode(MessageConstant.REG_ERROR_CODE);
@@ -386,6 +390,7 @@ private boolean isLoginFailed = false;
         GetPurchaseDetailsList getPurchaseDetailsList = new GetPurchaseDetailsList();
         userRequest(getPurchaseDetailsList);
         do{
+            ResponseData responseData = null;
             try{
                 getPurchaseDetailsList.getPurchaseUUIDs().clear();
                 getPurchaseDetailsList.getPurchaseUUIDs().add(purchaseUUIDs.get(0));
@@ -394,7 +399,7 @@ private boolean isLoginFailed = false;
 
                 // Server Response
                 Response<ResponseData> dataResponse =  responseDataCall.execute();
-                ResponseData responseData = dataResponse.body();
+                 responseData = dataResponse.body();
 
                 int statusCode = responseData.getStatusCode();
                 // Check the Status code, If its success or failure
@@ -406,7 +411,7 @@ private boolean isLoginFailed = false;
                 }
 
             }catch (Exception e){
-                e.printStackTrace();
+                MobilePayAnalytics.getInstance().trackException(e,"Error in  syncPurchaseDetails["+getPurchaseDetailsList+"],ResponseData["+responseData+"]");
                 Log.e(LOG_TAG,"Error in syncPurchaseDetails",e);
             }
 
@@ -494,6 +499,7 @@ private boolean isLoginFailed = false;
                 }
                 createCounterDetails(purchaseJson.getCounterDetails(),purchaseEntity);
             }catch (Exception e){
+                MobilePayAnalytics.getInstance().trackException(e,"Error while processing purchase Details. Raw data["+purchaseJson+"]");
                 Log.e(LOG_TAG, "Error while processing purchase Details. Raw data["+purchaseJson+"]", e);
             }
 
@@ -542,6 +548,7 @@ private boolean isLoginFailed = false;
      * Get Order status (NOT_YET_SHIPPING or PACKING or OUT_FOR_DELIVERY or Counter Id) from the server
      */
     private void syncOrderStatus(){
+        ResponseData responseData = null;
         try{
             // Get User and App Token
             JsonObject requestData =  userRequest();
@@ -560,7 +567,7 @@ private boolean isLoginFailed = false;
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             int httpStatusCode = dataResponse.code();
             if(httpStatusCode == 200){
-                ResponseData responseData = dataResponse.body();
+                responseData = dataResponse.body();
 
                 // If any purchase UUIDs missed in local Database. Then need to get full details
                 List<String> purchaseUUIDs = new ArrayList<>();
@@ -625,6 +632,7 @@ private boolean isLoginFailed = false;
 
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in syncOrderStatus,Raw Data["+responseData+"]");
             Log.e(LOG_TAG,"Error in syncOrderStatus",e);
             // -- TODO Need to Say Something wrong in mobile side
         }
@@ -660,6 +668,7 @@ private boolean isLoginFailed = false;
      * Get Current Purchase List from the server
      */
     private void syncPurchaseHistoryData(){
+        ResponseData responseData = null;
         try {
             // Get User and App Token
          TokenJson tokenJson = new TokenJson();
@@ -672,7 +681,7 @@ private boolean isLoginFailed = false;
             Response<ResponseData> dataResponse =  responseDataCall.execute();
             int httpStatusCode = dataResponse.code();
             if(httpStatusCode == 200){
-                ResponseData responseData = dataResponse.body();
+                 responseData = dataResponse.body();
 
                 int statusCode = responseData.getStatusCode();
                 // Check the Status code, If its success or failure
@@ -714,6 +723,7 @@ private boolean isLoginFailed = false;
 
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in syncPurchaseListFromServer,Raw Data["+responseData+"]");
             Log.e(LOG_TAG,"Error in  syncPurchaseListFromServer",e);
         }
         // Error Post
@@ -728,6 +738,7 @@ private boolean isLoginFailed = false;
      * Sync User Delivery Address
      */
     private void syncUserDeliveryAddress(){
+        ResponseData responseData = null;
         try{
             // Send Un synced Address
             List<AddressEntity> addressEntityList =  userDao.getUnSyncedAddress();
@@ -759,7 +770,7 @@ private boolean isLoginFailed = false;
                 isLoginFailed = true;
                 return;
             }else if(httpResponseCode == 200){
-                ResponseData responseData = dataResponse.body();
+                 responseData = dataResponse.body();
 
                 int statusCode = responseData.getStatusCode();
 
@@ -793,16 +804,19 @@ private boolean isLoginFailed = false;
 
 
         }catch (Exception e){
-            Log.e(LOG_TAG,"Error in getUserDeliveryAddress",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in syncUserDeliveryAddress,Raw Data["+responseData+"]");
+            Log.e(LOG_TAG,"Error in syncUserDeliveryAddress",e);
         }
 
     }
 
 // -- TODO Address Edit. Need to handle in server side
     public void sendUnSyncPayedData(){
+        List<PurchaseEntity> purchaseEntityList = null;
+        ResponseData responseData = null;
         try{
             // Get UnSynced Payed Data
-            List<PurchaseEntity> purchaseEntityList = purchaseDao.getUnSyncedPayedEntity();
+            purchaseEntityList = purchaseDao.getUnSyncedPayedEntity();
 
             // No need call sync bcs PurchaseEntity is empty
             if(purchaseEntityList.size() < 1){
@@ -825,7 +839,7 @@ private boolean isLoginFailed = false;
             Response<ResponseData> dataResponse = responseDataCall.execute();
             int httpStatusCode = dataResponse.code();
             if(httpStatusCode == 200){
-                ResponseData responseData = dataResponse.body();
+                responseData = dataResponse.body();
                 // Success Response
                 int statusCode = responseData.getStatusCode();
                 if (statusCode == 200) {
@@ -845,7 +859,8 @@ private boolean isLoginFailed = false;
 
 
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error in getUserDeliveryAddress", e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in sendUnSyncPayedData,Raw data :purchaseEntityList["+purchaseEntityList+"],responseData["+responseData+"]");
+            Log.e(LOG_TAG, "Error in sendUnSyncPayedData", e);
         }
     }
 
@@ -854,8 +869,10 @@ private boolean isLoginFailed = false;
      * Send UnSynced Declined Data to the server
      */
     public void sendUnSyncDeclineData() {
+        List<PurchaseEntity> purchaseEntityList = null;
+        ResponseData responseData = null;
         try {
-            List<PurchaseEntity> purchaseEntityList = purchaseDao.getUnSyncedDiscardEntity();
+            purchaseEntityList = purchaseDao.getUnSyncedDiscardEntity();
             DiscardJsonList discardJsonList = new DiscardJsonList();
             boolean isData = false;
             for (PurchaseEntity purchaseEntity : purchaseEntityList) {
@@ -874,7 +891,7 @@ private boolean isLoginFailed = false;
                 Response<ResponseData> dataResponse = responseDataCall.execute();
                 int httpStatusCode = dataResponse.code();
                 if(httpStatusCode == 200){
-                    ResponseData responseData = dataResponse.body();
+                    responseData = dataResponse.body();
                     // Success Response
                     int statusCode = responseData.getStatusCode();
                     if (statusCode == 200) {
@@ -894,7 +911,8 @@ private boolean isLoginFailed = false;
 
 
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Error in getUserDeliveryAddress", e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in sendUnSyncDeclineData,Raw Data : purchaseEntityList["+purchaseEntityList+"],responseData["+responseData+"]");
+            Log.e(LOG_TAG, "Error in sendUnSyncDeclineData", e);
         }
     }
 
@@ -913,6 +931,7 @@ private boolean isLoginFailed = false;
             }
             return transactionalDetailsEntities;
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in processTransactionDetails,Raw Data["+purchaseEntity+"]");
             Log.e(LOG_TAG, "Error in processTransactionDetails", e);
         }
         return new ArrayList<>();

@@ -13,9 +13,7 @@
 
     <bool name="ga_reportUncaughtExceptions">true</bool>
 
-    <screenName name="co.in.mobilepay.view.activities.MainActivity">
-        MainActivity
-    </screenName>
+
 
     <!--
       See Project Structure -> Analytics -> Google Analytics -> Learn More

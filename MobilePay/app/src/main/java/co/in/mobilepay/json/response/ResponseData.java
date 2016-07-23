@@ -23,4 +23,12 @@ public class ResponseData {
     public void setData(String data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "ResponseData{" +
+                "statusCode=" + statusCode +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }
