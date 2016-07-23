@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.adapters;
 
 import android.support.v7.widget.RecyclerView;
@@ -15,13 +16,15 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.PurchaseModel;
-import co.in.mobilepay.view.fragments.SaveCardsFragment;
+import co.in.mobilepay.view.fragmentsw.SaveCardsFragment;
 
+*/
 /**
  * {@link RecyclerView.Adapter} that can display a {@link PurchaseModel} and makes a call to the
  * specified {@link }.
  * TODO: Replace the implementation with code for your data type.
- */
+ *//*
+
 public class SaveCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<CardJson> cardJsonList = new ArrayList<>();
@@ -124,3 +127,4 @@ public class SaveCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return "xxxx";
     }
 }
+*/

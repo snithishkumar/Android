@@ -23,7 +23,6 @@ import co.in.mobilepay.view.fragments.AboutAsFragment;
 import co.in.mobilepay.view.fragments.EditProfileFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.HelpFragment;
-import co.in.mobilepay.view.fragments.SaveCardsFragment;
 
 /**
  * Created by Nithishkumar on 3/27/2016.
@@ -79,10 +78,7 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
                 showPlayStore();
                 break;
 
-            case 3:
-                SaveCardsFragment saveCardsFragment = new SaveCardsFragment();
-                FragmentsUtil.addFragment(this, saveCardsFragment, R.id.navi_drawer_container);
-                break;
+
         }
     }
 
