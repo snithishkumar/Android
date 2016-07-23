@@ -104,12 +104,12 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             productDetailsViewHolder.rating.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
             calcAmount(position,productDetailsModel);
-
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
             productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-           ;
             switch ( purchaseEntity.getDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
@@ -183,25 +183,9 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private void calcAmount(int position,ProductDetailsModel productDetailsModel){
-        amount = amount +  Double.valueOf(productDetailsModel.getAmount());
+        amount = amount +  Double.valueOf(productDetailsModel.getTotalAmount());
     }
 
-  /*  private void calcAmount(){
-        if(amountDetailsJson.getDiscount() >  -1 && amount > amountDetailsJson.getDiscountMiniVal()){
-            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - amountDetailsJson.getDiscount();
-                discount = amountDetailsJson.getDiscount();
-            }else{
-                discount = Double.valueOf(String.format("%.2f", ((amount * amountDetailsJson.getDiscount()) / 100)));
-                totalAmount = amount - discount;
-            }
-        }else{
-            totalAmount = amount;
-        }
-
-        taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
-        totalAmount = totalAmount + taxAmount;
-    }*/
 
     private void calcAmount(){
         double discountAmount = 0;
@@ -233,42 +217,6 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
 
-  /*  private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
-        switch (rating){
-
-            case 1:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
-                break;
-            case 2:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
-                break;
-            case 3:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
-                break;
-            case 4:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
-                break;
-            case 5:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
-                break;
-        }
-    }*/
-
     private void toggleImg(float rating,TextView rateItText){
         if(rating > 0){
             if(rating < 2){
@@ -289,26 +237,18 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder{
 
         private TextView name;
-       /* private ImageView rate1;
-        private ImageView rate2;
-        private ImageView rate3;
-        private ImageView rate4;
-        private ImageView rate5;*/
+        private TextView quantity;
+        private TextView amount;
         private TextView totalAmount;
         private TextView rateItText;
         private  RatingBar rating;
-       /* private ImageView delete;*/
 
         public ProductDetailsViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_desc);
-           /* rate1 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate1);
-            rate2 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate2);
-            rate3 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate3);
-            rate4 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate4);
-            rate5 = (ImageView) view.findViewById(R.id.adapt_order_status_pur_item_rate5);*/
-            totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
-            //delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
+            quantity = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_quantity);
+            amount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
+            totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_total_amount);
 
             rating = (RatingBar) view.findViewById(R.id.order_status_rate_it_star);
             rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);

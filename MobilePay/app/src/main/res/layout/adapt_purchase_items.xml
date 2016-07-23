@@ -28,7 +28,7 @@
             android:layout_marginRight="5dp"
             android:text="Rs.5000"
             android:textColor="@color/colorPrimaryDark"
-            android:id="@+id/adapt_pur_item_amount"
+            android:id="@+id/adapt_pur_item_total_amount"
             android:textStyle="bold"></TextView>
 
         <LinearLayout
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/darkgray"
-                android:id="@+id/adapt_pur_item_rate"
+                android:id="@+id/adapt_pur_item_amount"
                 android:text="200"
                 />
         </LinearLayout>
@@ -156,75 +156,6 @@
 
     </LinearLayout>
 
-
-   <!-- <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/adapt_pur_item_desc"
-        android:layout_below="@+id/adapt_pur_item_delete"
-        android:textSize="14dp"
-        android:layout_marginLeft="25dp"
-        android:text="Peter England Navy T Shirt Navy \nT Shirt Navy"
-        android:singleLine="false"
-        android:textStyle="bold"
-        />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_below="@+id/adapt_pur_item_desc"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-
-        android:id="@+id/linearLayout">
-       <RatingBar
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           style="?android:ratingBarStyleSmall"
-           android:minHeight="18dp"
-           android:transformPivotX="0dp"
-           android:id="@+id/rate_it_star"
-           android:transformPivotY="0dp"
-           android:isIndicator="false"
-           android:numStars="5"
-           />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:id="@+id/rate_it_text"
-            android:layout_marginLeft="10dp"
-            android:text="Rate it"
-            />
-
-
-    </LinearLayout>
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:text="Rs.5000"
-        android:textColor="@color/colorPrimaryDark"
-        android:id="@+id/adapt_pur_item_amount"
-        android:layout_below="@+id/adapt_pur_item_desc"
-        android:textStyle="bold"
-        android:layout_alignRight="@+id/adapt_pur_item_delete"
-        android:layout_alignEnd="@+id/adapt_pur_item_delete" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:id="@+id/adapt_pur_item_delete"
-        android:src="@android:drawable/ic_delete"
-        android:tint="#666666"
-        />
--->
 
 
 </RelativeLayout>

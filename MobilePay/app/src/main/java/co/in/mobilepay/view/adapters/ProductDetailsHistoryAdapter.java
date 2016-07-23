@@ -22,9 +22,7 @@ import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
 import co.in.mobilepay.view.model.ProductDetailsModel;
 
-/**
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
@@ -114,10 +112,13 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
-// purHistoryListViewHolder.vTotalAmount.setText(homeActivity.getResources().getString(R.string.indian_rupee_symbol)+""+purchaseModel.getTotalAmount());
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
 
-            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.quantity.setText(productDetailsModel.getQuantity());
+
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+
+            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
@@ -196,25 +197,9 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
+        amount = amount +  Double.valueOf(productDetailsModels.get(position).getTotalAmount());
     }
 
-    /*private void calcAmount(){
-        if(amountDetailsJson.getDiscount() >  -1 && amount > amountDetailsJson.getDiscountMiniVal()){
-            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - amountDetailsJson.getDiscount();
-                discount = amountDetailsJson.getDiscount();
-            }else{
-                discount = Double.valueOf(String.format("%.2f", ((amount * amountDetailsJson.getDiscount()) / 100)));
-                totalAmount = amount - discount;
-            }
-        }else{
-            totalAmount = amount;
-        }
-
-        taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
-        totalAmount = totalAmount + taxAmount;
-    }*/
 
     private void calcAmount(){
         double discountAmount = 0;
@@ -263,56 +248,12 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
 
-   /* private void toggleImg(int rating,ProductDetailsViewHolder productDetailsViewHolder){
-        switch (rating){
-
-            case 1:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
-                break;
-            case 2:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
-                break;
-            case 3:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
-                break;
-            case 4:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
-                break;
-            case 5:
-                productDetailsViewHolder.rate1.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate2.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate3.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate4.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rate5.setImageResource(R.mipmap.fav_icon);
-                productDetailsViewHolder.rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
-                break;
-        }
-    }
-*/
-
-
-
-
-
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder{
 
+        private TextView quantity;
+        private TextView amount;
         private TextView name;
         private RatingBar ratingBar;
-      /*  private ImageView rate2;
-        private ImageView rate3;
-        private ImageView rate4;
-        private ImageView rate5;
-        private ImageView delete;*/
         private TextView totalAmount;
         private TextView rateItText;
 
@@ -326,8 +267,9 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
                 rateItText.setVisibility(View.INVISIBLE);
 
             }
-            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_his_item_amount);
-
+            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_his_item_total_amount);
+            amount = (TextView) view.findViewById(R.id.adapt_pur_his_item_amount);
+            quantity = (TextView) view.findViewById(R.id.adapt_pur_his_item_quantity);
 
         }
 
@@ -373,7 +315,6 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             super(view);
             vTaxText = (TextView) view.findViewById(R.id.adapt_pur_history_reason_message);
             vDiscountText = (TextView) view.findViewById(R.id.amount_details_sub_total_discount);
-///adapt_order_status_pur_item_amount
             vSubTotalAmount = (TextView) view.findViewById(R.id.amount_details_sub_total_amount);
             vSubTaxAmount = (TextView) view.findViewById(R.id.amount_details_sub_tax_amount);
             vSubDiscountAmount = (TextView) view.findViewById(R.id.amount_details_sub_discount_amount);

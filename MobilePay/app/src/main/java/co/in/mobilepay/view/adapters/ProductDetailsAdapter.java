@@ -129,9 +129,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
             productDetailsViewHolder.quantityDub.setText(String.valueOf(productDetailsModel.getQuantity()));
-            productDetailsViewHolder.rate.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
 
-            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
             if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
@@ -197,7 +197,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
+        amount = amount +  Double.valueOf(productDetailsModels.get(position).getTotalAmount());
     }
 
     private void calcAmount(){
@@ -252,7 +252,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         private TextView name;
         private TextView quantity;
-        private TextView rate;
+        private TextView amount;
         private TextView quantityDub;
         private TextView totalAmount;
         private TextView rateItText;
@@ -262,20 +262,19 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private ImageView reduce;
 
         private RatingBar ratingBar;
-        int imagePos = 0;
 
         public ProductDetailsViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.adapt_pur_item_desc);
 
             quantity = (TextView) view.findViewById(R.id.adapt_pur_item_quantity);
-            rate = (TextView) view.findViewById(R.id.adapt_pur_item_rate);
+            amount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
             quantityDub = (TextView) view.findViewById(R.id.adapt_pur_item_quantity_dub);
 
             add = (ImageView)view.findViewById(R.id.adapt_pur_item_add);
             reduce = (ImageView)view.findViewById(R.id.adapt_pur_item_reduce);
 
-            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
+            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_total_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
             rateItText =  (TextView) view.findViewById(R.id.rate_it_text);
             ratingBar = (RatingBar) view.findViewById(R.id.rate_it_star);
@@ -297,59 +296,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return super.toString() + " '" + "'";
         }
 
-      /*  private void toggleImg(int rating){
-            switch (rating){
-                case 0:
-                    rate1.setImageResource(R.mipmap.rate_no_value);
-                    rate2.setImageResource(R.mipmap.rate_no_value);
-                    rate3.setImageResource(R.mipmap.rate_no_value);
-                    rate4.setImageResource(R.mipmap.rate_no_value);
-                    rate5.setImageResource(R.mipmap.rate_no_value);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_no));
-                    break;
-                case 1:
-                    rate1.setImageResource(R.mipmap.fav_icon);
-                    rate2.setImageResource(R.mipmap.rate_no_value);
-                    rate3.setImageResource(R.mipmap.rate_no_value);
-                    rate4.setImageResource(R.mipmap.rate_no_value);
-                    rate5.setImageResource(R.mipmap.rate_no_value);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_bad));
-                    break;
-                case 2:
-                    rate1.setImageResource(R.mipmap.fav_icon);
-                    rate2.setImageResource(R.mipmap.fav_icon);
-                    rate3.setImageResource(R.mipmap.rate_no_value);
-                    rate4.setImageResource(R.mipmap.rate_no_value);
-                    rate5.setImageResource(R.mipmap.rate_no_value);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_avg));
-                    break;
-                case 3:
-                    rate1.setImageResource(R.mipmap.fav_icon);
-                    rate2.setImageResource(R.mipmap.fav_icon);
-                    rate3.setImageResource(R.mipmap.fav_icon);
-                    rate4.setImageResource(R.mipmap.rate_no_value);
-                    rate5.setImageResource(R.mipmap.rate_no_value);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_ok));
-                    break;
-                case 4:
-                    rate1.setImageResource(R.mipmap.fav_icon);
-                    rate2.setImageResource(R.mipmap.fav_icon);
-                    rate3.setImageResource(R.mipmap.fav_icon);
-                    rate4.setImageResource(R.mipmap.fav_icon);
-                    rate5.setImageResource(R.mipmap.rate_no_value);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_gud));
-                    break;
-                case 5:
-                    rate1.setImageResource(R.mipmap.fav_icon);
-                    rate2.setImageResource(R.mipmap.fav_icon);
-                    rate3.setImageResource(R.mipmap.fav_icon);
-                    rate4.setImageResource(R.mipmap.fav_icon);
-                    rate5.setImageResource(R.mipmap.fav_icon);
-                    rateItText.setText(purchaseDetailsActivity.getResources().getString(R.string.rate_excellence));
-                    break;
-            }
-            addRating(rating,getAdapterPosition());
-        }*/
+
 
         @Override
         public void onClick(View v) {
@@ -369,53 +316,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     productDetailsModelTemp.setQuantity(productDetailsModelTemp.getQuantity() - 1);
                     notifyDataSetChanged();
                     break;
-              /*  case R.id.adapt_pur_item_rate1:
-                    if( imagePos == 0){
-                        toggleImg(1);
 
-                        imagePos = 1;
-                    }else{
-                        toggleImg(0);
-                        imagePos = 0;
-                    }
-
-                    break;
-                case R.id.adapt_pur_item_rate2:
-                    if( imagePos == 0){
-                        toggleImg(2);
-                        imagePos = 1;
-                    }else{
-                        toggleImg(1);
-                        imagePos = 0;
-                    }
-                    break;
-                case R.id.adapt_pur_item_rate3:
-                    if( imagePos == 0){
-                        toggleImg(3);
-                        imagePos = 1;
-                    }else{
-                        toggleImg(2);
-                        imagePos = 0;
-                    }
-                    break;
-                case R.id.adapt_pur_item_rate4:
-                    if( imagePos == 0){
-                        toggleImg(4);
-                        imagePos = 1;
-                    }else{
-                        toggleImg(3);
-                        imagePos = 0;
-                    }
-                    break;
-                case R.id.adapt_pur_item_rate5:
-                    if( imagePos == 0){
-                        toggleImg(5);
-                        imagePos = 1;
-                    }else{
-                        toggleImg(4);
-                        imagePos = 0;
-                    }
-                    break;*/
                 case R.id.adapt_pur_item_delete:
                     if(productDetailsModels.size() <= 1){
                         ActivityUtil.showDialog(purchaseDetailsActivity,"Message","Please Decline.");

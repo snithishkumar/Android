@@ -11,6 +11,7 @@ public class ProductDetailsModel{
     private String description;
     private int quantity;
     private String amount;
+    private String totalAmount;
     private float rating = 0;
 
     public ProductDetailsModel(){
@@ -65,7 +66,15 @@ this.itemNo = parcel.readInt();
         this.rating = rating;
     }
 
-   /* @Override
+    public String getTotalAmount() {
+        return amount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    /* @Override
     public int describeContents() {
         return 0;
     }
