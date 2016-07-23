@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import java.sql.SQLException;
 
 import co.in.mobilepay.R;
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
@@ -43,9 +44,10 @@ public class AccountServiceImpl extends BaseService implements AccountService {
     }
 
     public void login(String password){
+        JsonObject jsonObject = new JsonObject();
+        UserEntity userEntity = null;
         try{
-            UserEntity userEntity =  userDao.getUser();
-            JsonObject jsonObject = new JsonObject();
+            userEntity =  userDao.getUser();
             jsonObject.addProperty("mobileNumber",userEntity.getMobileNumber());
             jsonObject.addProperty("password", password);
             Call<ResponseData> responseDataCall = mobilePayAPI.validateLoginDetails(jsonObject);
@@ -54,6 +56,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
 
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in login,Raw Data["+jsonObject+"],userEntity["+userEntity+"]");
             Log.e("Error", "Error in login", e);
         }
 
@@ -132,28 +135,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
     }
 
-    /*  public void resendOtp(String mobileNumber){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("mobileNumber",mobileNumber);
-        Call<ResponseData> responseDataCall = mobilePayAPI.verifyMobileNo(jsonObject);
-        AccountCallbackManager1 accountCallbackManager = new AccountCallbackManager1(5,null);
-        responseDataCall.enqueue(accountCallbackManager);
-    }
 
-
-    public void verifyMobile(String mobileNumber){
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("mobileNumber",mobileNumber);
-        Call<ResponseData> responseDataCall = mobilePayAPI.verifyMobileNo(jsonObject);
-        AccountCallbackManager1 accountCallbackManager = new AccountCallbackManager1(4);
-        responseDataCall.enqueue(accountCallbackManager);
-    }
-
-
-    private void processMobileNoSuccessResponse(ResponseData responseData){
-       MobilePayBus.getInstance().post(responseData);
-    }
-*/
 
 
 
@@ -173,6 +155,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
                MobilePayBus.getInstance().post(responseData);
                 return;
             }catch (Exception e){
+                MobilePayAnalytics.getInstance().trackException(e,"Error in processLoginSuccessResponse,Raw Data["+responseData+"]");
                 Log.e("Error","Error in processLoginSuccessResponse",e);
             }
             responseData = new ResponseData();
@@ -191,6 +174,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         try{
             return userDao.isUserPresent();
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in isUserPresent");
             Log.e("Error", "Error in isUserPresent", e);
         }
         return false;
@@ -202,6 +186,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         try{
             return  userDao.getUser();
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getUserDetails");
             Log.e("Error","Error in getUserDetails",e);
         }
         return null;
@@ -213,6 +198,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         try{
             return  userDao.getUser(mobileNumber);
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getUserDetails,mobileNumber["+mobileNumber+"]");
             Log.e("Error","Error in getUserDetails",e);
         }
         return null;
@@ -221,107 +207,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
 
 
 
-    /**
-     * Create new user with server communication
-     * @param registerJson
-     * @return
-     */
-   /* public void createUser(RegisterJson registerJson){
-        deleteUser();
-        String registerData = gson.toJson(registerJson);
-        String regEncryption = null;
-        try{
-            regEncryption =  ServiceUtil.netEncryption(registerData);
-        }catch (Exception e){
-            e.printStackTrace();
-            // Hope it never throw this error
-        }
-        AccountCallbackManager1 accountCallbackManager = new AccountCallbackManager1(1,registerJson);
-        Call<ResponseData> dataCall =  mobilePayAPI.createUser(regEncryption);
-        dataCall.enqueue(accountCallbackManager);
-    }
 
-
-    public void updateUser(RegisterJson registerJson){
-        try{
-            AccountCallbackManager1 accountCallbackManager = new AccountCallbackManager1(5,registerJson);
-            Call<ResponseData> dataCall =  mobilePayAPI.updateUser(registerJson);
-            dataCall.enqueue(accountCallbackManager);
-        }catch (Exception e){
-            Log.e("Error", "Error in updateUser", e);
-            ResponseData  responseData = new ResponseData();
-            responseData.setStatusCode(500);
-            MobilePayBus.getInstance().post(responseData);
-        }
-
-    }
-
-    private void processRegUpdateResponse( ResponseData responseData ,RegisterJson registerJson){
-        try{
-            int statusCode = responseData.getStatusCode();
-            if(statusCode == 2){
-                UserEntity userEntity =  userDao.getUser();
-                userEntity.setName(registerJson.getName());
-                userEntity.setEmail(registerJson.getEmail());
-                userEntity.setMobileNumber(registerJson.getMobileNumber());
-                userDao.updateUser(userEntity);
-            }
-            MobilePayBus.getInstance().post(responseData);
-        }catch (Exception e){
-            Log.e("Error", "Error in processRegResponse", e);
-            responseData = new ResponseData();
-            responseData.setStatusCode(500);
-            MobilePayBus.getInstance().post(responseData);
-        }
-    }
-
-    private void processRegResponse(ResponseData responseData, RegisterJson registerJson){
-        try{
-            int statusCode = responseData.getStatusCode();
-            if(statusCode == MessageConstant.REG_OK){
-                String passwordEncypt = passwordHash.createHash(registerJson.getPassword());
-                UserEntity userEntity = new UserEntity(registerJson);
-                userEntity.setPassword(passwordEncypt);
-                userDao.createUser(userEntity);
-            }
-            MobilePayBus.getInstance().post(responseData);
-            return;
-        }catch (Exception e){
-            Log.e("Error", "Error in processRegResponse", e);
-
-        }
-        responseData = new ResponseData();
-        responseData.setStatusCode(500);
-        responseData.setData(MessageConstant.REG_ERROR);
-        MobilePayBus.getInstance().post(responseData);
-
-
-    }*/
-
-
-
-    /**
-     * Check whether given otp is valid or not
-     * @return
-     */
-  /*  public void validateOtp(String otpPassword,String mobileNumber) {
-       try{
-           JsonObject jsonObject = new JsonObject();
-           jsonObject.addProperty("mobileNumber", mobileNumber);
-           jsonObject.addProperty("otpPassword",otpPassword);
-           Call<ResponseData> dataCall =   mobilePayAPI.validateOtp(jsonObject);
-           AccountCallbackManager1 accountCallbackManager = new AccountCallbackManager1(2,null);
-           dataCall.enqueue(accountCallbackManager);
-
-       }catch (Exception e){
-            Log.e("Error","Error in validateOtp",e);
-       }
-    }
-
-
-    private void processOtpResponse(ResponseData responseData){
-        MobilePayBus.getInstance().post(responseData);
-    }*/
 
 
     private class AccountCallbackManager1 implements Callback<ResponseData>{
@@ -373,30 +259,6 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         }
     }
 
-
-  /*  @Override
-    public void resetApp(String mobileNumber){
-        try {
-          UserEntity userEntity =  userDao.getUser();
-            if(userEntity != null){
-              if(!userEntity.getMobileNumber().equals(mobileNumber)){
-                  userDao.removeData();
-              }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void deleteUser(){
-        try {
-            userDao.removeUser();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }*/
 
 
 }

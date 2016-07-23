@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
@@ -37,13 +38,16 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     private UserDao userDao;
     private Context context;
 
+    public final String LOG_TAG = PurchaseServiceImpl.class.getSimpleName();
+
     public PurchaseServiceImpl(Context context){
         super();
         this.context = context;
         try{
             init();
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in PurchaseServiceImpl - PurchaseServiceImpl");
+            Log.e(LOG_TAG,"Error in PurchaseServiceImpl",e);
         }
 
     }
@@ -67,7 +71,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
                 purchaseModelList.add(purchaseModel);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getCurrentPurchase - PurchaseServiceImpl");
+            Log.e(LOG_TAG,"Error in getCurrentPurchase",e);
         }
         return purchaseModelList;
     }
@@ -88,7 +93,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
                 purchaseModelList.add(purchaseModel);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getOrderStatusList - PurchaseServiceImpl");
+            Log.e(LOG_TAG,"Error in getOrderStatusList",e);
         }
         return purchaseModelList;
     }
@@ -107,7 +113,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
                 purchaseModelList.add(purchaseModel);
             }
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getPurchaseHistoryList - PurchaseServiceImpl");
+            Log.e(LOG_TAG,"Error in getPurchaseHistoryList",e);
         }
         return purchaseModelList;
     }
@@ -118,7 +125,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseId);
             return purchaseEntity;
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getPurchaseDetails - PurchaseServiceImpl,Raw Data["+purchaseId+"]");
+            Log.e(LOG_TAG,"Error in getPurchaseDetails",e);
         }
         return null;
     }
@@ -135,7 +143,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             String amountDetails = purchaseEntity.getAmountDetails();
             return purchaseDetailsModel;
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getProductDetails - PurchaseServiceImpl,Raw Data["+purchaseId+"]");
+            Log.e(LOG_TAG,"Error in getProductDetails",e);
         }
         return null;
     }
@@ -152,6 +161,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);
         }catch (Exception e){
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getProductDetails - PurchaseServiceImpl,Raw Data["+purchaseEntity+"],ProductDetailsModel["+productDetailsModelList+"]");
             Log.e("Error", "Error in updatePurchaseData", e);
         }
 
@@ -173,8 +183,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             discardEntity.setReason(reason);
             purchaseDao.createDiscardEntity(discardEntity);
         }catch (Exception e){
-            e.printStackTrace();
-            Log.e("Error","Error in declinePurchase",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in declinePurchase - PurchaseServiceImpl,Raw Data["+purchaseEntity+"],reason["+reason+"]");
+            Log.e("Error", "Error in declinePurchase", e);
         }
 
     }
@@ -184,7 +194,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseDao.updatePurchase(purchaseEntity);
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in updatePurchaseEntity - PurchaseServiceImpl,Raw Data["+purchaseEntity+"]");
+            Log.e("Error", "Error in declinePurchase", e);
         }
     }
 
@@ -198,8 +209,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
            purchaseEntity.setAddressEntity(addressEntity);
            purchaseDao.updatePurchase(purchaseEntity);
        }catch (Exception e){
-           e.printStackTrace();
-           Log.e("Error","Error in makePayment",e);
+           MobilePayAnalytics.getInstance().trackException(e,"Error in makePayment - PurchaseServiceImpl,Raw Data["+purchaseEntity+"],addressEntity["+addressEntity+"]");
+           Log.e("Error", "Error in makePayment", e);
        }
 
    }
@@ -215,7 +226,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
             return discardEntity;
         }catch (Exception e){
-            e.printStackTrace();
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getDiscardEntity - PurchaseServiceImpl,Raw Data["+purchaseEntity+"]");
             Log.e("Error", "Error in getDiscardEntity", e);
         }
         return null;
@@ -225,7 +236,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try{
             return userDao.getUser();
         }catch (Exception e){
-            Log.e("Error","Error in getUserEntity",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getUserEntity - PurchaseServiceImpl");
+            Log.e("Error", "Error in getUserEntity", e);
         }
         return null;
     }
@@ -247,7 +259,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
 
             return addressEntity;
         }catch (Exception e){
-            Log.e("Error","Error in getUserEntity",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getDefaultAddress - PurchaseServiceImpl");
+            Log.e("Error", "Error in getDefaultAddress", e);
         }
         return null;
     }
@@ -262,7 +275,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try{
             return userDao.getAddressEntityList();
         }catch (Exception e){
-            Log.e("Error","Error in getAddressList",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getAddressList - PurchaseServiceImpl");
+            Log.e("Error", "Error in getAddressList", e);
         }
         return new ArrayList<>();
     }
@@ -278,7 +292,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             userDao.saveAddress(addressEntity);
             userDao.setDefaultAddress(addressEntity.getAddressId());
         }catch (Exception e){
-            Log.e("Error","Error in saveAddress",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in saveAddress - PurchaseServiceImpl");
+            Log.e("Error", "Error in saveAddress", e);
         }
 
     }
@@ -291,7 +306,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try {
             userDao.setDefaultAddress(addressId);
         }catch (Exception e){
-            Log.e("Error","Error in updateDefaultAddress",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in addressId - PurchaseServiceImpl,Raw Data["+addressId+"]");
+            Log.e("Error", "Error in addressId", e);
         }
     }
 
@@ -305,7 +321,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             userDao.updateAddress(addressEntity);
             userDao.setDefaultAddress(addressEntity.getAddressId());
         }catch (Exception e){
-            Log.e("Error","Error in saveAddress",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in addressId - PurchaseServiceImpl,Raw Data["+addressEntity+"]");
+            Log.e("Error", "Error in addressId", e);
         }
 
     }
@@ -320,7 +337,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try {
             return  userDao.getAddressEntity(addressId);
         }catch (Exception e){
-            Log.e("Error","Error in getAddress",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getAddress - PurchaseServiceImpl,Raw Data["+addressId+"]");
+            Log.e("Error", "Error in getAddress", e);
         }
         return null;
     }
@@ -334,7 +352,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try {
             purchaseDao.createTransactionalDetails(transactionalDetailsEntity);
         }catch (Exception e){
-            Log.e("Error","Error in createTransactionDetails",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in createTransactionDetails - PurchaseServiceImpl,Raw Data["+transactionalDetailsEntity+"]");
+            Log.e("Error", "Error in createTransactionDetails", e);
         }
     }
 
@@ -344,7 +363,8 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
         try {
             return purchaseDao.getTransactionalDetails(purchaseEntity);
         }catch (Exception e){
-            Log.e("Error","Error in getTransactionalDetails",e);
+            MobilePayAnalytics.getInstance().trackException(e,"Error in getTransactionalDetails - PurchaseServiceImpl,Raw Data["+purchaseEntity+"]");
+            Log.e("Error", "Error in getTransactionalDetails", e);
         }
         return new ArrayList<>();
     }
