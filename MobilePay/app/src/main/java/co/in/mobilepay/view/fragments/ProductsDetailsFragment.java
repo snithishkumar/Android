@@ -266,7 +266,7 @@ switch (v.getId()){
             showPaymentOptions.viewFragment(4);
             return;
         } else {
-            ActivityUtil.toast(purchaseDetailsActivity, "Please select any one Delivery.");
+            ActivityUtil.toast(purchaseDetailsActivity, "Please select at least one Delivery Option.");
         }
     }
 

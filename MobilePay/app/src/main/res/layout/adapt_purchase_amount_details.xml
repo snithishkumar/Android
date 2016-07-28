@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:id="@+id/adapt_pur_history_reason_img"
-        android:background="@drawable/ic_account_balance_black_24dp"
+        android:background="@drawable/ic_amount_black"
         />
 
    <TextView

@@ -1,9 +1,12 @@
 package co.in.mobilepay.view.adapters;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -56,7 +59,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public static final int NEW_HOME = 1;
     public static final int HOME_LIST = 2;
 
-
+    AlertDialog alertDialogBox = null;
 
     public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
         this.productDetailsModels = productDetailsModels;
@@ -229,6 +232,26 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
     }
 
+    private void showDeliveryHelp(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(purchaseDetailsActivity);
+        LayoutInflater inflater = purchaseDetailsActivity.getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.alert_delivery_help, null);
+        alertDialog.setView(dialogView);
+        alertDialog.setTitle("About Delivery");
+
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialogBox.dismiss();
+                    }
+                }
+        );
+
+
+        // Showing Alert Message
+        alertDialogBox = alertDialog.show();
+    }
+
 
     private void toggleImg(float rating,TextView rateItText){
         if(rating > 0){
@@ -368,8 +391,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private RadioButton vHomeDelivery = null;
         private RadioButton vLuggage = null;
         private RadioButton vBilling = null;
+        private ImageView vOptionsHelp = null;
         public DeliveryOptionsViewHolder(View view){
             super(view);
+            vOptionsHelp = (ImageView)view.findViewById(R.id.adapt_delivery_options_help);
             vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_home);
 
             /******/
@@ -394,6 +419,14 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             /******/
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_luggage);
             vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_billing);
+
+
+            vOptionsHelp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDeliveryHelp();
+                }
+            });
         }
     }
 

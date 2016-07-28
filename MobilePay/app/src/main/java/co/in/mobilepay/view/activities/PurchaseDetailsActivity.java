@@ -240,7 +240,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
             purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
             purchaseEntity.setIsSync(false);
-            if(purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.BILLING.toString())){
+            if(purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
                 purchaseEntity.setOrderStatus(OrderStatus.DELIVERED);
             }else{
                 purchaseEntity.setOrderStatus(OrderStatus.PACKING);

@@ -23,14 +23,12 @@ public class PurchaseEntity {
     public static final String PAYMENT_STATUS = "PaymentStatus";
     public static final String IS_EDITABLE = "isEditable";
     public static final String CATEGORY = "category";
-    public static final String IS_DELIVERABLE = "isDeliverable";
     public static final String UPDATED_DATE_TIME = "UpdatedDateTime";
     public static final String MERCHANT_ID = MerchantEntity.MERCHANT_ID;
     public static final String USER_ID = UserEntity.USER_ID;
     public static final String SERVER_DATE_TIME = "ServerDateTime";
     public static final String ORDER_STATUS = "OrderStatus";
     public static final String DELIVERY_OPTIONS = "DeliveryOptions";
-    public static final String IS_DISCARD = "IsDiscard";
     public static final String IS_SYNC = "IsSync";
     public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String ADDRESS_ENTITY = "AddressId";
@@ -55,8 +53,6 @@ public class PurchaseEntity {
 
     @DatabaseField(columnName = IS_EDITABLE)
     private boolean isEditable;
-    @DatabaseField(columnName = IS_DELIVERABLE)
-    private boolean isDeliverable;
 
     @DatabaseField(columnName = UPDATED_DATE_TIME)
     private long lastModifiedDateTime;
@@ -67,8 +63,6 @@ public class PurchaseEntity {
 
     @DatabaseField(columnName = USER_ID,foreign = true,foreignAutoRefresh =  true)
     private UserEntity userEntity;
-    @DatabaseField(columnName = IS_DISCARD)
-    private boolean  isDiscard;
     @DatabaseField(columnName = ORDER_STATUS)
     private OrderStatus orderStatus;
     @DatabaseField(columnName = DELIVERY_OPTIONS)
@@ -100,11 +94,9 @@ public class PurchaseEntity {
         this.billNumber =purchaseJson.getBillNumber();
         this.amountDetails = purchaseJson.getAmountDetails();
         this.isEditable =  purchaseJson.isEditable();
-        this.isDeliverable = purchaseJson.isDelivered();
         this.lastModifiedDateTime = purchaseJson.getLastModifiedDateTime();
         this.category = purchaseJson.getCategory();
         this.serverDateTime = purchaseJson.getServerDateTime();
-        this.isDiscard = purchaseJson.isDiscard();
         this.paymentStatus = purchaseJson.getPaymentStatus();
         this.orderStatus = purchaseJson.getOrderStatus();
         this.deliveryOptions = purchaseJson.getDeliveryOptions();
@@ -177,13 +169,6 @@ public class PurchaseEntity {
         this.isEditable = isEditable;
     }
 
-    public boolean isDeliverable() {
-        return isDeliverable;
-    }
-
-    public void setIsDeliverable(boolean isDeliverable) {
-        this.isDeliverable = isDeliverable;
-    }
 
     public long getLastModifiedDateTime() {
         return lastModifiedDateTime;
@@ -218,13 +203,6 @@ public class PurchaseEntity {
     }
 
 
-    public boolean isDiscard() {
-        return isDiscard;
-    }
-
-    public void setIsDiscard(boolean isDiscard) {
-        this.isDiscard = isDiscard;
-    }
 
     public OrderStatus getOrderStatus() {
         return orderStatus;
@@ -286,13 +264,11 @@ public class PurchaseEntity {
                 ", category='" + category + '\'' +
                 ", paymentStatus=" + paymentStatus +
                 ", isEditable=" + isEditable +
-                ", isDeliverable=" + isDeliverable +
                 ", lastModifiedDateTime=" + lastModifiedDateTime +
                 ", merchantEntity=" + merchantEntity +
                 ", serverDateTime=" + serverDateTime +
                 ", userEntity=" + userEntity +
-                ", isDiscard=" + isDiscard +
-                ", orderStatus='" + orderStatus + '\'' +
+                ", orderStatus=" + orderStatus +
                 ", deliveryOptions=" + deliveryOptions +
                 ", isSync=" + isSync +
                 ", totalAmount='" + totalAmount + '\'' +

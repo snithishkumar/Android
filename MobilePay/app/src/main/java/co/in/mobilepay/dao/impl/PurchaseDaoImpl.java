@@ -77,7 +77,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getPurchaseList() throws SQLException {
-        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.PURCHASE_DATE_TIME,false).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.PURCHASE_DATE_TIME,false).where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.PURCHASE).query();
     }
 
 
@@ -90,7 +90,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public List<String> getPurchaseUUIDs() throws SQLException {
        List<String> purchaseUUIDS = new ArrayList<>();
-        List<PurchaseEntity> purchaseEntities = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.NOT_PAIED).and().eq(PurchaseEntity.IS_DISCARD,false).query();
+        List<PurchaseEntity> purchaseEntities = purchaseDao.queryBuilder().selectColumns(PurchaseEntity.PURCHASE_GUID).where().eq(PurchaseEntity.ORDER_STATUS, OrderStatus.PURCHASE).query();
         for(PurchaseEntity purchaseEntity : purchaseEntities){
             purchaseUUIDS.add(purchaseEntity.getPurchaseGuid());
         }
@@ -262,7 +262,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<PurchaseEntity> getUnSyncedDiscardEntity()throws SQLException{
-       return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.IS_DISCARD,true).and().eq(PurchaseEntity.IS_SYNC,false).query();
+       return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.ORDER_STATUS,OrderStatus.CANCELLED).and().eq(PurchaseEntity.IS_SYNC,false).query();
     }
 
 

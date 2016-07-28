@@ -15,10 +15,8 @@ public class PurchaseJson {
 	private String amountDetails;
 	private String category;
 	private boolean isEditable;
-	private boolean isDelivered;
 	private long lastModifiedDateTime;
 	private long serverDateTime;
-	private boolean isDiscard;
 	private PaymentStatus paymentStatus;
 	private OrderStatus orderStatus;
 	private DeliveryOptions deliveryOptions;
@@ -111,13 +109,6 @@ public class PurchaseJson {
 		this.isEditable = isEditable;
 	}
 
-	public boolean isDelivered() {
-		return isDelivered;
-	}
-
-	public void setIsDelivered(boolean isDelivered) {
-		this.isDelivered = isDelivered;
-	}
 
 	public long getLastModifiedDateTime() {
 		return lastModifiedDateTime;
@@ -136,14 +127,6 @@ public class PurchaseJson {
 	}
 
 
-
-	public boolean isDiscard() {
-		return isDiscard;
-	}
-
-	public void setIsDiscard(boolean isDiscard) {
-		this.isDiscard = isDiscard;
-	}
 
 	public PaymentStatus getPaymentStatus() {
 		return paymentStatus;
@@ -193,7 +176,7 @@ public class PurchaseJson {
         this.counterDetails = counterDetails;
     }
 
-    @Override
+	@Override
 	public String toString() {
 		return "PurchaseJson{" +
 				"purchaseId='" + purchaseId + '\'' +
@@ -205,16 +188,15 @@ public class PurchaseJson {
 				", amountDetails='" + amountDetails + '\'' +
 				", category='" + category + '\'' +
 				", isEditable=" + isEditable +
-				", isDelivered=" + isDelivered +
 				", lastModifiedDateTime=" + lastModifiedDateTime +
 				", serverDateTime=" + serverDateTime +
-				", isDiscard=" + isDiscard +
 				", paymentStatus=" + paymentStatus +
-				", orderStatus='" + orderStatus + '\'' +
+				", orderStatus=" + orderStatus +
 				", deliveryOptions=" + deliveryOptions +
 				", totalAmount='" + totalAmount + '\'' +
 				", addressJson=" + addressJson +
 				", discardJson=" + discardJson +
+				", counterDetails=" + counterDetails +
 				'}';
 	}
 }

@@ -171,7 +171,6 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     @Override
     public void declinePurchase(PurchaseEntity purchaseEntity,String reason){
         try {
-            purchaseEntity.setIsDiscard(true);
             purchaseEntity.setOrderStatus(OrderStatus.CANCELLED);
             purchaseEntity.setIsSync(false);
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());

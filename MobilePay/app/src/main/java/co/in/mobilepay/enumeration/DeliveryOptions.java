@@ -1,7 +1,7 @@
 package co.in.mobilepay.enumeration;
 
 public enum DeliveryOptions {
-	BILLING(0), HOME(1), LUGGAGE(2);
+	BOTH(0), COUNTER_COLLECTION(1),HOME(2),NONE(3);
 
 	private int deliveryOptions;
 

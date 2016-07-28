@@ -85,9 +85,9 @@ public class PurHistoryListAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             purHistoryListViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(homeActivity,purchaseModel.getTotalAmount()));
             if(purchaseModel.getOrderStatus().equals(OrderStatus.CANCELLED.toString())){
-                purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.cancel_32);
+               // purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.cancel_32);
             }else{
-                purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.delivered_img_32);
+               // purHistoryListViewHolder.vStatus.setBackgroundResource(R.mipmap.delivered_img_32);
             }
             Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
