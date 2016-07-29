@@ -25,6 +25,7 @@ public class PurchaseJson {
     private DiscardJson discardJson;
 	private CounterDetailsJson counterDetails;
 
+
 	public PurchaseJson(){
 		
 	}

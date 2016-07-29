@@ -27,14 +27,7 @@
         android:textStyle="bold"
         />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_gravity="center|center_horizontal"
-        android:layout_marginTop="1dp"
-        android:layout_marginLeft="5dp"
-        android:background="@drawable/ic_help_black_24dp"
-        android:id="@+id/adapt_delivery_options_help"
-        android:layout_height="wrap_content" />
+
 </LinearLayout>
 
     <RadioGroup
@@ -47,23 +40,15 @@
 
         <RadioButton
             android:layout_width="match_parent"
-            android:text="Home Delivery"
+            android:text="@string/delivery_home"
             android:id="@+id/adapt_pur_delivery_home"
-            android:visibility="gone"
             android:layout_height="wrap_content" />
 
         <RadioButton
             android:layout_width="match_parent"
-            android:text="Luggage Counter"
+            android:text="@string/delivery_collection_counter"
             android:id="@+id/adapt_pur_delivery_luggage"
             android:layout_height="wrap_content" />
-
-        <RadioButton
-            android:layout_width="match_parent"
-            android:text="Billing"
-            android:id="@+id/adapt_pur_delivery_billing"
-            android:layout_height="wrap_content" />
-
 
     </RadioGroup>
 

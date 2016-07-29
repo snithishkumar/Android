@@ -27,9 +27,7 @@ import co.in.mobilepay.view.model.ProductDetailsModel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
@@ -59,7 +57,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public static final int NEW_HOME = 1;
     public static final int HOME_LIST = 2;
 
-    AlertDialog alertDialogBox = null;
 
     public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
         this.productDetailsModels = productDetailsModels;
@@ -82,16 +79,27 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         switch (viewType){
 
             case HOME_DELIVERY_OPTIONS:
-                defaultAddress = purchaseDetailsActivity.getPurchaseService().getDefaultAddress();
-                if(defaultAddress == null){
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.adapt_purchase_delivery_options, parent, false);
-                    return new DeliveryOptionsViewHolder(view);
-                }else{
-                    view = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.adapt_purchase_delivery_with_address, parent, false);
-                    return new DeliveryAddressViewHolder(view);
+                switch (purchaseEntity.getDeliveryOptions()){
+                    case COUNTER_COLLECTION:
+                        view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.adapt_pur_col_counter_option, parent, false);
+                        return new DeliveryCollectionCounterViewHolder(view);
+                    case BOTH:
+                    case HOME:
+                        defaultAddress = purchaseDetailsActivity.getPurchaseService().getDefaultAddress();
+                        if(defaultAddress == null){
+                            view = LayoutInflater.from(parent.getContext())
+                                    .inflate(R.layout.adapt_purchase_delivery_options, parent, false);
+                            return new DeliveryOptionsViewHolder(view);
+                        }else{
+                            view = LayoutInflater.from(parent.getContext())
+                                    .inflate(R.layout.adapt_purchase_delivery_with_address, parent, false);
+                            return new DeliveryAddressViewHolder(view);
+                        }
                 }
+
+
+
 
             case TAX_DETAILS:
                 view = LayoutInflater.from(parent.getContext())
@@ -107,10 +115,25 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     @Override
     public int getItemCount() {
+        if(purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
+            return productDetailsModels.size()+1 ;
+        }
         return productDetailsModels.size()+2 ;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        int size = productDetailsModels.size();
+        if(position < size){
+            return PRODUCT_DETAILS;
+        }else if(size  == position && !purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
+            return HOME_DELIVERY_OPTIONS;
+        }else {
+            return TAX_DETAILS;
+        }
+    }
+
+   /* @Override
     public int getItemViewType(int position) {
         int size = productDetailsModels.size();
         if(size  == position){
@@ -120,7 +143,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             return TAX_DETAILS;
         }
         return PRODUCT_DETAILS;
-    }
+    }*/
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
@@ -141,16 +164,11 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             calcAmount(position);
-        }else if(viewHolder instanceof DeliveryOptionsViewHolder){
-            DeliveryOptionsViewHolder deliveryOptionsViewHolder = (DeliveryOptionsViewHolder)viewHolder;
-            if(purchaseEntity.isDeliverable()){
-                deliveryOptionsViewHolder.vHomeDelivery.setVisibility(View.VISIBLE);
-            }
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             String address  = getAddress(purchaseDetailsActivity.getPurchaseService().getDefaultAddress());
             deliveryAddressViewHolder.vHomeDelivery.setText(address);
-        }else{
+        }else if(viewHolder instanceof AmountDetailsViewHolder){
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
             calcAmount();
 
@@ -232,25 +250,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
     }
 
-    private void showDeliveryHelp(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(purchaseDetailsActivity);
-        LayoutInflater inflater = purchaseDetailsActivity.getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.alert_delivery_help, null);
-        alertDialog.setView(dialogView);
-        alertDialog.setTitle("About Delivery");
 
-        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        alertDialogBox.dismiss();
-                    }
-                }
-        );
-
-
-        // Showing Alert Message
-        alertDialogBox = alertDialog.show();
-    }
 
 
     private void toggleImg(float rating,TextView rateItText){
@@ -358,12 +358,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public class DeliveryAddressViewHolder extends RecyclerView.ViewHolder{
         private RadioButton vHomeDelivery = null;
         private RadioButton vLuggage = null;
-        private RadioButton vBilling = null;
         public DeliveryAddressViewHolder(View view){
             super(view);
             vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_addr);
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_luggage);
-            vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_item_delivery_billing);
 
             RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_item_delivery_options);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -374,10 +372,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             deliveryOptions = DeliveryOptions.HOME;
                             break;
                         case R.id.adapt_pur_item_delivery_luggage:
-                            deliveryOptions = DeliveryOptions.LUGGAGE;
-                            break;
-                        case R.id.adapt_pur_item_delivery_billing:
-                            deliveryOptions = DeliveryOptions.BILLING;
+                            deliveryOptions = DeliveryOptions.COUNTER_COLLECTION;
                             break;
 
                     }
@@ -390,15 +385,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public class DeliveryOptionsViewHolder extends RecyclerView.ViewHolder{
         private RadioButton vHomeDelivery = null;
         private RadioButton vLuggage = null;
-        private RadioButton vBilling = null;
-        private ImageView vOptionsHelp = null;
         public DeliveryOptionsViewHolder(View view){
             super(view);
-            vOptionsHelp = (ImageView)view.findViewById(R.id.adapt_delivery_options_help);
             vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_home);
 
             /******/
-           RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);
+            RadioGroup radioGroup = (RadioGroup)  view.findViewById(R.id.adapt_pur_delivery);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -407,10 +399,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             showDeliveryAddress.viewFragment(NEW_HOME);
                             return;
                         case R.id.adapt_pur_delivery_luggage:
-                            deliveryOptions = DeliveryOptions.LUGGAGE;
-                            break;
-                        case R.id.adapt_pur_delivery_billing:
-                            deliveryOptions = DeliveryOptions.BILLING;
+                            deliveryOptions = DeliveryOptions.COUNTER_COLLECTION;
                             break;
 
                     }
@@ -418,15 +407,18 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
             /******/
             vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_luggage);
-            vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_delivery_billing);
+
+        }
+    }
 
 
-            vOptionsHelp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDeliveryHelp();
-                }
-            });
+
+    public class DeliveryCollectionCounterViewHolder extends RecyclerView.ViewHolder{
+        private RadioButton vCollectionCounter = null;
+        public DeliveryCollectionCounterViewHolder(View view){
+            super(view);
+            vCollectionCounter = (RadioButton) view.findViewById(R.id.adapt_pur_collection_counter_delivery_value);
+
         }
     }
 

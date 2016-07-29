@@ -26,13 +26,7 @@
             android:textStyle="bold"
             />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_gravity="center|center_horizontal"
-            android:layout_marginLeft="5dp"
-            android:scaleType="center"
-            android:src="@drawable/ic_help_black_24dp"
-            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 
@@ -64,15 +58,11 @@
 
         <RadioButton
             android:layout_width="match_parent"
-            android:text="Luggage"
+            android:text="@string/delivery_collection_counter"
             android:id="@+id/adapt_pur_item_delivery_luggage"
             android:layout_height="wrap_content" />
 
-        <RadioButton
-            android:layout_width="match_parent"
-            android:text="Billing"
-            android:id="@+id/adapt_pur_item_delivery_billing"
-            android:layout_height="wrap_content" />
+
 
 
     </RadioGroup>

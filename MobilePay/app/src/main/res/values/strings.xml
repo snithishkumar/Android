@@ -61,6 +61,10 @@
     <string name="add_delivery_address_city_error">City is required</string>
     <string name="add_delivery_address_postal_error">Postal code is required</string>
 
+    <!-- Delivery Options -->
+    <string name="delivery_collection_counter">Collection Counter</string>
+    <string name="delivery_home">Home</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

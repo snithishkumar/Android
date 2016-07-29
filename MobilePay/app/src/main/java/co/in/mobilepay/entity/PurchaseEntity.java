@@ -48,6 +48,8 @@ public class PurchaseEntity {
     @DatabaseField(columnName = CATEGORY)
     private String category;
 
+
+
     @DatabaseField(columnName = PAYMENT_STATUS)
     private PaymentStatus paymentStatus;
 
