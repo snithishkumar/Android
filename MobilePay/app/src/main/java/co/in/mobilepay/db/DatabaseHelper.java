@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
@@ -61,6 +62,7 @@ public class DatabaseHelper<T,T1> extends OrmLiteSqliteOpenHelper {
             TableUtils.createTableIfNotExists(connectionSource, NotificationEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, TransactionalDetailsEntity.class);
             TableUtils.createTableIfNotExists(connectionSource, CounterDetailsEntity.class);
+            TableUtils.createTableIfNotExists(connectionSource, HomeDeliveryOptionsEntity.class);
 
         } catch (Exception e) {
             Log.e(DatabaseHelper.class.getName(), "Can't create database", e);

@@ -33,11 +33,13 @@ import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.GsonAPI;
 import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
@@ -495,7 +497,7 @@ private boolean isLoginFailed = false;
                     purchaseDao.createPurchase(purchaseEntity);
                     processAddressJson(purchaseJson, purchaseEntity);
                     processDiscardJson(purchaseJson,purchaseEntity);
-
+                    processHomeDeliveryJson(purchaseJson,purchaseEntity);
                 }
                 createCounterDetails(purchaseJson.getCounterDetails(),purchaseEntity);
             }catch (Exception e){
@@ -541,6 +543,21 @@ private boolean isLoginFailed = false;
             discardEntity.setPurchaseEntity(purchaseEntity);
             discardEntity.setCreatedDateTime(purchaseEntity.getLastModifiedDateTime());
             purchaseDao.createDiscardEntity(discardEntity);
+        }
+    }
+
+
+    /**
+     * Process Home Delivery Options
+     * @param purchaseJson
+     * @param purchaseEntity
+     * @throws SQLException
+     */
+    private  void processHomeDeliveryJson(PurchaseJson purchaseJson,PurchaseEntity purchaseEntity)throws  SQLException{
+        HomeDeliveryOptionsEntity homeDeliveryOptionsEntity = purchaseJson.getHomeDeliveryOptions();
+        if(homeDeliveryOptionsEntity != null){
+            homeDeliveryOptionsEntity.setPurchaseEntity(purchaseEntity);
+            purchaseDao.createHomeDeliveryOptions(homeDeliveryOptionsEntity);
         }
     }
 

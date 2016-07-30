@@ -110,25 +110,17 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-            switch ( purchaseEntity.getDeliveryOptions()){
+            switch ( purchaseEntity.getUserDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
                         String address  = getAddress(purchaseEntity.getAddressEntity());
                         deliveryAddressViewHolder.vHomeDelivery.setText(address);
-                        deliveryAddressViewHolder.vHomeDelivery.setChecked(true);
-                        deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                        deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                    }else{
+                        deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_home);
                     }
                     break;
-                case LUGGAGE:
-                    deliveryAddressViewHolder.vLuggage.setChecked(true);
-                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                    deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                    break;
-                case BILLING:
-                    deliveryAddressViewHolder.vBilling.setChecked(true);
-                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                    deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                case COUNTER_COLLECTION:
+                    deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_collection_counter);
                     break;
             }
 
@@ -269,14 +261,10 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
     public class DeliveryAddressViewHolder extends RecyclerView.ViewHolder{
         private RadioButton vHomeDelivery = null;
-        private RadioButton vLuggage = null;
-        private RadioButton vBilling = null;
         public DeliveryAddressViewHolder(View view){
             super(view);
-            vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_addr);
+            vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_value);
 
-            vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_luggage);
-            vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_billing);
 
 
         }

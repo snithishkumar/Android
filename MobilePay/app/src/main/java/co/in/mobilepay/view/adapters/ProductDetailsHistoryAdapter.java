@@ -17,6 +17,7 @@ import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DiscountType;
+import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
@@ -94,7 +95,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     public int getItemViewType(int position) {
         int size = productDetailsModels.size();
         if(size  == position){
-            if(purchaseEntity.isDiscard()){
+            if(purchaseEntity.getOrderStatus().ordinal() == OrderStatus.CANCELLED.ordinal()){
                 return CANCEL;
             }
             return HOME_DELIVERY_OPTIONS;
@@ -122,25 +123,20 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-            switch ( purchaseEntity.getDeliveryOptions()){
+            switch ( purchaseEntity.getUserDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
                         String address  = getAddress(purchaseEntity.getAddressEntity());
                         deliveryAddressViewHolder.vHomeDelivery.setText(address);
-                        deliveryAddressViewHolder.vHomeDelivery.setChecked(true);
-                        deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                        deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                    }else{
+                        deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_home);
                     }
                     break;
-                case LUGGAGE:
-                    deliveryAddressViewHolder.vLuggage.setChecked(true);
-                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                    deliveryAddressViewHolder.vBilling.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                case COUNTER_COLLECTION:
+                    deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_collection_counter);
                     break;
-                case BILLING:
-                    deliveryAddressViewHolder.vBilling.setChecked(true);
-                    deliveryAddressViewHolder.vHomeDelivery.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
-                    deliveryAddressViewHolder.vLuggage.setTextColor(ContextCompat.getColor(purchaseDetailsActivity,R.color.darkgray));
+                case NONE:
+                    deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_none);
                     break;
             }
 
@@ -262,7 +258,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             name = (TextView) view.findViewById(R.id.adapt_pur_his_item_desc);
             ratingBar = (RatingBar) view.findViewById(R.id.adapt_pur_his_item_rate_it);
             rateItText = (TextView) view.findViewById(R.id.adapt_pur_his_item_rate_it_text);
-            if(purchaseEntity.isDiscard()){
+            if(purchaseEntity.getOrderStatus().ordinal() == OrderStatus.CANCELLED.ordinal()){
                 ratingBar.setVisibility(View.INVISIBLE);
                 rateItText.setVisibility(View.INVISIBLE);
 
@@ -286,14 +282,10 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     public class DeliveryAddressViewHolder extends RecyclerView.ViewHolder{
         private RadioButton vHomeDelivery = null;
-        private RadioButton vLuggage = null;
-        private RadioButton vBilling = null;
         public DeliveryAddressViewHolder(View view){
             super(view);
-            vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_addr);
+            vHomeDelivery = (RadioButton) view.findViewById(R.id.adapt_pur_his_item_delivery_value);
 
-            vLuggage = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_luggage);
-            vBilling = (RadioButton) view.findViewById(R.id.adapt_pur_order_status_item_delivery_billing);
 
 
         }

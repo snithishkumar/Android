@@ -41,13 +41,14 @@
             android:layout_width="match_parent"
             android:layout_marginTop="5dp"
             android:clickable="false"
-            android:id="@+id/adapt_pur_order_status_item_delivery_addr"
+            android:checked="true"
+            android:id="@+id/adapt_pur_his_item_delivery_value"
             android:text="15/B, 2nd cross street, sir ram nagar, Tharamani,chennai - 600 113"
             android:layout_height="wrap_content" />
 
 
 
-        <RadioButton
+       <!-- <RadioButton
             android:layout_width="match_parent"
             android:text="Luggage"
             android:clickable="false"
@@ -59,7 +60,7 @@
             android:text="Billing"
             android:clickable="false"
             android:id="@+id/adapt_pur_order_status_item_delivery_billing"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" />-->
 
 
     </RadioGroup>

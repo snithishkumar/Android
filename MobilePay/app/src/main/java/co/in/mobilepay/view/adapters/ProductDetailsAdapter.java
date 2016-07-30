@@ -45,7 +45,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private double taxAmount;
     private double discount = 0;
     private double totalAmount;
-    private DeliveryOptions deliveryOptions;
 
 
 
@@ -55,7 +54,6 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     public static final int NEW_HOME = 1;
-    public static final int HOME_LIST = 2;
 
 
     public ProductDetailsAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
@@ -79,8 +77,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         switch (viewType){
 
             case HOME_DELIVERY_OPTIONS:
-                switch (purchaseEntity.getDeliveryOptions()){
+                switch (purchaseEntity.getMerchantDeliveryOptions()){
                     case COUNTER_COLLECTION:
+                        purchaseEntity.setUserDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.adapt_pur_col_counter_option, parent, false);
                         return new DeliveryCollectionCounterViewHolder(view);
@@ -96,6 +95,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                     .inflate(R.layout.adapt_purchase_delivery_with_address, parent, false);
                             return new DeliveryAddressViewHolder(view);
                         }
+
+                        default:
+                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.NONE);
+                            break;
                 }
 
 
@@ -115,7 +118,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
     @Override
     public int getItemCount() {
-        if(purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
+        if(purchaseEntity.getMerchantDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
             return productDetailsModels.size()+1 ;
         }
         return productDetailsModels.size()+2 ;
@@ -126,7 +129,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int size = productDetailsModels.size();
         if(position < size){
             return PRODUCT_DETAILS;
-        }else if(size  == position && !purchaseEntity.getDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
+        }else if(size  == position && !purchaseEntity.getMerchantDeliveryOptions().toString().equals(DeliveryOptions.NONE.toString())){
             return HOME_DELIVERY_OPTIONS;
         }else {
             return TAX_DETAILS;
@@ -369,10 +372,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     switch (checkedId) {
                         case R.id.adapt_pur_item_delivery_addr:
-                            deliveryOptions = DeliveryOptions.HOME;
+                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.HOME);
                             break;
                         case R.id.adapt_pur_item_delivery_luggage:
-                            deliveryOptions = DeliveryOptions.COUNTER_COLLECTION;
+                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
                             break;
 
                     }
@@ -399,7 +402,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             showDeliveryAddress.viewFragment(NEW_HOME);
                             return;
                         case R.id.adapt_pur_delivery_luggage:
-                            deliveryOptions = DeliveryOptions.COUNTER_COLLECTION;
+                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.HOME);
                             break;
 
                     }
@@ -450,9 +453,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         void viewFragment(int options);
     }
 
-    public DeliveryOptions getDeliveryOptions() {
-        return deliveryOptions;
-    }
+
 
     public double getTotalAmount() {
         return totalAmount;

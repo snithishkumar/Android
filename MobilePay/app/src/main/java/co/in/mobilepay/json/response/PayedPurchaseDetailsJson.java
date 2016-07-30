@@ -13,7 +13,7 @@ public class PayedPurchaseDetailsJson {
     private String purchaseId;
     private String productDetails;
     private String amountDetails;
-    private DeliveryOptions deliveryOptions;
+    private DeliveryOptions userDeliveryOptions;
     private long paymetTime;
     private AddressJson addressJson;
     private String addressGuid;
@@ -28,7 +28,7 @@ public class PayedPurchaseDetailsJson {
         this.purchaseId = purchaseEntity.getPurchaseGuid();
         this.productDetails = purchaseEntity.getProductDetails();
         this.amountDetails = purchaseEntity.getAmountDetails();
-        this.deliveryOptions = purchaseEntity.getDeliveryOptions();
+        this.userDeliveryOptions = purchaseEntity.getUserDeliveryOptions();
         this.paymetTime = purchaseEntity.getLastModifiedDateTime();
         this.totalAmount = purchaseEntity.getTotalAmount();
         if(purchaseEntity.getAddressEntity()  != null){
@@ -73,12 +73,12 @@ public class PayedPurchaseDetailsJson {
         this.amountDetails = amountDetails;
     }
 
-    public DeliveryOptions getDeliveryOptions() {
-        return deliveryOptions;
+    public DeliveryOptions getUserDeliveryOptions() {
+        return userDeliveryOptions;
     }
 
-    public void setDeliveryOptions(DeliveryOptions deliveryOptions) {
-        this.deliveryOptions = deliveryOptions;
+    public void setUserDeliveryOptions(DeliveryOptions userDeliveryOptions) {
+        this.userDeliveryOptions = userDeliveryOptions;
     }
 
     public long getPaymetTime() {
@@ -115,10 +115,16 @@ public class PayedPurchaseDetailsJson {
 
     @Override
     public String toString() {
-        return "PayedPurchaseDetailsJson [purchaseId=" + purchaseId + ", productDetails=" + productDetails
-                + ", amountDetails=" + amountDetails + ", deliveryOptions=" + deliveryOptions + ", paymetTime="
-                + paymetTime + "]";
+        return "PayedPurchaseDetailsJson{" +
+                "purchaseId='" + purchaseId + '\'' +
+                ", productDetails='" + productDetails + '\'' +
+                ", amountDetails='" + amountDetails + '\'' +
+                ", userDeliveryOptions=" + userDeliveryOptions +
+                ", paymetTime=" + paymetTime +
+                ", addressJson=" + addressJson +
+                ", addressGuid='" + addressGuid + '\'' +
+                ", totalAmount='" + totalAmount + '\'' +
+                ", transactions=" + transactions +
+                '}';
     }
-
-
 }

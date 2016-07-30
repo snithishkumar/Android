@@ -5,6 +5,7 @@ import java.util.List;
 
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
@@ -66,5 +67,11 @@ public interface PurchaseDao {
     void createCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException;
 
     void updateCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException;
+
+
+    void createHomeDeliveryOptions(HomeDeliveryOptionsEntity homeDeliveryOptionsEntity)throws SQLException;
+
+
+    HomeDeliveryOptionsEntity getHomeDeliveryOptions(PurchaseEntity purchaseEntity)throws SQLException;
 
 }

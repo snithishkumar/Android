@@ -28,7 +28,8 @@ public class PurchaseEntity {
     public static final String USER_ID = UserEntity.USER_ID;
     public static final String SERVER_DATE_TIME = "ServerDateTime";
     public static final String ORDER_STATUS = "OrderStatus";
-    public static final String DELIVERY_OPTIONS = "DeliveryOptions";
+   public static final String MERCHANT_DELIVERY_OPTIONS = "MerchantDeliveryOptions";
+    public static final String USER_DELIVERY_OPTIONS = "UserDeliveryOptions";
     public static final String IS_SYNC = "IsSync";
     public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String ADDRESS_ENTITY = "AddressId";
@@ -67,8 +68,12 @@ public class PurchaseEntity {
     private UserEntity userEntity;
     @DatabaseField(columnName = ORDER_STATUS)
     private OrderStatus orderStatus;
-    @DatabaseField(columnName = DELIVERY_OPTIONS)
-    private DeliveryOptions deliveryOptions;
+
+    @DatabaseField(columnName = MERCHANT_DELIVERY_OPTIONS)
+    private DeliveryOptions merchantDeliveryOptions;
+
+    @DatabaseField(columnName = USER_DELIVERY_OPTIONS)
+    private DeliveryOptions userDeliveryOptions;
 
     @DatabaseField(columnName = IS_SYNC)
     private boolean isSync = false;
@@ -101,7 +106,7 @@ public class PurchaseEntity {
         this.serverDateTime = purchaseJson.getServerDateTime();
         this.paymentStatus = purchaseJson.getPaymentStatus();
         this.orderStatus = purchaseJson.getOrderStatus();
-        this.deliveryOptions = purchaseJson.getDeliveryOptions();
+        this.merchantDeliveryOptions = purchaseJson.getMerchantDeliveryOptions();
         this.totalAmount = purchaseJson.getTotalAmount();
     }
 
@@ -214,12 +219,20 @@ public class PurchaseEntity {
         this.orderStatus = orderStatus;
     }
 
-    public DeliveryOptions getDeliveryOptions() {
-        return deliveryOptions;
+    public DeliveryOptions getMerchantDeliveryOptions() {
+        return merchantDeliveryOptions;
     }
 
-    public void setDeliveryOptions(DeliveryOptions deliveryOptions) {
-        this.deliveryOptions = deliveryOptions;
+    public void setMerchantDeliveryOptions(DeliveryOptions merchantDeliveryOptions) {
+        this.merchantDeliveryOptions = merchantDeliveryOptions;
+    }
+
+    public DeliveryOptions getUserDeliveryOptions() {
+        return userDeliveryOptions;
+    }
+
+    public void setUserDeliveryOptions(DeliveryOptions userDeliveryOptions) {
+        this.userDeliveryOptions = userDeliveryOptions;
     }
 
     public boolean isSync() {
@@ -271,7 +284,8 @@ public class PurchaseEntity {
                 ", serverDateTime=" + serverDateTime +
                 ", userEntity=" + userEntity +
                 ", orderStatus=" + orderStatus +
-                ", deliveryOptions=" + deliveryOptions +
+                ", merchantDeliveryOptions=" + merchantDeliveryOptions +
+                ", userDeliveryOptions=" + userDeliveryOptions +
                 ", isSync=" + isSync +
                 ", totalAmount='" + totalAmount + '\'' +
                 ", addressEntity=" + addressEntity +

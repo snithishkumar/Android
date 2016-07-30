@@ -13,6 +13,7 @@ import java.util.List;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
@@ -30,7 +31,8 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     private Dao<MerchantEntity,Integer> merchantDao = null;
     private Dao<DiscardEntity,Integer> discardDao = null;
     private Dao<TransactionalDetailsEntity,Integer> transactionalDetailsDao = null;
-    private Dao<CounterDetailsEntity,Internal> counterDetailsDao = null;
+    private Dao<CounterDetailsEntity,Integer> counterDetailsDao = null;
+    private Dao<HomeDeliveryOptionsEntity,Integer> homeDeliveryOptionsDao = null;
 
     public PurchaseDaoImpl(Context context) throws SQLException {
         super(context);
@@ -48,6 +50,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
         discardDao = databaseHelper.getDao(DiscardEntity.class);
         transactionalDetailsDao = databaseHelper.getDao(TransactionalDetailsEntity.class);
         counterDetailsDao = databaseHelper.getDao(CounterDetailsEntity.class);
+        homeDeliveryOptionsDao = databaseHelper.getDao(HomeDeliveryOptionsEntity.class);
     }
 
     /**
@@ -303,6 +306,16 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public void updateCounterDetails(CounterDetailsEntity counterDetailsEntity)throws SQLException{
         counterDetailsDao.update(counterDetailsEntity);
+    }
+
+    @Override
+    public void createHomeDeliveryOptions(HomeDeliveryOptionsEntity homeDeliveryOptionsEntity)throws SQLException{
+        homeDeliveryOptionsDao.create(homeDeliveryOptionsEntity);
+    }
+
+    @Override
+    public HomeDeliveryOptionsEntity getHomeDeliveryOptions(PurchaseEntity purchaseEntity)throws SQLException{
+        return homeDeliveryOptionsDao.queryBuilder().where().eq(HomeDeliveryOptionsEntity.PURCHASE_ID,purchaseEntity).queryForFirst();
     }
 
 }

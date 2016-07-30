@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+
+    android:layout_marginBottom="20dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/ic_local_shipping_black_24dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delivery"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+        />
+
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/adapt_pur_collection_counter_delivery"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:text="@string/delivery_collection_counter"
+            android:checked="true"
+            android:id="@+id/adapt_pur_collection_counter_delivery_value"
+            android:layout_height="wrap_content" />
+
+
+
+    </RadioGroup>
+
+
+    <!--<View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/darker_gray"></View>-->
+
+
+</LinearLayout>

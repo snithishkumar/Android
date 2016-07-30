@@ -64,6 +64,7 @@
     <!-- Delivery Options -->
     <string name="delivery_collection_counter">Collection Counter</string>
     <string name="delivery_home">Home</string>
+    <string name="delivery_none">None</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
