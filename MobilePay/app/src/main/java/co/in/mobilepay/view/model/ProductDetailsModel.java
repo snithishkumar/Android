@@ -11,20 +11,12 @@ public class ProductDetailsModel{
     private String description;
     private int quantity;
     private String amount;
-    private String totalAmount;
+    private String unitPrice;
     private float rating = 0;
 
     public ProductDetailsModel(){
 
     }
-
-  /*  public ProductDetailsModel(Parcel parcel){
-this.itemNo = parcel.readInt();
-        this.description = parcel.readString();
-        this.quantity = parcel.readInt();
-        this.amount = parcel.readString();
-        this.rating = parcel.readInt();
-    }*/
 
     public int getItemNo() {
         return itemNo;
@@ -58,6 +50,14 @@ this.itemNo = parcel.readInt();
         this.amount = amount;
     }
 
+    public String getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
     public float getRating() {
         return rating;
     }
@@ -66,40 +66,15 @@ this.itemNo = parcel.readInt();
         this.rating = rating;
     }
 
-    public String getTotalAmount() {
-        return amount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    /* @Override
-    public int describeContents() {
-        return 0;
-    }
-
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(itemNo);
-        dest.writeString(description);
-        dest.writeInt(quantity);
-        dest.writeString(amount);
-        dest.writeInt(rating);
+    public String toString() {
+        return "ProductDetailsModel{" +
+                "itemNo=" + itemNo +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", amount='" + amount + '\'' +
+                ", unitPrice='" + unitPrice + '\'' +
+                ", rating=" + rating +
+                '}';
     }
-
-    // Method to recreate a Question from a Parcel
-    public static Creator<ProductDetailsModel> CREATOR = new Creator<ProductDetailsModel>() {
-
-        @Override
-        public ProductDetailsModel createFromParcel(Parcel source) {
-            return new ProductDetailsModel(source);
-        }
-
-        @Override
-        public ProductDetailsModel[] newArray(int size) {
-            return new ProductDetailsModel[size];
-        }
-
-    };*/
 }

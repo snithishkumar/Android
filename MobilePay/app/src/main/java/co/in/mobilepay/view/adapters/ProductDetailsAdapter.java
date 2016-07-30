@@ -1,12 +1,9 @@
 package co.in.mobilepay.view.adapters;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -109,6 +106,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         .inflate(R.layout.adapt_purchase_amount_details, parent, false);
                 return new AmountDetailsViewHolder(view);
             default:
+                 purchaseEntity.setUserDeliveryOptions(DeliveryOptions.NONE);
                  view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapt_purchase_items, parent, false);
                 return new ProductDetailsViewHolder(view);
@@ -158,9 +156,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
             productDetailsViewHolder.quantityDub.setText(String.valueOf(productDetailsModel.getQuantity()));
-            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
 
-            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
             if(!purchaseEntity.isEditable() || productDetailsModels.size() == 1){
                 productDetailsViewHolder.delete.setVisibility(View.INVISIBLE);
             }
@@ -221,7 +219,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getTotalAmount());
+        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
     }
 
     private void calcAmount(){
@@ -278,9 +276,9 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         private TextView name;
         private TextView quantity;
-        private TextView amount;
+        private TextView unitPrice;
         private TextView quantityDub;
-        private TextView totalAmount;
+        private TextView amount;
         private TextView rateItText;
         private ImageView delete;
 
@@ -294,13 +292,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             name = (TextView) view.findViewById(R.id.adapt_pur_item_desc);
 
             quantity = (TextView) view.findViewById(R.id.adapt_pur_item_quantity);
-            amount = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
+            unitPrice = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
             quantityDub = (TextView) view.findViewById(R.id.adapt_pur_item_quantity_dub);
 
             add = (ImageView)view.findViewById(R.id.adapt_pur_item_add);
             reduce = (ImageView)view.findViewById(R.id.adapt_pur_item_reduce);
 
-            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_item_total_amount);
+            amount = (TextView) view.findViewById(R.id.adapt_pur_item_total_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
             rateItText =  (TextView) view.findViewById(R.id.rate_it_text);
             ratingBar = (RatingBar) view.findViewById(R.id.rate_it_star);

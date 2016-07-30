@@ -1,6 +1,5 @@
 package co.in.mobilepay.view.adapters;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -115,11 +114,11 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
 
-            productDetailsViewHolder.quantity.setText(productDetailsModel.getQuantity());
+            productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
+
+            productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
 
             productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
-
-            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
@@ -193,7 +192,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     }
 
     private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getTotalAmount());
+        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
     }
 
 
@@ -247,10 +246,10 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     public class ProductDetailsViewHolder extends RecyclerView.ViewHolder{
 
         private TextView quantity;
-        private TextView amount;
+        private TextView unitPrice;
         private TextView name;
         private RatingBar ratingBar;
-        private TextView totalAmount;
+        private TextView amount;
         private TextView rateItText;
 
         public ProductDetailsViewHolder(View view) {
@@ -263,8 +262,8 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
                 rateItText.setVisibility(View.INVISIBLE);
 
             }
-            totalAmount = (TextView) view.findViewById(R.id.adapt_pur_his_item_total_amount);
-            amount = (TextView) view.findViewById(R.id.adapt_pur_his_item_amount);
+            amount = (TextView) view.findViewById(R.id.adapt_pur_his_item_total_amount);
+            unitPrice = (TextView) view.findViewById(R.id.adapt_pur_his_item_amount);
             quantity = (TextView) view.findViewById(R.id.adapt_pur_his_item_quantity);
 
         }

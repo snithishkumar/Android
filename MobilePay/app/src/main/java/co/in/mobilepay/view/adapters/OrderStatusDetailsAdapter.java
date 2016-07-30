@@ -1,6 +1,5 @@
 package co.in.mobilepay.view.adapters;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,8 +105,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
             calcAmount(position,productDetailsModel);
-            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getTotalAmount()));
-            productDetailsViewHolder.totalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             switch ( purchaseEntity.getUserDeliveryOptions()){
@@ -175,7 +174,7 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
     }
 
     private void calcAmount(int position,ProductDetailsModel productDetailsModel){
-        amount = amount +  Double.valueOf(productDetailsModel.getTotalAmount());
+        amount = amount +  Double.valueOf(productDetailsModel.getAmount());
     }
 
 
@@ -230,8 +229,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
 
         private TextView name;
         private TextView quantity;
+        private TextView unitPrice;
         private TextView amount;
-        private TextView totalAmount;
         private TextView rateItText;
         private  RatingBar rating;
 
@@ -239,8 +238,8 @@ public class OrderStatusDetailsAdapter extends RecyclerView.Adapter<RecyclerView
             super(view);
             name = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_desc);
             quantity = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_quantity);
-            amount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
-            totalAmount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_total_amount);
+            unitPrice = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_amount);
+            amount = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_total_amount);
 
             rating = (RatingBar) view.findViewById(R.id.order_status_rate_it_star);
             rateItText = (TextView) view.findViewById(R.id.adapt_order_status_pur_item_rate_it);
