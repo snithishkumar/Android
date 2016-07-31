@@ -7,6 +7,7 @@ import java.util.List;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.OrderStatus;
 
 public class PayedPurchaseDetailsJson {
 
@@ -18,6 +19,7 @@ public class PayedPurchaseDetailsJson {
     private AddressJson addressJson;
     private String addressGuid;
     private String totalAmount;
+    private OrderStatus orderStatus;
     private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
     public PayedPurchaseDetailsJson() {
@@ -31,6 +33,7 @@ public class PayedPurchaseDetailsJson {
         this.userDeliveryOptions = purchaseEntity.getUserDeliveryOptions();
         this.paymetTime = purchaseEntity.getLastModifiedDateTime();
         this.totalAmount = purchaseEntity.getTotalAmount();
+        this.orderStatus = purchaseEntity.getOrderStatus();
         if(purchaseEntity.getAddressEntity()  != null){
             if(purchaseEntity.getAddressEntity().isSynced()){
                 this.addressGuid = purchaseEntity.getAddressEntity().getAddressUUID();
@@ -39,6 +42,14 @@ public class PayedPurchaseDetailsJson {
             }
         }
 
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public String getTotalAmount() {

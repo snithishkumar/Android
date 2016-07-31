@@ -108,6 +108,7 @@ public class PurchaseEntity {
         this.orderStatus = purchaseJson.getOrderStatus();
         this.merchantDeliveryOptions = purchaseJson.getMerchantDeliveryOptions();
         this.totalAmount = purchaseJson.getTotalAmount();
+        this.userDeliveryOptions = purchaseJson.getUserDeliveryOptions();
     }
 
     public int getPurchaseId() {

@@ -22,6 +22,7 @@ public class PurchaseJson {
 	private OrderStatus orderStatus;
 	//private DeliveryOptions deliveryOptions;
 	private DeliveryOptions merchantDeliveryOptions;
+	private DeliveryOptions userDeliveryOptions;
 	private String totalAmount;
 	private AddressJson addressJson;
     private DiscardJson discardJson;
@@ -195,6 +196,14 @@ public class PurchaseJson {
 
 	public void setHomeDeliveryOptions(HomeDeliveryOptionsEntity homeDeliveryOptions) {
 		this.homeDeliveryOptions = homeDeliveryOptions;
+	}
+
+	public DeliveryOptions getUserDeliveryOptions() {
+		return userDeliveryOptions;
+	}
+
+	public void setUserDeliveryOptions(DeliveryOptions userDeliveryOptions) {
+		this.userDeliveryOptions = userDeliveryOptions;
 	}
 
 	@Override

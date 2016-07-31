@@ -122,7 +122,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-            switch ( purchaseEntity.getUserDeliveryOptions()){
+            switch (purchaseEntity.getUserDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
                         String address  = getAddress(purchaseEntity.getAddressEntity());

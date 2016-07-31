@@ -106,7 +106,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         .inflate(R.layout.adapt_purchase_amount_details, parent, false);
                 return new AmountDetailsViewHolder(view);
             default:
-                 purchaseEntity.setUserDeliveryOptions(DeliveryOptions.NONE);
+
                  view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.adapt_purchase_items, parent, false);
                 return new ProductDetailsViewHolder(view);

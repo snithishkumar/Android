@@ -21,6 +21,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.util.MobilePayUtil;
@@ -255,7 +256,9 @@ switch (v.getId()){
     }
 
     private void makePayment(){
-
+        if(purchaseEntity.getMerchantDeliveryOptions().ordinal() == DeliveryOptions.NONE.ordinal() && purchaseEntity.getUserDeliveryOptions() == null){
+            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.NONE);
+        }
         if(purchaseEntity.getUserDeliveryOptions() != null){
             purchaseEntity.setTotalAmount( String.format("%.2f", productDetailsAdapter.getTotalAmount()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
