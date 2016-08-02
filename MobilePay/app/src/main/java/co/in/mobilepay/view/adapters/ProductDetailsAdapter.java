@@ -167,7 +167,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
-            String address  = getAddress(purchaseDetailsActivity.getPurchaseService().getDefaultAddress());
+            String address  = purchaseDetailsActivity.getPurchaseService().getDefaultAddress().getAddress();
             deliveryAddressViewHolder.vHomeDelivery.setText(address);
         }else if(viewHolder instanceof AmountDetailsViewHolder){
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
@@ -198,25 +198,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
 
-    private String getAddress(AddressEntity addressEntity){
 
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(addressEntity.getStreet());
-        if(addressEntity.getAddress() != null){
-            stringBuilder.append(","+addressEntity.getAddress());
-        }
-        if(addressEntity.getArea() != null){
-            stringBuilder.append(","+addressEntity.getArea());
-        }
-        if(addressEntity.getCity() != null){
-            stringBuilder.append(","+addressEntity.getCity());
-        }
-
-
-        stringBuilder.append(" - " + addressEntity.getPostalCode());
-        return  stringBuilder.toString();
-    }
 
     private void calcAmount(int position){
         amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());

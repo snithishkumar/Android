@@ -127,10 +127,10 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     class OrderStatusEmptyViewHolder extends RecyclerView.ViewHolder{
-        protected TextView vEmptyMessage;
+       // protected TextView vEmptyMessage;
         public OrderStatusEmptyViewHolder(View view){
             super(view);
-            vEmptyMessage = (TextView) view.findViewById(R.id.empty_order_status_list_text);
+            //vEmptyMessage = (TextView) view.findViewById(R.id.empty_order_status_list_text);
         }
     }
 

@@ -522,7 +522,7 @@ private boolean isLoginFailed = false;
             AddressEntity addressEntity =  userDao.getAddressEntity(addressJson.getAddressUUID());
             if(addressEntity == null){
                 addressEntity = new AddressEntity(addressJson);
-                addressEntity.setIsSynced(true);
+                addressEntity.setSynced(true);
                 userDao.saveAddress(addressEntity);
                 purchaseEntity.setAddressEntity(addressEntity);
             }

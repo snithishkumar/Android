@@ -151,7 +151,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -221,10 +221,20 @@
                     android:layout_height="30dp"
                     android:layout_below="@id/add_address_layout"/>
 
-            </LinearLayout>
+            </LinearLayout>-->
+
         </LinearLayout>
     </ScrollView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:id="@+id/add_address_submit"
+        android:layout_height="wrap_content"
+        android:height="50dp"
+        android:text="@string/otp_submit_button_text"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignBottom="@+id/add_address_layout"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

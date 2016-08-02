@@ -46,10 +46,10 @@ public class DeliveryAddressAdapter extends RecyclerView.Adapter<DeliveryAddress
         deliveryAddressViewHolder.vName.setText(addressEntity.getName());
         deliveryAddressViewHolder.vMobileNumber.setText(addressEntity.getMobileNumber());
 
-        deliveryAddressViewHolder.vAddress.setText(getAddress(addressEntity));
+        deliveryAddressViewHolder.vAddress.setText(addressEntity.getAddress());
     }
 
-    private String getAddress(AddressEntity addressEntity){
+   /* private String getAddress(AddressEntity addressEntity){
 
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -67,7 +67,7 @@ public class DeliveryAddressAdapter extends RecyclerView.Adapter<DeliveryAddress
 
         stringBuilder.append(" - "+addressEntity.getPostalCode());
         return  stringBuilder.toString();
-    }
+    }*/
 
 
     class DeliveryAddressViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

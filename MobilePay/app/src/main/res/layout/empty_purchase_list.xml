@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
 
-    <TextView
+   <!-- <TextView
         android:layout_width="wrap_content"
         android:id="@+id/empty_purchase_list_text"
         android:layout_height="wrap_content"
@@ -13,13 +13,13 @@
         android:textSize="20dp"
         android:text="@string/shopping_bag_empty"
         android:layout_above="@+id/empty_purchase_list_icon"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true" />-->
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/empty_purchase_list_icon"
-        android:background="@mipmap/empty_purchase_list_icon"
+        android:src="@drawable/shopping_bag_empty"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

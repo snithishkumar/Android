@@ -123,10 +123,10 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     class  EmptyViewHolder extends RecyclerView.ViewHolder{
-        protected TextView vEmptyView;
+       // protected TextView vEmptyView;
         public EmptyViewHolder(View view){
             super(view);
-            vEmptyView = (TextView) view.findViewById(R.id.empty_purchase_list_text);
+          //  vEmptyView = (TextView) view.findViewById(R.id.empty_purchase_list_text);
 
         }
     }

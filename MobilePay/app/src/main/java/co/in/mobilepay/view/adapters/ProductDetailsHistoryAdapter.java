@@ -125,7 +125,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             switch (purchaseEntity.getUserDeliveryOptions()){
                 case HOME:
                     if(purchaseEntity.getAddressEntity() != null){
-                        String address  = getAddress(purchaseEntity.getAddressEntity());
+                        String address  = purchaseEntity.getAddressEntity().getAddress();
                         deliveryAddressViewHolder.vHomeDelivery.setText(address);
                     }else{
                         deliveryAddressViewHolder.vHomeDelivery.setText(R.string.delivery_home);
@@ -171,25 +171,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
 
 
-    private String getAddress(AddressEntity addressEntity){
 
-
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(addressEntity.getStreet());
-        if(addressEntity.getAddress() != null){
-            stringBuilder.append(","+addressEntity.getAddress());
-        }
-        if(addressEntity.getArea() != null){
-            stringBuilder.append(","+addressEntity.getArea());
-        }
-        if(addressEntity.getCity() != null){
-            stringBuilder.append(","+addressEntity.getCity());
-        }
-
-
-        stringBuilder.append(" - " + addressEntity.getPostalCode());
-        return  stringBuilder.toString();
-    }
 
     private void calcAmount(int position){
         amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
