@@ -180,13 +180,17 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
             return;
         }
 
+        addressEntity.setAddress(street);
+
         addressEntity.setLastModifiedTime(ServiceUtil.getCurrentTimeMilli());
         if(addressId < 1){
             purchaseService.saveAddress(addressEntity);
             showDeliveryAddress.viewFragment(3);
+            purchaseDetailsActivity.setDefaultAddress(addressEntity);
             return;
         }else {
             purchaseService.updateAddress(addressEntity);
+            purchaseDetailsActivity.setDefaultAddress(addressEntity);
             showDeliveryAddress.viewFragment(3);
             return;
         }

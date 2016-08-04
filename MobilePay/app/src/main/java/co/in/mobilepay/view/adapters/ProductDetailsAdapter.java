@@ -59,6 +59,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.showDeliveryAddress = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
         this.purchaseEntity = purchaseEntity;
+        purchaseDetailsActivity.setDeliveryOptions(null);
     }
 
     private void clearValue(){
@@ -82,7 +83,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         return new DeliveryCollectionCounterViewHolder(view);
                     case BOTH:
                     case HOME:
-                        defaultAddress = purchaseDetailsActivity.getPurchaseService().getDefaultAddress();
+                       defaultAddress = purchaseDetailsActivity.getPurchaseService().getDefaultAddress();
+                        //purchaseDetailsActivity.setDefaultAddress(defaultAddress);
                         if(defaultAddress == null){
                             view = LayoutInflater.from(parent.getContext())
                                     .inflate(R.layout.adapt_purchase_delivery_options, parent, false);
@@ -169,6 +171,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             String address  = purchaseDetailsActivity.getPurchaseService().getDefaultAddress().getAddress();
             deliveryAddressViewHolder.vHomeDelivery.setText(address);
+            if(purchaseDetailsActivity.getDefaultAddress() != null){
+                deliveryAddressViewHolder.vHomeDelivery.setChecked(true);
+                purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
+            }
         }else if(viewHolder instanceof AmountDetailsViewHolder){
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
             calcAmount();
@@ -352,11 +358,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onCheckedChanged(RadioGroup group, int checkedId) {
                     switch (checkedId) {
                         case R.id.adapt_pur_item_delivery_addr:
-                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.HOME);
+                            purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
                             break;
                         case R.id.adapt_pur_item_delivery_luggage:
-                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
+                            purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
                             break;
+
+
 
                     }
                 }
@@ -382,7 +390,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             showDeliveryAddress.viewFragment(NEW_HOME);
                             return;
                         case R.id.adapt_pur_delivery_luggage:
-                            purchaseEntity.setUserDeliveryOptions(DeliveryOptions.HOME);
+                            purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
                             break;
 
                     }

@@ -256,13 +256,18 @@ switch (v.getId()){
     }
 
     private void makePayment(){
-        if(purchaseEntity.getMerchantDeliveryOptions().ordinal() == DeliveryOptions.NONE.ordinal() && purchaseEntity.getUserDeliveryOptions() == null){
+        if(purchaseEntity.getMerchantDeliveryOptions().ordinal() == DeliveryOptions.NONE.ordinal()){
             purchaseEntity.setUserDeliveryOptions(DeliveryOptions.NONE);
+            purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.NONE);
         }
-        if(purchaseEntity.getUserDeliveryOptions() != null){
+        if(purchaseDetailsActivity.getDeliveryOptions() != null){
+            purchaseEntity.setUserDeliveryOptions(purchaseDetailsActivity.getDeliveryOptions());
             purchaseEntity.setTotalAmount( String.format("%.2f", productDetailsAdapter.getTotalAmount()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
-            purchaseEntity.setAddressEntity(productDetailsAdapter.getDefaultAddress());
+            if(purchaseDetailsActivity.getDeliveryOptions().ordinal() == DeliveryOptions.HOME.ordinal()){
+                purchaseEntity.setAddressEntity(purchaseDetailsActivity.getDefaultAddress());
+            }
+
             purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
             purchaseService.updatePurchaseEntity(purchaseEntity);
             showPaymentOptions.viewFragment(4);

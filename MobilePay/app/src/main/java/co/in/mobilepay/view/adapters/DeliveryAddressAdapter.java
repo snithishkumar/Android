@@ -86,6 +86,7 @@ public class DeliveryAddressAdapter extends RecyclerView.Adapter<DeliveryAddress
         public void onClick(View v) {
             AddressEntity addressEntity = addressEntityList.get(getAdapterPosition());
             purchaseDetailsActivity.getPurchaseService().updateDefaultAddress(addressEntity.getAddressId());
+            purchaseDetailsActivity.setDefaultAddress(addressEntity);
             FragmentsUtil.backPressed(purchaseDetailsActivity);
             return;
         }

@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
@@ -70,6 +71,10 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
     final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private String mobileNumber;
+
+
+    private DeliveryOptions deliveryOptions;
+    private AddressEntity defaultAddress = null;
 
 
     public final String LOG_TAG = PurchaseDetailsActivity.class.getSimpleName();
@@ -454,5 +459,22 @@ return transactionalDetailsEntity;
     protected void onResume() {
         MobilePayAnalytics.getInstance().trackScreenView("PurchaseDetails Screen");
         super.onResume();
+    }
+
+
+    public DeliveryOptions getDeliveryOptions() {
+        return deliveryOptions;
+    }
+
+    public void setDeliveryOptions(DeliveryOptions deliveryOptions) {
+        this.deliveryOptions = deliveryOptions;
+    }
+
+    public AddressEntity getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(AddressEntity defaultAddress) {
+        this.defaultAddress = defaultAddress;
     }
 }
