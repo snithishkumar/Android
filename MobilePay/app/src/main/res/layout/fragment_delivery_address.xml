@@ -27,7 +27,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/address_list_back_button"
-                android:background="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                android:src="@drawable/ic_arrow_back_white_24dp"
                 />
         </LinearLayout>
 

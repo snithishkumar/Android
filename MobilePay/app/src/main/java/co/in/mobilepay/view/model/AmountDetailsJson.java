@@ -20,7 +20,7 @@ private String discountMiniVal;
 		}
 
 		public String getDiscount() {
-			return discount;
+			return (discount != null && !discount.trim().isEmpty()) ? discount : "0";
 		}
 
 		public void setDiscount(String discount) {

@@ -92,10 +92,10 @@ public class OrderStatusProductDetailsFragment extends Fragment{
         if(gson == null){
             gson = new Gson();
         }
-        shopName = (TextView)view.findViewById(R.id.purchase_history_shop_name);
-        shopArea = (TextView)view.findViewById(R.id.purchase_history_shop_area);
-        shoppingDateTime  = (TextView)view.findViewById(R.id.purchase_history_shop_date_time);
-        shopOrderId = (TextView)view.findViewById(R.id.purchase_history_shop_order_id);
+        shopName = (TextView)view.findViewById(R.id.shop_name);
+        shopArea = (TextView)view.findViewById(R.id.shop_area);
+        shoppingDateTime  = (TextView)view.findViewById(R.id.order_status_date_time);
+        shopOrderId = (TextView)view.findViewById(R.id.order_status_order_id);
 
     }
 

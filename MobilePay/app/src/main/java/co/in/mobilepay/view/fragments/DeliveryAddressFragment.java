@@ -61,10 +61,10 @@ public class DeliveryAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_delivery_address, container, false);
 
-        ImageView shopBackButton = (ImageView)view.findViewById(R.id.address_list_back_button);
+      /*  ImageView shopBackButton = (ImageView)view.findViewById(R.id.address_list_back_button);
         final Drawable upArrow = ContextCompat.getDrawable(purchaseDetailsActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
         upArrow.setColorFilter( ContextCompat.getColor(purchaseDetailsActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
-        shopBackButton.setBackground(upArrow);
+        shopBackButton.setBackground(upArrow);*/
 
         RecyclerView  recyclerView = (RecyclerView) view.findViewById(R.id.fragment_delivery_addr_list);
         recyclerView.setHasFixedSize(true);

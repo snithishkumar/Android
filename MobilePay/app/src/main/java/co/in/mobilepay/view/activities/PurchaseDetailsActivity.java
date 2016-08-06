@@ -141,6 +141,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
     public void onClick(View view){
         switch (view.getId()){
             case R.id.shop_details_layout:
+            case R.id.order_status_shop_details_layout:
             case R.id.purchase_history_shop_details_layout:
                 ShopDetailsFragment shopDetailsFragment = new ShopDetailsFragment();
                 Bundle purchaseIdArgs = new Bundle();
@@ -169,6 +170,11 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             case R.id.address_list_back_button_click:
             case R.id.shop_back_button_click:
                 onBackPressed();
+                break;
+
+            case R.id.product_details_back:
+            case R.id.order_status_shop_details_back:
+                finish();
                 break;
         }
     }

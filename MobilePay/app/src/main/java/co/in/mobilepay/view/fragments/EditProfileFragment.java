@@ -87,8 +87,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private void initBackButton(){
-        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.abc_ic_ab_back_mtrl_am_alpha);;
-        upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.ic_arrow_back_white_24dp);;
+       // upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
         naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeAsUpIndicator(upArrow);
