@@ -4,6 +4,7 @@ import java.util.List;
 
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
@@ -56,5 +57,7 @@ public interface PurchaseService {
     void createTransactionDetails(TransactionalDetailsEntity transactionalDetailsEntity);
 
     List<TransactionalDetailsEntity> getTransactionalDetails(PurchaseEntity purchaseEntity);
+
+    HomeDeliveryOptionsEntity getHomeDeliveryOptionsEntity(PurchaseEntity purchaseEntity);
 
 }

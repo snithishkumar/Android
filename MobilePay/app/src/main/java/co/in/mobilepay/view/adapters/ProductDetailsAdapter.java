@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.entity.AddressEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscountType;
@@ -42,6 +43,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private double taxAmount;
     private double discount = 0;
     private double totalAmount;
+    private double deliveryAmount= 0.0;
+
+
+    private HomeDeliveryOptionsEntity homeDeliveryOptionsEntity;
 
 
 
@@ -67,6 +72,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         taxAmount = 0;
         discount = 0;
         totalAmount = 0;
+        deliveryAmount = 0;
     }
 
     @Override
@@ -191,10 +197,30 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
 
             amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,discount));
-            amountDetailsViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
+            vDeliveryAmount = amountDetailsViewHolder.vDeliveryAmount;
+            vTotalAmount = amountDetailsViewHolder.vTotalAmount;
+            setAmountDetails();
+        }
+    }
+
+    private TextView vDeliveryAmount;
+    private TextView vTotalAmount;
+
+    private void setAmountDetails(){
+        if(vDeliveryAmount != null){
+            vDeliveryAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,deliveryAmount));
+            vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
         }
 
+    }
 
+
+    private void reSetDeliveryCalc(){
+        if(deliveryAmount > 0){
+            totalAmount = totalAmount - deliveryAmount;
+            deliveryAmount = 0.0;
+            setAmountDetails();
+        }
 
     }
 
@@ -234,9 +260,75 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             totalAmount = amount;
         }
 
+        calcDeliveryAmount();
+        //deliveryAmount
+
         taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
         totalAmount = totalAmount + taxAmount;
         totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
+    }
+
+
+    private void getHomeDeliveryOptionsEntity(){
+        if(homeDeliveryOptionsEntity == null){
+            homeDeliveryOptionsEntity = purchaseDetailsActivity.getPurchaseService().getHomeDeliveryOptionsEntity(purchaseEntity);
+        }
+    }
+
+   /* private void validateHomeDelivery(RadioButton vHomeDelivery,boolean isMessage,boolean isCreate){
+        getHomeDeliveryOptionsEntity();
+
+        if(homeDeliveryOptionsEntity != null && deliveryAmount < 1){
+            if(homeDeliveryOptionsEntity.getMinAmount() > 0){
+                if(homeDeliveryOptionsEntity.getMinAmount() <= totalAmount){
+                    if(isCreate){
+                        showDeliveryAddress.viewFragment(NEW_HOME);
+                        return;
+                    }else {
+                        vHomeDelivery.setChecked(true);
+                        purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
+                        return;
+                    }
+
+                }else if(isMessage){
+                    purchaseDetailsActivity.setDeliveryOptions(null);
+                    ActivityUtil.toast(purchaseDetailsActivity,"Home delivery not available for this amount");
+                    return;
+                }
+            }
+        }
+        if(isCreate){
+            showDeliveryAddress.viewFragment(NEW_HOME);
+        }
+
+    }*/
+
+
+
+
+
+    private void calcDeliveryAmount(){
+        if(purchaseDetailsActivity.getDeliveryOptions() != null && purchaseDetailsActivity.getDeliveryOptions().getDeliveryOptions() == DeliveryOptions.HOME.ordinal() && deliveryAmount < 1){
+            getHomeDeliveryOptionsEntity();
+           // HomeDeliveryOptionsEntity homeDeliveryOptionsEntity = purchaseDetailsActivity.getPurchaseService().getHomeDeliveryOptionsEntity(purchaseEntity);
+            if(homeDeliveryOptionsEntity != null){
+                switch (homeDeliveryOptionsEntity.getDeliveryConditions()){
+                    case FIXED:
+                        deliveryAmount =  homeDeliveryOptionsEntity.getAmount();
+                        totalAmount = totalAmount + deliveryAmount;
+                        break;
+                    case FREE:
+                        deliveryAmount = 0.0;
+                        break;
+                    case CONDITIONAL:
+                        if(homeDeliveryOptionsEntity.getMinAmount() <= totalAmount){
+                            deliveryAmount =  homeDeliveryOptionsEntity.getAmount();
+                            totalAmount = totalAmount + deliveryAmount;
+                        }
+                        break;
+                }
+            }
+        }
     }
 
 
@@ -359,9 +451,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     switch (checkedId) {
                         case R.id.adapt_pur_item_delivery_addr:
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
+                            calcDeliveryAmount();
+                            setAmountDetails();
                             break;
                         case R.id.adapt_pur_item_delivery_luggage:
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
+                            reSetDeliveryCalc();
                             break;
 
 
@@ -388,6 +483,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     switch (checkedId) {
                         case R.id.adapt_pur_delivery_home:
                             showDeliveryAddress.viewFragment(NEW_HOME);
+
                             return;
                         case R.id.adapt_pur_delivery_luggage:
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
@@ -422,6 +518,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView vSubTaxAmount;
         private TextView vSubDiscountAmount;
         private TextView vTotalAmount;
+        private TextView vDeliveryAmount;
 
         public AmountDetailsViewHolder(View view){
             super(view);
@@ -433,6 +530,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             vSubTaxAmount = (TextView) view.findViewById(R.id.amount_details_sub_tax_amount);
             vSubDiscountAmount = (TextView) view.findViewById(R.id.amount_details_sub_discount_amount);
             vTotalAmount = (TextView) view.findViewById(R.id.amount_details_total_amount);
+
+            vDeliveryAmount = (TextView) view.findViewById(R.id.amount_details_sub_delivery_amount);
         }
     }
 
@@ -445,6 +544,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public double getTotalAmount() {
         return totalAmount;
+    }
+
+    public double getDeliveryAmount(){
+        return deliveryAmount;
     }
 
     public AddressEntity getDefaultAddress() {

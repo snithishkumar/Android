@@ -19,8 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public enum ServiceAPI {
     INSTANCE;
     private MobilePayAPI mobilePayAPI = null;
-   // private final String  url = "http://52.41.226.201:8080/mobilepay/";
-   private final String  url = "http://192.168.0.6:8082/mobilepay/";
+    private final String  url = "http://52.41.226.201:8080/mobilepay/";
+ //  private final String  url = "http://192.168.0.6:8082/mobilepay/";
     private String serverToken= "";
     private String accessToken = "";
 

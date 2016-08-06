@@ -18,6 +18,7 @@ import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
+import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
@@ -369,4 +370,14 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     }
 
 
+    @Override
+    public HomeDeliveryOptionsEntity getHomeDeliveryOptionsEntity(PurchaseEntity purchaseEntity) {
+       try{
+           return purchaseDao.getHomeDeliveryOptions(purchaseEntity);
+       }catch (Exception e){
+           MobilePayAnalytics.getInstance().trackException(e,"Error in getHomeDeliveryOptionsEntity - PurchaseServiceImpl,Raw Data["+purchaseEntity+"]");
+           Log.e("Error", "Error in getHomeDeliveryOptionsEntity", e);
+       }
+        return null;
+    }
 }

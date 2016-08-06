@@ -54,6 +54,14 @@
             android:text="Discount"
             android:layout_marginTop="5dp"
             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/amount_details_sub_total_delivery"
+            android:text="Delivery"
+            android:layout_marginTop="5dp"
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,6 +106,15 @@
             android:gravity="right"
             android:id="@+id/amount_details_sub_discount_amount"
             android:text="50"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
+            android:id="@+id/amount_details_sub_delivery_amount"
+            android:text="0.0"
             android:textStyle="bold"
             />
         <TextView

@@ -7,6 +7,7 @@ public class AmountDetailsJson{
 
 private float taxAmount;
 private String discount;
+	private String deliveryAmount;
 private DiscountType discountType;
 private String discountMiniVal;
 
@@ -42,12 +43,23 @@ private String discountMiniVal;
 			this.discountMiniVal = discountMiniVal;
 		}
 
-		@Override
-		public String toString() {
-			return "AmountDetailsJson [taxAmount=" + taxAmount + ", discount=" + discount + ", discountType=" + discountType
-					+ ", discountMiniVal=" + discountMiniVal + "]";
-		}
 
+	public String getDeliveryAmount() {
+		return deliveryAmount;
+	}
 
+	public void setDeliveryAmount(String deliveryAmount) {
+		this.deliveryAmount = deliveryAmount;
+	}
 
+	@Override
+	public String toString() {
+		return "AmountDetailsJson{" +
+				"taxAmount=" + taxAmount +
+				", discount='" + discount + '\'' +
+				", deliveryAmount='" + deliveryAmount + '\'' +
+				", discountType=" + discountType +
+				", discountMiniVal='" + discountMiniVal + '\'' +
+				'}';
+	}
 }

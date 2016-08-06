@@ -3,10 +3,10 @@ package co.in.mobilepay.entity;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-import co.in.mobilepay.enumeration.DeliveryConditons;
+import co.in.mobilepay.enumeration.DeliveryConditions;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 
-@DatabaseTable(tableName = "DiscardDetails")
+@DatabaseTable(tableName = "HomeDeliveryOptions")
 public class HomeDeliveryOptionsEntity {
 	
 	public static final String DELIVERY_OPTIONS_ID = "DeliveryOptionsId";
@@ -17,22 +17,23 @@ public class HomeDeliveryOptionsEntity {
 	public static final String AMOUNT = "Amount";
 	public static final String PURCHASE_ID =  "PurchaseId";
 
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
+	@DatabaseField(columnName = DELIVERY_OPTIONS_ID,generatedId = true)
 	private int deliveryOptionsId;
 
 	@DatabaseField(columnName = PURCHASE_ID,foreign = true,foreignAutoRefresh =  true)
 	private PurchaseEntity purchaseEntity;
 
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
+	@DatabaseField(columnName = DELIVERY_OPTIONS)
+
 	private DeliveryOptions deliveryOptions;
 
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
-	private DeliveryConditons deliveryConditons;
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
+	@DatabaseField(columnName = DELIVERY_CONDITIONS)
+	private DeliveryConditions deliveryConditions;
+	@DatabaseField(columnName = MIN_AMOUNT)
 	private float minAmount;
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
+	@DatabaseField(columnName = MAX_DISTANCE)
 	private float maxDistance;
-	@DatabaseField(columnName = DELIVERY_OPTIONS_ID)
+	@DatabaseField(columnName = AMOUNT)
 	private float amount;
 
 	public int getDeliveryOptionsId() {
@@ -52,12 +53,12 @@ public class HomeDeliveryOptionsEntity {
 		this.deliveryOptions = deliveryOptions;
 	}
 
-	public DeliveryConditons getDeliveryConditons() {
-		return deliveryConditons;
+	public DeliveryConditions getDeliveryConditions() {
+		return deliveryConditions;
 	}
 
-	public void setDeliveryConditons(DeliveryConditons deliveryConditons) {
-		this.deliveryConditons = deliveryConditons;
+	public void setDeliveryConditions(DeliveryConditions deliveryConditions) {
+		this.deliveryConditions = deliveryConditions;
 	}
 
 	public float getMinAmount() {
@@ -98,7 +99,7 @@ public class HomeDeliveryOptionsEntity {
 				"deliveryOptionsId=" + deliveryOptionsId +
 				", purchaseEntity=" + purchaseEntity +
 				", deliveryOptions=" + deliveryOptions +
-				", deliveryConditons=" + deliveryConditons +
+				", deliveryConditons=" + deliveryConditions +
 				", minAmount=" + minAmount +
 				", maxDistance=" + maxDistance +
 				", amount=" + amount +

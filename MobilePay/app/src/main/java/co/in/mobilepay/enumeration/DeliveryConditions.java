@@ -1,6 +1,6 @@
 package co.in.mobilepay.enumeration;
 
-public enum DeliveryConditons {
+public enum DeliveryConditions {
 	
 	FREE,FIXED,CONDITIONAL;
 
