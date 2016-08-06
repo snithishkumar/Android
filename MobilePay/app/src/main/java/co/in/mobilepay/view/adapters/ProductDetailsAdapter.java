@@ -172,7 +172,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             }
             productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
-            calcAmount(position);
+           // calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             String address  = purchaseDetailsActivity.getPurchaseService().getDefaultAddress().getAddress();
@@ -232,11 +232,12 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
 
-    private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
-    }
+
 
     private void calcAmount(){
+        for(ProductDetailsModel productDetailsModel : productDetailsModels){
+            amount = amount +  Double.valueOf(productDetailsModel.getAmount());
+        }
         double discountAmount = 0;
         double discountMinAmount = 0;
 
