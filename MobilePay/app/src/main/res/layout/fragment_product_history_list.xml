@@ -5,44 +5,67 @@
         android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/purchase_history_shop_details_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:background="@color/colorPrimary">
+        android:id="@+id/purchase_history_shop_detail_layout_top"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/purchase_history_shop_name"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textAlignment="center"
-            android:text="Saravana stores thanga nagai maligai"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:id="@+id/purchase_history_shop_area"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:text="(T-Nagar)"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@+id/purchase_history_shop_name"
-            android:layout_centerHorizontal="true" />
+            android:id="@+id/purchase_history_shop_details_back"
+            android:onClick="onClick"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_back_white_24dp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/purchase_history_shop_details_layout"
+            android:onClick="onClick"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/purchase_history_shop_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:textSize="19sp"
+                android:textAlignment="center"
+                android:text="Saravana stores Saravana stores Saravana stores"
+                android:layout_gravity="center_horizontal" />
+            <TextView
+                android:id="@+id/purchase_history_shop_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:text="(T-Nagar)"
+                />
+
+        </LinearLayout>
 
 
-        </RelativeLayout>
+    </LinearLayout>
     <TextView
         android:id="@+id/purchase_history_shop_date_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:layout_below="@+id/purchase_history_shop_details_layout"
+        android:layout_below="@+id/purchase_history_shop_detail_layout_top"
         android:layout_margin="10dp"
         android:text="Mar 23,2016 02:53 PM"/>
 

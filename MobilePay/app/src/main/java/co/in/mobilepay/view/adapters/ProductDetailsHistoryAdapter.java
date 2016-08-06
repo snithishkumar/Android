@@ -53,6 +53,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
         this.amountDetailsJson =  amountDetailsJson;
         this.purchaseEntity = purchaseEntity;
         this.amountDetailsJson = amountDetailsJson;
+        this.calculatedAmounts = calculatedAmounts;
     }
 
     @Override

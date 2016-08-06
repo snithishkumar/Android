@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.os.Bundle;
@@ -8,9 +9,11 @@ import android.view.ViewGroup;
 
 import co.in.mobilepay.R;
 
+*/
 /**
  * Created by Nithish on 15-03-2016.
- */
+ *//*
+
 public class ProductsDetailsFabFragment extends Fragment {
 
     @Override
@@ -20,3 +23,4 @@ public class ProductsDetailsFabFragment extends Fragment {
         return view;
     }
 }
+*/

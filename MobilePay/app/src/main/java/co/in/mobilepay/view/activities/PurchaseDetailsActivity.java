@@ -174,6 +174,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
             case R.id.product_details_back:
             case R.id.order_status_shop_details_back:
+            case R.id.purchase_history_shop_details_back:
                 finish();
                 break;
         }
