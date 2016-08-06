@@ -85,8 +85,6 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
         if(gson == null){
             gson = new Gson();
         }
-
-
     }
 
     @Override
