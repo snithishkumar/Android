@@ -64,7 +64,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.showDeliveryAddress = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
         this.purchaseEntity = purchaseEntity;
-        purchaseDetailsActivity.setDeliveryOptions(null);
+       // purchaseDetailsActivity.setDeliveryOptions(null);
     }
 
     private void clearValue(){
@@ -180,6 +180,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             if(purchaseDetailsActivity.getDefaultAddress() != null){
                 deliveryAddressViewHolder.vHomeDelivery.setChecked(true);
                 purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
+            }else if(purchaseDetailsActivity.getDeliveryOptions() != null && purchaseDetailsActivity.getDeliveryOptions().ordinal() == DeliveryOptions.COUNTER_COLLECTION.ordinal()){
+                deliveryAddressViewHolder.vLuggage.setChecked(true);
             }
         }else if(viewHolder instanceof AmountDetailsViewHolder){
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
@@ -452,11 +454,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     switch (checkedId) {
                         case R.id.adapt_pur_item_delivery_addr:
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.HOME);
+                            purchaseDetailsActivity.setDefaultAddress(defaultAddress);
                             calcDeliveryAmount();
                             setAmountDetails();
                             break;
                         case R.id.adapt_pur_item_delivery_luggage:
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
+                            purchaseDetailsActivity.setDefaultAddress(null);
                             reSetDeliveryCalc();
                             break;
 
@@ -487,6 +491,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
                             return;
                         case R.id.adapt_pur_delivery_luggage:
+                            purchaseDetailsActivity.setDefaultAddress(null);
                             purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
                             break;
 
