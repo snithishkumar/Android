@@ -17,6 +17,7 @@ import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DiscountType;
 import co.in.mobilepay.enumeration.OrderStatus;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.model.AmountDetailsJson;
@@ -35,11 +36,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     private AmountDetailsJson amountDetailsJson;
 
-    private double amount;
-    private double taxAmount;
-    private double discount = 0;
-    private double totalAmount;
-
+    private CalculatedAmounts calculatedAmounts;
 
 
     private static final int PRODUCT_DETAILS = 1;
@@ -50,11 +47,12 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
 
 
-    public ProductDetailsHistoryAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity) {
+    public ProductDetailsHistoryAdapter(PurchaseDetailsActivity purchaseDetailsActivity, List<ProductDetailsModel> productDetailsModels, AmountDetailsJson amountDetailsJson, PurchaseEntity purchaseEntity,CalculatedAmounts calculatedAmounts) {
         this.productDetailsModels = productDetailsModels;
         this.purchaseDetailsActivity = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
         this.purchaseEntity = purchaseEntity;
+        this.amountDetailsJson = amountDetailsJson;
     }
 
     @Override
@@ -119,7 +117,6 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
 
             productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
-            calcAmount(position);
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             switch (purchaseEntity.getUserDeliveryOptions()){
@@ -147,12 +144,11 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
         } else {
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder) viewHolder;
-            calcAmount();
 
-            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,amount));
+            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getPurchasedAmount()));
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
 
-            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,taxAmount));
+            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getTax()));
             if (amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()) {
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
@@ -160,52 +156,14 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
 
-            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,discount));
-            amountDetailsViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
+            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getDiscount()));
+            amountDetailsViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getTotalAmount()));
         }
 
 
 
     }
 
-
-
-
-
-
-    private void calcAmount(int position){
-        amount = amount +  Double.valueOf(productDetailsModels.get(position).getAmount());
-    }
-
-
-    private void calcAmount(){
-        double discountAmount = 0;
-        double discountMinAmount = 0;
-
-        if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
-            discountAmount = Double.valueOf(amountDetailsJson.getDiscount());
-        }
-
-        if(amountDetailsJson.getDiscountMiniVal() != null && !amountDetailsJson.getDiscountMiniVal().trim().isEmpty()){
-            discountMinAmount = Double.valueOf(amountDetailsJson.getDiscountMiniVal());
-        }
-
-        if(discountAmount >  0 && amount > discountMinAmount){
-            if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - discountAmount;
-                discount = discountAmount;
-            }else if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.PERCENTAGE.getDiscountType()){
-                discount = Double.valueOf(String.format("%.2f", ((amount * discountAmount) / 100)));
-                totalAmount = amount - discount;
-            }
-        }else{
-            totalAmount = amount;
-        }
-
-        taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
-        totalAmount = totalAmount + taxAmount;
-        totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
-    }
 
 
     private void toggleImg(float rating,TextView rateItText){
@@ -302,9 +260,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             vCancelText = (TextView)view.findViewById(R.id.adapt_pur_history_reason_message);
         }
 
-
     }
-
 
 
 }

@@ -6,17 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
-
-import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.view.fragments.AboutAsFragment;
@@ -103,10 +97,7 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
 
 
 
-    public void showNewCardFragment(View view){
-        Intent intent = new Intent(this, NewSaveCardActivity.class);
-        startActivity(intent);
-    }
+
 
     @Override
     public void onSuccess(int option, RegisterJson registerJson) {

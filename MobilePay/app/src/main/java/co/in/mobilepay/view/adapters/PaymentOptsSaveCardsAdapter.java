@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.adapters;
 
 import android.app.Activity;
@@ -21,9 +22,11 @@ import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.fragments.PaymentOptionsFragment;
 
+*/
 /**
  * Created by Nithish on 19-03-2016.
- */
+ *//*
+
 public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<CardJson> cardJsonList = new ArrayList<>();
@@ -82,14 +85,16 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
             CardDetailsJson cardDetailsJson = cardJson.getCardDetails();
             paySaveCardViewHolder.cardNumber.setText("xxxx-xxxx-xxxx-" + getLastFourDigits(cardDetailsJson.getNumber()));
             paySaveCardViewHolder.arrow.setImageResource(R.mipmap.arrow_down);
-           /* paySaveCardViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+           */
+/* paySaveCardViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     refreshListviewHeight();
 
                 }
-            });*/
+            });*//*
+
 
         }else if(viewHolder instanceof  NewCreditDebitCardViewHolder){
 
@@ -261,3 +266,4 @@ public class PaymentOptsSaveCardsAdapter extends RecyclerView.Adapter<RecyclerVi
         void payment();
     }
 }
+*/

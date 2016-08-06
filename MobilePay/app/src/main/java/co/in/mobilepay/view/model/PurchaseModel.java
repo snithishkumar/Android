@@ -29,11 +29,10 @@ public class PurchaseModel {
         this.name = purchaseEntity.getMerchantEntity().getMerchantName();
         this.area = purchaseEntity.getMerchantEntity().getArea();
         this.orderStatus = purchaseEntity.getOrderStatus() != null ?  purchaseEntity.getOrderStatus().toString().replaceAll("_"," "): null;
-        this.totalAmount = purchaseEntity.getTotalAmount();
         this.merchantGuid = purchaseEntity.getMerchantEntity().getMerchantGuid();
         this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
         this.serverMerchantId = String.valueOf(purchaseEntity.getMerchantEntity().getServerMerchantId());
-
+        this.totalAmount = String.valueOf(purchaseEntity.getTotalAmount());
 
 
     }

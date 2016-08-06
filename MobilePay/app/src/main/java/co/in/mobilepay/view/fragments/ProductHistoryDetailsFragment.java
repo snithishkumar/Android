@@ -19,6 +19,7 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -130,9 +131,13 @@ public class ProductHistoryDetailsFragment extends Fragment{
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
+       String calculated =  purchaseEntity.getCalculatedAmountDetails();
+        CalculatedAmounts calculatedAmounts = gson.fromJson(calculated, CalculatedAmounts.class);
+
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
-        productDetailsHistoryAdapter = new ProductDetailsHistoryAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
+
+        productDetailsHistoryAdapter = new ProductDetailsHistoryAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity,calculatedAmounts);
         recyclerView.setAdapter(productDetailsHistoryAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

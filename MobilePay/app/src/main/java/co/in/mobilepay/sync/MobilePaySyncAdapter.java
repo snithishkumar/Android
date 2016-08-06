@@ -557,6 +557,9 @@ private boolean isLoginFailed = false;
         CalculatedAmounts calculatedAmounts = purchaseJson.getCalculatedAmounts();
         if(calculatedAmounts != null){
             purchaseEntity.setCalculatedAmountDetails(gson.toJson(calculatedAmounts));
+            purchaseEntity.setTotalAmount(calculatedAmounts.getTotalAmount());
+        }else{
+            purchaseEntity.setTotalAmount(purchaseJson.getTotalAmount());
         }
     }
 

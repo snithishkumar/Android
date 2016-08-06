@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.activities;
 
 import android.app.ProgressDialog;
@@ -17,9 +18,11 @@ import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.SaveNewCardFragment;
 
+*/
 /**
  * Created by Nithish on 13-03-2016.
- */
+ *//*
+
 public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCardFragment.NewSaveCardActivityCallback{
 
     private ProgressDialog progressDialog;
@@ -33,16 +36,20 @@ public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCar
         showFragment();
     }
 
-    /**
+    */
+/**
      * Initialize service layer
-     */
-   /* private void init() {
+     *//*
+
+   */
+/* private void init() {
         try {
             cardService = new CardServiceImpl(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+    }*//*
+
 
 
     private void showFragment(){
@@ -100,3 +107,4 @@ public class NewSaveCardActivity extends AppCompatActivity implements SaveNewCar
         MobilePayBus.getInstance().unregister(this);
     }
 }
+*/

@@ -131,9 +131,13 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(purchaseDetailsActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
-        String amountDetails = purchaseEntity.getCalculatedAmountDetails();
-        CalculatedAmounts calculatedAmounts = gson.fromJson(amountDetails, CalculatedAmounts.class);
-        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,calculatedAmounts,purchaseEntity);
+        String calculated =  purchaseEntity.getCalculatedAmountDetails();
+        CalculatedAmounts calculatedAmounts = gson.fromJson(calculated, CalculatedAmounts.class);
+
+        String amountDetails = purchaseEntity.getAmountDetails();
+        AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
+
+        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,calculatedAmounts,purchaseEntity,amountDetailsJson);
         recyclerView.setAdapter(orderStatusDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

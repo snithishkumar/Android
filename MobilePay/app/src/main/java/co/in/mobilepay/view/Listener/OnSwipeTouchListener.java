@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.Listener;
 
 import android.content.Context;
@@ -5,11 +6,13 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+*/
 /**
  * Created by Nithishkumar on 4/13/2016.
  * ref: http://stackoverflow.com/questions/4139288/android-how-to-handle-right-to-left-swipe-gestures
  * http://stackoverflow.com/questions/937313/fling-gesture-detection-on-grid-layout
- */
+ *//*
+
 public class OnSwipeTouchListener implements View.OnTouchListener {
     private final GestureDetector gestureDetector;
 
@@ -76,3 +79,4 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     public void onSwipeBottom() {
     }
 }
+*/

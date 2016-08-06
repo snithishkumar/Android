@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.json.response;
 
 
@@ -65,3 +66,4 @@ public class CardJson extends  TokenJson{
 				'}';
 	}
 }
+*/

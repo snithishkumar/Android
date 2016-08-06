@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.content.Context;
@@ -18,11 +19,13 @@ import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 import co.in.mobilepay.view.activities.NewSaveCardActivity;
 
+*/
 /**
  * A fragment representing a list of Items.
  * <p/>
  *
- */
+ *//*
+
 public class SaveNewCardFragment extends Fragment implements View.OnClickListener{
 
 
@@ -38,10 +41,12 @@ public class SaveNewCardFragment extends Fragment implements View.OnClickListene
     //private
 
 
-    /**
+    */
+/**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
-     */
+     *//*
+
     public SaveNewCardFragment() {
     }
 
@@ -183,3 +188,4 @@ if(len < s.length()){
         void success(int code,Object data);
     }
 }
+*/

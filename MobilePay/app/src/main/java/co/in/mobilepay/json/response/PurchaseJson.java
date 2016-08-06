@@ -29,7 +29,7 @@ public class PurchaseJson {
 	private CalculatedAmounts calculatedAmounts;
 
 	private HomeDeliveryOptionsEntity homeDeliveryOptions;
-
+	private double totalAmount;
 
 	public PurchaseJson(){
 		
@@ -43,6 +43,13 @@ public class PurchaseJson {
 		this.merchantDeliveryOptions = merchantDeliveryOptions;
 	}
 
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 
 	public String getPurchaseId() {
 		return purchaseId;

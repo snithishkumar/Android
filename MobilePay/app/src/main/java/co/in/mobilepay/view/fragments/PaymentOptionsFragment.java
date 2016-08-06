@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.app.ProgressDialog;
@@ -30,10 +31,12 @@ import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * A fragment representing a list of Items.
  * <p/>
- */
+ *//*
+
 public class PaymentOptionsFragment extends Fragment {
 
     private int purchaseId = 0;
@@ -48,10 +51,12 @@ public class PaymentOptionsFragment extends Fragment {
     List<CardJson> cardJsonList = new ArrayList<>();
     PaymentOptsSaveCardsAdapter paymentOptsSaveCardsAdapter = null;
 
-    /**
+    */
+/**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
-     */
+     *//*
+
     public PaymentOptionsFragment() {
         gson = new Gson();
     }
@@ -96,17 +101,21 @@ public class PaymentOptionsFragment extends Fragment {
     }
 
 
-    /**
+    */
+/**
      * Initialize
-     */
-  /*  private void initView(View view){
+     *//*
+
+  */
+/*  private void initView(View view){
         PurchaseEntity purchaseEntity = purchaseDetailsActivity.getPurchaseService().getPurchaseDetails(purchaseId);
         totalAmount   = (TextView) view.findViewById(R.id.pay_total_amt);
         totalAmount.setText( getResources().getString(R.string.indian_rupee_symbol)+purchaseEntity.getTotalAmount());
         shopName =  (TextView) view.findViewById(R.id.pay_shop_name);
         shopName.setText("For "+purchaseEntity.getMerchantEntity().getMerchantName());
     }
-*/
+*//*
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -129,11 +138,13 @@ public class PaymentOptionsFragment extends Fragment {
             this.cardJsonList.addAll(cardJsonList);
             paymentOptsSaveCardsAdapter.notifyDataSetChanged();
 
-          /*  CardJson cardJson = new CardJson();
+          */
+/*  CardJson cardJson = new CardJson();
             cardJson.setCardGuid("");
             cardJsonList.add(cardJson);
             int size = (80*cardJsonList.size())+80;
-            refreshListviewHeight(size);*/
+            refreshListviewHeight(size);*//*
+
 
         }
 
@@ -166,3 +177,4 @@ public class PaymentOptionsFragment extends Fragment {
 
 
 }
+*/

@@ -166,6 +166,7 @@ public class ProductsDetailsFragment extends Fragment implements View.OnClickLis
 
     private void declineData(){
         purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
+        purchaseEntity.setTotalAmount(productDetailsAdapter.getCalculatedAmounts().getTotalAmount());
         purchaseEntity.setCalculatedAmountDetails(gson.toJson(productDetailsAdapter.getCalculatedAmounts()));
         purchaseDetailsActivity.getPurchaseService().declinePurchase(purchaseEntity, reasonToDecline);
         purchaseDetailsActivity.syncPaymentData();
@@ -262,6 +263,7 @@ switch (v.getId()){
         }
         if(purchaseDetailsActivity.getDeliveryOptions() != null){
             purchaseEntity.setUserDeliveryOptions(purchaseDetailsActivity.getDeliveryOptions());
+            purchaseEntity.setTotalAmount(productDetailsAdapter.getCalculatedAmounts().getTotalAmount());
             purchaseEntity.setCalculatedAmountDetails(gson.toJson(productDetailsAdapter.getCalculatedAmounts()));
             purchaseEntity.setProductDetails(gson.toJson(productDetailsModelList));
             if(purchaseDetailsActivity.getDeliveryOptions().ordinal() == DeliveryOptions.HOME.ordinal()){

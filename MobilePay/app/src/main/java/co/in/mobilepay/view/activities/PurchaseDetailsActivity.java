@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.razorpay.Checkout;
 
 import org.json.JSONObject;
@@ -29,20 +30,19 @@ import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DeviceType;
+import co.in.mobilepay.enumeration.GsonAPI;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
-import co.in.mobilepay.view.adapters.PaymentOptsSaveCardsAdapter;
 import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
 import co.in.mobilepay.view.fragments.AddDeliveryAddressFragment;
 import co.in.mobilepay.view.fragments.DeliveryAddressFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
-import co.in.mobilepay.view.fragments.NewCardFragment;
 import co.in.mobilepay.view.fragments.OrderStatusProductDetailsFragment;
-import co.in.mobilepay.view.fragments.PaymentOptionsFragment;
 import co.in.mobilepay.view.fragments.ProductHistoryDetailsFragment;
 import co.in.mobilepay.view.fragments.ProductsDetailsFragment;
 import co.in.mobilepay.view.fragments.ShopDetailsFragment;
@@ -51,7 +51,7 @@ import co.in.mobilepay.view.fragments.ShopDetailsFragment;
  * Created by Nithish on 09-03-2016.
  */
 public class PurchaseDetailsActivity extends AppCompatActivity implements
-        PaymentOptsSaveCardsAdapter.PaySaveCardsCallback,ProductsDetailsFragment.ShowPaymentOptions,
+        ProductsDetailsFragment.ShowPaymentOptions,
         ProductDetailsAdapter.ShowDeliveryAddress,AddDeliveryAddressFragment.ShowDeliveryAddress{
 
     // Fragments
@@ -213,7 +213,10 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            JSONObject options  = new JSONObject();
            //"{description:'Test Purchase',currency:'INR'}"
            options.put("currency","INR");
-          Double amt =  Double.valueOf(purchaseEntity.getTotalAmount())* 100;
+           String cal = purchaseEntity.getCalculatedAmountDetails();
+           Gson gson = GsonAPI.INSTANCE.getGson();
+           CalculatedAmounts calculatedAmounts =  gson.fromJson(cal, CalculatedAmounts.class);
+          Double amt =  Double.valueOf(calculatedAmounts.getTotalAmount())* 100;
            options.put("amount",amt);
            options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
            JSONObject prefill = new JSONObject();
@@ -307,7 +310,10 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
     private TransactionalDetailsEntity getTransactionalDetailsEntity(){
         TransactionalDetailsEntity transactionalDetailsEntity = new TransactionalDetailsEntity();
         PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
-        transactionalDetailsEntity.setAmount(Double.valueOf(purchaseEntity.getTotalAmount()));
+        Gson gson = GsonAPI.INSTANCE.getGson();
+        CalculatedAmounts calculatedAmounts =  gson.fromJson(purchaseEntity.getCalculatedAmountDetails(), CalculatedAmounts.class);
+
+        transactionalDetailsEntity.setAmount(calculatedAmounts.getTotalAmount());
         transactionalDetailsEntity.setDeviceType(DeviceType.Android);
         transactionalDetailsEntity.setPaymentDate(ServiceUtil.getCurrentTimeMilli());
         transactionalDetailsEntity.setPurchaseEntity(purchaseEntity);
@@ -354,7 +360,7 @@ return transactionalDetailsEntity;
 
 
 
-
+/*
     @Override
     public void payment() {
         NewCardFragment newCardFragment = new NewCardFragment();
@@ -362,7 +368,7 @@ return transactionalDetailsEntity;
         purchaseIdArgs.putInt("purchaseId",purchaseId);
         newCardFragment.setArguments(purchaseIdArgs);
         FragmentsUtil.replaceFragment(this, newCardFragment, R.id.pur_details_main_container);
-    }
+    }*/
 
 
     private void backToHome(){

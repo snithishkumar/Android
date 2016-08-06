@@ -33,6 +33,7 @@ public class PurchaseEntity {
     public static final String USER_DELIVERY_OPTIONS = "UserDeliveryOptions";
     public static final String IS_SYNC = "IsSync";
     public static final String ADDRESS_ENTITY = "AddressId";
+    public static final String TOTAL_AMOUNT = "TotalAmount";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
     private int purchaseId;
@@ -52,7 +53,8 @@ public class PurchaseEntity {
     @DatabaseField(columnName = CATEGORY)
     private String category;
 
-
+    @DatabaseField(columnName = TOTAL_AMOUNT)
+private double totalAmount;
 
     @DatabaseField(columnName = PAYMENT_STATUS)
     private PaymentStatus paymentStatus;
@@ -233,6 +235,14 @@ public class PurchaseEntity {
 
     public void setMerchantDeliveryOptions(DeliveryOptions merchantDeliveryOptions) {
         this.merchantDeliveryOptions = merchantDeliveryOptions;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
     public DeliveryOptions getUserDeliveryOptions() {

@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.view.fragments;
 
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import co.in.mobilepay.enumeration.PaymentType;
 import co.in.mobilepay.json.response.CardDetailsJson;
 import co.in.mobilepay.json.response.CardJson;
 
+*/
 /**
  * Created by Nithishkumar on 3/22/2016.
- */
+ *//*
+
 public class NewCardFragment extends Fragment implements View.OnClickListener {
 
     private RadioButton creditCard = null;
@@ -167,3 +170,4 @@ public class NewCardFragment extends Fragment implements View.OnClickListener {
 
 
 }
+*/
