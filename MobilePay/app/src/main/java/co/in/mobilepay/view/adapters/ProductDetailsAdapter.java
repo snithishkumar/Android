@@ -166,7 +166,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
-            productDetailsViewHolder.quantityDub.setText(String.valueOf(productDetailsModel.getQuantity()));
+//            productDetailsViewHolder.quantityDub.setText(String.valueOf(productDetailsModel.getQuantity()));
             productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
 
             productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
@@ -394,10 +394,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
             quantity = (TextView) view.findViewById(R.id.adapt_pur_item_quantity);
             unitPrice = (TextView) view.findViewById(R.id.adapt_pur_item_amount);
-            quantityDub = (TextView) view.findViewById(R.id.adapt_pur_item_quantity_dub);
+            //quantityDub = (TextView) view.findViewById(R.id.adapt_pur_item_quantity_dub);
 
-            add = (ImageView)view.findViewById(R.id.adapt_pur_item_add);
-            reduce = (ImageView)view.findViewById(R.id.adapt_pur_item_reduce);
+          //  add = (ImageView)view.findViewById(R.id.adapt_pur_item_add);
+           // reduce = (ImageView)view.findViewById(R.id.adapt_pur_item_reduce);
 
             amount = (TextView) view.findViewById(R.id.adapt_pur_item_total_amount);
             delete = (ImageView)view.findViewById(R.id.adapt_pur_item_delete);
@@ -412,8 +412,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             });
 
             delete.setOnClickListener(this);
-            add.setOnClickListener(this);
-            reduce.setOnClickListener(this);
+           // add.setOnClickListener(this);
+           // reduce.setOnClickListener(this);
         }
 
         @Override
@@ -427,7 +427,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public void onClick(View v) {
             switch (v.getId()){
 
-                case R.id.adapt_pur_item_add:
+              /*  case R.id.adapt_pur_item_add:
                     clearValue();
                     ProductDetailsModel productDetailsModel =  productDetailsModels.get(getAdapterPosition());
                     productDetailsModel.setQuantity(productDetailsModel.getQuantity() + 1);
@@ -440,7 +440,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     ProductDetailsModel productDetailsModelTemp =  productDetailsModels.get(getAdapterPosition());
                     productDetailsModelTemp.setQuantity(productDetailsModelTemp.getQuantity() - 1);
                     notifyDataSetChanged();
-                    break;
+                    break;*/
 
                 case R.id.adapt_pur_item_delete:
                     if(productDetailsModels.size() <= 1){
