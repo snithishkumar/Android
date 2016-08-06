@@ -20,6 +20,7 @@ import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -130,9 +131,9 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(purchaseDetailsActivity);
         recyclerView.setLayoutManager(linearLayoutManager);
-        String amountDetails = purchaseEntity.getAmountDetails();
-        AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
-        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity);
+        String amountDetails = purchaseEntity.getCalculatedAmountDetails();
+        CalculatedAmounts calculatedAmounts = gson.fromJson(amountDetails, CalculatedAmounts.class);
+        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,calculatedAmounts,purchaseEntity);
         recyclerView.setAdapter(orderStatusDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()
