@@ -20,6 +20,7 @@ public class PurchaseEntity {
     public static final String BILL_NUMBER = "BillNumber";
     public static final String PRODUCT_DETAILS = "ProductDetails";
     public static final String AMOUNT_DETAILS = "AmountDetails";
+    public static final String CALCULATED_AMOUNT_DETAILS = "CalculatedAmountDetails";
     public static final String PAYMENT_STATUS = "PaymentStatus";
     public static final String IS_EDITABLE = "isEditable";
     public static final String CATEGORY = "category";
@@ -31,7 +32,6 @@ public class PurchaseEntity {
    public static final String MERCHANT_DELIVERY_OPTIONS = "MerchantDeliveryOptions";
     public static final String USER_DELIVERY_OPTIONS = "UserDeliveryOptions";
     public static final String IS_SYNC = "IsSync";
-    public static final String TOTAL_AMOUNT = "TotalAmount";
     public static final String ADDRESS_ENTITY = "AddressId";
 
     @DatabaseField(columnName = PURCHASE_ID,generatedId = true,index = true)
@@ -46,6 +46,9 @@ public class PurchaseEntity {
     private String productDetails;
     @DatabaseField(columnName = AMOUNT_DETAILS)
     private String amountDetails;
+
+    @DatabaseField(columnName = CALCULATED_AMOUNT_DETAILS)
+    private String calculatedAmountDetails;
     @DatabaseField(columnName = CATEGORY)
     private String category;
 
@@ -78,9 +81,6 @@ public class PurchaseEntity {
     @DatabaseField(columnName = IS_SYNC)
     private boolean isSync = false;
 
-    @DatabaseField(columnName = TOTAL_AMOUNT)
-    private String totalAmount;
-
     @DatabaseField(columnName = ADDRESS_ENTITY,foreign = true,foreignAutoRefresh =  true)
     private AddressEntity addressEntity;
 
@@ -107,8 +107,15 @@ public class PurchaseEntity {
         this.paymentStatus = purchaseJson.getPaymentStatus();
         this.orderStatus = purchaseJson.getOrderStatus();
         this.merchantDeliveryOptions = purchaseJson.getMerchantDeliveryOptions();
-        this.totalAmount = purchaseJson.getTotalAmount();
         this.userDeliveryOptions = purchaseJson.getUserDeliveryOptions();
+    }
+
+    public String getCalculatedAmountDetails() {
+        return calculatedAmountDetails;
+    }
+
+    public void setCalculatedAmountDetails(String calculatedAmountDetails) {
+        this.calculatedAmountDetails = calculatedAmountDetails;
     }
 
     public int getPurchaseId() {
@@ -244,13 +251,6 @@ public class PurchaseEntity {
         this.isSync = isSync;
     }
 
-    public String getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(String totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 
     public AddressEntity getAddressEntity() {
         return addressEntity;
@@ -277,6 +277,7 @@ public class PurchaseEntity {
                 ", billNumber='" + billNumber + '\'' +
                 ", productDetails='" + productDetails + '\'' +
                 ", amountDetails='" + amountDetails + '\'' +
+                ", calculatedAmountDetails='" + calculatedAmountDetails + '\'' +
                 ", category='" + category + '\'' +
                 ", paymentStatus=" + paymentStatus +
                 ", isEditable=" + isEditable +
@@ -288,7 +289,6 @@ public class PurchaseEntity {
                 ", merchantDeliveryOptions=" + merchantDeliveryOptions +
                 ", userDeliveryOptions=" + userDeliveryOptions +
                 ", isSync=" + isSync +
-                ", totalAmount='" + totalAmount + '\'' +
                 ", addressEntity=" + addressEntity +
                 '}';
     }

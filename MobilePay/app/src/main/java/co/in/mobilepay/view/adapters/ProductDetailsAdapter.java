@@ -16,6 +16,7 @@ import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.DiscountType;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
@@ -39,11 +40,14 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private AmountDetailsJson amountDetailsJson;
     private PurchaseEntity purchaseEntity;
 
-    private double amount;
+
+    CalculatedAmounts calculatedAmounts= new CalculatedAmounts();
+
+    /*private double amount;
     private double taxAmount;
     private double discount = 0;
     private double totalAmount;
-    private double deliveryAmount= 0.0;
+    private double deliveryAmount= 0.0;*/
 
 
     private HomeDeliveryOptionsEntity homeDeliveryOptionsEntity;
@@ -64,15 +68,14 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         this.showDeliveryAddress = purchaseDetailsActivity;
         this.amountDetailsJson =  amountDetailsJson;
         this.purchaseEntity = purchaseEntity;
-       // purchaseDetailsActivity.setDeliveryOptions(null);
     }
 
     private void clearValue(){
-        amount = 0;
-        taxAmount = 0;
-        discount = 0;
-        totalAmount = 0;
-        deliveryAmount = 0;
+        calculatedAmounts.setTotalAmount(0.0);
+        calculatedAmounts.setTax(0.0);
+        calculatedAmounts.setDelivery(0.0);
+        calculatedAmounts.setDiscount(0.0);
+        calculatedAmounts.setPurchasedAmount(0.0);
     }
 
     @Override
@@ -187,10 +190,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             AmountDetailsViewHolder amountDetailsViewHolder = (AmountDetailsViewHolder)viewHolder;
             calcAmount();
 
-            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,amount));
+            amountDetailsViewHolder.vSubTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getPurchasedAmount()));
             amountDetailsViewHolder.vTaxText.setText("Tax (" + amountDetailsJson.getTaxAmount() + " % of total)");
 
-            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,taxAmount));
+            amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getTax()));
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
 
@@ -198,7 +201,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
             }
 
-            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,discount));
+            amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getDiscount()));
             vDeliveryAmount = amountDetailsViewHolder.vDeliveryAmount;
             vTotalAmount = amountDetailsViewHolder.vTotalAmount;
             setAmountDetails();
@@ -210,17 +213,17 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private void setAmountDetails(){
         if(vDeliveryAmount != null){
-            vDeliveryAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,deliveryAmount));
-            vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,totalAmount));
+            vDeliveryAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getDelivery()));
+            vTotalAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getTotalAmount()));
         }
 
     }
 
 
     private void reSetDeliveryCalc(){
-        if(deliveryAmount > 0){
-            totalAmount = totalAmount - deliveryAmount;
-            deliveryAmount = 0.0;
+        if(calculatedAmounts.getDelivery() > 0){
+            calculatedAmounts.setTotalAmount(calculatedAmounts.getTotalAmount() - calculatedAmounts.getDelivery());
+            calculatedAmounts.setDelivery(0.0);
             setAmountDetails();
         }
 
@@ -237,11 +240,17 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     private void calcAmount(){
-        for(ProductDetailsModel productDetailsModel : productDetailsModels){
-            amount = amount +  Double.valueOf(productDetailsModel.getAmount());
-        }
+        double subTotal = 0.0;
         double discountAmount = 0;
         double discountMinAmount = 0;
+        double totalAmount = 0.0;
+        double discount = 0.0;
+        double taxAmount = 0.0;
+        for(ProductDetailsModel productDetailsModel : productDetailsModels){
+            subTotal = subTotal +  Double.valueOf(productDetailsModel.getAmount());
+        }
+        calculatedAmounts.setPurchasedAmount(subTotal);
+
 
         if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
             discountAmount = Double.valueOf(amountDetailsJson.getDiscount());
@@ -251,24 +260,31 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             discountMinAmount = Double.valueOf(amountDetailsJson.getDiscountMiniVal());
         }
 
-        if(discountAmount >  0 && amount > discountMinAmount){
+        if(discountAmount >  0 && subTotal > discountMinAmount){
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                totalAmount =   amount - discountAmount;
-                discount = discountAmount;
+                totalAmount =   subTotal - discountAmount;
             }else if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.PERCENTAGE.getDiscountType()){
-                discount = Double.valueOf(String.format("%.2f", ((amount * discountAmount) / 100)));
-                totalAmount = amount - discount;
+                discount = Double.valueOf(String.format("%.2f", ((subTotal * discountAmount) / 100)));
+                totalAmount = subTotal - discount;
             }
         }else{
-            totalAmount = amount;
+            totalAmount = subTotal;
         }
 
-        calcDeliveryAmount();
+
+
         //deliveryAmount
 
         taxAmount =  Double.valueOf(String.format("%.2f", (( totalAmount *  amountDetailsJson.getTaxAmount())/100 )));
         totalAmount = totalAmount + taxAmount;
         totalAmount =  Double.valueOf(String.format("%.2f", totalAmount));
+
+
+        calculatedAmounts.setDiscount(discountAmount);
+
+        calculatedAmounts.setTax(taxAmount);
+        calculatedAmounts.setTotalAmount(totalAmount);
+        calcDeliveryAmount();
     }
 
 
@@ -311,25 +327,27 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     private void calcDeliveryAmount(){
-        if(purchaseDetailsActivity.getDeliveryOptions() != null && purchaseDetailsActivity.getDeliveryOptions().getDeliveryOptions() == DeliveryOptions.HOME.ordinal() && deliveryAmount < 1){
+        if(purchaseDetailsActivity.getDeliveryOptions() != null && purchaseDetailsActivity.getDeliveryOptions().getDeliveryOptions() == DeliveryOptions.HOME.ordinal() && calculatedAmounts.getDelivery() < 1){
             getHomeDeliveryOptionsEntity();
            // HomeDeliveryOptionsEntity homeDeliveryOptionsEntity = purchaseDetailsActivity.getPurchaseService().getHomeDeliveryOptionsEntity(purchaseEntity);
             if(homeDeliveryOptionsEntity != null){
+                double deliveryAmount =0.0;
                 switch (homeDeliveryOptionsEntity.getDeliveryConditions()){
                     case FIXED:
                         deliveryAmount =  homeDeliveryOptionsEntity.getAmount();
-                        totalAmount = totalAmount + deliveryAmount;
+                        calculatedAmounts.setTotalAmount(calculatedAmounts.getTotalAmount() + deliveryAmount);
                         break;
                     case FREE:
                         deliveryAmount = 0.0;
                         break;
                     case CONDITIONAL:
-                        if(homeDeliveryOptionsEntity.getMinAmount() <= totalAmount){
+                        if(homeDeliveryOptionsEntity.getMinAmount() <= calculatedAmounts.getTotalAmount()){
                             deliveryAmount =  homeDeliveryOptionsEntity.getAmount();
-                            totalAmount = totalAmount + deliveryAmount;
+                            calculatedAmounts.setTotalAmount(calculatedAmounts.getTotalAmount() + deliveryAmount);
                         }
                         break;
                 }
+                calculatedAmounts.setDelivery(deliveryAmount);
             }
         }
     }
@@ -546,17 +564,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         void viewFragment(int options);
     }
 
-
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public double getDeliveryAmount(){
-        return deliveryAmount;
-    }
-
-    public AddressEntity getDefaultAddress() {
-        return defaultAddress;
+    public CalculatedAmounts getCalculatedAmounts() {
+        return calculatedAmounts;
     }
 }

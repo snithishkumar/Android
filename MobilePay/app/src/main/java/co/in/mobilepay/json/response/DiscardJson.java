@@ -19,7 +19,7 @@ public class DiscardJson {
 
 	private String productDetails;
 	private String amountDetails;
-	private String totalAmount;
+	private String calculatedAmounts;
 
 	public DiscardJson(){
 
@@ -31,7 +31,7 @@ public class DiscardJson {
 		this.createDateTime = discardEntity.getCreatedDateTime();
 		this.productDetails = purchaseEntity.getProductDetails();
 		this.amountDetails = purchaseEntity.getAmountDetails();
-		this.totalAmount = purchaseEntity.getTotalAmount();
+		this.calculatedAmounts = purchaseEntity.getCalculatedAmountDetails();
 	}
 
 
@@ -99,12 +99,12 @@ public class DiscardJson {
 		this.amountDetails = amountDetails;
 	}
 
-	public String getTotalAmount() {
-		return totalAmount;
+	public String getCalculatedAmounts() {
+		return calculatedAmounts;
 	}
 
-	public void setTotalAmount(String totalAmount) {
-		this.totalAmount = totalAmount;
+	public void setCalculatedAmounts(String calculatedAmounts) {
+		this.calculatedAmounts = calculatedAmounts;
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class DiscardJson {
 				", transactions=" + transactions +
 				", productDetails='" + productDetails + '\'' +
 				", amountDetails='" + amountDetails + '\'' +
-				", totalAmount='" + totalAmount + '\'' +
+				", calculatedAmounts='" + calculatedAmounts + '\'' +
 				'}';
 	}
 }

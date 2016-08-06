@@ -23,10 +23,10 @@ public class PurchaseJson {
 	//private DeliveryOptions deliveryOptions;
 	private DeliveryOptions merchantDeliveryOptions;
 	private DeliveryOptions userDeliveryOptions;
-	private String totalAmount;
 	private AddressJson addressJson;
     private DiscardJson discardJson;
 	private CounterDetailsJson counterDetails;
+	private CalculatedAmounts calculatedAmounts;
 
 	private HomeDeliveryOptionsEntity homeDeliveryOptions;
 
@@ -43,13 +43,6 @@ public class PurchaseJson {
 		this.merchantDeliveryOptions = merchantDeliveryOptions;
 	}
 
-	public String getTotalAmount() {
-		return totalAmount;
-	}
-
-	public void setTotalAmount(String totalAmount) {
-		this.totalAmount = totalAmount;
-	}
 
 	public String getPurchaseId() {
 		return purchaseId;
@@ -206,6 +199,15 @@ public class PurchaseJson {
 		this.userDeliveryOptions = userDeliveryOptions;
 	}
 
+	public CalculatedAmounts getCalculatedAmounts() {
+		return calculatedAmounts;
+	}
+
+	public void setCalculatedAmounts(CalculatedAmounts calculatedAmounts) {
+		this.calculatedAmounts = calculatedAmounts;
+	}
+
+
 	@Override
 	public String toString() {
 		return "PurchaseJson{" +
@@ -223,10 +225,11 @@ public class PurchaseJson {
 				", paymentStatus=" + paymentStatus +
 				", orderStatus=" + orderStatus +
 				", merchantDeliveryOptions=" + merchantDeliveryOptions +
-				", totalAmount='" + totalAmount + '\'' +
+				", userDeliveryOptions=" + userDeliveryOptions +
 				", addressJson=" + addressJson +
 				", discardJson=" + discardJson +
 				", counterDetails=" + counterDetails +
+				", calculatedAmounts=" + calculatedAmounts +
 				", homeDeliveryOptions=" + homeDeliveryOptions +
 				'}';
 	}

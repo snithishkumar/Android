@@ -20,6 +20,7 @@ public class PayedPurchaseDetailsJson {
     private String addressGuid;
     private String totalAmount;
     private OrderStatus orderStatus;
+    private CalculatedAmounts calculatedAmounts;
     private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
 
     public PayedPurchaseDetailsJson() {
@@ -32,7 +33,6 @@ public class PayedPurchaseDetailsJson {
         this.amountDetails = purchaseEntity.getAmountDetails();
         this.userDeliveryOptions = purchaseEntity.getUserDeliveryOptions();
         this.paymetTime = purchaseEntity.getLastModifiedDateTime();
-        this.totalAmount = purchaseEntity.getTotalAmount();
         this.orderStatus = purchaseEntity.getOrderStatus();
         if(purchaseEntity.getAddressEntity()  != null){
             if(purchaseEntity.getAddressEntity().isSynced()){
@@ -122,6 +122,14 @@ public class PayedPurchaseDetailsJson {
 
     public void setTransactions(List<TransactionalDetailsEntity> transactions) {
         this.transactions = transactions;
+    }
+
+    public CalculatedAmounts getCalculatedAmounts() {
+        return calculatedAmounts;
+    }
+
+    public void setCalculatedAmounts(CalculatedAmounts calculatedAmounts) {
+        this.calculatedAmounts = calculatedAmounts;
     }
 
     @Override

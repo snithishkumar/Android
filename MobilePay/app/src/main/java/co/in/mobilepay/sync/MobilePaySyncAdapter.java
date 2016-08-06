@@ -46,6 +46,7 @@ import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.AddressJson;
+import co.in.mobilepay.json.response.CalculatedAmounts;
 import co.in.mobilepay.json.response.CounterDetailsJson;
 import co.in.mobilepay.json.response.DiscardJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
@@ -249,24 +250,6 @@ private boolean isLoginFailed = false;
     }
 
 
-/*
-    private void getPurchaseDetailsData(String purchaseUuid){
-        try {
-           List<String>  purchaseUuids = new ArrayList<String>();
-            purchaseUuids.add(purchaseUuid);
-            syncPurchaseDetails(purchaseUuids);
-            PurchaseListPoster purchaseListPoster = new PurchaseListPoster();
-            purchaseListPoster.setStatusCode(200);
-            // Post Success message to Notification
-            MobilePayBus.getInstance().post(purchaseListPoster);
-            return;
-        }catch (Exception e){
-            Log.e(LOG_TAG,"Error in getPurchaseDetailsData",e);
-        }
-        //Send Error as Internal Error
-        postErrorCode(MessageConstant.REG_ERROR_CODE);
-    }
-*/
 
 
     /**
@@ -485,6 +468,7 @@ private boolean isLoginFailed = false;
                 if(purchaseEntity != null){
                     if(purchaseEntity.getServerDateTime() < purchaseJson.getServerDateTime() && purchaseEntity.isSync()){
                         purchaseEntity.toClone(purchaseJson);
+                        processCalculatedAmounts(purchaseJson,purchaseEntity);
                         processAddressJson(purchaseJson, purchaseEntity);
                         processDiscardJson(purchaseJson,purchaseEntity);
                         purchaseDao.updatePurchase(purchaseEntity);
@@ -494,6 +478,7 @@ private boolean isLoginFailed = false;
                     purchaseEntity = new PurchaseEntity(purchaseJson);
                     purchaseEntity.setMerchantEntity(merchantEntity);
                     purchaseEntity.setUserEntity(dbUserEntity);
+                    processCalculatedAmounts(purchaseJson,purchaseEntity);
                     purchaseDao.createPurchase(purchaseEntity);
                     processAddressJson(purchaseJson, purchaseEntity);
                     processDiscardJson(purchaseJson,purchaseEntity);
@@ -558,6 +543,20 @@ private boolean isLoginFailed = false;
         if(homeDeliveryOptionsEntity != null){
             homeDeliveryOptionsEntity.setPurchaseEntity(purchaseEntity);
             purchaseDao.createHomeDeliveryOptions(homeDeliveryOptionsEntity);
+        }
+    }
+
+
+    /**
+     * Process Calculated Amount Details
+     * @param purchaseJson
+     * @param purchaseEntity
+     * @throws SQLException
+     */
+    private void processCalculatedAmounts(PurchaseJson purchaseJson,PurchaseEntity purchaseEntity)throws  SQLException{
+        CalculatedAmounts calculatedAmounts = purchaseJson.getCalculatedAmounts();
+        if(calculatedAmounts != null){
+            purchaseEntity.setCalculatedAmountDetails(gson.toJson(calculatedAmounts));
         }
     }
 
@@ -844,6 +843,8 @@ private boolean isLoginFailed = false;
             // Entity to Json
             for(PurchaseEntity purchaseEntity : purchaseEntityList){
                 PayedPurchaseDetailsJson payedPurchaseDetailsJson = new PayedPurchaseDetailsJson(purchaseEntity);
+                CalculatedAmounts calculatedAmounts = gson.fromJson(purchaseEntity.getCalculatedAmountDetails(),CalculatedAmounts.class);
+                payedPurchaseDetailsJson.setCalculatedAmounts(calculatedAmounts);
                 List<TransactionalDetailsEntity>  entityList = getTransactionDetails(purchaseEntity);
                 payedPurchaseDetailsJson.getTransactions().addAll(entityList);
                 payedPurchaseDetailsList.getPurchaseDetailsJsons().add(payedPurchaseDetailsJson);
