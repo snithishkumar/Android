@@ -90,12 +90,12 @@
             android:text="20689" />
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="48dp"
             android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:id="@+id/adapt_pur_his_status"
-            android:src="@drawable/delivered_img"/>
+            android:src="@drawable/cancelled_96"/>
 
     </LinearLayout>
 

@@ -34,6 +34,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAwxc_4F-lyBP5uLQFf8MTf8osJZtgUWxk"/>
+
         <!-- https://developers.google.com/cloud-messaging/android/client?configured=true#manifest -->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"

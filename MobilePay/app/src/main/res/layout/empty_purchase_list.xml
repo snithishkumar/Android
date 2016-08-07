@@ -16,8 +16,8 @@
         android:layout_centerHorizontal="true" />-->
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="344dp"
+        android:layout_height="376dp"
         android:id="@+id/empty_purchase_list_icon"
         android:src="@drawable/shopping_bag_empty"
         android:layout_centerVertical="true"
