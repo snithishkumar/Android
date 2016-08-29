@@ -1,34 +1,22 @@
 package co.in.mobilepay.view.adapters;
 
-import android.Manifest;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.sync.ServiceAPI;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
-import io.github.douglasjunior.androidSimpleTooltip.SimpleTooltip;
 
 /**
  * Created by Nithish on 16-02-2016.
@@ -41,6 +29,8 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private HomeActivity homeActivity;
 
     private static final int EMPTY_VIEW = -1;
+
+    android.app.AlertDialog alertDialogBox = null;
 
 
 
@@ -64,17 +54,50 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
 
+
+
+
+
     private void showInfo1(View view,PurchaseModel purchaseModel){
         String msg = "Your order is ready. Please collect " +
                 "your order in ground floor("+purchaseModel.getName()+"). Your counter id  is "+purchaseModel.getCounterNumber();
-        new SimpleTooltip.Builder(homeActivity)
+       /* new SimpleTooltip.Builder(homeActivity)
                 .anchorView(view)
                 .text(msg)
                 .gravity(Gravity.TOP)
                 .dismissOnOutsideTouch(true)
                 .dismissOnInsideTouch(true)
                 .build()
-                .show();
+                .show();*/
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+
+                homeActivity);
+
+        LayoutInflater inflater = homeActivity.getLayoutInflater();
+
+        final View dialogView = inflater.inflate(R.layout.alert_counter_details, null);
+        alertDialogBuilder.setView(dialogView);
+       TextView counterDetailsText = (TextView) dialogView.findViewById(R.id.counter_details_text);
+        counterDetailsText.setText(msg);
+
+        alertDialogBuilder
+
+                .setCancelable(true);
+
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                alertDialogBox.dismiss();
+            }
+        });
+
+        // create alert dialog
+        alertDialogBox = alertDialogBuilder.create();
+
+        // show it
+        alertDialogBox.show();
+
     }
 
 
@@ -115,11 +138,11 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }else{
                 luggageListViewHolder.vOrderStatus.setOnClickListener(null);
             }
-            Picasso.with(homeActivity)
+           /* Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
                     .placeholder(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
                     .error(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
-                    .into(luggageListViewHolder.vShopLogo);
+                    .into(luggageListViewHolder.vShopLogo);*/
 
         }
 

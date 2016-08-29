@@ -93,6 +93,7 @@ private double totalAmount;
 
     public PurchaseEntity(PurchaseJson purchaseJson){
         toClone(purchaseJson);
+        this.isSync = true;
 
     }
 

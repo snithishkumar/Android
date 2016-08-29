@@ -24,10 +24,8 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
-import co.in.mobilepay.dao.NotificationDao;
 import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
-import co.in.mobilepay.dao.impl.NotificationDaoImpl;
 import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
 import co.in.mobilepay.entity.AddressEntity;
@@ -35,13 +33,10 @@ import co.in.mobilepay.entity.CounterDetailsEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.HomeDeliveryOptionsEntity;
 import co.in.mobilepay.entity.MerchantEntity;
-import co.in.mobilepay.entity.NotificationEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.entity.UserEntity;
-import co.in.mobilepay.enumeration.DeliveryOptions;
 import co.in.mobilepay.enumeration.GsonAPI;
-import co.in.mobilepay.enumeration.NotificationType;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.AddressBookJson;
@@ -660,8 +655,8 @@ private boolean isLoginFailed = false;
     }
 
 
-    /**
-     * Create Counter Details Entity
+    /*
+     * Create Counter Details Entityii
      * @param counterDetails
      * @param purchaseEntity
      * @throws SQLException

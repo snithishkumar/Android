@@ -2,34 +2,23 @@ package co.in.mobilepay.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.entity.AddressEntity;
-import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.json.response.AddressJson;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.view.activities.ActivityUtil;
-import co.in.mobilepay.view.activities.MainActivity;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 
 /**
@@ -118,7 +107,9 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
             if (resultCode == purchaseDetailsActivity.RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(purchaseDetailsActivity, data);
                 if(place != null){
-                    vStreet.setText(place.getAddress());
+                   String address = place.getAddress().toString();
+                    vStreet.setText(address);
+                    vStreet.setSelection(address.length());
                 }
 
             }

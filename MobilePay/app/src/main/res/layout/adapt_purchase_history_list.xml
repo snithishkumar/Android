@@ -8,15 +8,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:gravity="center_horizontal"
+        android:gravity="center|center_horizontal"
         android:id="@+id/adapt_pur_his_icon"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:id="@+id/adapt_pur_his_shop_logo"
-            android:background="@mipmap/luggage_cart" />
+            android:src="@drawable/shop" />
 
 
     </LinearLayout>

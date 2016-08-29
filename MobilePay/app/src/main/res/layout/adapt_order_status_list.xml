@@ -33,9 +33,9 @@
             android:weightSum="4">
             <ImageView
                 android:id="@+id/adapt_order_status_shop_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@mipmap/luggage_cart"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/shop"
                 android:layout_gravity="center_vertical"/>
 
             <LinearLayout
@@ -89,26 +89,37 @@
             android:layout_marginLeft="10dp"
             android:layout_marginBottom="8dp"
             android:layout_below="@+id/details_layout"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/luggage_pur_status"
-            android:text="Order Status: Packing..."
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_marginTop="7dp"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/seperator"/>
 
-        <ImageView
-            android:id="@+id/adapt_order_status_info"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/adapt_order_status_info"
-            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
             android:layout_below="@+id/seperator"
-            android:visibility="gone"
-            android:layout_toRightOf="@+id/luggage_pur_status"
-            android:layout_toEndOf="@+id/luggage_pur_status" />
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_horizontal"
+                android:id="@+id/luggage_pur_status"
+                android:text="Order Status: Packing..."
+                android:textColor="@color/colorPrimaryDark"
+
+                />
+
+            <ImageView
+                android:id="@+id/adapt_order_status_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/adapt_order_status_info"
+                android:layout_gravity="center_vertical"
+
+                android:visibility="visible"
+                android:layout_toRightOf="@+id/luggage_pur_status"
+                android:layout_toEndOf="@+id/luggage_pur_status" />
+
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"

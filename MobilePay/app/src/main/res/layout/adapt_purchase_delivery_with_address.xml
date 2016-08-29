@@ -76,6 +76,7 @@
         android:onClick="onClick"
         android:layout_alignBottom="@+id/adapt_pur_item_delivery"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
         android:layout_alignParentEnd="true"
        />
 

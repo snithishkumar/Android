@@ -8,54 +8,50 @@ import android.os.Parcelable;
  */
 public class ProductDetailsModel{
     private int itemNo;
-    private String description;
+    private String name;
     private int quantity;
-    private String amount;
-    private String unitPrice;
-    private float rating = 0;
-
-    public ProductDetailsModel(){
-
-    }
+    private double unitPrice;
+    private double amount;
+    private float rating;
 
     public int getItemNo() {
-        return itemNo;
+        return itemNo > 0 ? itemNo : 0;
     }
 
     public void setItemNo(int itemNo) {
         this.itemNo = itemNo;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name != null ? name : " ";
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getQuantity() {
-        return quantity;
+        return quantity > 0 ? quantity : 0;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public String getAmount() {
-        return amount;
+    public double getUnitPrice() {
+        return unitPrice > 0 ? unitPrice : 0;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public String getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
+    }
+
+    public double getAmount() {
+        return amount > 0 ? amount : 0;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public float getRating() {
@@ -70,10 +66,10 @@ public class ProductDetailsModel{
     public String toString() {
         return "ProductDetailsModel{" +
                 "itemNo=" + itemNo +
-                ", description='" + description + '\'' +
+                ", name='" + name + '\'' +
                 ", quantity=" + quantity +
-                ", amount='" + amount + '\'' +
-                ", unitPrice='" + unitPrice + '\'' +
+                ", unitPrice=" + unitPrice +
+                ", amount=" + amount +
                 ", rating=" + rating +
                 '}';
     }

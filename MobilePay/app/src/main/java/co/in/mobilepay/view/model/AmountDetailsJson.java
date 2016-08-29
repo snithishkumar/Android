@@ -3,63 +3,62 @@ package co.in.mobilepay.view.model;
 
 import co.in.mobilepay.enumeration.DiscountType;
 
-public class AmountDetailsJson{
+public class AmountDetailsJson {
 
-private float taxAmount;
-private String discount;
-	private String deliveryAmount;
-private DiscountType discountType;
-private String discountMiniVal;
+    private float taxAmount;
+    private double discount;
+    private double deliveryAmount;
+    private DiscountType discountType;
+    private double discountMiniVal;
 
-		public float getTaxAmount() {
-			return taxAmount;
-		}
+    public float getTaxAmount() {
+        return taxAmount;
+    }
 
-		public void setTaxAmount(float taxAmount) {
-			this.taxAmount = taxAmount;
-		}
+    public void setTaxAmount(float taxAmount) {
+        this.taxAmount = taxAmount;
+    }
 
-		public String getDiscount() {
-			return (discount != null && !discount.trim().isEmpty()) ? discount : "0";
-		}
+    public double getDiscount() {
+        return discount > 0 ? discount : 0;
+    }
 
-		public void setDiscount(String discount) {
-			this.discount = discount;
-		}
+    public void setDiscount(double discount) {
+        this.discount = discount;
+    }
 
-		public DiscountType getDiscountType() {
-			return discountType;
-		}
+    public double getDeliveryAmount() {
+        return deliveryAmount > 0 ? deliveryAmount : 0;
+    }
 
-		public void setDiscountType(DiscountType discountType) {
-			this.discountType = discountType;
-		}
+    public void setDeliveryAmount(double deliveryAmount) {
+        this.deliveryAmount = deliveryAmount;
+    }
 
-		public String getDiscountMiniVal() {
-			return discountMiniVal;
-		}
+    public DiscountType getDiscountType() {
+        return discountType;
+    }
 
-		public void setDiscountMiniVal(String discountMiniVal) {
-			this.discountMiniVal = discountMiniVal;
-		}
+    public void setDiscountType(DiscountType discountType) {
+        this.discountType = discountType;
+    }
 
+    public double getDiscountMiniVal() {
+        return discountMiniVal > 0 ? discountMiniVal : 0;
+    }
 
-	public String getDeliveryAmount() {
-		return deliveryAmount;
-	}
+    public void setDiscountMiniVal(double discountMiniVal) {
+        this.discountMiniVal = discountMiniVal;
+    }
 
-	public void setDeliveryAmount(String deliveryAmount) {
-		this.deliveryAmount = deliveryAmount;
-	}
-
-	@Override
-	public String toString() {
-		return "AmountDetailsJson{" +
-				"taxAmount=" + taxAmount +
-				", discount='" + discount + '\'' +
-				", deliveryAmount='" + deliveryAmount + '\'' +
-				", discountType=" + discountType +
-				", discountMiniVal='" + discountMiniVal + '\'' +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "AmountDetailsJson{" +
+                "taxAmount=" + taxAmount +
+                ", discount=" + discount +
+                ", deliveryAmount=" + deliveryAmount +
+                ", discountType=" + discountType +
+                ", discountMiniVal=" + discountMiniVal +
+                '}';
+    }
 }

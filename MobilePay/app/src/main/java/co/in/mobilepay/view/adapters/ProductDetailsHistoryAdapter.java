@@ -111,7 +111,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
-            productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.name.setText(productDetailsModel.getName());
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
 

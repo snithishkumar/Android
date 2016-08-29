@@ -86,7 +86,8 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case HOME_DELIVERY_OPTIONS:
                 switch (purchaseEntity.getMerchantDeliveryOptions()){
                     case COUNTER_COLLECTION:
-                        purchaseEntity.setUserDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
+                       purchaseDetailsActivity.setDeliveryOptions(DeliveryOptions.COUNTER_COLLECTION);
+
                         view = LayoutInflater.from(parent.getContext())
                                 .inflate(R.layout.adapt_pur_col_counter_option, parent, false);
                         return new DeliveryCollectionCounterViewHolder(view);
@@ -162,7 +163,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
             productDetailsModel = productDetailsModels.get(position);
-            productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.name.setText(productDetailsModel.getName());
 
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
@@ -252,13 +253,10 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         calculatedAmounts.setPurchasedAmount(subTotal);
 
 
-        if(amountDetailsJson.getDiscount() != null && !amountDetailsJson.getDiscount().trim().isEmpty()){
-            discountAmount = Double.valueOf(amountDetailsJson.getDiscount());
-        }
+        discountAmount = amountDetailsJson.getDiscount();
 
-        if(amountDetailsJson.getDiscountMiniVal() != null && !amountDetailsJson.getDiscountMiniVal().trim().isEmpty()){
-            discountMinAmount = Double.valueOf(amountDetailsJson.getDiscountMiniVal());
-        }
+        discountMinAmount = amountDetailsJson.getDiscountMiniVal();
+
 
         if(discountAmount >  0 && subTotal > discountMinAmount){
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){

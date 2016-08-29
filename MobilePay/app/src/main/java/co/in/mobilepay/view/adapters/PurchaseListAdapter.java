@@ -1,6 +1,5 @@
 package co.in.mobilepay.view.adapters;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.sync.ServiceAPI;
 import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.model.PurchaseModel;
@@ -83,11 +79,11 @@ public class PurchaseListAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             purchaseListViewHolder.vPurchaseDate.setText(ServiceUtil.getDateTimeAsString(purchaseModel.getDateTime()));
             //imageLoader.displayImage(purchaseModel.getMerchantGuid(),purchaseModel.getServerMerchantId(),purchaseListViewHolder.vShopLogo);
            //Picasso.with(context).load(images[0]).placeholder(ContextCompat.getDrawable(context,R.mipmap.test_image)).into(holder.imageView);
-            Picasso.with(homeActivity)
+            /*Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
                     .placeholder(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
                     .error(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
-                    .into(purchaseListViewHolder.vShopLogo);
+                    .into(purchaseListViewHolder.vShopLogo);*/
 
         }
 

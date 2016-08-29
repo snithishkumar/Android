@@ -98,7 +98,7 @@ private CalculatedAmounts calculatedAmounts;
             productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.rating.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
-            productDetailsViewHolder.name.setText(productDetailsModel.getDescription());
+            productDetailsViewHolder.name.setText(productDetailsModel.getName());
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
             productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
             productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));

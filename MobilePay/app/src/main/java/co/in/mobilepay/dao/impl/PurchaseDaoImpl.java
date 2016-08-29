@@ -20,7 +20,6 @@ import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.PurchaseJson;
-import okhttp3.internal.Internal;
 
 /**
  * Created by Nithish on 24-01-2016.
@@ -185,7 +184,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     public List<PurchaseEntity> getOrderStatusList()throws SQLException{
         List<PurchaseEntity> test =  purchaseDao.queryForAll();
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAID).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELLED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         luggageQueryBuilder = luggageQueryBuilder.orderBy(PurchaseEntity.UPDATED_DATE_TIME, false);
@@ -203,7 +202,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public long getLeastLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAID).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELLED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, true).queryForFirst();
@@ -218,7 +217,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
     @Override
     public long getMostRecentLuggageServerTime()throws SQLException{
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
-        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and()
+        luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAID).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELLED).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.DELIVERED);
         PurchaseEntity purchaseEntity =  luggageQueryBuilder.orderBy(PurchaseEntity.PURCHASE_DATE_TIME, false).queryForFirst();
@@ -271,7 +270,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
 
     @Override
     public List<PurchaseEntity> getUnSyncedPayedEntity()throws SQLException{
-        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAIED).and().eq(PurchaseEntity.IS_SYNC,false).query();
+        return purchaseDao.queryBuilder().orderBy(PurchaseEntity.UPDATED_DATE_TIME,true).where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAID).and().eq(PurchaseEntity.IS_SYNC,false).query();
     }
 
 

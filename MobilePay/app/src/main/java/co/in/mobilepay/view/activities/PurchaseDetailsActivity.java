@@ -253,7 +253,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             purchaseService.createTransactionDetails(transactionalDetailsEntity);
 
             PurchaseEntity purchaseEntity = transactionalDetailsEntity.getPurchaseEntity();
-            purchaseEntity.setPaymentStatus(PaymentStatus.PAIED);
+            purchaseEntity.setPaymentStatus(PaymentStatus.PAID);
             purchaseEntity.setIsSync(false);
             if(purchaseEntity.getUserDeliveryOptions().ordinal() == DeliveryOptions.NONE.ordinal()){
                 purchaseEntity.setOrderStatus(OrderStatus.DELIVERED);
