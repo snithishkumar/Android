@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center"
+                android:layout_marginRight="15dp"
                 android:src="@drawable/ic_arrow_back_white_24dp"
                 />
         </LinearLayout>
