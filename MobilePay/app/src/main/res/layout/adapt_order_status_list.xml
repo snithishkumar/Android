@@ -93,6 +93,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
+            android:id="@+id/adapt_order_status_info"
             android:layout_below="@+id/seperator"
 
             android:layout_height="wrap_content">
@@ -101,21 +102,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|center_horizontal"
                 android:id="@+id/luggage_pur_status"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="5dp"
                 android:text="Order Status: Packing..."
                 android:textColor="@color/colorPrimaryDark"
 
                 />
 
             <ImageView
-                android:id="@+id/adapt_order_status_info"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@mipmap/adapt_order_status_info"
-                android:layout_gravity="center_vertical"
+
 
                 android:visibility="visible"
-                android:layout_toRightOf="@+id/luggage_pur_status"
-                android:layout_toEndOf="@+id/luggage_pur_status" />
+                />
 
 
 

@@ -59,44 +59,60 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
     private void showInfo1(View view,PurchaseModel purchaseModel){
-        String msg = "Your order is ready. Please collect " +
-                "your order in ground floor("+purchaseModel.getName()+"). Your counter id  is "+purchaseModel.getCounterNumber();
-       /* new SimpleTooltip.Builder(homeActivity)
-                .anchorView(view)
-                .text(msg)
-                .gravity(Gravity.TOP)
-                .dismissOnOutsideTouch(true)
-                .dismissOnInsideTouch(true)
-                .build()
-                .show();*/
+        String msg = null; // -- TODO Need to change this message.
+        switch (purchaseModel.getOrderStatusTemp()){
+            case PACKING:
+                msg = "Thanks for the Payment. We are wrapping your product and will be informed you once its ready.";
+                break;
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+            case READY_TO_COLLECT:
+                msg = "Your order has been Ready. Please collect " +
+                        "your order in ground floor("+purchaseModel.getName()+"). Your counter id  is "+purchaseModel.getCounterNumber();
 
-                homeActivity);
+                break;
+            case READY_TO_SHIPPING:
+                msg = "Your order has been Ready. It will be dispatched shortly.";
+                break;
+            case OUT_FOR_DELIVERY:
+                msg = "Your order has went to delivery. It will be dispatched shortly.";
+                break;
+            case FAILED_TO_DELIVER:
+                msg = "Your order has not been delivered. Sorry, for the inconvenience. Please call to the shop. ";
+                break;
 
-        LayoutInflater inflater = homeActivity.getLayoutInflater();
 
-        final View dialogView = inflater.inflate(R.layout.alert_counter_details, null);
-        alertDialogBuilder.setView(dialogView);
-       TextView counterDetailsText = (TextView) dialogView.findViewById(R.id.counter_details_text);
-        counterDetailsText.setText(msg);
+        }
 
-        alertDialogBuilder
+        if(msg != null){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 
-                .setCancelable(true);
+                    homeActivity);
 
-        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                alertDialogBox.dismiss();
-            }
-        });
+            LayoutInflater inflater = homeActivity.getLayoutInflater();
 
-        // create alert dialog
-        alertDialogBox = alertDialogBuilder.create();
+            final View dialogView = inflater.inflate(R.layout.alert_counter_details, null);
+            alertDialogBuilder.setView(dialogView);
+            TextView counterDetailsText = (TextView) dialogView.findViewById(R.id.counter_details_text);
+            counterDetailsText.setText(msg);
 
-        // show it
-        alertDialogBox.show();
+            alertDialogBuilder
+
+                    .setCancelable(true);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    alertDialogBox.dismiss();
+                }
+            });
+
+            // create alert dialog
+            alertDialogBox = alertDialogBuilder.create();
+
+            // show it
+            alertDialogBox.show();
+
+        }
 
     }
 
@@ -169,6 +185,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         protected TextView vOrderStatus;
         protected ImageView vShopLogo;
         protected ImageView vInfo;
+        protected  LinearLayout vOrderStatusInfo;
 
 
 
@@ -182,7 +199,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vCall = (LinearLayout) view.findViewById(R.id.luggage_layout_pur_call);
             vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
-            vInfo = (ImageView)view.findViewById(R.id.adapt_order_status_info);
+            vOrderStatusInfo = (LinearLayout)view.findViewById(R.id.adapt_order_status_info);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -202,7 +219,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             });
 
-            vInfo.setOnClickListener(new View.OnClickListener() {
+            vOrderStatusInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
@@ -210,13 +227,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             });
 
-            vOrderStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PurchaseModel purchaseModel = purchaseModelList.get(getAdapterPosition());
-                    showInfo1(v,purchaseModel);
-                }
-            });
+
 
         }
 

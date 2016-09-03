@@ -1,6 +1,7 @@
 package co.in.mobilepay.view.model;
 
 import co.in.mobilepay.entity.PurchaseEntity;
+import co.in.mobilepay.enumeration.OrderStatus;
 
 /**
  * Created by Nithish on 30-01-2016.
@@ -19,6 +20,7 @@ public class PurchaseModel {
     private String merchantGuid;
     private String serverMerchantId;
     private String orderStatus;
+    private OrderStatus orderStatusTemp;
     private String counterNumber;
 
     public PurchaseModel(PurchaseEntity purchaseEntity){
@@ -33,6 +35,7 @@ public class PurchaseModel {
         this.contactNumber = String.valueOf(purchaseEntity.getMerchantEntity().getMobileNumber());
         this.serverMerchantId = String.valueOf(purchaseEntity.getMerchantEntity().getServerMerchantId());
         this.totalAmount = String.valueOf(purchaseEntity.getTotalAmount());
+        this.orderStatusTemp = purchaseEntity.getOrderStatus();
 
 
     }
@@ -151,6 +154,14 @@ public class PurchaseModel {
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public OrderStatus getOrderStatusTemp() {
+        return orderStatusTemp;
+    }
+
+    public void setOrderStatusTemp(OrderStatus orderStatusTemp) {
+        this.orderStatusTemp = orderStatusTemp;
     }
 
     @Override
