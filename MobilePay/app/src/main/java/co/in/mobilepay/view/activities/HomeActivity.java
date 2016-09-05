@@ -38,12 +38,8 @@ import co.in.mobilepay.view.fragments.PurHistoryListFragment;
 import co.in.mobilepay.view.fragments.PurchaseListFragment;
 
 public class HomeActivity extends AppCompatActivity implements PurchaseListAdapter.PurchaseListClickListeners,OrderStatusListAdapter.PurchaseListClickListeners,PurHistoryListAdapter.PurchaseListClickListeners,FragmentDrawer.FragmentDrawerListener{
-    private TabLayout tabLayout = null;
-    private ViewPager viewPager = null;
 
     private PurchaseService purchaseService;
-    private Toolbar mToolbar;
-    private FragmentDrawer drawerFragment;
 
     private int tabPosition;
 
@@ -58,19 +54,19 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
         super.onCreate(savedInstanceState);
         init();
         setContentView(R.layout.activity_home);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         viewPager.setCurrentItem(tabPosition);
         tabPosition= 0;
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        drawerFragment = (FragmentDrawer)
+        FragmentDrawer drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
          drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.root_layout), mToolbar);
         drawerFragment.setDrawerListener(this);

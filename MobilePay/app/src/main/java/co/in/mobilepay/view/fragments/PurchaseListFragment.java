@@ -36,7 +36,6 @@ public class PurchaseListFragment extends Fragment  {
    private HomeActivity homeActivity = null;
     private SwipeRefreshLayout refreshLayout;
 
-    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private List<PurchaseModel> purchaseModelList = new ArrayList<>();
     private PurchaseListAdapter purchaseListAdapter = null;
@@ -95,7 +94,7 @@ public class PurchaseListFragment extends Fragment  {
 
       //  refreshLayout.
 
-         recyclerView = (RecyclerView) view.findViewById(R.id.purchase_list_fragment);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.purchase_list_fragment);
       // recyclerView.setHasFixedSize(true);
         linearLayoutManager =  new LinearLayoutManager(homeActivity);
         recyclerView.setLayoutManager(linearLayoutManager);

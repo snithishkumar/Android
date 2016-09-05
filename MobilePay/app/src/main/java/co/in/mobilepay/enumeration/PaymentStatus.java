@@ -6,7 +6,7 @@ public enum PaymentStatus {
 
 	private int paymentStatusType;
 
-	private PaymentStatus(int paymentStatusType) {
+	PaymentStatus(int paymentStatusType) {
 		this.paymentStatusType = paymentStatusType;
 	}
 

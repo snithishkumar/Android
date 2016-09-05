@@ -5,7 +5,7 @@ public enum DeliveryOptions {
 
 	private int deliveryOptions;
 
-	private DeliveryOptions(int deliveryOptions) {
+	DeliveryOptions(int deliveryOptions) {
 		this.deliveryOptions = deliveryOptions;
 	}
 

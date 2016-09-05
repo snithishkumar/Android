@@ -10,8 +10,6 @@ import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
-import co.in.mobilepay.entity.PurchaseEntity;
-import co.in.mobilepay.enumeration.OrderStatus;
 
 /**
  * Created by Nithishkumar on 5/1/2016.

@@ -1,7 +1,6 @@
 package co.in.mobilepay.view.fragments;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,8 +43,8 @@ public class HelpFragment extends Fragment {
 
 
     private void initBackButton(){
-        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.ic_arrow_back_white_24dp);;
-       // upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.ic_arrow_back_white_24dp);
+        // upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
         naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeAsUpIndicator(upArrow);

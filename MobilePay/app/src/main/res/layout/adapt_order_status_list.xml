@@ -90,7 +90,26 @@
             android:layout_marginBottom="8dp"
             android:layout_below="@+id/details_layout"/>
 
-        <LinearLayout
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_horizontal"
+            android:id="@+id/luggage_pur_status"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/seperator"
+            android:text="Order Status: Packing..."
+            android:textColor="@color/colorPrimaryDark"
+            android:paddingBottom="10dp"
+            android:drawablePadding="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:drawableRight="@mipmap/adapt_order_status_info"
+
+            />
+
+        <!--<LinearLayout
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/adapt_order_status_info"
@@ -122,9 +141,9 @@
 
 
 
-        </LinearLayout>
+        </LinearLayout>-->
 
-        <LinearLayout
+       <!-- <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -149,7 +168,23 @@
                 android:text="Call to Shop"
                 android:textColor="@android:color/holo_blue_dark"
                 />
-        </LinearLayout>
+        </LinearLayout>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/seperator"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="10dp"
+            android:id="@+id/luggage_layout_pur_call"
+            android:text="Call to Shop"
+            android:drawableLeft="@drawable/ic_call_blue_18dp"
+            android:drawablePadding="10dp"
+            android:textColor="@android:color/holo_blue_dark"
+            />
 
     </RelativeLayout>
 

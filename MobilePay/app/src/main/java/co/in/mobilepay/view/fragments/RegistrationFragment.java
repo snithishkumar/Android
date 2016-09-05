@@ -157,8 +157,7 @@ public class RegistrationFragment extends Fragment implements View.OnClickListen
             return null;
         }
 
-        RegisterJson registerJson = new RegisterJson(nameTemp,passwordTemp,mainActivity.getMobileNumber(),"",mainActivity.isPasswordForget(),emailTemp);
-        return registerJson;
+        return new RegisterJson(nameTemp,passwordTemp,mainActivity.getMobileNumber(),"",mainActivity.isPasswordForget(),emailTemp);
     }
 
     @Override

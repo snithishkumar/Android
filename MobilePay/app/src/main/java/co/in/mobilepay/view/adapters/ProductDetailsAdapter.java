@@ -80,7 +80,7 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         switch (viewType){
 
             case HOME_DELIVERY_OPTIONS:
@@ -242,13 +242,13 @@ public class ProductDetailsAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private void calcAmount(){
         double subTotal = 0.0;
-        double discountAmount = 0;
-        double discountMinAmount = 0;
+        double discountAmount;
+        double discountMinAmount;
         double totalAmount = 0.0;
-        double discount = 0.0;
-        double taxAmount = 0.0;
+        double discount;
+        double taxAmount;
         for(ProductDetailsModel productDetailsModel : productDetailsModels){
-            subTotal = subTotal +  Double.valueOf(productDetailsModel.getAmount());
+            subTotal = subTotal + productDetailsModel.getAmount();
         }
         calculatedAmounts.setPurchasedAmount(subTotal);
 

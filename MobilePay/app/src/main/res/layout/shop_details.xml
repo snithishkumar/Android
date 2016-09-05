@@ -25,7 +25,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center"
-                android:id="@+id/shop_back_button"
                 android:src="@drawable/ic_arrow_back_white_24dp"
                 />
         </LinearLayout>
@@ -132,7 +131,17 @@
             android:layout_marginRight="10dp"
             android:textColor="@android:color/darker_gray"
             android:text="Mobile No:"/>
-        <LinearLayout
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/shop_details_phone"
+            android:drawableLeft="@drawable/ic_call_blue_18dp"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_marginLeft="10dp"
+            android:drawablePadding="10dp"
+            android:text="9942320690"/>
+      <!--  <LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
@@ -152,7 +161,7 @@
                 android:layout_marginLeft="5dp"
                 android:text="9942320690"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 
@@ -171,7 +180,18 @@
             android:textColor="@android:color/darker_gray"
             android:text="Land Line:"/>
 
-        <LinearLayout
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+android:drawableLeft="@drawable/ic_call_blue_18dp"
+            android:drawablePadding="10dp"
+            android:id="@+id/shop_details_land"
+            android:textColor="@android:color/holo_blue_dark"
+            android:layout_marginLeft="10dp"
+            android:text="04283 234635"/>
+
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
@@ -184,15 +204,15 @@
                 android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content" />
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+
                 android:id="@+id/shop_details_land"
                 android:textColor="@android:color/holo_blue_dark"
                 android:layout_marginLeft="5dp"
                 android:text="04283 234635"/>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
     </LinearLayout>
 

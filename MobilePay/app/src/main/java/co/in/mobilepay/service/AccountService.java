@@ -4,7 +4,6 @@ import android.content.Context;
 
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.service.impl.AccountServiceImpl;
 
 /**
  * Created by Nithish on 22-01-2016.

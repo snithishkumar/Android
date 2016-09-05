@@ -244,7 +244,7 @@ public class NotificationBaseActivity extends AppCompatActivity {
             try{
                 PurchaseEntity purchaseEntity = purchaseDao.getPurchaseEntity(purchaseUuid);
                 int fragmentOptions = 1;
-                if(purchaseEntity.getOrderStatus() != null &&(purchaseEntity.getOrderStatus().equals(OrderStatus.CANCELLED.toString()) || purchaseEntity.getOrderStatus().equals(OrderStatus.DELIVERED.toString()))){
+                if(purchaseEntity.getOrderStatus() != null &&(purchaseEntity.getOrderStatus().toString().equals(OrderStatus.CANCELLED.toString()) || purchaseEntity.getOrderStatus().toString().equals(OrderStatus.DELIVERED.toString()))){
                     fragmentOptions = 3;
                 }
                 callPurchaseDetailsActivity(purchaseEntity.getPurchaseId(),fragmentOptions);

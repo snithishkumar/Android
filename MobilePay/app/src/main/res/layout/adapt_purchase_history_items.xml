@@ -3,7 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rs.5000"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/adapt_pur_his_item_total_amount"
+        android:textStyle="bold"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></TextView>
+
+   <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:id="@+id/adapt_pur_his_right_view"
         android:orientation="vertical"
@@ -19,7 +31,7 @@
             android:visibility="invisible"
             android:src="@mipmap/close"
             />
-        <!--ic_menu_close_clear_cancel-->
+        &lt;!&ndash;ic_menu_close_clear_cancel&ndash;&gt;
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,12 +41,11 @@
             android:textColor="@color/colorPrimaryDark"
             android:id="@+id/adapt_pur_his_item_total_amount"
             android:textStyle="bold"></TextView>
-    </LinearLayout>
+    </LinearLayout>-->
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:id="@+id/adapt_pur_his_left_view"
-        android:layout_toLeftOf="@+id/adapt_pur_his_right_view"
+        android:layout_toLeftOf="@+id/adapt_pur_his_item_total_amount"
         android:layout_alignParentLeft="true"
         android:orientation="vertical"
         android:layout_margin="10dp"
@@ -98,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
 
-            android:id="@+id/linearLayout">
+            >
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -5,7 +5,7 @@ public enum DiscountType {
 	
 private int discountType;
 	
-	private DiscountType(int discountType){
+	DiscountType(int discountType){
 		this.discountType = discountType;
 	}
 	

@@ -223,7 +223,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
            String cal = purchaseEntity.getCalculatedAmountDetails();
            Gson gson = GsonAPI.INSTANCE.getGson();
            CalculatedAmounts calculatedAmounts =  gson.fromJson(cal, CalculatedAmounts.class);
-          Double amt =  Double.valueOf(calculatedAmounts.getTotalAmount())* 100;
+          Double amt = calculatedAmounts.getTotalAmount() * 100;
            options.put("amount",amt);
            options.put("name", purchaseEntity.getMerchantEntity().getMerchantName());
            JSONObject prefill = new JSONObject();
@@ -346,7 +346,7 @@ return transactionalDetailsEntity;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+       // int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
        /* if (id == R.id.action_settings) {

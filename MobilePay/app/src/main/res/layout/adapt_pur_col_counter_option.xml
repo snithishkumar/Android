@@ -5,7 +5,18 @@
     android:layout_marginBottom="20dp"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delivery"
+        android:textSize="20dp"
+        android:layout_marginLeft="5dp"
+        android:drawableLeft="@drawable/ic_local_shipping_black_24dp"
+        android:drawablePadding="10dp"
+        android:textStyle="bold"
+        />
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
@@ -28,13 +39,12 @@
         />
 
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:id="@+id/adapt_pur_collection_counter_delivery"
         android:orientation="vertical"
         android:layout_height="wrap_content">
 

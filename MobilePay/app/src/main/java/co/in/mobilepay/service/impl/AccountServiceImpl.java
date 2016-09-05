@@ -21,8 +21,6 @@ import co.in.mobilepay.json.request.RegisterJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.json.response.UserJson;
 import co.in.mobilepay.service.AccountService;
-import co.in.mobilepay.service.PasswordHash;
-import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.sync.ServiceAPI;
 import retrofit2.Call;
@@ -244,18 +242,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
         public void onFailure(Call<ResponseData> call, Throwable t) {
             t.printStackTrace();
             Log.e("Error","Error in Sync",t);
-            switch (ops){
-              /*  case 1:
-                    ResponseData responseData = new ResponseData();
-                    responseData.setStatusCode(MessageConstant.REG_ERROR_CODE);
-                    processRegResponse(responseData,null);
-                    break;
-                case 2:
-                    responseData = new ResponseData();
-                    responseData.setStatusCode(MessageConstant.OTP_ERROR_CODE);
-                    processOtpResponse(responseData);
-                    break;*/
-            }
+
         }
     }
 

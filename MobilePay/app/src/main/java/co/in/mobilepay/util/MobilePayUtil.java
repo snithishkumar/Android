@@ -26,7 +26,7 @@ public class MobilePayUtil {
 
 
     public static String thousandSeparator(AppCompatActivity appCompatActivity,float value){
-      return   appCompatActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f",Float.valueOf(value));
+      return   appCompatActivity.getResources().getString(R.string.indian_rupee_symbol)+""+String.format("%,.2f", value);
     }
 
     public static String thousandSeparator(AppCompatActivity appCompatActivity,double value){

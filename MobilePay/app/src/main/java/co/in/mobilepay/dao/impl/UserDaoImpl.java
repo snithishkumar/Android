@@ -48,7 +48,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
      */
     public boolean isUserPresent()throws SQLException{
         long count = userDao.queryBuilder().where().eq(UserEntity.IS_ACTIVE,true).countOf();
-        return count > 0 ? true : false;
+        return count > 0;
     }
 
 

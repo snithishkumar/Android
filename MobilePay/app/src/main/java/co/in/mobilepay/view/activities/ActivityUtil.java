@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -21,7 +20,7 @@ public class ActivityUtil {
 
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
-    protected static boolean IS_LOGIN = false;
+    static boolean IS_LOGIN = false;
 
     public static ProgressDialog showProgress(String title,String message,Context context){
         ProgressDialog progressDialog = new ProgressDialog(context);

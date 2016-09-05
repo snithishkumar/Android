@@ -5,7 +5,7 @@ public enum NotificationType {
 
     private int notificationType;
 
-    private NotificationType(int notificationType) {
+    NotificationType(int notificationType) {
         this.notificationType = notificationType;
     }
 

@@ -35,7 +35,6 @@ public class PurHistoryListFragment extends Fragment  {
 
    private HomeActivity homeActivity = null;
 
-    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private PurHistoryListAdapter purHistoryListAdapter;
     private SwipeRefreshLayout refreshLayout;
@@ -99,7 +98,7 @@ public class PurHistoryListFragment extends Fragment  {
 
         //  refreshLayout.
 
-         recyclerView = (RecyclerView) view.findViewById(R.id.purchase_history_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.purchase_history_list);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager =  new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(linearLayoutManager);

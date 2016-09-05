@@ -75,10 +75,8 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <RelativeLayout
-            android:id="@+id/log_first_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/log_second_layout"
             android:layout_margin="10dp">
             <Button
                 android:id="@+id/log_one"
@@ -106,10 +104,8 @@
                 android:layout_toRightOf="@+id/log_two"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/log_second_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/log_center"
             android:layout_margin="10dp">
             <Button
                 android:id="@+id/log_four"
@@ -137,10 +133,8 @@
                 android:layout_toRightOf="@+id/log_five"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/log_third_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/log_center"
             android:layout_margin="10dp">
             <Button
                 android:id="@+id/log_seven"
@@ -168,10 +162,8 @@
                 android:layout_toRightOf="@+id/log_eight"/>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/log_fourth_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/log_third_layout"
             android:layout_margin="10dp">
             <Button
                 android:id="@+id/log_forget_pin"

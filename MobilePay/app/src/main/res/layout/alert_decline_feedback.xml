@@ -14,7 +14,6 @@
         />
 
     <View
-        android:id="@+id/alert_decline_feedback_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
@@ -77,8 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/lightgrey"
-        android:weightSum="2"
-        android:layout_alignParentBottom="true">
+        android:weightSum="2">
         <Button
             android:layout_width="0dp"
             android:text="Back"

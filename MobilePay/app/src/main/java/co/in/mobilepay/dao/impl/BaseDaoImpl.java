@@ -5,7 +5,6 @@ import android.content.Context;
 import java.sql.SQLException;
 
 import co.in.mobilepay.db.DatabaseHelper;
-import co.in.mobilepay.entity.UserEntity;
 
 /**
  * Created by Nithish on 24-01-2016.

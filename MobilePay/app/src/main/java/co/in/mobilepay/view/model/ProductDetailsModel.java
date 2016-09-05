@@ -1,8 +1,5 @@
 package co.in.mobilepay.view.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by Nithish on 30-01-2016.
  */

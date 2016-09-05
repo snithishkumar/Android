@@ -36,7 +36,6 @@ public class OrderStatusListFragment extends Fragment  {
    private HomeActivity homeActivity = null;
     private SwipeRefreshLayout refreshLayout;
 
-    private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     OrderStatusListAdapter orderStatusListAdapter;
     List<PurchaseModel> purchaseModelList = new ArrayList<>();
@@ -98,7 +97,7 @@ public class OrderStatusListFragment extends Fragment  {
 
       //  refreshLayout.
 
-         recyclerView = (RecyclerView) view.findViewById(R.id.luggage_pur_list);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.luggage_pur_list);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager =  new LinearLayoutManager(homeActivity);
         recyclerView.setLayoutManager(linearLayoutManager);

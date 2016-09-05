@@ -1,34 +1,22 @@
 package co.in.mobilepay.view.fragments;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.AddressEntity;
-import co.in.mobilepay.sync.MobilePaySyncAdapter;
-import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
 import co.in.mobilepay.view.adapters.DeliveryAddressAdapter;
-import co.in.mobilepay.view.adapters.PurchaseListAdapter;
-import co.in.mobilepay.view.model.PurchaseModel;
 
 /**
  * Created by Nithishkumar on 4/10/2016.

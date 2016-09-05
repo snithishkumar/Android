@@ -4,7 +4,7 @@ public enum CardType {
 	
 	private int cardType;
 	
-	private CardType(int cardType){
+	CardType(int cardType){
 		this.cardType = cardType;
 	}
 	

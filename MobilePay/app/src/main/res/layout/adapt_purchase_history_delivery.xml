@@ -32,7 +32,6 @@
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:id="@+id/adapt_pur_order_status_item_delivery_options"
         android:clickable="false"
         android:orientation="vertical"
         android:layout_height="wrap_content">

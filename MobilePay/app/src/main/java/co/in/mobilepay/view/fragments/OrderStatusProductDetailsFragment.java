@@ -17,7 +17,6 @@ import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.json.response.CalculatedAmounts;
@@ -37,7 +36,6 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
     private PurchaseDetailsActivity purchaseDetailsActivity;
     private PurchaseService purchaseService;
-    private OrderStatusDetailsAdapter orderStatusDetailsAdapter;
     private int purchaseId = 0;
 
     private TextView shopName = null;
@@ -47,11 +45,6 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
 
     private Gson gson = null;
-
-    private  PurchaseEntity  purchaseEntity= null;
-    private List<ProductDetailsModel> productDetailsModelList = null;
-
-
 
 
     /**
@@ -111,7 +104,7 @@ public class OrderStatusProductDetailsFragment extends Fragment{
      * Populate value
      */
     private void populatePurchaseData(View view){
-         purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+        PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText("("+merchantEntity.getArea()+")");
@@ -121,7 +114,7 @@ public class OrderStatusProductDetailsFragment extends Fragment{
 
         String productDetails = purchaseEntity.getProductDetails();
 
-       productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
+        List<ProductDetailsModel> productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
         }.getType());
 
 
@@ -137,7 +130,7 @@ public class OrderStatusProductDetailsFragment extends Fragment{
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
 
-        orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity,productDetailsModelList,calculatedAmounts,purchaseEntity,amountDetailsJson);
+        OrderStatusDetailsAdapter orderStatusDetailsAdapter = new OrderStatusDetailsAdapter(purchaseDetailsActivity, productDetailsModelList, calculatedAmounts, purchaseEntity, amountDetailsJson);
         recyclerView.setAdapter(orderStatusDetailsAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

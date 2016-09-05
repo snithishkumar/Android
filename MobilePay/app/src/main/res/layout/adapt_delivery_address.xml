@@ -38,14 +38,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/adapt_delivery_address_edit"
             android:text="Edit"
             android:textColor="@android:color/holo_blue_dark"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-        <LinearLayout
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapt_delivery_address_phone_no"
+            android:layout_below="@+id/adapt_delivery_address_name"
+
+            android:layout_marginTop="15dp"
+            android:drawablePadding="15dp"
+            android:drawableLeft="@drawable/ic_phone_black_18dp"
+            android:text="9942320690"
+
+            />
+
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="15dp"
             android:id="@+id/adapt_delivery_address_phone"
@@ -68,13 +81,25 @@
                 android:text="9942320690"
 
                 />
-        </LinearLayout>
+        </LinearLayout>-->
 
-        <LinearLayout
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/adapt_delivery_address_details"
+            android:layout_below="@+id/adapt_delivery_address_phone_no"
+            android:layout_marginTop="12dp"
+            android:drawablePadding="15dp"
+            android:drawableLeft="@drawable/ic_place_black_18dp"
+            android:text="15/B, 2nd cross street, sir ram nagar, Tharamani,chennai - 600 113"
+
+            />
+
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_marginTop="12dp"
             android:id="@+id/adapt_delivery_address_details_layout"
-            android:layout_below="@+id/adapt_delivery_address_phone"
+            android:layout_below="@+id/adapt_delivery_address_phone_no"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
@@ -85,15 +110,8 @@
                 android:background="@drawable/ic_place_black_18dp"
                 />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/adapt_delivery_address_details"
-                android:layout_marginLeft="12dp"
-                android:text="15/B, 2nd cross street, sir ram nagar, Tharamani,chennai - 600 113"
 
-                />
-        </LinearLayout>
+        </LinearLayout>-->
 
 
 

@@ -1,12 +1,9 @@
 package co.in.mobilepay.view.fragments;
 
 
-import android.app.Activity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-
-import co.in.mobilepay.R;
 
 
 /**

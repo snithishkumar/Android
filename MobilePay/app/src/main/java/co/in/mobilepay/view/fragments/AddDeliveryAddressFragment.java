@@ -1,5 +1,6 @@
 package co.in.mobilepay.view.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,11 +37,6 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
     private EditText vName;
     private EditText vMobileNumber;
     private EditText vStreet;
-    private Button vSubmit;
-
-    private TextInputLayout nameFloatingLabel;
-    private TextInputLayout mobileNumberFloatingLabel;
-    private TextInputLayout streetFloatingLabel;
 
 
     private static final int REQUEST_SELECT_PLACE = 1000;
@@ -84,13 +80,13 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
                 }
             }
         });
-        vSubmit = (Button) view.findViewById(R.id.add_address_submit);
+        Button vSubmit = (Button) view.findViewById(R.id.add_address_submit);
 
-        nameFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_name);
+        TextInputLayout nameFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_name);
         setLabelColor(nameFloatingLabel);
-        mobileNumberFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_phone_number);
+        TextInputLayout mobileNumberFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_phone_number);
         setLabelColor(mobileNumberFloatingLabel);
-        streetFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_street);
+        TextInputLayout streetFloatingLabel = (TextInputLayout) view.findViewById(R.id.input_layout_add_address_street);
         setLabelColor(streetFloatingLabel);
 
         vSubmit.setOnClickListener(this);
@@ -104,7 +100,7 @@ public class AddDeliveryAddressFragment extends Fragment implements View.OnClick
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SELECT_PLACE) {
-            if (resultCode == purchaseDetailsActivity.RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(purchaseDetailsActivity, data);
                 if(place != null){
                    String address = place.getAddress().toString();

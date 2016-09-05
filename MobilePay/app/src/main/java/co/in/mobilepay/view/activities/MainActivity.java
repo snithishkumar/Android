@@ -1,33 +1,18 @@
 package co.in.mobilepay.view.activities;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.squareup.otto.Subscribe;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
@@ -35,11 +20,9 @@ import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.bus.PurchaseListPoster;
 import co.in.mobilepay.gcm.GcmRegistrationIntentService;
 import co.in.mobilepay.json.request.RegisterJson;
-import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.service.AccountService;
 import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
-import co.in.mobilepay.util.MobilePayUtil;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.LoginFragment;
 import co.in.mobilepay.view.fragments.MobileFragment;
@@ -49,8 +32,6 @@ import co.in.mobilepay.view.fragments.RegistrationFragment;
 public class MainActivity extends NotificationBaseActivity implements RegistrationFragment.MainActivityCallback,OtpFragment.MainActivityCallback,LoginFragment.MainActivityCallback,MobileFragment.MainActivityCallback{
 
 
-    /* Fragments */
-    private RegistrationFragment registrationFragment = null;
     private OtpFragment otpFragment = null;
     private LoginFragment loginFragment = null;
     private MobileFragment mobileFragment = null;
@@ -199,8 +180,8 @@ public class MainActivity extends NotificationBaseActivity implements Registrati
                 FragmentsUtil.replaceFragment(this,loginFragment,R.id.main_container);
                 break;
             case MessageConstant.OTP_OK:
-                registrationFragment = new RegistrationFragment();
-                FragmentsUtil.replaceFragment(this,registrationFragment,R.id.main_container);
+                RegistrationFragment registrationFragment = new RegistrationFragment();
+                FragmentsUtil.replaceFragment(this, registrationFragment,R.id.main_container);
                 break;
             case MessageConstant.LOGIN_OK:
                 checkPermission();

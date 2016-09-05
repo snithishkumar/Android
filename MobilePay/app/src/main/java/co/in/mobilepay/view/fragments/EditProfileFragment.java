@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -87,8 +86,8 @@ public class EditProfileFragment extends Fragment implements View.OnClickListene
     }
 
     private void initBackButton(){
-        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.ic_arrow_back_white_24dp);;
-       // upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
+        final Drawable upArrow = ContextCompat.getDrawable(naviDrawerActivity,R.drawable.ic_arrow_back_white_24dp);
+        // upArrow.setColorFilter( ContextCompat.getColor(naviDrawerActivity,R.color.white), PorterDuff.Mode.SRC_ATOP);
         naviDrawerActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeButtonEnabled(true);
         naviDrawerActivity.getSupportActionBar().setHomeAsUpIndicator(upArrow);

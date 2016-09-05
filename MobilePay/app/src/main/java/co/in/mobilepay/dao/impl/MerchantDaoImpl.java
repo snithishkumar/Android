@@ -58,8 +58,7 @@ public class MerchantDaoImpl extends BaseDaoImpl implements MerchantDao {
      */
     @Override
     public MerchantEntity getMerchant(String merchantUuid) throws SQLException {
-        MerchantEntity merchantEntity =  merchantDao.queryBuilder().where().eq(MerchantEntity.MERCHANT_GUID,merchantUuid).queryForFirst();
-        return merchantEntity;
+        return merchantDao.queryBuilder().where().eq(MerchantEntity.MERCHANT_GUID,merchantUuid).queryForFirst();
     }
 
     /**
@@ -70,7 +69,6 @@ public class MerchantDaoImpl extends BaseDaoImpl implements MerchantDao {
      */
     @Override
     public MerchantEntity getMerchant(int merchantId) throws SQLException {
-        MerchantEntity merchantEntity = merchantDao.queryForId(merchantId);
-        return merchantEntity;
+        return merchantDao.queryForId(merchantId);
     }
 }

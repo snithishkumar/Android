@@ -1,22 +1,17 @@
 package co.in.mobilepay.view.fragments;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 
 import com.squareup.otto.Subscribe;
@@ -29,7 +24,6 @@ import co.in.mobilepay.application.MobilePayAnalytics;
 import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
-import co.in.mobilepay.service.impl.AccountServiceImpl;
 import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.view.activities.ActivityUtil;
 import co.in.mobilepay.view.activities.MainActivity;

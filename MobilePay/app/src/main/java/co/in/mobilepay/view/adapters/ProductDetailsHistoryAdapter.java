@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.in.mobilepay.R;
-import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.DiscardEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.enumeration.DiscountType;
@@ -29,7 +28,6 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     private  List<ProductDetailsModel> productDetailsModels = new ArrayList<>();
 
     private PurchaseDetailsActivity purchaseDetailsActivity;
-    private ProductDetailsModel productDetailsModel;
 
     private PurchaseEntity purchaseEntity;
 
@@ -58,7 +56,7 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
+        View view;
         switch (viewType){
 
             case HOME_DELIVERY_OPTIONS:
@@ -108,16 +106,16 @@ public class ProductDetailsHistoryAdapter extends RecyclerView.Adapter<RecyclerV
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         if(viewHolder instanceof ProductDetailsViewHolder){
             ProductDetailsViewHolder productDetailsViewHolder = (ProductDetailsViewHolder)viewHolder;
-            productDetailsModel = productDetailsModels.get(position);
+            ProductDetailsModel productDetailsModel = productDetailsModels.get(position);
             productDetailsViewHolder.ratingBar.setRating(productDetailsModel.getRating());
             toggleImg(productDetailsModel.getRating(),productDetailsViewHolder.rateItText);
             productDetailsViewHolder.name.setText(productDetailsModel.getName());
 
             productDetailsViewHolder.quantity.setText(String.valueOf(productDetailsModel.getQuantity()));
 
-            productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getUnitPrice()));
+            productDetailsViewHolder.unitPrice.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity, productDetailsModel.getUnitPrice()));
 
-            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,productDetailsModel.getAmount()));
+            productDetailsViewHolder.amount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity, productDetailsModel.getAmount()));
         }else if(viewHolder instanceof  DeliveryAddressViewHolder){
             DeliveryAddressViewHolder deliveryAddressViewHolder = (DeliveryAddressViewHolder)viewHolder;
             switch (purchaseEntity.getUserDeliveryOptions()){

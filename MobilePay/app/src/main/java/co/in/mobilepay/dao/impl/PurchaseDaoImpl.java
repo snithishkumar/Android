@@ -182,7 +182,7 @@ public class PurchaseDaoImpl extends BaseDaoImpl implements PurchaseDao {
      */
     @Override
     public List<PurchaseEntity> getOrderStatusList()throws SQLException{
-        List<PurchaseEntity> test =  purchaseDao.queryForAll();
+
         QueryBuilder<PurchaseEntity,Integer> luggageQueryBuilder =  purchaseDao.queryBuilder();
         luggageQueryBuilder.where().eq(PurchaseEntity.PAYMENT_STATUS, PaymentStatus.PAID).and()
                 .ne(PurchaseEntity.ORDER_STATUS, OrderStatus.CANCELLED).and()

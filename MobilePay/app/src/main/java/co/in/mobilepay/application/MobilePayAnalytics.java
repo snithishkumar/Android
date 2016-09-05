@@ -9,8 +9,6 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
-import co.in.mobilepay.R;
-
 /**
  * Created by Nithishkumar on 7/4/2016.
  */

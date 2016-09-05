@@ -58,7 +58,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/amount_details_sub_total_delivery"
             android:text="Delivery"
             android:layout_marginTop="5dp"
             />

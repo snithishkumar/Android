@@ -2,28 +2,19 @@ package co.in.mobilepay.view.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.MerchantEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.view.activities.PurchaseDetailsActivity;
-import co.in.mobilepay.view.model.PurchaseModel;
 
 /**
  * Created by ramse on 14-03-2016.
@@ -56,7 +47,7 @@ public class ShopDetailsFragment extends Fragment {
 
         TextView shopName = (TextView)view.findViewById(R.id.shop_details_name);
         TextView shopArea = (TextView) view.findViewById(R.id.shop_details_area);
-        TextView shopCategory = (TextView)view.findViewById(R.id.shop_details_category);
+        //TextView shopCategory = (TextView)view.findViewById(R.id.shop_details_category);
         TextView shopLandLine = (TextView) view.findViewById(R.id.shop_details_land);
         TextView shopMobile = (TextView) view.findViewById(R.id.shop_details_phone);
         TextView shopAddress = (TextView) view.findViewById(R.id.shop_details_address);

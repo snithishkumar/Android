@@ -123,8 +123,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     @Override
     public PurchaseEntity getPurchaseDetails(int purchaseId){
         try{
-            PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseId);
-            return purchaseEntity;
+            return purchaseDao.getPurchaseEntity(purchaseId);
         }catch (Exception e){
             MobilePayAnalytics.getInstance().trackException(e,"Error in getPurchaseDetails - PurchaseServiceImpl,Raw Data["+purchaseId+"]");
             Log.e(LOG_TAG,"Error in getPurchaseDetails",e);
@@ -141,7 +140,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
             List<ProductDetailsModel> productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
             }.getType());
             purchaseDetailsModel.getProductDetailsModelList().addAll(productDetailsModelList);
-            String amountDetails = purchaseEntity.getAmountDetails();
+           // String amountDetails = purchaseEntity.getAmountDetails();
             return purchaseDetailsModel;
         }catch (Exception e){
             MobilePayAnalytics.getInstance().trackException(e,"Error in getProductDetails - PurchaseServiceImpl,Raw Data["+purchaseId+"]");
@@ -223,8 +222,7 @@ public class PurchaseServiceImpl extends BaseService implements PurchaseService{
     @Override
     public DiscardEntity getDiscardEntity(PurchaseEntity purchaseEntity){
         try {
-            DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
-            return discardEntity;
+            return purchaseDao.getDiscardEntity(purchaseEntity);
         }catch (Exception e){
             MobilePayAnalytics.getInstance().trackException(e,"Error in getDiscardEntity - PurchaseServiceImpl,Raw Data["+purchaseEntity+"]");
             Log.e("Error", "Error in getDiscardEntity", e);

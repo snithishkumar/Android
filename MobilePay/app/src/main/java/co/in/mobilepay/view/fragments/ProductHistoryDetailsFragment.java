@@ -36,7 +36,6 @@ public class ProductHistoryDetailsFragment extends Fragment{
 
     private PurchaseDetailsActivity purchaseDetailsActivity;
     private PurchaseService purchaseService;
-    private ProductDetailsHistoryAdapter productDetailsHistoryAdapter;
     private int purchaseId = 0;
 
     private TextView shopName = null;
@@ -46,11 +45,6 @@ public class ProductHistoryDetailsFragment extends Fragment{
 
 
     private Gson gson = null;
-
-    private  PurchaseEntity  purchaseEntity= null;
-    private List<ProductDetailsModel> productDetailsModelList = null;
-
-
 
 
     /**
@@ -110,7 +104,7 @@ public class ProductHistoryDetailsFragment extends Fragment{
      * Populate value
      */
     private void populatePurchaseData(View view){
-         purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
+        PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
         MerchantEntity merchantEntity = purchaseEntity.getMerchantEntity();
         shopName.setText(merchantEntity.getMerchantName());
         shopArea.setText("("+merchantEntity.getArea()+")");
@@ -120,7 +114,7 @@ public class ProductHistoryDetailsFragment extends Fragment{
 
         String productDetails = purchaseEntity.getProductDetails();
 
-       productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
+        List<ProductDetailsModel> productDetailsModelList = gson.fromJson(productDetails, new TypeToken<List<ProductDetailsModel>>() {
         }.getType());
 
 
@@ -137,7 +131,7 @@ public class ProductHistoryDetailsFragment extends Fragment{
         String amountDetails = purchaseEntity.getAmountDetails();
         AmountDetailsJson amountDetailsJson = gson.fromJson(amountDetails, AmountDetailsJson.class);
 
-        productDetailsHistoryAdapter = new ProductDetailsHistoryAdapter(purchaseDetailsActivity,productDetailsModelList,amountDetailsJson,purchaseEntity,calculatedAmounts);
+        ProductDetailsHistoryAdapter productDetailsHistoryAdapter = new ProductDetailsHistoryAdapter(purchaseDetailsActivity, productDetailsModelList, amountDetailsJson, purchaseEntity, calculatedAmounts);
         recyclerView.setAdapter(productDetailsHistoryAdapter);
         recyclerView.addItemDecoration(new MobilePayDividerItemDetoration(
                 getContext()

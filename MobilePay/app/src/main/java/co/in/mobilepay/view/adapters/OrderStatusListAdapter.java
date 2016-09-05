@@ -149,11 +149,7 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             luggageListViewHolder.vTotalAmount.setText(MobilePayUtil.thousandSeparator(homeActivity,purchaseModel.getTotalAmount()));
             luggageListViewHolder.vOrderStatus.setText("Order Status:"+purchaseModel.getOrderStatus());
 
-            if(purchaseModel.getOrderStatus().equals("READY TO COLLECT")){
-                luggageListViewHolder.vInfo.setVisibility(View.VISIBLE);
-            }else{
-                luggageListViewHolder.vOrderStatus.setOnClickListener(null);
-            }
+
            /* Picasso.with(homeActivity)
                     .load(ServiceAPI.INSTANCE.getUrl()+"/user/merchant/profilepic.html?merchantGuid="+purchaseModel.getMerchantGuid()+"&merchantId="+purchaseModel.getServerMerchantId())
                     .placeholder(ContextCompat.getDrawable(homeActivity,R.mipmap.luggage_cart))
@@ -181,11 +177,11 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         protected TextView vTotalAmount;
         protected TextView vName;
         protected TextView vCategory;
-        protected LinearLayout vCall;
+        protected TextView vCall;
         protected TextView vOrderStatus;
         protected ImageView vShopLogo;
-        protected ImageView vInfo;
-        protected  LinearLayout vOrderStatusInfo;
+
+        protected  TextView vOrderStatusInfo;
 
 
 
@@ -196,10 +192,10 @@ public class OrderStatusListAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vTotalAmount = (TextView) view.findViewById(R.id.luggage_pur_total_amt);
             vName = (TextView) view.findViewById(R.id.luggage_pur_shop_name);
             vCategory = (TextView) view.findViewById(R.id.luggage_pur_shop_category);
-            vCall = (LinearLayout) view.findViewById(R.id.luggage_layout_pur_call);
+            vCall = (TextView) view.findViewById(R.id.luggage_layout_pur_call);
             vOrderStatus = (TextView) view.findViewById(R.id.luggage_pur_status);
             vShopLogo = (ImageView)view.findViewById(R.id.adapt_order_status_shop_logo);
-            vOrderStatusInfo = (LinearLayout)view.findViewById(R.id.adapt_order_status_info);
+            vOrderStatusInfo = (TextView)view.findViewById(R.id.luggage_pur_status);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

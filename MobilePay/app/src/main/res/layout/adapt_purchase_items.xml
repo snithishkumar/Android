@@ -62,7 +62,6 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:id="@+id/adapt_pur_left_view"
         android:layout_toLeftOf="@+id/adapt_pur_right_view"
         android:layout_alignParentLeft="true"
         android:orientation="vertical"
@@ -122,14 +121,13 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_below="@+id/adapt_pur_item_desc"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
 
-            android:id="@+id/linearLayout">
+            >
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

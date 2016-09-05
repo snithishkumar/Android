@@ -1,3 +1,4 @@
+/*
 package co.in.mobilepay.sync;
 
 import com.google.gson.Gson;
@@ -17,9 +18,11 @@ import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.ServiceUtil;
 
+*/
 /**
  * Created by Nithish on 23-01-2016.
- */
+ *//*
+
 public class AccountSync {
 
     private MobilePayAPI mobilePayAPI = null;
@@ -114,3 +117,4 @@ public class AccountSync {
     }
 
 }
+*/

@@ -1,7 +1,6 @@
 <resources>
     <!--App Settings-->
     <string name="app_name">MobilePay</string>
-    <string name="action_settings">Settings</string>
 
     <!--Mobile Screen-->
     <string name="mobile_title">(Please provide your mobile number to progress registration)</string>
@@ -9,7 +8,7 @@
     <string name="mobile_number_missing_error">Mobile number is required</string>
     <string name="mobile_number_length_error">Invalid mobile number</string>
     <string name="mobile_submit_heading">In Progress</string>
-    <string name="mobile_submit_message">Validating...</string>
+    <string name="mobile_submit_message">Validating…</string>
 
     <!--OTP Screen-->
     <string name="otp_title">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
@@ -20,7 +19,7 @@
     <string name="otp_resend_button_text">Re-Send OTP</string>
     <string name="otp_number_error">OTP number is required</string>
     <string name="otp_submit_heading">@string/mobile_submit_heading</string>
-    <string name="otp_submit_message">Validating...</string>
+    <string name="otp_submit_message">Validating…</string>
     <string name="error">Error</string>
 
 
@@ -51,15 +50,12 @@
     <string name="exit_double_click">Please click BACK again to exit</string>
 
     <!--Shopping Bag-->
-    <string name="shopping_bag_empty">Your Bucket is Empty. Purchase in shop and pay here</string>
 
     <!--Add Delivery Address-->
     <string name="add_delivery_address_name_error">Name is required</string>
     <string name="add_delivery_address_mobile_error">Mobile number is required</string>
     <string name="add_delivery_address_mobile_number_error">Invalid mobile number</string>
     <string name="add_delivery_address_street_error">Street Name is required</string>
-    <string name="add_delivery_address_city_error">City is required</string>
-    <string name="add_delivery_address_postal_error">Postal code is required</string>
 
     <!-- Delivery Options -->
     <string name="delivery_collection_counter">Collection Counter</string>
@@ -68,12 +64,8 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_home">Home</string>
-    <string name="title_activity_notification">Notification</string>
     <string name="title_activity_purchase">PurchaseActivity</string>
-    <string name="title_activity_new_savecard">NewCardActivity</string>
 
     <string name="google_cloud_id">207427538099</string>
     <!-- //AIzaSyBuFk_OddMviHfKLK7eilEw3P5v0KEG7tc -->
@@ -81,18 +73,6 @@
 
     <string name="auth_type">co.in.mobilepay.sync</string>
     <string name="content_authority">co.in.mobilepay.sync</string>
-
-    <string name="bank_prompt">Choose a Country</string>
-    <string-array name="bank_list">
-        <item>ICICI Bank</item>
-        <item>SBI Bank</item>
-        <item>HDFC Bank</item>
-        <item>Indian Bank</item>
-        <item>City Bank</item>
-        <item>Kotak Bank</item>
-        <item>Ing Bank</item>
-        <item>KVB Bank</item>
-    </string-array>
 
     <string name="indian_rupee_symbol">\u20B9</string>
 
@@ -112,24 +92,13 @@
     <string name="alert_decline_feedback_four">Not me</string>
 
 
-
-
-
-    <string name="rate_no">Rate it</string>
     <string name="rate_bad">Bad</string>
     <string name="rate_avg">Avg</string>
-    <string name="rate_ok">Ok</string>
+    <string name="rate_ok">OK</string>
     <string name="rate_gud">Good</string>
     <string name="rate_excellence">Excellence</string>
 
     <string name="otp_resend">You will receive the message shortly</string>
-
-    <string name="purchase_list_empty">Your Bucket is Empty. Purchase in shop and pay here.</string>
-
-
-
-
-
 
 
     <!--permissions-->
@@ -139,7 +108,7 @@
     <string name="call_permission_denied">Unable to make call. Please enable call permission</string>
 
     <!-- Screen permission button-->
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
     <!--Common Message-->

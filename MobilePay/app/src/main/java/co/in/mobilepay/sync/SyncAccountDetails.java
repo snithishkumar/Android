@@ -127,8 +127,7 @@ public class SyncAccountDetails {
             Call<ResponseData> dataCall =  mobilePayAPI.getUserProfile(mobileNumber);
             Response<ResponseData> response = dataCall.execute();
             if(response != null && response.isSuccess()){
-                ResponseData responseData = response.body();
-                return responseData;
+                return response.body();
             }else{
                 logErrorResponse(response);
             }

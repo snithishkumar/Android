@@ -16,11 +16,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
-import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.UserEntity;
 import co.in.mobilepay.view.activities.HomeActivity;
 import co.in.mobilepay.view.adapters.NavigationDrawerAdapter;
@@ -29,11 +29,9 @@ import co.in.mobilepay.view.adapters.NavigationDrawerAdapter;
 public class FragmentDrawer extends Fragment {
  
     private static String TAG = FragmentDrawer.class.getSimpleName();
- 
-    private RecyclerView recyclerView;
+
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    private NavigationDrawerAdapter adapter;
     private View containerView;
     private static String[] titles = null;
     private FragmentDrawerListener drawerListener;
@@ -55,9 +53,7 @@ public class FragmentDrawer extends Fragment {
  
  
         // preparing navigation drawer items
-        for (int i = 0; i < titles.length; i++) {
-            data.add(titles[i]);
-        }
+        Collections.addAll(data, titles);
         return data;
     }
  
@@ -86,12 +82,12 @@ public class FragmentDrawer extends Fragment {
                              Bundle savedInstanceState) {
         // Inflating view layout
         View layout = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
-        recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.drawerList);
 
         vUserName =  (TextView)layout.findViewById(R.id.navigation_drawer_name);
         vMobileNumber = (TextView)layout.findViewById(R.id.navigation_drawer_mobile_no);
         loadData();
-        adapter = new NavigationDrawerAdapter(homeActivity, getData());
+        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(homeActivity, getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(homeActivity));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(homeActivity, recyclerView, new ClickListener() {
@@ -134,7 +130,7 @@ public class FragmentDrawer extends Fragment {
             }
         };
  
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -144,10 +140,10 @@ public class FragmentDrawer extends Fragment {
  
     }
  
-    public static interface ClickListener {
-        public void onClick(View view, int position);
+    public interface ClickListener {
+        void onClick(View view, int position);
  
-        public void onLongClick(View view, int position);
+        void onLongClick(View view, int position);
     }
  
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
@@ -204,6 +200,6 @@ public class FragmentDrawer extends Fragment {
 
 
     public interface FragmentDrawerListener {
-        public void onDrawerItemSelected(View view, int position);
+        void onDrawerItemSelected(View view, int position);
     }
 }
