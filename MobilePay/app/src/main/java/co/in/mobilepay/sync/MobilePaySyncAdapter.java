@@ -893,7 +893,13 @@ private boolean isLoginFailed = false;
             boolean isData = false;
             for (PurchaseEntity purchaseEntity : purchaseEntityList) {
                 DiscardEntity discardEntity = purchaseDao.getDiscardEntity(purchaseEntity);
+
                 DiscardJson discardJson = new DiscardJson(discardEntity, purchaseEntity);
+                String calculatedAmtsJson = purchaseEntity.getCalculatedAmountDetails();
+                if(calculatedAmtsJson != null){
+                    CalculatedAmounts calculatedAmounts =  gson.fromJson(calculatedAmtsJson,CalculatedAmounts.class);
+                    discardJson.setCalculatedAmounts(calculatedAmounts);
+                }
                 List<TransactionalDetailsEntity>  entityList = getTransactionDetails(purchaseEntity);
                 discardJson.getTransactions().addAll(entityList);
                 discardJsonList.getDiscardJsons().add(discardJson);

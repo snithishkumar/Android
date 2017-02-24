@@ -163,29 +163,36 @@ public class HomeActivity extends AppCompatActivity implements PurchaseListAdapt
     }
     private void displayView(int position) {
         switch (position) {
-            case 0:
+            case 0: //Account
                 Intent intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",1);
                 startActivity(intent);
                 //finish();
                 break;
-            case 1:
+            case 1: //QR Code
                 intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",2);
                 startActivity(intent);
                 break;
-            case 2:
-                /*fragment = new MessagesFragment();
-                title = getString(R.string.title_messages);*/
+            case 2: //Support
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",3);
+                startActivity(intent);
                 break;
-            case 3:
+            case 3: //Terms of service
                 intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",4);
                 startActivity(intent);
                 break;
-            case 4:
+            case 4: //About
                 intent = new Intent(this, NaviDrawerActivity.class);
                 intent.putExtra("options",5);
+                startActivity(intent);
+                break;
+
+            case 5: //Rate the App
+                intent = new Intent(this, NaviDrawerActivity.class);
+                intent.putExtra("options",6);
                 startActivity(intent);
                 break;
             default:

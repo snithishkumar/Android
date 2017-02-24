@@ -74,10 +74,9 @@
     <string name="auth_type">co.in.mobilepay.sync</string>
     <string name="content_authority">co.in.mobilepay.sync</string>
 
-    <string name="indian_rupee_symbol">\u20B9</string>
-
     <string-array name="nav_menu">
         <item>Account</item>
+        <item>QR Code</item>
         <item>Support</item>
         <item>Terms of service</item>
         <item>About</item>
@@ -117,6 +116,7 @@
     <string name="no_network_heading">No Network</string>
     <string name="current_tab">currentTab</string>
     <string name="login_error">OOPS! You are logged on Another device.Please login again or continue that device</string>
+    <string name="indian_rupee_symbol">\u00a3</string>
 </resources>
 
 
