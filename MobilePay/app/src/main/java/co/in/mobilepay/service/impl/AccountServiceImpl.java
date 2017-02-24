@@ -150,7 +150,7 @@ public class AccountServiceImpl extends BaseService implements AccountService {
                 userDao.updateUser(userEntity);
                 ServiceAPI.INSTANCE.setAccessToken(userEntity.getAccessToken());
                 ServiceAPI.INSTANCE.setServerToken(userEntity.getServerToken());
-               MobilePayBus.getInstance().post(responseData);
+                MobilePayBus.getInstance().post(responseData);
                 return;
             }catch (Exception e){
                 MobilePayAnalytics.getInstance().trackException(e,"Error in processLoginSuccessResponse,Raw Data["+responseData+"]");

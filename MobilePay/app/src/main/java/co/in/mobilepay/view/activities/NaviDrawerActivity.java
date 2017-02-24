@@ -17,6 +17,7 @@ import co.in.mobilepay.view.fragments.AboutAsFragment;
 import co.in.mobilepay.view.fragments.EditProfileFragment;
 import co.in.mobilepay.view.fragments.FragmentsUtil;
 import co.in.mobilepay.view.fragments.HelpFragment;
+import co.in.mobilepay.view.fragments.QrCodeFragment;
 
 /**
  * Created by Nithishkumar on 3/27/2016.
@@ -52,23 +53,28 @@ public class NaviDrawerActivity extends AppCompatActivity implements EditProfile
 
     private void showFragment(int options){
         switch (options){
-            case 1:
+            case 1: //Account
                EditProfileFragment editProfileFragment = new EditProfileFragment();
                 FragmentsUtil.addFragment(this, editProfileFragment, R.id.navi_drawer_container);
                 break;
 
-            case 2:
+            case 2: //QR Code
+                QrCodeFragment qrCodeFragment = new QrCodeFragment();
+                FragmentsUtil.addFragment(this, qrCodeFragment, R.id.navi_drawer_container);
+                break;
+
+            case 3: //Support
                 HelpFragment helpFragment = new HelpFragment();
                 FragmentsUtil.addFragment(this, helpFragment, R.id.navi_drawer_container);
                 break;
-
-            case 4:
+//Terms of service
+            case 5: //About
                 AboutAsFragment aboutAsFragment = new AboutAsFragment();
                 FragmentsUtil.addFragment(this, aboutAsFragment, R.id.navi_drawer_container);
                 break;
 
-
-            case 5:
+//Rate the App
+            case 6:
                 showPlayStore();
                 break;
 

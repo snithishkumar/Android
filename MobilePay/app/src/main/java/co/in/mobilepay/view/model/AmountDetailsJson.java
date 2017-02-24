@@ -6,10 +6,10 @@ import co.in.mobilepay.enumeration.DiscountType;
 public class AmountDetailsJson {
 
     private float taxAmount;
-    private double discount;
+    private double discountAmount;
     private double deliveryAmount;
     private DiscountType discountType;
-    private double discountMiniVal;
+    private double minimumAmount;
 
     public float getTaxAmount() {
         return taxAmount;
@@ -19,12 +19,12 @@ public class AmountDetailsJson {
         this.taxAmount = taxAmount;
     }
 
-    public double getDiscount() {
-        return discount > 0 ? discount : 0;
+    public double getDiscountAmount() {
+        return discountAmount > 0 ? discountAmount : 0;
     }
 
-    public void setDiscount(double discount) {
-        this.discount = discount;
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
     }
 
     public double getDeliveryAmount() {
@@ -43,22 +43,22 @@ public class AmountDetailsJson {
         this.discountType = discountType;
     }
 
-    public double getDiscountMiniVal() {
-        return discountMiniVal > 0 ? discountMiniVal : 0;
+    public double getMinimumAmount() {
+        return minimumAmount > 0 ? minimumAmount : 0;
     }
 
-    public void setDiscountMiniVal(double discountMiniVal) {
-        this.discountMiniVal = discountMiniVal;
+    public void setMinimumAmount(double minimumAmount) {
+        this.minimumAmount = minimumAmount;
     }
 
     @Override
     public String toString() {
         return "AmountDetailsJson{" +
                 "taxAmount=" + taxAmount +
-                ", discount=" + discount +
+                ", discountAmount=" + discountAmount +
                 ", deliveryAmount=" + deliveryAmount +
                 ", discountType=" + discountType +
-                ", discountMiniVal=" + discountMiniVal +
+                ", minimumAmount=" + minimumAmount +
                 '}';
     }
 }

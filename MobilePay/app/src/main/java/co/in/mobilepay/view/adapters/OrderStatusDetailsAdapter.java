@@ -126,10 +126,10 @@ private CalculatedAmounts calculatedAmounts;
 
             amountDetailsViewHolder.vSubTaxAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getTax()));
             if(amountDetailsJson.getDiscountType().getDiscountType() == DiscountType.AMOUNT.getDiscountType()){
-                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " of total)");
+                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscountAmount() + " of total)");
 
             }else{
-                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscount() + " % of total)");
+                amountDetailsViewHolder.vDiscountText.setText("Discount (" + amountDetailsJson.getDiscountAmount() + " % of total)");
             }
 
             amountDetailsViewHolder.vSubDiscountAmount.setText(MobilePayUtil.thousandSeparator(purchaseDetailsActivity,calculatedAmounts.getDiscount()));
