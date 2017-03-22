@@ -7,6 +7,7 @@ import co.in.mobilepay.json.response.AddressBookJson;
 import co.in.mobilepay.json.response.CloudMessageJson;
 import co.in.mobilepay.json.response.DiscardJsonList;
 import co.in.mobilepay.json.response.GetPurchaseDetailsList;
+import co.in.mobilepay.json.response.PayedPurchaseDetailsJson;
 import co.in.mobilepay.json.response.PayedPurchaseDetailsList;
 import co.in.mobilepay.json.response.ResponseData;
 import retrofit2.Call;
@@ -64,8 +65,8 @@ public interface  MobilePayAPI {
     Call<ResponseData> syncDiscardData(@Body DiscardJsonList requestData);
 
     /** Send Payed Data to the server **/
-    @POST("mobilePayUser/mobile/syncPayedData.html")
-    Call<ResponseData> syncPayedData(@Body PayedPurchaseDetailsList requestData);
+    @POST("mobilePayUser/mobile/makePayment.html")
+    Call<ResponseData> makePayment(@Body PayedPurchaseDetailsJson requestData);
 
     /** Send GCM Id to the server **/
     @POST("mobilePayUser/mobile/addCloudId.html")
@@ -80,6 +81,11 @@ public interface  MobilePayAPI {
     /** Send User Home Address **/
     @POST("mobile/getUserProfile/{mobileNumber}.html")
     Call<ResponseData> getUserProfile(@Path("mobileNumber") String mobileNumber);
+
+
+    /** Send GCM Id to the server **/
+    @POST("mobilePayUser/mobile/getPaymentToken.html")
+    Call<ResponseData> getPaymentToken(@Body JsonObject purchaseUUIDs);
 
 
 }

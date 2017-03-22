@@ -158,6 +158,20 @@ private boolean isLoginFailed = false;
                        sendUnSyncedDataSynchronize();
                        break;
 
+                   case MessageConstant.GET_TOKEN:
+                       String  purchaseUUID =  extras.getString("purchaseUUID");
+                       ResponseData paymentTokenRes =  syncAccountDetails.getPaymentToken(purchaseUUID);
+                       MobilePayBus.getInstance().post(paymentTokenRes);
+                       break;
+
+
+                   case MessageConstant.MAKE_PAYMENT:
+                       purchaseUUID =  extras.getString("purchaseUUID");
+                       String nonce = extras.getString("nonce");
+                       ResponseData paymentResponse =  syncAccountDetails.makePayment(purchaseUUID,nonce);
+                       MobilePayBus.getInstance().post(paymentResponse);
+                       break;
+
                }
            }else{
                    isLoginFailed = false;
@@ -226,7 +240,6 @@ private boolean isLoginFailed = false;
     private void sendUnSyncedDataSynchronize(){
         syncUserDeliveryAddress();
         sendUnSyncDeclineData();
-        sendUnSyncPayedData();
     }
 
 
@@ -825,7 +838,7 @@ private boolean isLoginFailed = false;
     }
 
 // -- TODO Address Edit. Need to handle in server side
-    public void sendUnSyncPayedData(){
+   /* public void sendUnSyncPayedData(){
         List<PurchaseEntity> purchaseEntityList = null;
         ResponseData responseData = null;
         try{
@@ -878,7 +891,7 @@ private boolean isLoginFailed = false;
             MobilePayAnalytics.getInstance().trackException(e,"Error in sendUnSyncPayedData,Raw data :purchaseEntityList["+purchaseEntityList+"],responseData["+responseData+"]");
             Log.e(LOG_TAG, "Error in sendUnSyncPayedData", e);
         }
-    }
+    }*/
 
 
     /**
@@ -998,4 +1011,7 @@ private boolean isLoginFailed = false;
         }
         return newAccount;
     }
+
+
+
 }

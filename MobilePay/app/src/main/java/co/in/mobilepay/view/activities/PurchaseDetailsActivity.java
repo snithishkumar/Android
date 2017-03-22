@@ -2,6 +2,7 @@ package co.in.mobilepay.view.activities;
 
 import android.Manifest;
 import android.accounts.Account;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,13 +19,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.braintreepayments.api.dropin.DropInActivity;
+import com.braintreepayments.api.dropin.DropInRequest;
+import com.braintreepayments.api.dropin.DropInResult;
 import com.google.gson.Gson;
-import com.razorpay.Checkout;
-
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.squareup.otto.Subscribe;
 
 import co.in.mobilepay.R;
 import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.bus.MobilePayBus;
 import co.in.mobilepay.entity.AddressEntity;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
@@ -34,8 +39,10 @@ import co.in.mobilepay.enumeration.GsonAPI;
 import co.in.mobilepay.enumeration.OrderStatus;
 import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.response.CalculatedAmounts;
+import co.in.mobilepay.json.response.ResponseData;
 import co.in.mobilepay.service.PurchaseService;
 import co.in.mobilepay.service.ServiceUtil;
+import co.in.mobilepay.service.impl.MessageConstant;
 import co.in.mobilepay.service.impl.PurchaseServiceImpl;
 import co.in.mobilepay.sync.MobilePaySyncAdapter;
 import co.in.mobilepay.view.adapters.ProductDetailsAdapter;
@@ -73,10 +80,14 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
     private String mobileNumber;
 
 
+    private final  int REQUEST_CODE = 3456;
+
+
     private DeliveryOptions deliveryOptions;
     private AddressEntity defaultAddress = null;
 
 
+    String purchaseUUID = null;
     public final String LOG_TAG = PurchaseDetailsActivity.class.getSimpleName();
 
     @Override
@@ -211,7 +222,10 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
 
 
    private void startPayment(PurchaseEntity purchaseEntity){
-       try {
+       getPaymentToken(purchaseEntity.getPurchaseGuid());
+      /* try {
+
+
            String myKey = "rzp_test_sXXkgq2zryxkgg";
 
            Checkout razorpayCheckout = new Checkout();
@@ -235,17 +249,13 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
        }catch (Exception e){
            MobilePayAnalytics.getInstance().trackException(e,"Error in startPayment - PurchaseDetailsActivity,Raw Data["+purchaseEntity+"]");
            Log.e(LOG_TAG,"Error in startPayment - PurchaseDetailsActivity,Raw Data["+purchaseEntity+"]",e);
-       }
+       }*/
 
 
    }
 
-    /**
-            * The name of the function has to be
-    *   onPaymentSuccess
-    * Wrap your code in try catch, as shown, to ensure that this method runs correctly
-    */
-    public void onPaymentSuccess(String razorpayPaymentID){
+
+   /* public void onPaymentSuccess(String razorpayPaymentID){
         try {
             TransactionalDetailsEntity transactionalDetailsEntity =  getTransactionalDetailsEntity();
             transactionalDetailsEntity.setTransactionUUID(razorpayPaymentID);
@@ -276,7 +286,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             MobilePayAnalytics.getInstance().trackException(e,"Error in onPaymentSuccess - PurchaseDetailsActivity,Raw Data["+razorpayPaymentID+"]");
             Log.e(LOG_TAG,"Error in onPaymentSuccess - PurchaseDetailsActivity,Raw Data["+razorpayPaymentID+"]",e);
         }
-    }
+    }*/
 
 
     public void syncPaymentData(){
@@ -292,12 +302,36 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
         ContentResolver.requestSync(account, getString(R.string.auth_type), settingsBundle);
     }
 
-    /**
-     * The name of the function has to be
-     *   onPaymentError
-     * Wrap your code in try catch, as shown, to ensure that this method runs correctly
-     */
-    public void onPaymentError(int code, String response) {
+    private void makePayment(String purchaseUUID,String nonce){
+        Account account = MobilePaySyncAdapter.getSyncAccount(this);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putInt("currentScreen", MessageConstant.MAKE_PAYMENT);
+        settingsBundle.putString("purchaseUUID",purchaseUUID);
+        settingsBundle.putString("nonce",nonce);
+        ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);
+    }
+
+
+    private void getPaymentToken(String purchaseUUID){
+        Account account = MobilePaySyncAdapter.getSyncAccount(this);
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putBoolean(
+                ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+        settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+        settingsBundle.putInt("currentScreen", MessageConstant.GET_TOKEN);
+        settingsBundle.putString("purchaseUUID",purchaseUUID);
+        ContentResolver.requestSync(account, this.getString(R.string.auth_type), settingsBundle);
+    }
+
+
+   /* public void onPaymentError(int code, String response) {
         try {
             TransactionalDetailsEntity transactionalDetailsEntity =  getTransactionalDetailsEntity();
             transactionalDetailsEntity.setReason(response);
@@ -310,11 +344,11 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
             MobilePayAnalytics.getInstance().trackException(e,"Error in onPaymentError - PurchaseDetailsActivity,Raw Data["+response+"]");
             Log.e(LOG_TAG,"Error in onPaymentError - PurchaseDetailsActivity,Raw Data["+response+"]",e);
         }
-    }
+    }*/
 
 
 
-    private TransactionalDetailsEntity getTransactionalDetailsEntity(){
+ /*   private TransactionalDetailsEntity getTransactionalDetailsEntity(){
         TransactionalDetailsEntity transactionalDetailsEntity = new TransactionalDetailsEntity();
         PurchaseEntity purchaseEntity = purchaseService.getPurchaseDetails(purchaseId);
         Gson gson = GsonAPI.INSTANCE.getGson();
@@ -328,7 +362,7 @@ public class PurchaseDetailsActivity extends AppCompatActivity implements
         transactionalDetailsEntity.setTransactionUUID(ServiceUtil.generateUUID());
         transactionalDetailsEntity.setSync(false);
 return transactionalDetailsEntity;
-    }
+    }*/
 
 
 
@@ -360,22 +394,6 @@ return transactionalDetailsEntity;
         return purchaseService;
     }
 
-
-
-
-
-
-
-
-/*
-    @Override
-    public void payment() {
-        NewCardFragment newCardFragment = new NewCardFragment();
-        Bundle purchaseIdArgs = new Bundle();
-        purchaseIdArgs.putInt("purchaseId",purchaseId);
-        newCardFragment.setArguments(purchaseIdArgs);
-        FragmentsUtil.replaceFragment(this, newCardFragment, R.id.pur_details_main_container);
-    }*/
 
 
     private void backToHome(){
@@ -471,7 +489,60 @@ return transactionalDetailsEntity;
     @Override
     protected void onResume() {
         MobilePayAnalytics.getInstance().trackScreenView("PurchaseDetails Screen");
+        MobilePayBus.getInstance().register(this);
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        MobilePayBus.getInstance().unregister(this);
+        super.onPause();
+    }
+
+
+    @Subscribe
+    public void paymentResponse(ResponseData responseData){
+
+       switch (responseData.getStatusCode()){
+
+           case 408:
+               Toast.makeText(this, responseData.getData(), Toast.LENGTH_SHORT).show();
+               break;
+
+           case 407:
+               Toast.makeText(this, "Payment Failed.", Toast.LENGTH_SHORT).show();
+               break;
+           case 200:
+
+               String serverResponse = responseData.getData();
+               JsonParser jsonParser = new JsonParser();
+               JsonObject jsonObject =  (JsonObject)jsonParser.parse(serverResponse);
+               DropInRequest dropInRequest = new DropInRequest()
+                       .clientToken(jsonObject.get("clientToken").getAsString());
+               Intent intent =  dropInRequest.getIntent(this);
+               purchaseUUID = jsonObject.get("purchaseUUID").getAsString();
+               intent.putExtra("purchaseUUID",jsonObject.get("purchaseUUID").getAsString());
+               startActivityForResult(intent, REQUEST_CODE);
+               break;
+
+           case 2500:
+
+              // syncPaymentData();
+               Toast.makeText(this, "Payment Successfully made.", Toast.LENGTH_SHORT).show();
+               if(isNotification){
+                   backToHome();
+               }else{
+                   finish();
+               }
+               break;
+
+           case 2501:
+               Toast.makeText(this, "OOPS.Something went wrong.", Toast.LENGTH_SHORT).show();
+               break;
+
+
+       }
+
     }
 
 
@@ -489,5 +560,24 @@ return transactionalDetailsEntity;
 
     public void setDefaultAddress(AddressEntity defaultAddress) {
         this.defaultAddress = defaultAddress;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+              // String purchaseUUID = data.getStringExtra("purchaseUUID");
+                makePayment(purchaseUUID,result.getPaymentMethodNonce().getNonce());
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(this, "Payment Cancelled. ", Toast.LENGTH_SHORT).show();
+            } else {
+                // handle errors here, an exception may be available in
+                Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Toast.makeText(this, "OOPS.Something went wrong."+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

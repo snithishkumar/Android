@@ -63,4 +63,7 @@ public final class  MessageConstant {
     public static final int REGISTER_PROF_DATA = 6;
 
     public static final int SYNC_DATA = 7;
+
+    public static final int GET_TOKEN = 8;
+    public static final int MAKE_PAYMENT = 9;
 }

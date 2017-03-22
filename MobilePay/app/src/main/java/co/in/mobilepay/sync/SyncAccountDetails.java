@@ -7,12 +7,23 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import co.in.mobilepay.application.MobilePayAnalytics;
+import co.in.mobilepay.dao.PurchaseDao;
 import co.in.mobilepay.dao.UserDao;
+import co.in.mobilepay.dao.impl.PurchaseDaoImpl;
 import co.in.mobilepay.dao.impl.UserDaoImpl;
+import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.UserEntity;
+import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.DeviceType;
 import co.in.mobilepay.enumeration.GsonAPI;
+import co.in.mobilepay.enumeration.OrderStatus;
+import co.in.mobilepay.enumeration.PaymentStatus;
 import co.in.mobilepay.json.request.RegisterJson;
+import co.in.mobilepay.json.response.CalculatedAmounts;
+import co.in.mobilepay.json.response.PayedPurchaseDetailsJson;
+import co.in.mobilepay.json.response.PurchaseJson;
 import co.in.mobilepay.json.response.ResponseData;
+import co.in.mobilepay.service.ServiceUtil;
 import co.in.mobilepay.service.impl.MessageConstant;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -25,8 +36,10 @@ public class SyncAccountDetails {
     public final String LOG_TAG = SyncAccountDetails.class.getSimpleName();
     private MobilePayAPI mobilePayAPI;
     private UserDao userDao;
+    private PurchaseDao purchaseDao;
     private Context context;
     private Gson gson;
+
 
     public SyncAccountDetails(Context context){
         this.context = context;
@@ -36,6 +49,7 @@ public class SyncAccountDetails {
     private void init(){
         try{
             userDao = new UserDaoImpl(context);
+            purchaseDao = new PurchaseDaoImpl(context);
             gson = GsonAPI.INSTANCE.getGson();
         }catch (Exception e){
             Log.e(LOG_TAG,"Error in init",e);
@@ -254,6 +268,76 @@ public class SyncAccountDetails {
             Log.e(LOG_TAG,"Error in deleteUser",e);
         }
 
+    }
+
+
+    public ResponseData getPaymentToken(String purchaseUUID) {
+        try {
+            JsonObject purchaseUUIDs = new JsonObject();
+            purchaseUUIDs.addProperty("purchaseUUID",purchaseUUID);
+            Call<ResponseData> dataCall = mobilePayAPI.getPaymentToken(purchaseUUIDs);
+            Response<ResponseData> response = dataCall.execute();
+
+            if(response.code() == 401){
+                ResponseData responseData = new ResponseData();
+                responseData.setStatusCode(401);
+            }else if(response.isSuccess()){
+                return response.body();
+            }
+
+
+        } catch (Exception e) {
+
+        }
+        return getErrorResponse();
+    }
+
+
+    public ResponseData makePayment(String purchaseUUID,String nonce){
+        try{
+            PurchaseEntity purchaseEntity =  purchaseDao.getPurchaseEntity(purchaseUUID);
+            purchaseEntity.setPaymentStatus(PaymentStatus.PAID);
+            if(purchaseEntity.getUserDeliveryOptions().ordinal() == DeliveryOptions.NONE.ordinal()){
+                purchaseEntity.setOrderStatus(OrderStatus.DELIVERED);
+            }else{
+                purchaseEntity.setOrderStatus(OrderStatus.PACKING);
+            }
+            purchaseEntity.setLastModifiedDateTime(ServiceUtil.getCurrentTimeMilli());
+            PayedPurchaseDetailsJson payedPurchaseDetailsJson = new PayedPurchaseDetailsJson(purchaseEntity);
+            CalculatedAmounts calculatedAmounts = gson.fromJson(purchaseEntity.getCalculatedAmountDetails(),CalculatedAmounts.class);
+
+            payedPurchaseDetailsJson.setCalculatedAmounts(calculatedAmounts);
+            payedPurchaseDetailsJson.setDeviceType(DeviceType.Android);
+            payedPurchaseDetailsJson.setNonce(nonce);
+            payedPurchaseDetailsJson.setImeiNumber(ServiceUtil.getIMEINumber(context));
+
+            Call<ResponseData> responseDataCall = mobilePayAPI.makePayment(payedPurchaseDetailsJson);
+            Response<ResponseData> dataResponse = responseDataCall.execute();
+            if(dataResponse.isSuccess()){
+                ResponseData responseData =  dataResponse.body();
+                if(responseData.getStatusCode() == 200){
+                    PurchaseJson purchaseJson =   gson.fromJson(responseData.getData(), PurchaseJson.class);
+                    purchaseEntity.setIsSync(true);
+                    purchaseEntity.setServerDateTime(purchaseJson.getServerDateTime());
+                    purchaseDao.updatePurchase(purchaseEntity);
+
+                    ResponseData successResult = new ResponseData();
+                    successResult.setStatusCode(2500);
+                    return successResult;
+                }else{
+                    ResponseData successResult = new ResponseData();
+                    successResult.setStatusCode(responseData.getStatusCode());
+                    successResult.setData(responseData.getData());
+                    return successResult;
+                }
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        ResponseData failureResponse = new ResponseData();
+        failureResponse.setStatusCode(2501);
+        return failureResponse;
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import co.in.mobilepay.entity.PurchaseEntity;
 import co.in.mobilepay.entity.TransactionalDetailsEntity;
 import co.in.mobilepay.enumeration.DeliveryOptions;
+import co.in.mobilepay.enumeration.DeviceType;
 import co.in.mobilepay.enumeration.OrderStatus;
 
 public class PayedPurchaseDetailsJson {
@@ -22,6 +23,10 @@ public class PayedPurchaseDetailsJson {
     private OrderStatus orderStatus;
     private CalculatedAmounts calculatedAmounts;
     private List<TransactionalDetailsEntity> transactions = new ArrayList<>();
+
+    private String nonce;
+    private String imeiNumber;
+    private DeviceType deviceType;
 
     public PayedPurchaseDetailsJson() {
 
@@ -132,6 +137,30 @@ public class PayedPurchaseDetailsJson {
         this.calculatedAmounts = calculatedAmounts;
     }
 
+    public String getNonce() {
+        return nonce;
+    }
+
+    public void setNonce(String nonce) {
+        this.nonce = nonce;
+    }
+
+    public String getImeiNumber() {
+        return imeiNumber;
+    }
+
+    public void setImeiNumber(String imeiNumber) {
+        this.imeiNumber = imeiNumber;
+    }
+
+    public DeviceType getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(DeviceType deviceType) {
+        this.deviceType = deviceType;
+    }
+
     @Override
     public String toString() {
         return "PayedPurchaseDetailsJson{" +
@@ -143,7 +172,12 @@ public class PayedPurchaseDetailsJson {
                 ", addressJson=" + addressJson +
                 ", addressGuid='" + addressGuid + '\'' +
                 ", totalAmount='" + totalAmount + '\'' +
+                ", orderStatus=" + orderStatus +
+                ", calculatedAmounts=" + calculatedAmounts +
                 ", transactions=" + transactions +
+                ", nonce='" + nonce + '\'' +
+                ", imeiNumber='" + imeiNumber + '\'' +
+                ", deviceType=" + deviceType +
                 '}';
     }
 }
